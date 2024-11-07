@@ -1,8 +1,16 @@
 {
-  "name": "@azkaban-v4/source",
-  "version": "0.0.0",
+  "name": "@azkaban/source",
+  "version": "0.0.1",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "nx": "nx",
+    "outdated": "npm outdated",
+    "update:filtered": "npx npm-check-updates -u --filter @types/",
+    "update:all": "npx npm-check-updates -u",
+    "upgrade:workspace": "nx migrate latest",
+    "upgrade:migrations": "nx migrate --run-migrations",
+    "report": "nx report"
+  },
   "private": true,
   "dependencies": {},
   "devDependencies": {
@@ -16,6 +24,7 @@
     "typescript": "~5.5.2"
   },
   "workspaces": [
-    "packages/*"
+    "apps/*",
+    "libs/*"
   ]
 }
