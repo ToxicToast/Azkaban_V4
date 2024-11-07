@@ -1,0 +1,46 @@
+name: Renovate
+
+on:
+    push:
+        branches: [renovate/**/*, renovate/*]
+
+env:
+    NX_BRANCH: ${GITHUB_REF##*/}
+
+jobs:
+    Feature:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - uses: nrwl/nx-set-shas@v4
+
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 21
+                  cache: 'npm'
+
+            - name: 📦 Install NX-Linux
+              run: npm install @nx/nx-linux-x64-gnu@latest
+
+            - name: 📦 Install dependencies
+              run: npm install
+
+            - name: 🚀 Check Format
+              run: npx nx format:check
+
+            - name: 🚀 Lint Apps
+              run: npx nx affected:lint --parallel --maxParallel=3
+
+            - name: 🚀 Test Apps
+              run: npx nx affected:test --passWithNoTests --parallel --maxParallel=3
+
+            - name: 🚀 e2e Apps
+              run: npx nx affected:e2e --passWithNoTests --parallel --maxParallel=3
+
+            - name: 🚀 Build Apps
+              run: npx nx affected:build --parallel --maxParallel=3
