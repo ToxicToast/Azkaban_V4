@@ -4,15 +4,22 @@ import { clientProvider } from '@toxictoast/azkaban-broker-kafka';
 
 @Module({})
 export class KafkaModule {
-
 	static register(options: {
-		name: string,
-		brokerHost: string,
-		brokerPort: number,
-		appId: string,
+		name: string;
+		brokerHost: string;
+		brokerPort: number;
+		appId: string;
 		producerOnlyMode?: boolean;
+		global?: boolean;
 	}): DynamicModule {
-		const { name, brokerHost, brokerPort, appId, producerOnlyMode } = options;
+		const {
+			name,
+			brokerHost,
+			brokerPort,
+			appId,
+			producerOnlyMode,
+			global,
+		} = options;
 
 		const brokerClientProvider = clientProvider({
 			brokerHost,
@@ -28,14 +35,11 @@ export class KafkaModule {
 					{
 						name,
 						...brokerClientProvider,
-					}
+					},
 				]),
 			],
-			exports: [
-				ClientsModule,
-			],
-			global: true
-		}
+			exports: [ClientsModule],
+			global: global ?? false,
+		};
 	}
-
 }

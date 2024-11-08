@@ -14,6 +14,7 @@ import { KafkaAzkabanModule } from '@azkaban/gateway-infrastructure';
 			brokerPort: parseInt(process.env.BROKER_PORT),
 			producerOnlyMode: false,
 			appId: 'gateway-service',
+			global: true,
 		}),
 		//
 		HealthModule,

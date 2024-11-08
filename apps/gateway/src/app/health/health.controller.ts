@@ -1,27 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { HealthLinks } from '@azkaban/gateway-infrastructure';
-import { KafkaService } from './kafka.service';
-import { HealthCheck, HealthCheckService } from '@nestjs/terminus';
-import { RedisService } from './redis.service';
-import { MemoryService } from './memory.service';
+import { HealthLinks, HealthService } from '@azkaban/gateway-infrastructure';
 
 @Controller(HealthLinks.CONTROLLER)
 export class HealthController {
-	constructor(
-		private readonly service: HealthCheckService,
-		private readonly kafka: KafkaService,
-		private readonly redis: RedisService,
-		private readonly memory: MemoryService,
-	) {}
+	constructor(private readonly service: HealthService) {}
 
 	@Get()
-	@HealthCheck()
 	check() {
-		return this.service.check([
-			() => this.kafka.check(),
-			() => this.redis.check(),
-			() => this.memory.checkHeap(),
-			() => this.memory.checkRSS(),
-		]);
+		return this.service.check();
 	}
 }

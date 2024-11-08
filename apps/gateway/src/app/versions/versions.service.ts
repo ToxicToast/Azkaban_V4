@@ -26,10 +26,8 @@ export class VersionsService implements OnModuleInit, OnModuleDestroy {
 	}
 
 	async azkabanVersion(): Promise<unknown> {
-		const auth = await this.authClient.onVersion();
-		//
 		return {
-			auth,
+			auth: null,
 			users: null,
 			groups: null,
 			cronjobs: null,

@@ -4,33 +4,30 @@ import { KafkaAuthService } from '../services';
 
 @Module({})
 export class KafkaAzkabanModule {
-
 	static forRoot(options: {
-		brokerHost: string,
-		brokerPort: number,
-		producerOnlyMode?: boolean,
-		appId: string,
+		brokerHost: string;
+		brokerPort: number;
+		producerOnlyMode?: boolean;
+		appId: string;
+		global?: boolean;
 	}): DynamicModule {
+		const { brokerHost, brokerPort, appId, producerOnlyMode, global } =
+			options;
+
 		return {
 			module: KafkaAzkabanModule,
 			imports: [
 				KafkaModule.register({
 					name: 'AZKABAN_BROKER',
-					brokerHost: options.brokerHost,
-					brokerPort: options.brokerPort,
-					appId: options.appId,
-					producerOnlyMode: options.producerOnlyMode ?? false,
+					brokerHost: brokerHost,
+					brokerPort: brokerPort,
+					appId: appId,
+					producerOnlyMode: producerOnlyMode ?? false,
 				}),
 			],
-			providers: [
-				KafkaAuthService,
-			],
-			exports: [
-				KafkaModule,
-				KafkaAuthService,
-			],
-			global: true
-		}
+			providers: [KafkaAuthService],
+			exports: [KafkaModule, KafkaAuthService],
+			global: global ?? false,
+		};
 	}
-
 }
