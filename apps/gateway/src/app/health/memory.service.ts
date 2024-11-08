@@ -3,7 +3,6 @@ import { MemoryHealthIndicator } from '@nestjs/terminus';
 
 @Injectable()
 export class MemoryService {
-
 	constructor(
 		@Inject('MEMORY_HEAP_TRESHOLD') private readonly heapTreshold: number,
 		@Inject('MEMORY_RSS_TRESHOLD') private readonly rssTreshold: number,
@@ -11,11 +10,10 @@ export class MemoryService {
 	) {}
 
 	checkHeap() {
-		return this.memory.checkHeap('memory_heap', this.heapTreshold)
+		return this.memory.checkHeap('memory_heap', this.heapTreshold);
 	}
 
 	checkRSS() {
-		return this.memory.checkRSS('memory_rss', this.rssTreshold)
+		return this.memory.checkRSS('memory_rss', this.rssTreshold);
 	}
-
 }

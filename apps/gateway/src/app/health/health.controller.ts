@@ -7,14 +7,12 @@ import { MemoryService } from './memory.service';
 
 @Controller(HealthLinks.CONTROLLER)
 export class HealthController {
-
 	constructor(
 		private readonly service: HealthCheckService,
 		private readonly kafka: KafkaService,
 		private readonly redis: RedisService,
 		private readonly memory: MemoryService,
-		) {
-	}
+	) {}
 
 	@Get()
 	@HealthCheck()
@@ -26,5 +24,4 @@ export class HealthController {
 			() => this.memory.checkRSS(),
 		]);
 	}
-
 }

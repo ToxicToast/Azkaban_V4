@@ -3,10 +3,7 @@ import { AuthDAO, KafkaAuthService } from '@azkaban/gateway-infrastructure';
 
 @Injectable()
 export class AuthService implements OnModuleInit, OnModuleDestroy {
-
-	constructor(
-		private readonly client: KafkaAuthService,
-	) { }
+	constructor(private readonly client: KafkaAuthService) {}
 
 	async onModuleInit(): Promise<void> {
 		await this.client.onModuleInit();
@@ -16,7 +13,11 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
 		await this.client.onModuleDestroy();
 	}
 
-	async register(email: string, username: string, password: string): Promise<AuthDAO> {
+	async register(
+		email: string,
+		username: string,
+		password: string,
+	): Promise<AuthDAO> {
 		return await this.client.onRegister({ email, username, password });
 	}
 
@@ -31,5 +32,4 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
 	async version(): Promise<unknown> {
 		return await this.client.onVersion();
 	}
-
 }

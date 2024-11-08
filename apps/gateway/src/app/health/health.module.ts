@@ -10,11 +10,9 @@ import { MemoryService } from './memory.service';
 	imports: [
 		TerminusModule.forRoot({
 			errorLogStyle: 'pretty',
-		})
+		}),
 	],
-	controllers: [
-		HealthController
-	],
+	controllers: [HealthController],
 	providers: [
 		{
 			provide: 'KAFKA_HOST',

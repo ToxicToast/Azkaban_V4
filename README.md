@@ -1,77 +1,113 @@
-# AzkabanV4Tmp
+<div align="center">
+<img src="https://github.com/ToxicToast/Azkaban_V4/raw/main/assets/text_logo.png" alt="Toaster"/>
+</div>
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+<div align="center">
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+[![Node Version](https://img.shields.io/static/v1?label=Node&message=21.2.0&color=purple&style=for-the-badge)](https://nodejs.org)
+[![npm Version](https://img.shields.io/static/v1?label=npm&message=10.9.0&color=purple&style=for-the-badge)](https://nodejs.org)
+[![Typescript Version](https://img.shields.io/static/v1?label=Typescript&message=5.5.2&color=purple&style=for-the-badge)](https://typescriptlang.org)
+[![NX Version](https://img.shields.io/static/v1?label=NX&message=20.0.10&color=purple&style=for-the-badge)](https://nx.dev)
+![GitHub package.json dynamic](https://img.shields.io/github/package-json/version/ToxicToast/Azkaban_V4?style=for-the-badge&label=VERSION&color=purple)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/ToxicToast/Azkaban_V4?style=for-the-badge&label=COMMITS&color=purple)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/ToxicToast/Azkaban_V4?style=for-the-badge&label=LAST%20COMMIT&color=purple)
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fazkaban-base-domain?label=Azkaban%20Domain%20Helper&style=for-the-badge&color=purple)
+![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fazkaban-base-helpers?label=Azkaban%20Helper&style=for-the-badge&color=purple)
+![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fazkaban-base-types?label=Azkaban%20Types%20Helper&style=for-the-badge&color=purple)
+![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fazkaban-broker-kafka?label=Azkaban%20RabbitMQ%20Module&style=for-the-badge&color=purple)
+</div>
 
-## Finish your remote caching setup
+> **Warning:**
+> This project is a Work in Progress and is not yet ready for real world usage
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/NnvGDeRKaK)
+## Introduction
 
+Azkaban is a complete Rewrite of my Microservices at Home.
 
-## Run tasks
+## Planned Services
 
-To run tasks with Nx use:
-
-```sh
-npx nx <target> <project-name>
-```
-
-For example:
-
-```sh
-npx nx build myproject
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
-```
-
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
-
-```sh
-# Genenerate an app
-npx nx g @nx/react:app demo
-
-# Generate a library
-npx nx g @nx/react:lib some-lib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **Azkaban Services**
+  - Authentication Service
+  - User Service
+  - Group Service
+  - Cronjob Service
+  - SSE Service
+  - Webhook Service
+  - API Alerts Service
+  - Logging Service
 
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **FoodFolio Services**
+    - Category
+    - Company
+    - Location
+    - Item
+    - Item Detail
+    - Size
+    - Type
+    - Item Detail
+    - Item Variant
+    - Warehouse
+    - Shoppinglist
+    - Recipelist
+    - Receipt
+      - Rewe
+      - Aldi
+    - Deals
+      - Rewe
 
-## Install Nx Console
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+- **Twitch Services**
+  - Bot Service
+  - Viewer Service
+  - Messages Service
+  - Channel Service
+  - Streams Service
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-## Useful links
+- **Warcraft Services**
+  - Api Service
+  - Character Service
+  - Raider IO Service
 
-Learn more:
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **Co-Working Services**
+  - Task Service
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+
+## In Development
+-   API Gateway
+
+## Deployed Services
+
+
+
+## Infrastructure
+
+- Docker (Containerization)
+- Kubernetes (Orchestration)
+- Traefik (Reverse Proxy)
+- Kafka (Message Broker)
+- MariaDB (Database)
+- NestJS (Backend Framework)
+- Redis (Cache)
+- ReactJS (UI)
+- Redux-Toolkit (State Management)
+
+## Gateway
+
+> **Info:**
+> The Gateway is the entry point for all requests to the services. It is responsible for routing requests to the correct service and publishes the correct Topic to the Message Broker.
+
+## Alerting
+
+> **Info:**
+> Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific user logged in. (Event Driven Architecture)
+
+-   [API Alerts](https://apialerts.com/)
+
+## SSE
+
+> **Info:**
+> To have some sort of Realtime Communication between the Services, the SSE Service is used to publish Events to the UI. Since i don't want to use Websockets (and I don't need some sort of bidirectional communication), I've decided to use Server Sent Events.

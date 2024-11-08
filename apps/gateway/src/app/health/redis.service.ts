@@ -4,7 +4,6 @@ import { Transport } from '@nestjs/microservices';
 
 @Injectable()
 export class RedisService {
-
 	constructor(
 		@Inject('REDIS_HOST') private readonly host: string,
 		@Inject('REDIS_PORT') private readonly port: number,
@@ -22,5 +21,4 @@ export class RedisService {
 			},
 		});
 	}
-
 }

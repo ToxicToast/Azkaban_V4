@@ -5,7 +5,6 @@ import { Partitioners } from 'kafkajs';
 
 @Injectable()
 export class KafkaService {
-
 	constructor(
 		@Inject('KAFKA_HOST') private readonly host: string,
 		@Inject('KAFKA_PORT') private readonly port: number,
@@ -21,9 +20,8 @@ export class KafkaService {
 				},
 				producer: {
 					createPartitioner: Partitioners.LegacyPartitioner,
-				}
+				},
 			},
 		});
 	}
-
 }

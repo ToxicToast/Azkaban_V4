@@ -3,7 +3,7 @@ import { KafkaModule } from './kafka.module';
 import { KafkaAuthService } from '../services';
 
 @Module({})
-export class KafkaAuthModule {
+export class KafkaAzkabanModule {
 
 	static forRoot(options: {
 		brokerHost: string,
@@ -12,10 +12,10 @@ export class KafkaAuthModule {
 		appId: string,
 	}): DynamicModule {
 		return {
-			module: KafkaAuthModule,
+			module: KafkaAzkabanModule,
 			imports: [
 				KafkaModule.register({
-					name: 'AZKABAN_AUTH',
+					name: 'AZKABAN_BROKER',
 					brokerHost: options.brokerHost,
 					brokerPort: options.brokerPort,
 					appId: options.appId,
@@ -29,6 +29,7 @@ export class KafkaAuthModule {
 				KafkaModule,
 				KafkaAuthService,
 			],
+			global: true
 		}
 	}
 

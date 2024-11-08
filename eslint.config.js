@@ -17,39 +17,39 @@ module.exports = [
 					allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
 					depConstraints: [
 						{
-							"sourceTag": "scope:shared",
-							"onlyDependOnLibsWithTags": ["scope:shared"]
+							sourceTag: 'scope:shared',
+							onlyDependOnLibsWithTags: ['scope:shared'],
 						},
 						{
-							"sourceTag": "scope:application",
-							"onlyDependOnLibsWithTags": [
-								"scope:application",
-								"scope:infrastructure",
-								"scope:shared"
-							]
+							sourceTag: 'scope:application',
+							onlyDependOnLibsWithTags: [
+								'scope:application',
+								'scope:infrastructure',
+								'scope:shared',
+							],
 						},
 						{
-							"sourceTag": "scope:domain",
-							"onlyDependOnLibsWithTags": [
-								"scope:domain",
-								"scope:shared"
-							]
+							sourceTag: 'scope:domain',
+							onlyDependOnLibsWithTags: [
+								'scope:domain',
+								'scope:shared',
+							],
 						},
 						{
-							"sourceTag": "scope:infrastructure",
-							"onlyDependOnLibsWithTags": [
-								"scope:infrastructure",
-								"scope:domain",
-								"scope:shared"
-							]
+							sourceTag: 'scope:infrastructure',
+							onlyDependOnLibsWithTags: [
+								'scope:infrastructure',
+								'scope:domain',
+								'scope:shared',
+							],
 						},
 						{
-							"sourceTag": "scope:ui",
-							"onlyDependOnLibsWithTags": [
-								"scope:ui",
-								"scope:shared"
-							]
-						}
+							sourceTag: 'scope:ui',
+							onlyDependOnLibsWithTags: [
+								'scope:ui',
+								'scope:shared',
+							],
+						},
 					],
 				},
 			],

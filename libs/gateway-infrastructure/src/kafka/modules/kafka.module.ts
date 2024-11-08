@@ -1,16 +1,8 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule } from '@nestjs/microservices';
 import { clientProvider } from '@toxictoast/azkaban-broker-kafka';
 
-@Module({
-	imports: [
-		ConfigModule.forRoot(),
-	],
-	exports: [
-		ConfigModule
-	],
-})
+@Module({})
 export class KafkaModule {
 
 	static register(options: {
@@ -32,7 +24,6 @@ export class KafkaModule {
 		return {
 			module: KafkaModule,
 			imports: [
-				ConfigModule.forRoot(),
 				ClientsModule.register([
 					{
 						name,
@@ -40,13 +31,10 @@ export class KafkaModule {
 					}
 				]),
 			],
-			providers: [
-				ConfigService
-			],
 			exports: [
-				ConfigModule,
 				ClientsModule,
-			]
+			],
+			global: true
 		}
 	}
 

@@ -47,6 +47,7 @@
 		"@nx/nest": "^20.0.10",
 		"@toxictoast/azkaban-base-helpers": "^0.0.21",
 		"@toxictoast/azkaban-broker-kafka": "^0.0.9",
+		"@willsoto/nestjs-prometheus": "^6.0.1",
 		"axios": "^1.6.0",
 		"ioredis": "^5.4.1",
 		"kafkajs": "^2.2.4",

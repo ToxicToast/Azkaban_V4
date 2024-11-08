@@ -10,7 +10,7 @@ export class KafkaAuthService implements OnModuleInit, OnModuleDestroy {
 	private readonly logger: Logger = new Logger(KafkaAuthService.name);
 
 	constructor(
-		@Inject('AZKABAN_AUTH') private readonly client: ClientKafka,
+		@Inject('AZKABAN_BROKER') private readonly client: ClientKafka,
 	) {
 	}
 
@@ -36,8 +36,20 @@ export class KafkaAuthService implements OnModuleInit, OnModuleDestroy {
 		});
 	}
 
+	async loginFailed(data: unknown): Promise<void> {
+		await this.client.emit(AuthEvents.LOGIN_FAILED, data).toPromise().catch((error) => {
+			this.logger.error(error);
+		});
+	}
+
 	async registerSuccessful(data: unknown): Promise<void> {
 		await this.client.emit(AuthEvents.REGISTER_SUCCESSFUL, data).toPromise().catch((error) => {
+			this.logger.error(error);
+		});
+	}
+
+	async registerFailed(data: unknown): Promise<void> {
+		await this.client.emit(AuthEvents.REGISTER_FAILED, data).toPromise().catch((error) => {
 			this.logger.error(error);
 		});
 	}
@@ -48,12 +60,22 @@ export class KafkaAuthService implements OnModuleInit, OnModuleDestroy {
 		});
 	}
 
+	async forgotPasswordFailed(data: unknown): Promise<void> {
+		await this.client.emit(AuthEvents.FORGOT_PASSWORD_FAILED, data).toPromise().catch((error) => {
+			this.logger.error(error);
+		});
+	}
+
 	async onRegister(data: RegisterDTO): Promise<AuthDAO> {
 		return await this.client.send(AuthTopics.REGISTER, data).toPromise().catch((error) => {
 			this.logger.error(error);
 		}).then((response) => {
 			this.registerSuccessful(response);
 			return response;
+		}).catch((error) => {
+			this.registerFailed(data);
+			this.logger.error(error);
+			return error;
 		});
 	}
 
@@ -63,6 +85,10 @@ export class KafkaAuthService implements OnModuleInit, OnModuleDestroy {
 		}).then((response) => {
 			this.loginSuccessful(response);
 			return response;
+		}).catch((error) => {
+			this.loginFailed(data);
+			this.logger.error(error);
+			return error;
 		});
 	}
 
@@ -72,6 +98,10 @@ export class KafkaAuthService implements OnModuleInit, OnModuleDestroy {
 		}).then((response) => {
 			this.forgotPasswordSuccessful(response);
 			return response;
+		}).catch((error) => {
+			this.forgotPasswordFailed(data);
+			this.logger.error(error);
+			return error;
 		});
 	}
 
