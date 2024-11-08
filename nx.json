@@ -3,26 +3,44 @@
 	"defaultBase": "main",
 	"namedInputs": {
 		"default": ["{projectRoot}/**/*", "sharedGlobals"],
-		"production": ["default"],
-		"sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+		"production": [
+			"default",
+			"!{projectRoot}/.eslintrc.json",
+			"!{projectRoot}/eslint.config.js",
+			"!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+			"!{projectRoot}/tsconfig.spec.json",
+			"!{projectRoot}/jest.config.[jt]s",
+			"!{projectRoot}/src/test-setup.[jt]s",
+			"!{projectRoot}/test-setup.[jt]s"
+		],
+		"sharedGlobals": []
 	},
 	"workspaceLayout": {
 		"appsDir": "apps",
 		"libsDir": "libs"
 	},
-	"nxCloudId": "672ce0709eb3702453dd7e7d",
+	"nxCloudId": "672cec5ff66c74057ce60a3a",
 	"plugins": [
 		{
-			"plugin": "@nx/js/typescript",
+			"plugin": "@nx/webpack/plugin",
 			"options": {
-				"typecheck": {
-					"targetName": "typecheck"
-				},
-				"build": {
-					"targetName": "build",
-					"configName": "tsconfig.lib.json"
-				}
+				"buildTargetName": "build",
+				"serveTargetName": "serve",
+				"previewTargetName": "preview"
 			}
+		},
+		{
+			"plugin": "@nx/eslint/plugin",
+			"options": {
+				"targetName": "lint"
+			}
+		},
+		{
+			"plugin": "@nx/jest/plugin",
+			"options": {
+				"targetName": "test"
+			},
+			"exclude": []
 		}
 	]
 }
