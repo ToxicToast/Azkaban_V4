@@ -5,6 +5,10 @@ import { MetricsModule } from './metrics/metrics.module';
 import { VersionsModule } from './versions/versions.module';
 import { AzkabanModule } from './azkaban/azkaban.module';
 import { KafkaAzkabanModule } from '@azkaban/gateway-infrastructure';
+import { FoodfolioModule } from './foodfolio/foodfolio.module';
+import { TwitchModule } from './twitch/twitch.module';
+import { WarcraftModule } from './warcraft/warcraft.module';
+import { CoworkingModule } from './coworking/coworking.module';
 
 @Module({
 	imports: [
@@ -22,6 +26,10 @@ import { KafkaAzkabanModule } from '@azkaban/gateway-infrastructure';
 		VersionsModule,
 		//
 		AzkabanModule,
+		FoodfolioModule,
+		TwitchModule,
+		WarcraftModule,
+		CoworkingModule,
 	],
 })
 export class AppModule {}
