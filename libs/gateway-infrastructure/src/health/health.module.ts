@@ -7,10 +7,10 @@ import { MemoryService } from './memory.service';
 import { HealthService } from './health.service';
 
 @Module({})
-export class HealthModule {
+export class AzkabanHealthModule {
 	static forRoot(global?: boolean): DynamicModule {
 		return {
-			module: HealthModule,
+			module: AzkabanHealthModule,
 			imports: [
 				ConfigModule,
 				TerminusModule.forRoot({

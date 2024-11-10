@@ -1,6 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { KafkaModule } from './kafka.module';
-import { KafkaAuthService } from '../services';
+import { KafkaAuthService, KafkaUserService } from '../services';
+import { CrudService } from '../services/crud.service';
 
 @Module({})
 export class KafkaAzkabanModule {
@@ -25,8 +26,8 @@ export class KafkaAzkabanModule {
 					producerOnlyMode: producerOnlyMode ?? false,
 				}),
 			],
-			providers: [KafkaAuthService],
-			exports: [KafkaModule, KafkaAuthService],
+			providers: [CrudService, KafkaAuthService, KafkaUserService],
+			exports: [KafkaModule, KafkaAuthService, KafkaUserService],
 			global: global ?? false,
 		};
 	}

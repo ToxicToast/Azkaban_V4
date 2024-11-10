@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { HealthController } from './health.controller';
-import { HealthModule as BaseModule } from '@azkaban/gateway-infrastructure';
+import { AzkabanHealthModule } from '@azkaban/gateway-infrastructure';
 
 @Module({
-	imports: [BaseModule.forRoot(true)],
+	imports: [AzkabanHealthModule.forRoot(true)],
 	controllers: [HealthController],
 })
 export class HealthModule {}
