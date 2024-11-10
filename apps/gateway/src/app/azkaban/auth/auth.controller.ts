@@ -1,12 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthLinks } from '@azkaban/gateway-infrastructure';
 
-@Controller(AuthLinks.CONTROLLER)
+@Controller('auth')
 export class AuthController {
 	constructor(private readonly service: AuthService) {}
 
-	@Post(AuthLinks.POST_REGISTER)
+	@Post('register')
 	async register(
 		@Body('email') email: string,
 		@Body('username') username: string,
@@ -15,7 +14,7 @@ export class AuthController {
 		return await this.service.register(email, username, password);
 	}
 
-	@Post(AuthLinks.POST_LOGIN)
+	@Post('login')
 	async login(
 		@Body('username') username: string,
 		@Body('password') password: string,
@@ -23,8 +22,21 @@ export class AuthController {
 		return await this.service.login(username, password);
 	}
 
-	@Post(AuthLinks.POST_FORGOT_PASSWORD)
+	@Post('forgot-password')
 	async forgotPassword(@Body('email') email: string) {
 		return await this.service.forgotPassword(email);
+	}
+
+	@Post('activate')
+	async activate(@Body('email') email: string, @Body('token') token: string) {
+		return await this.service.activate(email, token);
+	}
+
+	@Post('deactivate')
+	async deactivate(
+		@Body('email') email: string,
+		@Body('token') token: string,
+	) {
+		return await this.service.deactivate(email, token);
 	}
 }

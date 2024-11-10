@@ -29,6 +29,14 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
 		return await this.client.onForgotPassword({ email });
 	}
 
+	async activate(email: string, token: string): Promise<AuthDAO> {
+		return await this.client.onActivate({ email, token });
+	}
+
+	async deactivate(email: string, token: string): Promise<AuthDAO> {
+		return await this.client.onDeactivate({ email, token });
+	}
+
 	async version(): Promise<unknown> {
 		return await this.client.onVersion();
 	}
