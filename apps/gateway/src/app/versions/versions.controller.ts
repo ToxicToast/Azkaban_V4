@@ -1,8 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { VersionLinks } from '@azkaban/gateway-infrastructure';
 import { VersionsService } from './versions.service';
 
-@Controller(VersionLinks.CONTROLLER)
+@Controller('versions')
 export class VersionsController {
 	constructor(private readonly service: VersionsService) {}
 
