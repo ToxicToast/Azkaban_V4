@@ -4,6 +4,10 @@ on:
     push:
         branches: [feature/**/*, feature/*]
 
+env:
+  NODE_VERSION: 21
+  MAX_PARALLEL: 3
+
 jobs:
     prepare:
         runs-on: ubuntu-latest
@@ -64,41 +68,24 @@ jobs:
             - name: 🚀 Lint Apps
               run: npx nx affected:lint --parallel --maxParallel=3 --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }}
 
+
     testing:
-        needs: [prepare]
-        runs-on: ubuntu-latest
-        name: 'Test Apps'
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-
-            - uses: nrwl/nx-set-shas@v4
-
-            - name: 📦 Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 21
-                  cache: 'npm'
-
-            - name: 📦 Install NX-Linux
-              run: npm install @nx/nx-linux-x64-gnu@latest
-
-            - name: 📦 Install dependencies
-              run: npm install
-
-            - name: 🚀 Test Apps
-              run: npx nx affected:test --passWithNoTests --parallel --maxParallel=3 --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }}
-
-            - name: 🚀 e2e Apps
-              run: npx nx affected:e2e --passWithNoTests --parallel --maxParallel=3 --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }}
+      needs: [ prepare ]
+      name: 'Test Apps'
+      uses: ./.github/workflows/testing.yml
+      with:
+        branch: ${{ needs.prepare.outputs.branch }}
+        max-parallel: ${{env.MAX_PARALLEL}}
+        node-version: ${{env.NODE_VERSION}}
+      secrets: inherit
 
     building:
         needs: [prepare]
         uses: ./.github/workflows/build.yml
         with:
-            max-parallel: 3
             branch: ${{ needs.prepare.outputs.branch }}
+            max-parallel: ${{env.MAX_PARALLEL}}
+            node-version: ${{env.NODE_VERSION}}
         secrets: inherit
     docker:
         needs: [prepare, linting, testing, building]

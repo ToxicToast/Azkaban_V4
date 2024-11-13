@@ -1,4 +1,4 @@
-name: Build Apps
+name: Test Apps
 
 on:
   workflow_call:
@@ -18,7 +18,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: 'Build Apps'
+    name: 'Test Apps'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,5 +38,8 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: 🚀 Build Apps
-        run: npx nx affected:build --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
+      - name: 🚀 Test Apps
+        run: npx nx affected:test --passWithNoTests --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
+
+      - name: 🚀 e2e Apps
+        run: npx nx affected:e2e --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
