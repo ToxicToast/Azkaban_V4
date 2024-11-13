@@ -5,8 +5,8 @@ on:
         branches: [feature/**/*, feature/*]
 
 env:
-  NODE_VERSION: 21
-  MAX_PARALLEL: 3
+    NODE_VERSION: 21
+    MAX_PARALLEL: 3
 
 jobs:
     prepare:
@@ -68,16 +68,15 @@ jobs:
             - name: 🚀 Lint Apps
               run: npx nx affected:lint --parallel --maxParallel=3 --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }}
 
-
     testing:
-      needs: [ prepare ]
-      name: 'Test Apps'
-      uses: ./.github/workflows/testing.yml
-      with:
-        branch: ${{ needs.prepare.outputs.branch }}
-        max-parallel: ${{env.MAX_PARALLEL}}
-        node-version: ${{env.NODE_VERSION}}
-      secrets: inherit
+        needs: [prepare]
+        name: 'Test Apps'
+        uses: ./.github/workflows/testing.yml
+        with:
+            branch: ${{ needs.prepare.outputs.branch }}
+            max-parallel: ${{env.MAX_PARALLEL}}
+            node-version: ${{env.NODE_VERSION}}
+        secrets: inherit
 
     building:
         needs: [prepare]

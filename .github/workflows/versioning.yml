@@ -1,130 +1,130 @@
 name: Versioning
 
 on:
-  push:
-    branches: [main]
+    push:
+        branches: [main]
 
 env:
-  NODE_VERSION: 21
-  MAX_PARALLEL: 3
+    NODE_VERSION: 21
+    MAX_PARALLEL: 3
 
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    name: 'Prepare PR'
-    outputs:
-      version: ${{ steps.taggerDryRun.outputs.new_tag }}
-    steps:
-      - uses: actions/checkout@v4
+    prepare:
+        runs-on: ubuntu-latest
+        name: 'Prepare PR'
+        outputs:
+            version: ${{ steps.taggerDryRun.outputs.new_tag }}
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: 🪐 Minor version for each merge (Dry Run)
+              id: taggerDryRun
+              uses: anothrNick/github-tag-action@1.71.0
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+                  WITH_V: true
+                  DEFAULT_BUMP: minor
+                  PRE_RELEASE: true
+                  DRY_RUN: true
+
+            - name: 🪐 Output Tag
+              run: |
+                  echo "${{ steps.taggerDryRun.outputs.new_tag }}"
+
+    linting:
+        needs: [prepare]
+        runs-on: ubuntu-latest
+        name: 'Check Format and Linting'
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - uses: nrwl/nx-set-shas@v4
+
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 21
+                  cache: 'npm'
+
+            - name: 📦 Install NX-Linux
+              run: npm install @nx/nx-linux-x64-gnu@latest
+
+            - name: 📦 Install dependencies
+              run: npm install
+
+            - name: 🚀 Check Format
+              run: npx nx format:check
+
+            - name: 🚀 Lint Apps
+              run: npx nx affected:lint --parallel --maxParallel=3 --base=main~1 --head=main
+
+    testing:
+        needs: [prepare]
+        name: 'Test Apps'
+        uses: ./.github/workflows/testing.yml
         with:
-          fetch-depth: 0
+            branch: main
+            max-parallel: ${{ env.MAX_PARALLEL }}
+            node-version: ${{ env.NODE_VERSION }}
+        secrets: inherit
 
-      - name: 🪐 Minor version for each merge (Dry Run)
-        id: taggerDryRun
-        uses: anothrNick/github-tag-action@1.71.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: minor
-          PRE_RELEASE: true
-          DRY_RUN: true
-
-      - name: 🪐 Output Tag
-        run: |
-          echo "${{ steps.taggerDryRun.outputs.new_tag }}"
-
-  linting:
-    needs: [prepare]
-    runs-on: ubuntu-latest
-    name: 'Check Format and Linting'
-    steps:
-      - uses: actions/checkout@v4
+    building:
+        needs: [prepare]
+        uses: ./.github/workflows/build.yml
         with:
-          fetch-depth: 0
+            branch: main
+            max-parallel: ${{ env.MAX_PARALLEL }}
+            node-version: ${{ env.NODE_VERSION }}
+        secrets: inherit
 
-      - uses: nrwl/nx-set-shas@v4
+    docker:
+        needs: [prepare, linting, testing, building]
+        runs-on: ubuntu-latest
+        name: 'Publish Docker Image'
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 21
-          cache: 'npm'
+            - uses: nrwl/nx-set-shas@v4
 
-      - name: 📦 Install NX-Linux
-        run: npm install @nx/nx-linux-x64-gnu@latest
+            - name: 📦 Login into Docker
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: 📦 Install dependencies
-        run: npm install
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 21
+                  cache: 'npm'
 
-      - name: 🚀 Check Format
-        run: npx nx format:check
+            - name: 📦 Install NX-Linux
+              run: npm install @nx/nx-linux-x64-gnu@latest
 
-      - name: 🚀 Lint Apps
-        run: npx nx affected:lint --parallel --maxParallel=3 --base=main~1 --head=main
+            - name: 📦 Install dependencies
+              run: npm install
 
-  testing:
-    needs: [prepare]
-    name: 'Test Apps'
-    uses: ./.github/workflows/testing.yml
-    with:
-      branch: main
-      max-parallel: ${{ env.MAX_PARALLEL }}
-      node-version: ${{ env.NODE_VERSION }}
-    secrets: inherit
+            - name: 🏗 Build Docker Images
+              run: npx nx affected -t docker-build --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
-  building:
-    needs: [prepare]
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: main
-      max-parallel: ${{ env.MAX_PARALLEL }}
-      node-version: ${{ env.NODE_VERSION }}
-    secrets: inherit
+            - name: 🏗 Push Docker Images
+              run: npx nx affected -t docker-push --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
-  docker:
-    needs: [prepare, linting, testing, building]
-    runs-on: ubuntu-latest
-    name: 'Publish Docker Image'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    notify:
+        needs: [docker]
+        runs-on: ubuntu-latest
+        name: 'Notify'
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v4
-
-      - name: 📦 Login into Docker
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 21
-          cache: 'npm'
-
-      - name: 📦 Install NX-Linux
-        run: npm install @nx/nx-linux-x64-gnu@latest
-
-      - name: 📦 Install dependencies
-        run: npm install
-
-      - name: 🏗 Build Docker Images
-        run: npx nx affected -t docker-build --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
-
-      - name: 🏗 Push Docker Images
-        run: npx nx affected -t docker-push --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
-
-  notify:
-    needs: [docker]
-    runs-on: ubuntu-latest
-    name: 'Notify'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 🪐 Minor version for each merge
-        id: taggerDryRun
-        uses: anothrNick/github-tag-acti
+            - name: 🪐 Minor version for each merge
+              id: taggerDryRun
+              uses: anothrNick/github-tag-acti
