@@ -6,11 +6,9 @@ on:
       max-parallel:
         required: true
         type: string
-
       branch:
         required: true
         type: string
-
       node-version:
         required: true
         type: string
