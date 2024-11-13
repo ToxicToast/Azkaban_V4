@@ -14,6 +14,8 @@ jobs:
         name: 'Prepare PR'
         outputs:
             version: ${{ steps.taggerDryRun.outputs.new_tag }}
+            node_version: ${{ env.NODE_VERSION }}
+            max_parallel: ${{ env.MAX_PARALLEL }}
         steps:
             - uses: actions/checkout@v4
               with:
@@ -68,8 +70,8 @@ jobs:
         uses: ./.github/workflows/testing.yml
         with:
             branch: main
-            max-parallel: ${{ env.MAX_PARALLEL }}
-            node-version: ${{ env.NODE_VERSION }}
+            max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+            node-version: ${{ needs.prepare.outputs.node_version }}
         secrets: inherit
 
     building:
@@ -77,8 +79,8 @@ jobs:
         uses: ./.github/workflows/build.yml
         with:
             branch: main
-            max-parallel: ${{ env.MAX_PARALLEL }}
-            node-version: ${{ env.NODE_VERSION }}
+            max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+            node-version: ${{ needs.prepare.outputs.node_version }}
         secrets: inherit
 
     docker:

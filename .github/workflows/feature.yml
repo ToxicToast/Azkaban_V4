@@ -15,6 +15,8 @@ jobs:
         outputs:
             branch: ${{ steps.extract_branch.outputs.branch }}
             version: ${{ steps.taggerDryRun.outputs.new_tag }}
+            node_version: ${{ env.NODE_VERSION }}
+            max_parallel: ${{ env.MAX_PARALLEL }}
         steps:
             - name: Extract branch name
               shell: bash
@@ -74,8 +76,8 @@ jobs:
         uses: ./.github/workflows/testing.yml
         with:
             branch: ${{ needs.prepare.outputs.branch }}
-            max-parallel: ${{env.MAX_PARALLEL}}
-            node-version: ${{env.NODE_VERSION}}
+            max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+            node-version: ${{ needs.prepare.outputs.node_version }}
         secrets: inherit
 
     building:
@@ -83,8 +85,8 @@ jobs:
         uses: ./.github/workflows/build.yml
         with:
             branch: ${{ needs.prepare.outputs.branch }}
-            max-parallel: ${{env.MAX_PARALLEL}}
-            node-version: ${{env.NODE_VERSION}}
+            max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+            node-version: ${{ needs.prepare.outputs.node_version }}
         secrets: inherit
     docker:
         needs: [prepare, linting, testing, building]
