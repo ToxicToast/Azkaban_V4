@@ -5,8 +5,8 @@ on:
         branches: [main]
 
 env:
-    NODE_VERSION: 21
-    MAX_PARALLEL: 3
+  NODE_VERSION: 21
+  MAX_PARALLEL: 3
 
 jobs:
     prepare:
