@@ -37,36 +37,15 @@ jobs:
 
     linting:
         needs: [prepare]
-        runs-on: ubuntu-latest
-        name: 'Check Format and Linting'
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-
-            - uses: nrwl/nx-set-shas@v4
-
-            - name: 📦 Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 21
-                  cache: 'npm'
-
-            - name: 📦 Install NX-Linux
-              run: npm install @nx/nx-linux-x64-gnu@latest
-
-            - name: 📦 Install dependencies
-              run: npm install
-
-            - name: 🚀 Check Format
-              run: npx nx format:check
-
-            - name: 🚀 Lint Apps
-              run: npx nx affected:lint --parallel --maxParallel=3 --base=main~1 --head=main
+        uses: ./.github/workflows/linting.yml
+        with:
+          branch: main
+          max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+          node-version: ${{ needs.prepare.outputs.node_version }}
+        secrets: inherit
 
     testing:
         needs: [prepare]
-        name: 'Test Apps'
         uses: ./.github/workflows/testing.yml
         with:
             branch: main
