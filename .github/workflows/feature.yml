@@ -95,7 +95,6 @@ jobs:
 
     building:
         needs: [prepare]
-        name: 'Build Apps'
         uses: ./.github/workflows/extends/build.yaml
         with:
             max-parallel: 3
