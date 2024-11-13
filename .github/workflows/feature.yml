@@ -95,7 +95,7 @@ jobs:
 
     building:
         needs: [prepare]
-        uses: ./build.yaml
+        uses: ./.github/workflows/build.yaml@main
         with:
             max-parallel: 3
             branch: ${{ needs.prepare.outputs.branch }}

@@ -4,8 +4,8 @@ on:
   workflow_call:
     inputs:
       max-parallel:
-        default: 3
-        type: integer
+        required: false
+        type: string
 
       branch:
         required: true
