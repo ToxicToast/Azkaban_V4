@@ -45,9 +45,9 @@ jobs:
         needs: [prepare]
         uses: ./.github/workflows/linting.yml
         with:
-          branch: ${{ needs.prepare.outputs.branch }}
-          max-parallel: ${{ needs.prepare.outputs.max_parallel }}
-          node-version: ${{ needs.prepare.outputs.node_version }}
+            branch: ${{ needs.prepare.outputs.branch }}
+            max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+            node-version: ${{ needs.prepare.outputs.node_version }}
         secrets: inherit
 
     testing:
