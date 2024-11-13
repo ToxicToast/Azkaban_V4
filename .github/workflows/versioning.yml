@@ -117,14 +117,27 @@ jobs:
               run: npx nx affected -t docker-push --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
     notify:
-        needs: [docker]
-        runs-on: ubuntu-latest
-        name: 'Notify'
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
+      needs: [ docker ]
+      runs-on: ubuntu-latest
+      name: 'Notify'
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
 
-            - name: 🪐 Minor version for each merge
-              id: taggerDryRun
-              uses: anothrNick/github-tag-acti
+        - name: 🪐 Minor version for each merge
+          id: taggerDryRun
+          uses: anothrNick/github-tag-action@1.71.0
+          env:
+            GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+            WITH_V: true
+            DEFAULT_BUMP: minor
+            PRE_RELEASE: true
+
+        - name: API Alerts Notify
+          uses: apialerts/notify-action@v1
+          with:
+            api_key: ${{ secrets.API_ALERTS_KEY }}
+            message: '🚢 Feature - New Minor Version Released (${{ steps.taggerDryRun.outputs.new_tag }})'
+            tags: 'Azkaban,Feature'
+            link: 'https://github.com/ToxicToast/Azkaban_V4'
