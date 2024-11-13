@@ -67,8 +67,8 @@ jobs:
         uses: ./.github/workflows/testing.yml
         with:
           branch: main
-          max-parallel: ${{env.MAX_PARALLEL}}
-          node-version: ${{env.NODE_VERSION}}
+          max-parallel: ${{ env.MAX_PARALLEL }}
+          node-version: ${{ env.NODE_VERSION }}
         secrets: inherit
 
     building:
@@ -76,8 +76,8 @@ jobs:
       uses: ./.github/workflows/build.yml
       with:
         branch: main
-        max-parallel: ${{env.MAX_PARALLEL}}
-        node-version: ${{env.NODE_VERSION}}
+        max-parallel: ${{ env.MAX_PARALLEL }}
+        node-version: ${{ env.NODE_VERSION }}
       secrets: inherit
     docker:
         needs: [prepare, linting, testing, building]
