@@ -90,29 +90,11 @@ jobs:
               run: npx nx affected:e2e --parallel --maxParallel=3 --base=main~1 --head=main
     building:
         needs: [prepare]
-        runs-on: ubuntu-latest
         name: 'Build Apps'
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-
-            - uses: nrwl/nx-set-shas@v4
-
-            - name: 📦 Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 21
-                  cache: 'npm'
-
-            - name: 📦 Install NX-Linux
-              run: npm install @nx/nx-linux-x64-gnu@latest
-
-            - name: 📦 Install dependencies
-              run: npm install
-
-            - name: 🚀 Build Apps
-              run: npx nx affected:build --parallel --maxParallel=3 --base=main~1 --head=main
+        uses: ./.github/workflows/extends/build.yaml
+        with:
+          max-parallel: 3
+          branch: main
     docker:
         needs: [prepare, linting, testing, building]
         runs-on: ubuntu-latest

@@ -1,0 +1,38 @@
+name: Project Build
+
+on:
+  workflow_call:
+    inputs:
+      max-parallel:
+        default: 3
+        type: integer
+
+      branch:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: 'Build Apps'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: nrwl/nx-set-shas@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+          cache: 'npm'
+
+      - name: 📦 Install NX-Linux
+        run: npm install @nx/nx-linux-x64-gnu@latest
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🚀 Build Apps
+        run: npx nx affected:build --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
