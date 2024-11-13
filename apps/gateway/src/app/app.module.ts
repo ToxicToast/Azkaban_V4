@@ -4,7 +4,10 @@ import { HealthModule } from './health/health.module';
 import { MetricsModule } from './metrics/metrics.module';
 import { VersionsModule } from './versions/versions.module';
 import { AzkabanModule } from './azkaban/azkaban.module';
-import { KafkaAzkabanModule } from '@azkaban/gateway-infrastructure';
+import {
+	AzkabanTwoFactorModule,
+	KafkaAzkabanModule,
+} from '@azkaban/gateway-infrastructure';
 import { FoodfolioModule } from './foodfolio/foodfolio.module';
 import { TwitchModule } from './twitch/twitch.module';
 import { WarcraftModule } from './warcraft/warcraft.module';
@@ -19,6 +22,10 @@ import { CoworkingModule } from './coworking/coworking.module';
 			producerOnlyMode: false,
 			appId: 'gateway-service',
 			global: true,
+		}),
+		AzkabanTwoFactorModule.forRoot({
+			global: true,
+			appId: 'Azkaban',
 		}),
 		//
 		HealthModule,

@@ -8,6 +8,15 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { UserEvents, UserTopics } from '@toxictoast/azkaban-broker-kafka';
 import { CrudService } from './crud.service';
+import {
+	CreateUserDTO,
+	DeleteUserDTO,
+	RestoreUserDTO,
+	UpdateUserDTO,
+	UserByIdDTO,
+} from '../../dto';
+import { UserDAO } from '../../dao';
+import { Nullable } from '@toxictoast/azkaban-base-types';
 
 @Injectable()
 export class KafkaUserService implements OnModuleInit, OnModuleDestroy {
@@ -15,7 +24,7 @@ export class KafkaUserService implements OnModuleInit, OnModuleDestroy {
 
 	constructor(
 		@Inject('AZKABAN_BROKER') private readonly client: ClientKafka,
-		private readonly crudService: CrudService<unknown>,
+		private readonly crudService: CrudService<UserDAO>,
 	) {}
 
 	async onModuleInit(): Promise<void> {
@@ -38,15 +47,15 @@ export class KafkaUserService implements OnModuleInit, OnModuleDestroy {
 		});
 	}
 
-	async onUsersList(): Promise<unknown> {
+	async onUsersList(): Promise<Array<UserDAO>> {
 		return await this.crudService.onGetList(UserTopics.LIST);
 	}
 
-	async onUserById(data: unknown): Promise<unknown> {
+	async onUserById(data: UserByIdDTO): Promise<Nullable<UserDAO>> {
 		return await this.crudService.onGetById(UserTopics.ID, data);
 	}
 
-	async onUserCreate(data: unknown): Promise<unknown> {
+	async onUserCreate(data: CreateUserDTO): Promise<UserDAO> {
 		return await this.crudService.onCreate(
 			UserTopics.CREATE,
 			UserEvents.CREATE_SUCCESSFUL,
@@ -55,7 +64,7 @@ export class KafkaUserService implements OnModuleInit, OnModuleDestroy {
 		);
 	}
 
-	async onUserUpdate(data: unknown): Promise<unknown> {
+	async onUserUpdate(data: UpdateUserDTO): Promise<UserDAO> {
 		return await this.crudService.onCreate(
 			UserTopics.UPDATE,
 			UserEvents.UPDATE_SUCCESSFUL,
@@ -64,7 +73,7 @@ export class KafkaUserService implements OnModuleInit, OnModuleDestroy {
 		);
 	}
 
-	async onUserDelete(data: unknown): Promise<unknown> {
+	async onUserDelete(data: DeleteUserDTO): Promise<UserDAO> {
 		return await this.crudService.onCreate(
 			UserTopics.DELETE,
 			UserEvents.DELETE_SUCCESSFUL,
@@ -73,7 +82,7 @@ export class KafkaUserService implements OnModuleInit, OnModuleDestroy {
 		);
 	}
 
-	async onUserRestore(data: unknown): Promise<unknown> {
+	async onUserRestore(data: RestoreUserDTO): Promise<UserDAO> {
 		return await this.crudService.onCreate(
 			UserTopics.RESTORE,
 			UserEvents.RESTORE_SUCCESSFUL,
@@ -82,7 +91,7 @@ export class KafkaUserService implements OnModuleInit, OnModuleDestroy {
 		);
 	}
 
-	async onVersion(): Promise<unknown> {
+	async onVersion(): Promise<string> {
 		return await this.client
 			.send(UserTopics.VERSION, {})
 			.toPromise()

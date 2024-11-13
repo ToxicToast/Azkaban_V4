@@ -94,6 +94,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 - Redis (Cache)
 - ReactJS (UI)
 - Redux-Toolkit (State Management)
+- API Alerts (Alerting)
 
 ## Gateway
 

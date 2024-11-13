@@ -1,0 +1,26 @@
+{
+	"name": "twofactor-service",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/twofactor-service/src",
+	"projectType": "application",
+	"tags": ["scope:application"],
+	"targets": {
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"dependsOn": ["build"],
+			"options": {
+				"buildTarget": "twofactor-service:build",
+				"runBuildTargetDependencies": false
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "twofactor-service:build:development"
+				},
+				"production": {
+					"buildTarget": "twofactor-service:build:production"
+				}
+			}
+		}
+	}
+}

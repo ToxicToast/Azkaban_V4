@@ -83,7 +83,7 @@ export class KafkaAuthService implements OnModuleInit, OnModuleDestroy {
 		);
 	}
 
-	async onVersion(): Promise<unknown> {
+	async onVersion(): Promise<string> {
 		return await this.client
 			.send(AuthTopics.VERSION, {})
 			.toPromise()

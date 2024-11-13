@@ -1,6 +1,6 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { KafkaUserService } from '@azkaban/gateway-infrastructure';
-import { Optional } from '@toxictoast/azkaban-base-types';
+import { Nullable, Optional } from '@toxictoast/azkaban-base-types';
 
 @Injectable()
 export class UserService implements OnModuleInit, OnModuleDestroy {
@@ -30,8 +30,16 @@ export class UserService implements OnModuleInit, OnModuleDestroy {
 		id: string,
 		username?: Optional<string>,
 		password?: Optional<string>,
+		activated_at?: Optional<Nullable<Date>>,
+		otp_secret?: Optional<Nullable<string>>,
 	) {
-		return await this.client.onUserUpdate({ id, username, password });
+		return await this.client.onUserUpdate({
+			id,
+			username,
+			password,
+			activated_at,
+			otp_secret,
+		});
 	}
 
 	async deleteUser(id: string) {

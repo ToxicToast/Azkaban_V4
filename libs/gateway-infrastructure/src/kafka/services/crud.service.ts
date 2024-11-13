@@ -19,6 +19,7 @@ export class CrudService<ModelType> {
 			.toPromise()
 			.catch((error) => {
 				this.logger.error(error);
+				throw error;
 			});
 	}
 
@@ -31,6 +32,7 @@ export class CrudService<ModelType> {
 			.toPromise()
 			.catch((error) => {
 				this.logger.error(error);
+				throw error;
 			});
 	}
 
@@ -40,7 +42,7 @@ export class CrudService<ModelType> {
 			.toPromise()
 			.catch((error) => {
 				this.logger.error(error);
-				return error;
+				throw error;
 			});
 	}
 
@@ -53,7 +55,7 @@ export class CrudService<ModelType> {
 			.toPromise()
 			.catch((error) => {
 				this.logger.error(error);
-				return error;
+				throw error;
 			});
 	}
 
@@ -66,14 +68,16 @@ export class CrudService<ModelType> {
 		return await this.client
 			.send(topic, data)
 			.toPromise()
-			.then((response) => {
-				this.onSuccessEvent(successTopic, response);
+			.then(async (response) => {
+				Logger.debug({ successTopic, response });
+				await this.onSuccessEvent(successTopic, response);
 				return response;
 			})
-			.catch((error) => {
-				this.onFailedEvent(failedTopic, data);
+			.catch(async (error) => {
+				Logger.debug({ failedTopic, data });
+				await this.onFailedEvent(failedTopic, data);
 				this.logger.error(error);
-				return error;
+				throw error;
 			});
 	}
 }
