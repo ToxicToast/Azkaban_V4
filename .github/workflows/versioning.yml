@@ -89,12 +89,12 @@ jobs:
             - name: 🚀 e2e Apps
               run: npx nx affected:e2e --parallel --maxParallel=3 --base=main~1 --head=main
     building:
-        needs: [prepare]
-        name: 'Build Apps'
-        uses: ./.github/workflows/extends/build.yaml
-        with:
-          max-parallel: 3
-          branch: main
+      needs: [ prepare ]
+      uses: ./.github/workflows/build.yml
+      with:
+        max-parallel: 3
+        branch: ${{ needs.prepare.outputs.branch }}
+      secrets: inherit
     docker:
         needs: [prepare, linting, testing, building]
         runs-on: ubuntu-latest
