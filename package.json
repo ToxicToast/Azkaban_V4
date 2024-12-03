@@ -2,7 +2,14 @@
 	"name": "@azkaban/source",
 	"version": "0.0.0",
 	"license": "MIT",
-	"scripts": {},
+	"scripts": {
+		"nx": "nx",
+		"outdated": "npm outdated",
+		"update:all": "npx npm-check-updates -u --filter @types/",
+		"upgrade:workspace": "nx migrate latest",
+		"upgrade:migrations": "nx migrate --run-migrations",
+		"report": "nx report"
+	},
 	"private": true,
 	"devDependencies": {
 		"@eslint/js": "^9.8.0",
@@ -46,9 +53,6 @@
 		"@nestjs/platform-express": "^10.0.2",
 		"@nestjs/terminus": "^10.2.3",
 		"@nx/nest": "^20.0.10",
-		"@toxictoast/azkaban-base-helpers": "^0.0.21",
-		"@toxictoast/azkaban-base-types": "^0.0.1",
-		"@toxictoast/azkaban-broker-kafka": "^0.0.11",
 		"@willsoto/nestjs-prometheus": "^6.0.1",
 		"axios": "^1.6.0",
 		"ioredis": "^5.4.1",

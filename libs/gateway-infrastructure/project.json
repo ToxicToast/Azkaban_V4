@@ -1,9 +1,0 @@
-{
-	"name": "gateway-infrastructure",
-	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "libs/gateway-infrastructure/src",
-	"projectType": "library",
-	"tags": ["scope:infrastructure"],
-	"// targets": "to see all targets run: nx show project gateway-infrastructure --web",
-	"targets": {}
-}

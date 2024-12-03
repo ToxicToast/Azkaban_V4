@@ -14,11 +14,7 @@
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
-		"paths": {
-			"@azkaban/gateway-infrastructure": [
-				"libs/gateway-infrastructure/src/index.ts"
-			]
-		}
+		"paths": {}
 	},
 	"exclude": ["node_modules", "tmp"]
 }
