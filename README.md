@@ -6,16 +6,15 @@
 
 [![Node Version](https://img.shields.io/static/v1?label=Node&message=21.2.0&color=purple&style=for-the-badge)](https://nodejs.org)
 [![npm Version](https://img.shields.io/static/v1?label=npm&message=10.9.0&color=purple&style=for-the-badge)](https://nodejs.org)
-[![Typescript Version](https://img.shields.io/static/v1?label=Typescript&message=5.5.2&color=purple&style=for-the-badge)](https://typescriptlang.org)
-[![NX Version](https://img.shields.io/static/v1?label=NX&message=20.0.10&color=purple&style=for-the-badge)](https://nx.dev)
+[![Typescript Version](https://img.shields.io/static/v1?label=Typescript&message=5.7.2&color=purple&style=for-the-badge)](https://typescriptlang.org)
+[![NX Version](https://img.shields.io/static/v1?label=NX&message=20.1.4&color=purple&style=for-the-badge)](https://nx.dev)
 ![GitHub package.json dynamic](https://img.shields.io/github/package-json/version/ToxicToast/Azkaban_V4?style=for-the-badge&label=VERSION&color=purple)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/ToxicToast/Azkaban_V4?style=for-the-badge&label=COMMITS&color=purple)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/ToxicToast/Azkaban_V4?style=for-the-badge&label=LAST%20COMMIT&color=purple)
 
-![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fazkaban-base-domain?label=Azkaban%20Domain%20Helper&style=for-the-badge&color=purple)
-![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fazkaban-base-helpers?label=Azkaban%20Helper&style=for-the-badge&color=purple)
-![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fazkaban-base-types?label=Azkaban%20Types%20Helper&style=for-the-badge&color=purple)
-![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fazkaban-broker-kafka?label=Azkaban%20RabbitMQ%20Module&style=for-the-badge&color=purple)
+![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-errors?label=Base%20Errors&style=for-the-badge&color=purple)
+![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-helpers?label=Base%20Helpers&style=for-the-badge&color=purple)
+![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-types?label=Base%20Types&style=for-the-badge&color=purple)
 </div>
 
 > **Warning:**
