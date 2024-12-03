@@ -10,7 +10,7 @@ env:
 
 jobs:
     prepare:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         name: 'Prepare Feature'
         outputs:
             branch: ${{ steps.extract_branch.outputs.branch }}
@@ -70,7 +70,7 @@ jobs:
         secrets: inherit
     docker:
         needs: [prepare, linting, testing, building]
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         name: 'Publish Docker Image'
         steps:
             - uses: actions/checkout@v4
@@ -105,7 +105,7 @@ jobs:
 
     notify:
         needs: [docker]
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         name: 'Notify'
         steps:
             - uses: actions/checkout@v4
