@@ -17,15 +17,10 @@ module.exports = [
 					allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
 					depConstraints: [
 						{
-							sourceTag: 'scope:shared',
-							onlyDependOnLibsWithTags: ['scope:shared'],
-						},
-						{
 							sourceTag: 'scope:application',
 							onlyDependOnLibsWithTags: [
 								'scope:application',
 								'scope:infrastructure',
-								'scope:shared',
 							],
 						},
 						{
