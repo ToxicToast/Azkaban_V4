@@ -15,6 +15,7 @@
 ![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-errors?label=Base%20Errors&style=for-the-badge&color=purple)
 ![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-helpers?label=Base%20Helpers&style=for-the-badge&color=purple)
 ![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-types?label=Base%20Types&style=for-the-badge&color=purple)
+
 </div>
 
 > **Warning:**
@@ -27,17 +28,18 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 ## Planned Services
 
 - **Azkaban Services**
-  - Authentication Service
-  - User Service
-  - Group Service
-  - Cronjob Service
-  - SSE Service
-  - Webhook Service
-  - API Alerts Service
-  - Logging Service
 
+    - Authentication Service
+    - User Service
+    - Group Service
+    - Cronjob Service
+    - SSE Service
+    - Webhook Service
+    - API Alerts Service
+    - Logging Service
 
 - **FoodFolio Services**
+
     - Category
     - Company
     - Location
@@ -51,36 +53,33 @@ Azkaban is a complete Rewrite of my Microservices at Home.
     - Shoppinglist
     - Recipelist
     - Receipt
-      - Rewe
-      - Aldi
+        - Rewe
+        - Aldi
     - Deals
-      - Rewe
-
+        - Rewe
 
 - **Twitch Services**
-  - Bot Service
-  - Viewer Service
-  - Messages Service
-  - Channel Service
-  - Streams Service
 
+    - Bot Service
+    - Viewer Service
+    - Messages Service
+    - Channel Service
+    - Streams Service
 
 - **Warcraft Services**
-  - Api Service
-  - Character Service
-  - Raider IO Service
 
+    - Api Service
+    - Character Service
+    - Raider IO Service
 
 - **Co-Working Services**
-  - Task Service
-
+    - Task Service
 
 ## In Development
--   API Gateway
+
+- API Gateway
 
 ## Deployed Services
-
-
 
 ## Infrastructure
 
@@ -105,7 +104,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 > **Info:**
 > Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific user logged in. (Event Driven Architecture)
 
--   [API Alerts](https://apialerts.com/)
+- [API Alerts](https://apialerts.com/)
 
 ## SSE
 
