@@ -52,9 +52,12 @@
 		"@nestjs/terminus": "^10.2.3",
 		"@nx/nest": "20.1.4",
 		"@toxictoast/sleepyazkaban-base-errors": "^0.0.1",
-		"@toxictoast/sleepyazkaban-base-helpers": "^0.0.1",
+		"@toxictoast/sleepyazkaban-base-helpers": "^0.0.7",
 		"@toxictoast/sleepyazkaban-base-types": "^0.0.1",
+		"@toxictoast/sleepyazkaban-kafka": "^0.0.4",
 		"axios": "^1.7.8",
+		"class-transformer": "^0.5.1",
+		"class-validator": "^0.14.1",
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.1"
 	}
