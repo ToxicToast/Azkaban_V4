@@ -24,15 +24,15 @@ async function startApp(app: INestApplication): Promise<void> {
 
 async function bootstrap() {
 	const globalPrefix = process.env.API_PREFIX ?? 'api';
-	const brokerHost = process.env.BROKER_HOST;
-	const brokerPort = parseInt(process.env.BROKER_PORT);
+	const brokerHost = process.env.BROKER_HOST ?? 'localhost';
+	const brokerPort = parseInt(process.env.BROKER_PORT) ?? 9092;
 	//
 	const app = await createApp();
 	await connectKafka(app, brokerHost, brokerPort);
 	configureApp(app, globalPrefix);
 	configureFilters(app);
 	configureInterceptors(app);
-	configureCors(app, ['http://localhost:3000']);
+	configureCors(app, '*');
 	configureValidation(app, AppModule as unknown as DynamicModule);
 	await startApp(app);
 }
