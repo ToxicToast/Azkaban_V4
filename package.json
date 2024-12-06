@@ -53,7 +53,7 @@
 		"@nx/nest": "20.1.4",
 		"@toxictoast/sleepyazkaban-base-errors": "^0.0.1",
 		"@toxictoast/sleepyazkaban-base-helpers": "^0.0.1",
-		"@toxictoast/sleepyazkaban-base-types": "^0.0.1",
+		"@toxictoast/sleepyazkaban-base-types": "^0.0.2",
 		"axios": "^1.7.8",
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.1"
