@@ -10,7 +10,12 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 	imports: [
 		ConfigModule.forRoot({ isGlobal: true }),
 		KafkaModule.register({
+			appId: 'auth-service',
+			brokerHost: 'localhost',
+			brokerPort: 9092,
 			global: true,
+			topics: [],
+			producerOnlyMode: false,
 		}),
 		EventEmitterModule.forRoot({
 			global: true,

@@ -14,7 +14,13 @@
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
-		"paths": {}
+		"paths": {
+			"@azkaban/auth-application": ["libs/auth-application/src/index.ts"],
+			"@azkaban/auth-domain": ["libs/auth-domain/src/index.ts"],
+			"@azkaban/auth-infrastructure": [
+				"libs/auth-infrastructure/src/index.ts"
+			]
+		}
 	},
 	"exclude": ["node_modules", "tmp"]
 }
