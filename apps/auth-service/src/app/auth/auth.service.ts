@@ -8,7 +8,7 @@ export class AuthService {
 	private readonly eventEmitter: EventEmitterHelper;
 
 	constructor(private readonly emitter: EventEmitter2) {
-		this.eventEmitter = new EventEmitterHelper(this.emitter);
+		this.eventEmitter = new EventEmitterHelper();
 	}
 
 	onRegisterSuccessful(id: string, username: string): void {

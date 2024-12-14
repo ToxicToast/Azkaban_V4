@@ -20,16 +20,8 @@ module.exports = [
 							sourceTag: 'scope:presentation',
 							onlyDependOnLibsWithTags: [
 								'scope:presentation',
-								'scope:application',
-								'scope:domain',
-							],
-						},
-						{
-							sourceTag: 'scope:application',
-							onlyDependOnLibsWithTags: [
-								'scope:application',
-								'scope:domain',
 								'scope:infrastructure',
+								'scope:domain',
 							],
 						},
 						{
