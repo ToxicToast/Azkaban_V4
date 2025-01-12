@@ -3,10 +3,12 @@ import { HealthConfig } from './health.config';
 import { BrokerConfig } from './broker.config';
 import { RedisConfig } from './redis.config';
 import { TerminusModule } from '@nestjs/terminus';
+import { HealthController } from './health.controller';
 
 @Module({})
 export class HealthModule {
 	static forRoot(
+		global: boolean,
 		config: HealthConfig,
 		broker?: BrokerConfig,
 		redis?: RedisConfig,
@@ -18,6 +20,7 @@ export class HealthModule {
 					errorLogStyle: 'pretty',
 				}),
 			],
+			controllers: [HealthController],
 			providers: [
 				{
 					provide: 'MEMORY_HEAP_TRESHOLD',
@@ -29,26 +32,26 @@ export class HealthModule {
 				},
 				{
 					provide: 'BROKER_HOST',
-					useValue: broker?.brokerHost ?? 'localhost',
+					useValue: broker?.brokerHost ?? null,
 				},
 				{
 					provide: 'BROKER_PORT',
-					useValue: broker?.brokerPort ?? 9092,
+					useValue: broker?.brokerPort ?? null,
 				},
 				{
 					provide: 'REDIS_HOST',
-					useValue: redis?.redisHost ?? 'localhost',
+					useValue: redis?.redisHost ?? null,
 				},
 				{
 					provide: 'REDIS_PORT',
-					useValue: redis?.redisPort ?? 6379,
+					useValue: redis?.redisPort ?? null,
 				},
 				{
 					provide: 'REDIS_PASSWORD',
-					useValue: redis?.redisPassword ?? 'super_secret_password',
+					useValue: redis?.redisPassword ?? null,
 				},
 			],
-			controllers: [],
+			global,
 		};
 	}
 }
