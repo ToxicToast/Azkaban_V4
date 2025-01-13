@@ -31,9 +31,10 @@ jobs:
                   echo "${{ steps.taggerDryRun.outputs.new_tag }}"
 
             - name: API Alerts Notify
-              uses: apialerts/notify-action@v1
+              uses: apialerts/notify-action@v2
               with:
                   api_key: ${{ secrets.API_ALERTS_KEY }}
                   message: '🚢 Feature - New Version Released (${{ steps.taggerDryRun.outputs.new_tag }})'
                   tags: 'Azkaban,Release'
                   link: 'https://github.com/ToxicToast/Azkaban_V4'
+                  channel: 'cicd'
