@@ -1,22 +1,30 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { LoginDTO, RegisterDTO } from './auth.dto';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDAO, RegisterDAO } from './auth.dao';
+import { AuthRoutes } from '@azkaban/shared';
+import { LoginDAO, RegisterDAO, ForgetPasswordDAO } from './dao';
+import { LoginDTO, RegisterDTO, ForgetPasswordDTO } from './dto';
 
 @Controller({
-	path: 'auth',
+	path: AuthRoutes.CONTROLLER,
 	version: '1',
 })
 export class AuthController {
 	constructor(private readonly service: AuthService) {}
 
-	@Post('login')
+	@Post(AuthRoutes.LOGIN)
 	async login(@Body() body: LoginDTO): Promise<LoginDAO> {
 		return await this.service.login(body);
 	}
 
-	@Post('register')
+	@Post(AuthRoutes.REGISTER)
 	async register(@Body() body: RegisterDTO): Promise<RegisterDAO> {
 		return await this.service.register(body);
+	}
+
+	@Post(AuthRoutes.FORGET_PASSWORD)
+	async forgetPassword(
+		@Body() body: ForgetPasswordDTO,
+	): Promise<ForgetPasswordDAO> {
+		return await this.service.forgetPassword(body);
 	}
 }

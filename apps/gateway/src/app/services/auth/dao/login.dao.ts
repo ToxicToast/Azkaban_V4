@@ -5,10 +5,3 @@ export interface LoginDAO {
 	};
 	token: string;
 }
-
-export interface RegisterDAO {
-	user: {
-		id: string;
-		username: string;
-	};
-}

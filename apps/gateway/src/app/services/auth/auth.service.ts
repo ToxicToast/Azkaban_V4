@@ -5,9 +5,9 @@ import {
 	OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { LoginDTO, RegisterDTO } from './auth.dto';
 import { AuthTopics } from '@azkaban/shared';
-import { LoginDAO, RegisterDAO } from './auth.dao';
+import { ForgetPasswordDTO, LoginDTO, RegisterDTO } from './dto';
+import { LoginDAO, RegisterDAO, ForgetPasswordDAO } from './dao';
 
 @Injectable()
 export class AuthService implements OnModuleInit, OnModuleDestroy {
@@ -31,5 +31,11 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
 
 	async register(data: RegisterDTO): Promise<RegisterDAO> {
 		return await this.client.send(AuthTopics.REGISTER, data).toPromise();
+	}
+
+	async forgetPassword(data: ForgetPasswordDTO): Promise<ForgetPasswordDAO> {
+		return await this.client
+			.send(AuthTopics.FORGET_PASSWORD, data)
+			.toPromise();
 	}
 }

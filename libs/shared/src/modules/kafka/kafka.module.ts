@@ -5,6 +5,8 @@ import { BrokerConfig } from './broker.config';
 @Module({})
 export class KafkaModule {
 	static forRoot(global: boolean, config: BrokerConfig): DynamicModule {
+		const brokerUrl = `${config.brokerHost}:${config.brokerPort}`;
+
 		return {
 			module: KafkaModule,
 			imports: [
@@ -15,9 +17,7 @@ export class KafkaModule {
 						options: {
 							client: {
 								clientId: config.clientId,
-								brokers: [
-									`${config.brokerHost}:${config.brokerPort}`,
-								],
+								brokers: [brokerUrl],
 							},
 							consumer: {
 								groupId: config.groupId,

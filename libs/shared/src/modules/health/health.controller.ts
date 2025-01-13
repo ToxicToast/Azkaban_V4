@@ -9,8 +9,12 @@ import {
 	MicroserviceHealthIndicator,
 } from '@nestjs/terminus';
 import { Transport } from '@nestjs/microservices';
+import { HealthRoutes } from '../../routes';
 
-@Controller('health')
+@Controller({
+	path: HealthRoutes.CONTROLLER,
+	version: '1',
+})
 export class HealthController {
 	constructor(
 		@Inject('MEMORY_HEAP_TRESHOLD') private readonly heapTreshold: number,
@@ -34,35 +38,27 @@ export class HealthController {
 	}
 
 	private checkBroker(): () => Promise<HealthIndicatorResult> {
-		if (this.brokerHost !== null && this.brokerPort !== null) {
-			return () =>
-				this.microservices.pingCheck('broker', {
-					transport: Transport.KAFKA,
-					options: {
-						client: {
-							brokers: [`${this.brokerHost}:${this.brokerPort}`],
-						},
+		return () =>
+			this.microservices.pingCheck('broker', {
+				transport: Transport.KAFKA,
+				options: {
+					client: {
+						brokers: [`${this.brokerHost}:${this.brokerPort}`],
 					},
-				});
-		}
+				},
+			});
 	}
 
 	private checkRedis(): () => Promise<HealthIndicatorResult> {
-		if (
-			this.redisHost !== null &&
-			this.redisPort !== null &&
-			this.redisPassword !== null
-		) {
-			return () =>
-				this.microservices.pingCheck('redis', {
-					transport: Transport.REDIS,
-					options: {
-						host: this.redisHost,
-						port: this.redisPort,
-						password: this.redisPassword,
-					},
-				});
-		}
+		return () =>
+			this.microservices.pingCheck('redis', {
+				transport: Transport.REDIS,
+				options: {
+					host: this.redisHost,
+					port: this.redisPort,
+					password: this.redisPassword,
+				},
+			});
 	}
 
 	@Get()
@@ -72,8 +68,16 @@ export class HealthController {
 			const checkArray = new Array<HealthIndicatorFunction>();
 			checkArray.push(this.checkHeap());
 			checkArray.push(this.checkRss());
-			checkArray.push(this.checkBroker());
-			checkArray.push(this.checkRedis());
+			if (this.brokerHost !== null && this.brokerPort !== null) {
+				checkArray.push(this.checkBroker());
+			}
+			if (
+				this.redisHost !== null &&
+				this.redisPort !== null &&
+				this.redisPassword !== null
+			) {
+				checkArray.push(this.checkRedis());
+			}
 			return this.service.check(checkArray);
 		} catch (error) {
 			throw new HttpException(
