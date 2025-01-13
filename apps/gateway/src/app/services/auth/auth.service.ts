@@ -8,16 +8,24 @@ import { ClientKafka } from '@nestjs/microservices';
 import { AuthTopics } from '@azkaban/shared';
 import { ForgetPasswordDTO, LoginDTO, RegisterDTO } from './dto';
 import { LoginDAO, RegisterDAO, ForgetPasswordDAO } from './dao';
+import { CommandBus } from '@nestjs/cqrs';
+import {
+	ForgetPasswordCommand,
+	LoginCommand,
+	RegisterCommand,
+} from './commands';
 
 @Injectable()
 export class AuthService implements OnModuleInit, OnModuleDestroy {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
+		private readonly commandBus: CommandBus,
 	) {}
 
 	async onModuleInit(): Promise<void> {
 		this.client.subscribeToResponseOf(AuthTopics.LOGIN);
 		this.client.subscribeToResponseOf(AuthTopics.REGISTER);
+		this.client.subscribeToResponseOf(AuthTopics.FORGET_PASSWORD);
 		await this.client.connect();
 	}
 
@@ -26,16 +34,20 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
 	}
 
 	async login(data: LoginDTO): Promise<LoginDAO> {
-		return await this.client.send(AuthTopics.LOGIN, data).toPromise();
+		return await this.commandBus.execute(
+			new LoginCommand(data.username, data.password),
+		);
 	}
 
 	async register(data: RegisterDTO): Promise<RegisterDAO> {
-		return await this.client.send(AuthTopics.REGISTER, data).toPromise();
+		return await this.commandBus.execute(
+			new RegisterCommand(data.email, data.username, data.password),
+		);
 	}
 
 	async forgetPassword(data: ForgetPasswordDTO): Promise<ForgetPasswordDAO> {
-		return await this.client
-			.send(AuthTopics.FORGET_PASSWORD, data)
-			.toPromise();
+		return await this.commandBus.execute(
+			new ForgetPasswordCommand(data.email, data.username),
+		);
 	}
 }

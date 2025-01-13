@@ -4,14 +4,15 @@ import { BrokerConfig } from './broker.config';
 import { RedisConfig } from './redis.config';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './health.controller';
+import { Optional } from '../../types';
 
 @Module({})
 export class HealthModule {
 	static forRoot(
 		global: boolean,
 		config: HealthConfig,
-		broker?: BrokerConfig,
-		redis?: RedisConfig,
+		broker?: Optional<BrokerConfig>,
+		redis?: Optional<RedisConfig>,
 	): DynamicModule {
 		return {
 			module: HealthModule,
