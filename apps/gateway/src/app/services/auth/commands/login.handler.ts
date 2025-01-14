@@ -32,21 +32,23 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 		const { username, password } = command;
 		const topic = AuthTopics.LOGIN;
 		const cacheKey = `${topic}.${username}.${password}`;
-		const inCache = await this.cacheService.inCache(cacheKey);
+		const lowercaseCacheKey = cacheKey.toLowerCase();
+		const inCache = await this.cacheService.inCache(lowercaseCacheKey);
 		if (!inCache) {
 			const response = await this.createCircuitBreaker(command)
 				.then((res: LoginDAO) => {
 					this.eventBus.publish(
 						new LoginEvent(res.user.id, res.user.username),
 					);
-					this.cacheService.setKey(cacheKey, response);
+					this.cacheService.setKey(lowercaseCacheKey, res);
 					return res;
 				})
 				.catch((err) => {
-					throw new HttpException(err.message, 503);
+					console.error(err);
+					throw new HttpException(err.message, err.status ?? 503);
 				});
 			return response;
 		}
-		return await this.cacheService.getKey(cacheKey);
+		return await this.cacheService.getKey(lowercaseCacheKey);
 	}
 }

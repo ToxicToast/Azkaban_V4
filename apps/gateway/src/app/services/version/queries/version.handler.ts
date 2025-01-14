@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { VersionQuery } from './version.query';
-import { HttpException, Inject } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { CacheService, CircuitService } from '@azkaban/shared';
 

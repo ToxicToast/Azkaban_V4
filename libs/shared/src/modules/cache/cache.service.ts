@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { Optional } from '../../types';
-import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class CacheService {
