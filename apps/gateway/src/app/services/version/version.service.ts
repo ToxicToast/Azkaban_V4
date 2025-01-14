@@ -1,30 +1,15 @@
-import {
-	Inject,
-	Injectable,
-	OnModuleDestroy,
-	OnModuleInit,
-} from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
+import { Inject, Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { AuthTopics, NotificationTopics } from '@azkaban/shared';
+import { AuthTopics, CacheService, NotificationTopics } from '@azkaban/shared';
 import { VersionQuery } from './queries';
 
 @Injectable()
-export class VersionService implements OnModuleInit, OnModuleDestroy {
+export class VersionService {
 	constructor(
-		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
+		@Inject('APP_VERSION') private readonly appVersion: string,
+		private readonly cacheService: CacheService,
 		private readonly queryBus: QueryBus,
 	) {}
-
-	async onModuleInit(): Promise<void> {
-		this.client.subscribeToResponseOf(AuthTopics.VERSION);
-		this.client.subscribeToResponseOf(NotificationTopics.VERSION);
-		await this.client.connect();
-	}
-
-	async onModuleDestroy(): Promise<void> {
-		await this.client.close();
-	}
 
 	private async authVersion(): Promise<string> {
 		return await this.queryBus.execute(
@@ -38,15 +23,33 @@ export class VersionService implements OnModuleInit, OnModuleDestroy {
 		);
 	}
 
-	async generateVersions(): Promise<unknown> {
-		return await Promise.all([
-			this.authVersion(),
-			this.notificationVersion(),
-		]).then((versions) => {
-			return {
-				auth: versions[0],
-				notification: versions[1],
+	private gatewayVersion(): string {
+		return this.appVersion;
+	}
+
+	private async buildVersionJson(): Promise<unknown> {
+		const cacheKey = 'azkaban.gateway.version';
+		const inCache = await this.cacheService.inCache(cacheKey);
+		if (!inCache) {
+			const gateway = this.gatewayVersion();
+			const auth = await this.authVersion();
+			const notification = await this.notificationVersion();
+			//
+			const versions = {
+				gateway,
+				azkaban: {
+					auth,
+					notification,
+				},
 			};
-		});
+			//
+			await this.cacheService.setKey(cacheKey, versions);
+			return versions;
+		}
+		return this.cacheService.getKey(cacheKey);
+	}
+
+	async generateVersions(): Promise<unknown> {
+		return await this.buildVersionJson();
 	}
 }

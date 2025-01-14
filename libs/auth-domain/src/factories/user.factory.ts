@@ -1,5 +1,7 @@
 import { Factory } from '@azkaban/shared';
-import { UserAggregate, UserAnemic, UserData } from '@azkaban/auth-domain';
+import { UserAnemic } from '../anemics';
+import { UserAggregate } from '../aggregates';
+import { UserData } from '../data';
 
 export class UserFactory
 	implements Factory<UserAnemic, UserAggregate, UserData>

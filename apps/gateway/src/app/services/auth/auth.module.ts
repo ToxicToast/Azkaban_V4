@@ -8,7 +8,6 @@ import {
 	NotificationCommandHandler,
 	RegisterCommandHandler,
 } from './commands';
-import { LoginEventHandler } from './events';
 
 export const CommandHandlers = [
 	ForgetPasswordCommandHandler,
@@ -16,7 +15,7 @@ export const CommandHandlers = [
 	NotificationCommandHandler,
 	RegisterCommandHandler,
 ];
-export const EventHandlers = [LoginEventHandler];
+export const EventHandlers = [];
 export const QueryHandlers = [];
 
 @Module({

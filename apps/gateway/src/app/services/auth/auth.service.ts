@@ -1,11 +1,4 @@
-import {
-	Inject,
-	Injectable,
-	OnModuleDestroy,
-	OnModuleInit,
-} from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { AuthTopics } from '@azkaban/shared';
+import { Injectable } from '@nestjs/common';
 import { ForgetPasswordDTO, LoginDTO, RegisterDTO } from './dto';
 import { LoginDAO, RegisterDAO, ForgetPasswordDAO } from './dao';
 import { CommandBus } from '@nestjs/cqrs';
@@ -16,22 +9,8 @@ import {
 } from './commands';
 
 @Injectable()
-export class AuthService implements OnModuleInit, OnModuleDestroy {
-	constructor(
-		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
-		private readonly commandBus: CommandBus,
-	) {}
-
-	async onModuleInit(): Promise<void> {
-		this.client.subscribeToResponseOf(AuthTopics.LOGIN);
-		this.client.subscribeToResponseOf(AuthTopics.REGISTER);
-		this.client.subscribeToResponseOf(AuthTopics.FORGET_PASSWORD);
-		await this.client.connect();
-	}
-
-	async onModuleDestroy(): Promise<void> {
-		await this.client.close();
-	}
+export class AuthService {
+	constructor(private readonly commandBus: CommandBus) {}
 
 	async login(data: LoginDTO): Promise<LoginDAO> {
 		return await this.commandBus.execute(

@@ -7,11 +7,6 @@ import { AuthService } from './auth.service';
 export class AuthController {
 	constructor(private readonly service: AuthService) {}
 
-	@MessagePattern(AuthTopics.VERSION)
-	async version(): Promise<string> {
-		return this.service.appVersion();
-	}
-
 	@MessagePattern(AuthTopics.LOGIN)
 	async login(@Payload() data: any): Promise<unknown> {
 		return await this.service.login(data.username, data.password);

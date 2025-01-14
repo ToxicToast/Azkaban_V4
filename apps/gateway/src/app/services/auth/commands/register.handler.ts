@@ -24,7 +24,7 @@ export class RegisterCommandHandler
 		const circuit = this.circuit.createCircuitBreaker(topic);
 		circuit.fn(async () => {
 			return await this.client
-				.send(topic, { email, username })
+				.send(topic, { email, username, password })
 				.toPromise();
 		});
 		return circuit.execute();

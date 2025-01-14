@@ -1,6 +1,7 @@
 import { Factory } from '@azkaban/shared';
-import { GroupAggregate, GroupAnemic } from '@azkaban/auth-domain';
 import { GroupData } from '../data/group.data';
+import { GroupAnemic } from '../anemics';
+import { GroupAggregate } from '../aggregates';
 
 export class GroupFactory
 	implements Factory<GroupAnemic, GroupAggregate, GroupData>
