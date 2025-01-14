@@ -50,7 +50,6 @@ export class RegisterCommandHandler
 					return res;
 				})
 				.catch((err) => {
-					console.error(err);
 					throw new HttpException(err.message, err.status ?? 503);
 				});
 			return response;

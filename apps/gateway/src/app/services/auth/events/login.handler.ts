@@ -9,7 +9,5 @@ export class LoginEventHandler implements IEventHandler<LoginEvent> {
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 	) {}
 
-	handle(event: LoginEvent): void {
-		console.error('LoginEventHandler', event);
-	}
+	handle(event: LoginEvent): void {}
 }
