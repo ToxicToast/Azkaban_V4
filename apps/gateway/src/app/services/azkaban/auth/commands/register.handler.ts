@@ -2,7 +2,11 @@ import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { RegisterCommand } from './register.command';
 import { HttpException, Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { AuthTopics, CacheService, CircuitService } from '@azkaban/shared';
+import {
+	AzkabanAuthTopics,
+	CacheService,
+	CircuitService,
+} from '@azkaban/shared';
 import { RegisterDAO } from '../dao';
 import { RegisterEvent } from '../events';
 
@@ -19,7 +23,7 @@ export class RegisterCommandHandler
 
 	private createCircuitBreaker(command: RegisterCommand) {
 		const { email, username, password } = command;
-		const topic = AuthTopics.REGISTER;
+		const topic = AzkabanAuthTopics.REGISTER;
 		//
 		const circuit = this.circuit.createCircuitBreaker(topic);
 		circuit.fn(async () => {
@@ -32,7 +36,7 @@ export class RegisterCommandHandler
 
 	async execute(command: RegisterCommand) {
 		const { email, username, password } = command;
-		const topic = AuthTopics.REGISTER;
+		const topic = AzkabanAuthTopics.REGISTER;
 		const cacheKey = `${topic}.${email}.${username}.${password}`;
 		const lowercaseCacheKey = cacheKey.toLowerCase();
 		const inCache = await this.cacheService.inCache(lowercaseCacheKey);

@@ -9,7 +9,7 @@ import { VersionService } from './version.service';
 export class VersionController {
 	constructor(private readonly service: VersionService) {}
 
-	@Get(VersionRoutes.INDEX)
+	@Get()
 	async getVersions(): Promise<unknown> {
 		return await this.service.generateVersions();
 	}

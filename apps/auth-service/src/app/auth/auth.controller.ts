@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { AuthRoutes, AuthTopics } from '@azkaban/shared';
+import { AuthRoutes, AzkabanAuthTopics } from '@azkaban/shared';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 
@@ -7,12 +7,12 @@ import { AuthService } from './auth.service';
 export class AuthController {
 	constructor(private readonly service: AuthService) {}
 
-	@MessagePattern(AuthTopics.LOGIN)
+	@MessagePattern(AzkabanAuthTopics.LOGIN)
 	async login(@Payload() data: any): Promise<unknown> {
 		return await this.service.login(data.username, data.password);
 	}
 
-	@MessagePattern(AuthTopics.REGISTER)
+	@MessagePattern(AzkabanAuthTopics.REGISTER)
 	async register(@Payload() data: any): Promise<unknown> {
 		return await this.service.register(
 			data.email,
@@ -21,7 +21,7 @@ export class AuthController {
 		);
 	}
 
-	@MessagePattern(AuthTopics.FORGET_PASSWORD)
+	@MessagePattern(AzkabanAuthTopics.FORGET_PASSWORD)
 	async reset(@Payload() data: any): Promise<any> {
 		return await this.service.reset(data.email, data.username);
 	}

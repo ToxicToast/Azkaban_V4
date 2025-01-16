@@ -1,13 +1,17 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
-import { LoginCommand } from './login.command';
+import { ForgetPasswordCommand } from './forgetpassword.command';
 import { HttpException, Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { AuthTopics, CacheService, CircuitService } from '@azkaban/shared';
-import { LoginEvent } from '../events';
-import { LoginDAO } from '../dao';
+import {
+	AzkabanAuthTopics,
+	CacheService,
+	CircuitService,
+} from '@azkaban/shared';
 
-@CommandHandler(LoginCommand)
-export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
+@CommandHandler(ForgetPasswordCommand)
+export class ForgetPasswordCommandHandler
+	implements ICommandHandler<ForgetPasswordCommand>
+{
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 		private readonly cacheService: CacheService,
@@ -15,31 +19,28 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 		private readonly circuit: CircuitService,
 	) {}
 
-	private createCircuitBreaker(command: LoginCommand) {
-		const { username, password } = command;
-		const topic = AuthTopics.LOGIN;
+	private createCircuitBreaker(command: ForgetPasswordCommand) {
+		const { email, username } = command;
+		const topic = AzkabanAuthTopics.FORGET_PASSWORD;
 		//
 		const circuit = this.circuit.createCircuitBreaker(topic);
 		circuit.fn(async () => {
 			return await this.client
-				.send(topic, { username, password })
+				.send(topic, { email, username })
 				.toPromise();
 		});
 		return circuit.execute();
 	}
 
-	async execute(command: LoginCommand) {
-		const { username, password } = command;
-		const topic = AuthTopics.LOGIN;
-		const cacheKey = `${topic}.${username}.${password}`;
+	async execute(command: ForgetPasswordCommand) {
+		const { email, username } = command;
+		const topic = AzkabanAuthTopics.FORGET_PASSWORD;
+		const cacheKey = `${topic}.${email}.${username}`;
 		const lowercaseCacheKey = cacheKey.toLowerCase();
 		const inCache = await this.cacheService.inCache(lowercaseCacheKey);
 		if (!inCache) {
 			const response = await this.createCircuitBreaker(command)
-				.then((res: LoginDAO) => {
-					this.eventBus.publish(
-						new LoginEvent(res.user.id, res.user.username),
-					);
+				.then((res) => {
 					this.cacheService.setKey(lowercaseCacheKey, res);
 					return res;
 				})

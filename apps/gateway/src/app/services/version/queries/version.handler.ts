@@ -26,15 +26,14 @@ export class VersionQueryHandler implements IQueryHandler<VersionQuery> {
 		const cacheKey = `${topic}`;
 		const inCache = await this.cacheService.inCache(cacheKey);
 		if (!inCache) {
-			const response = await this.createCircuitBreaker(query)
+			return await this.createCircuitBreaker(query)
 				.then((res) => {
 					this.cacheService.setKey(cacheKey, res);
 					return res;
 				})
-				.catch((err) => {
-					return err.message;
+				.catch(() => {
+					return 'Service is currently unavailable';
 				});
-			return response;
 		}
 		return await this.cacheService.getKey(cacheKey);
 	}

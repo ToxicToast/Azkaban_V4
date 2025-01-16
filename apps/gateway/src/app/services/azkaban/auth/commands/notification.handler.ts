@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { NotificationCommand } from './notification.command';
 import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { NotificationTopics } from '@azkaban/shared';
+import { AzkabanNotificationTopics } from '@azkaban/shared';
 
 @CommandHandler(NotificationCommand)
 export class NotificationCommandHandler
@@ -13,12 +13,12 @@ export class NotificationCommandHandler
 	) {}
 
 	private async onRegister(id: string, username: string) {
-		const topic = NotificationTopics.REGISTER;
+		const topic = AzkabanNotificationTopics.REGISTER;
 		await this.client.emit(topic, { id, username }).toPromise();
 	}
 
 	private async onLogin(id: string, username: string) {
-		const topic = NotificationTopics.LOGIN;
+		const topic = AzkabanNotificationTopics.LOGIN;
 		await this.client.emit(topic, { id, username }).toPromise();
 	}
 
