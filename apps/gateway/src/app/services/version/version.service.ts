@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CacheService } from '@azkaban/shared';
+import { CacheService, VersionCache, versionFolder } from '@azkaban/shared';
 import { AzkabanVersionsService } from './azkaban-versions.service';
 import { FoodfolioVersionsService } from './foodfolio-versions.service';
 import { TwitchVersionsService } from './twitch-versions.service';
@@ -43,7 +43,7 @@ export class VersionService {
 	}
 
 	async generateVersions(): Promise<unknown> {
-		const cacheKey = 'azkaban.gateway.version';
+		const cacheKey = `${versionFolder}:${VersionCache.AZKABANGATEWAY}`;
 		const inCache = await this.cacheService.inCache(cacheKey);
 		if (!inCache) {
 			const gateway = this.gatewayVersion();

@@ -6,6 +6,7 @@ import {
 	TwitchMessageTopics,
 	TwitchStreamTopics,
 	TwitchViewerTopics,
+	VersionCache,
 } from '@azkaban/shared';
 import { QueryBus } from '@nestjs/cqrs';
 import { VersionQuery } from './queries';
@@ -16,37 +17,49 @@ export class TwitchVersionsService {
 
 	private async getApiVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(TwitchApiTopics.VERSION),
+			new VersionQuery(TwitchApiTopics.VERSION, VersionCache.TWITCHAPI),
 		);
 	}
 
 	private async getBotVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(TwitchBotTopics.VERSION),
+			new VersionQuery(TwitchBotTopics.VERSION, VersionCache.TWITCHBOT),
 		);
 	}
 
 	private async getViewerVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(TwitchViewerTopics.VERSION),
+			new VersionQuery(
+				TwitchViewerTopics.VERSION,
+				VersionCache.TWITCHVIEWER,
+			),
 		);
 	}
 
 	private async getMessageVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(TwitchMessageTopics.VERSION),
+			new VersionQuery(
+				TwitchMessageTopics.VERSION,
+				VersionCache.TWITCHMESSAGE,
+			),
 		);
 	}
 
 	private async getStreamVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(TwitchStreamTopics.VERSION),
+			new VersionQuery(
+				TwitchStreamTopics.VERSION,
+				VersionCache.TWITCHSTREAM,
+			),
 		);
 	}
 
 	private async getChannelVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(TwitchChannelTopics.VERSION),
+			new VersionQuery(
+				TwitchChannelTopics.VERSION,
+				VersionCache.TWITCHCHANNEL,
+			),
 		);
 	}
 

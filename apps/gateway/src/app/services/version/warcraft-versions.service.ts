@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+	VersionCache,
 	WarcraftApiTopics,
 	WarcraftAuditTopics,
 	WarcraftCharacterTopics,
@@ -14,25 +15,37 @@ export class WarcraftVersionsService {
 
 	private async getCharactersVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(WarcraftCharacterTopics.VERSION),
+			new VersionQuery(
+				WarcraftCharacterTopics.VERSION,
+				VersionCache.WARCRAFTCHARACTER,
+			),
 		);
 	}
 
 	private async getApiVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(WarcraftApiTopics.VERSION),
+			new VersionQuery(
+				WarcraftApiTopics.VERSION,
+				VersionCache.WARCRAFTAPI,
+			),
 		);
 	}
 
 	private async getRaiderVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(WarcraftRaiderTopics.VERSION),
+			new VersionQuery(
+				WarcraftRaiderTopics.VERSION,
+				VersionCache.WARCRAFTRAIDER,
+			),
 		);
 	}
 
 	private async getAuditVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(WarcraftAuditTopics.VERSION),
+			new VersionQuery(
+				WarcraftAuditTopics.VERSION,
+				VersionCache.WARCRAFTAUDIT,
+			),
 		);
 	}
 
