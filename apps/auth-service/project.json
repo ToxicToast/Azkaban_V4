@@ -33,6 +33,13 @@
 					"buildTarget": "auth-service:build:production"
 				}
 			}
+		},
+		"docker-build": {
+			"dependsOn": ["build"],
+			"command": "docker build -f apps/auth-service/Dockerfile . -t toxictoast/auth:{args.VERSION}"
+		},
+		"docker-push": {
+			"command": "docker push toxictoast/auth:{args.VERSION}"
 		}
 	}
 }

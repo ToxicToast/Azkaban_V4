@@ -33,6 +33,13 @@
 					"buildTarget": "gateway:build:production"
 				}
 			}
+		},
+		"docker-build": {
+			"dependsOn": ["build"],
+			"command": "docker build -f apps/gateway/Dockerfile . -t toxictoast/dementor:{args.VERSION}"
+		},
+		"docker-push": {
+			"command": "docker push toxictoast/dementor:{args.VERSION}"
 		}
 	}
 }
