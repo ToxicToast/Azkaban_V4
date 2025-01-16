@@ -9,12 +9,26 @@ async function createApp(): Promise<INestApplication> {
 
 async function createMicroservice(app: INestApplication): Promise<void> {
 	const brokerUrl = `${process.env.BROKER_HOST}:${process.env.BROKER_PORT}`;
+	const brokerUsername = process.env.BROKER_USERNAME;
+	const brokerPassword = process.env.BROKER_PASSWORD;
+	const environment = process.env.APP_VERSION;
+	//
 	app.connectMicroservice<MicroserviceOptions>({
 		transport: Transport.KAFKA,
 		options: {
 			client: {
 				clientId: 'auth',
 				brokers: [brokerUrl],
+				sasl:
+					environment !== 'local'
+						? {
+								mechanism: 'plain',
+								username: brokerUsername,
+								password: brokerPassword,
+							}
+						: undefined,
+				connectionTimeout: 4000,
+				authenticationTimeout: 4000,
 			},
 			consumer: {
 				groupId: 'auth-consumer',

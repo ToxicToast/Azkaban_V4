@@ -1,4 +1,5 @@
 export const AppConfig = {
+	environment: process.env.APP_VERSION,
 	redis: {
 		redisHost: process.env.REDIS_HOST,
 		redisPort: Number(process.env.REDIS_PORT),

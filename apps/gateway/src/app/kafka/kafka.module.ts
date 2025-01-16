@@ -42,6 +42,8 @@ import { AppConfig } from '../app.config';
 				groupId: 'gateway-consumer',
 				brokerHost: AppConfig.broker.brokerHost,
 				brokerPort: AppConfig.broker.brokerPort,
+				brokerUsername: AppConfig.broker.brokerUsername,
+				brokerPassword: AppConfig.broker.brokerPassword,
 			},
 			[
 				...AzkabanAuthTopicArray,
@@ -74,6 +76,7 @@ import { AppConfig } from '../app.config';
 				...WarcraftAuditTopicArray,
 				...CoworkingTasksTopicArray,
 			],
+			AppConfig.environment,
 		),
 	],
 })

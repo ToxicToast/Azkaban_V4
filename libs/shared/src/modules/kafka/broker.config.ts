@@ -3,4 +3,6 @@ export interface BrokerConfig {
 	groupId: string;
 	brokerHost: string;
 	brokerPort: number;
+	brokerUsername: string;
+	brokerPassword: string;
 }
