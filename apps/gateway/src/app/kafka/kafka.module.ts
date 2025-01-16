@@ -31,6 +31,7 @@ import {
 	WarcraftAuditTopicArray,
 	AzkabanWebhookTopicArray,
 } from '@azkaban/shared';
+import { AppConfig } from '../app.config';
 
 @Module({
 	imports: [
@@ -39,8 +40,8 @@ import {
 			{
 				clientId: 'gateway',
 				groupId: 'gateway-consumer',
-				brokerHost: process.env.BROKER_HOST,
-				brokerPort: Number(process.env.BROKER_PORT),
+				brokerHost: AppConfig.broker.brokerHost,
+				brokerPort: AppConfig.broker.brokerPort,
 			},
 			[
 				...AzkabanAuthTopicArray,

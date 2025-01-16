@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CircuitModule as BaseModule } from '@azkaban/shared';
+import { AppConfig } from '../app.config';
 
 const global = true;
 const config = {
@@ -12,7 +13,7 @@ const config = {
 	permittedNumberOfCallsInHalfOpenState: 2,
 	openStateDelay: 10000,
 	halfOpenStateMaxDelay: 30000,
-	timeout: Number(process.env.CIRCUIT_BREAKER_TIMEOUT),
+	timeout: AppConfig.circuit.timeout,
 };
 
 @Module({
