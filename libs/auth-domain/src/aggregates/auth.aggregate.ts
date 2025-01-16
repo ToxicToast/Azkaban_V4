@@ -21,7 +21,12 @@ export class AuthAggregate implements Domain<AuthAnemic> {
 	}
 
 	addGroup(group: GroupAggregate): void {
-		this.groups.push(group);
+		const found = this.groups.find(
+			(g) => g.toAnemic().id === group.toAnemic().id,
+		);
+		if (!found) {
+			this.groups.push(group);
+		}
 	}
 
 	banUser(): void {
