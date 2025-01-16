@@ -7,6 +7,7 @@ import {
 	AzkabanNotificationTopics,
 	AzkabanEmailTopics,
 	AzkabanSSETopics,
+	AzkabanWebhookTopics,
 } from '@azkaban/shared';
 import { QueryBus } from '@nestjs/cqrs';
 import { VersionQuery } from './queries';
@@ -57,6 +58,12 @@ export class AzkabanVersionsService {
 		);
 	}
 
+	private async webhookVersion(): Promise<string> {
+		return await this.queryBus.execute(
+			new VersionQuery(AzkabanWebhookTopics.VERSION),
+		);
+	}
+
 	async getVersions() {
 		const auth = await this.authVersion();
 		const user = await this.userVersion();
@@ -65,6 +72,7 @@ export class AzkabanVersionsService {
 		const email = await this.emailVersion();
 		const notification = await this.notificationVersion();
 		const sse = await this.sseVersion();
+		const webhook = await this.webhookVersion();
 		//
 		return {
 			sse,
@@ -74,6 +82,7 @@ export class AzkabanVersionsService {
 			cronjob,
 			email,
 			notification,
+			webhook,
 		};
 	}
 }

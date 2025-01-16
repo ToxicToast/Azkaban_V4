@@ -29,6 +29,7 @@ import {
 	WarcraftRaiderTopicArray,
 	CoworkingTasksTopicArray,
 	WarcraftAuditTopicArray,
+	AzkabanWebhookTopicArray,
 } from '@azkaban/shared';
 
 @Module({
@@ -49,6 +50,7 @@ import {
 				...AzkabanNotificationTopicArray,
 				...AzkabanSSETopicArray,
 				...AzkabanUserTopicArray,
+				...AzkabanWebhookTopicArray,
 				...FoodFolioCategoryTopicArray,
 				...FoodFolioCompanyTopicArray,
 				...FoodFolioItemTopicArray,

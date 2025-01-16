@@ -5,3 +5,4 @@ export * from './cronjob.topics';
 export * from './email.topics';
 export * from './notification.topics';
 export * from './sse.topics';
+export * from './webhook.topics';
