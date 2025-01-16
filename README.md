@@ -34,7 +34,6 @@ Azkaban is a complete Rewrite of my Microservices at Home.
     - SSE Service
     - Webhook Service
 
-
 - **FoodFolio Services**
 
     - Category
@@ -48,7 +47,6 @@ Azkaban is a complete Rewrite of my Microservices at Home.
     - Warehouse
     - Shoppinglist
 
-
 - **Twitch Services**
 
     - Api Service
@@ -58,7 +56,6 @@ Azkaban is a complete Rewrite of my Microservices at Home.
     - Streams Service
     - Channel Service
 
-
 - **Warcraft Services**
 
     - Character Service
@@ -66,15 +63,14 @@ Azkaban is a complete Rewrite of my Microservices at Home.
     - Raider IO Service
     - WowAudit Service
 
-
 - **Co-Working Services**
+
     - Task Service
 
-
 - **UI Services**
-  - Admin UI
-  - Foodfolio UI
-  - CoWorking UI (Task List Overlay)
+    - Admin UI
+    - Foodfolio UI
+    - CoWorking UI (Task List Overlay)
 
 ## In Development
 
