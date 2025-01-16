@@ -2,13 +2,8 @@ import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { RegisterCommand } from './register.command';
 import { HttpException, Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import {
-	AzkabanAuthTopics,
-	CacheService,
-	CircuitService,
-} from '@azkaban/shared';
+import { AzkabanAuthTopics, CircuitService } from '@azkaban/shared';
 import { RegisterDAO } from '../dao';
-import { RegisterEvent } from '../events';
 
 @CommandHandler(RegisterCommand)
 export class RegisterCommandHandler
@@ -16,8 +11,6 @@ export class RegisterCommandHandler
 {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
-		private readonly cacheService: CacheService,
-		private readonly eventBus: EventBus,
 		private readonly circuit: CircuitService,
 	) {}
 
@@ -35,29 +28,12 @@ export class RegisterCommandHandler
 	}
 
 	async execute(command: RegisterCommand) {
-		const { email, username, password } = command;
-		const topic = AzkabanAuthTopics.REGISTER;
-		const cacheKey = `${topic}.${email}.${username}.${password}`;
-		const lowercaseCacheKey = cacheKey.toLowerCase();
-		const inCache = await this.cacheService.inCache(lowercaseCacheKey);
-		if (!inCache) {
-			const response = await this.createCircuitBreaker(command)
-				.then((res: RegisterDAO) => {
-					this.eventBus.publish(
-						new RegisterEvent(
-							res.user.id,
-							res.user.email,
-							res.user.username,
-						),
-					);
-					this.cacheService.setKey(lowercaseCacheKey, res);
-					return res;
-				})
-				.catch((err) => {
-					throw new HttpException(err.message, err.status ?? 503);
-				});
-			return response;
-		}
-		return await this.cacheService.getKey(lowercaseCacheKey);
+		return await this.createCircuitBreaker(command)
+			.then((res: RegisterDAO) => {
+				return res;
+			})
+			.catch((err) => {
+				throw new HttpException(err.message, err.status ?? 503);
+			});
 	}
 }
