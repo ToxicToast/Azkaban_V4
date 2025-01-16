@@ -44,9 +44,9 @@ module.exports = [
 							],
 						},
 						{
-							sourceTag: 'scope:ui',
+							sourceTag: 'scope:presentation',
 							onlyDependOnLibsWithTags: [
-								'scope:ui',
+								'scope:presentation',
 								'scope:shared',
 							],
 						},
