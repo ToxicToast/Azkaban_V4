@@ -52,15 +52,11 @@ export class UserAggregate implements Domain<UserAnemic> {
 	}
 
 	updateActivation(date: Nullable<Date>): void {
-		if (!this.isActivated()) {
-			this.activated_at = date;
-		}
+		this.activated_at = date;
 	}
 
 	updateBan(date: Nullable<Date>): void {
-		if (!this.isBanned()) {
-			this.banned_at = date;
-		}
+		this.banned_at = date;
 	}
 
 	updateLogin(date: Nullable<Date>): void {

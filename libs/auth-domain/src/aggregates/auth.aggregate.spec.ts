@@ -5,7 +5,6 @@ import { AuthAggregate } from './auth.aggregate';
 describe('AuthAggregate', () => {
 	const userId = '123';
 	const username = 'testuser';
-	const updatedUsername = username + '-updated';
 	const password = 'pass123';
 	const email = 'test@test.com';
 	const activated_at = null;
