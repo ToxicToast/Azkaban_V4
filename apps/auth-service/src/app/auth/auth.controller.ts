@@ -9,20 +9,19 @@ export class AuthController {
 
 	@MessagePattern(AzkabanAuthTopics.LOGIN)
 	async login(@Payload() data: any): Promise<unknown> {
-		return await this.service.login(data.username, data.password);
+		const { username, password } = data;
+		return await this.service.login(username, password);
 	}
 
 	@MessagePattern(AzkabanAuthTopics.REGISTER)
 	async register(@Payload() data: any): Promise<unknown> {
-		return await this.service.register(
-			data.email,
-			data.username,
-			data.password,
-		);
+		const { email, username, password } = data;
+		return await this.service.register(email, username, password);
 	}
 
 	@MessagePattern(AzkabanAuthTopics.FORGET_PASSWORD)
 	async reset(@Payload() data: any): Promise<any> {
-		return await this.service.reset(data.email, data.username);
+		const { email, username } = data;
+		return await this.service.reset(email, username);
 	}
 }
