@@ -16,8 +16,10 @@
 		"baseUrl": ".",
 		"paths": {
 			"@azkaban/auth-domain": ["libs/auth-domain/src/index.ts"],
-			"@azkaban/shared": ["libs/shared/src/index.ts"],
-			"@azkaban/warcraft-domain": ["libs/warcraft-domain/src/index.ts"]
+			"@azkaban/auth-infrastructure": [
+				"libs/auth-infrastructure/src/index.ts"
+			],
+			"@azkaban/shared": ["libs/shared/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

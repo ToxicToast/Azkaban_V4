@@ -6,6 +6,9 @@ interface UserAdditions {
 	findByEmail(email: string): Promise<UserAnemic>;
 }
 
-type RepositoryWithOnlySave = Pick<Repository<UserAnemic>, 'save' | 'findById'>;
+type RepositoryWithOnlySave = Pick<
+	Repository<UserAnemic>,
+	'save' | 'findById' | 'findList'
+>;
 
 export type UserRepository = Chainable<RepositoryWithOnlySave, UserAdditions>;

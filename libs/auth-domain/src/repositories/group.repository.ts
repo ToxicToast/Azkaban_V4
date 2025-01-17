@@ -6,7 +6,9 @@ interface GroupAdditions {
 	findByGroupId(groupId: string): Promise<GroupAnemic>;
 }
 
-export type GroupRepository = Chainable<
+type RepositoryWithOnlySave = Pick<
 	Repository<GroupAnemic>,
-	GroupAdditions
+	'save' | 'findById' | 'findList'
 >;
+
+export type GroupRepository = Chainable<RepositoryWithOnlySave, GroupAdditions>;

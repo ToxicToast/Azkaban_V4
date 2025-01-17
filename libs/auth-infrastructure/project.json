@@ -1,0 +1,8 @@
+{
+	"name": "auth-infrastructure",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/auth-infrastructure/src",
+	"projectType": "library",
+	"tags": ["scope:infrastructure"],
+	"targets": {}
+}

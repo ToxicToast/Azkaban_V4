@@ -4,3 +4,4 @@ export * from './factory.ddd';
 export * from './mapper.ddd';
 export * from './repository.ddd';
 export * from './result.ddd';
+export * from './valueObject.ddd';
