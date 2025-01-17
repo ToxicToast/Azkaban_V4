@@ -71,6 +71,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
     - Admin UI
     - Foodfolio UI
     - CoWorking UI (Task List Overlay)
+    - Version UI (All Versions from API)
 
 ## In Development
 
