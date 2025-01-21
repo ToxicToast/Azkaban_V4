@@ -41,7 +41,11 @@ async function startApp(app: INestApplication): Promise<void> {
 }
 
 async function bootstrap() {
-	await TelemetryHelper('gateway', process.env.APP_VERSION);
+	await TelemetryHelper(
+		process.env.TELEMETRY_URL,
+		'gateway',
+		process.env.APP_VERSION,
+	);
 	const app = await createApp();
 	configureApp(app);
 	addModules(app);

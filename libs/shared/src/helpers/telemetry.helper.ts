@@ -1,18 +1,24 @@
 import { Resource } from '@opentelemetry/resources';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
-import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 
-export function TelemetryHelper(serviceName: string, serviceVersion: string) {
-	const traceExporter = new ConsoleSpanExporter();
+export function TelemetryHelper(
+	telemetryUrl: string,
+	serviceName: string,
+	serviceVersion: string,
+) {
+	const exporterOptions = {
+		url: telemetryUrl,
+	};
+
+	const traceExporter = new OTLPTraceExporter(exporterOptions);
 	const sdk = new NodeSDK({
 		traceExporter,
 		instrumentations: [
-			getNodeAutoInstrumentations(),
 			new NestInstrumentation(),
 			new HttpInstrumentation(),
 			new ExpressInstrumentation(),

@@ -55,7 +55,11 @@ async function startApp(app: INestApplication): Promise<void> {
 }
 
 async function bootstrap() {
-	await TelemetryHelper('auth', process.env.APP_VERSION);
+	await TelemetryHelper(
+		process.env.TELEMETRY_URL,
+		'auth',
+		process.env.APP_VERSION,
+	);
 	const app = await createApp();
 	configureApp(app);
 	await createMicroservice(app);
