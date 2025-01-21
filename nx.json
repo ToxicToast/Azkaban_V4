@@ -20,7 +20,7 @@
 		"libsDir": "libs"
 	},
 	"nxCloudId": "672cec5ff66c74057ce60a3a",
-	"neverConnectToCloud": true,
+	"neverConnectToCloud": false,
 	"plugins": [
 		{
 			"plugin": "@nx/webpack/plugin",
