@@ -25,7 +25,6 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 
 - **Azkaban Services**
 
-    - Authentication Service
     - User Service
     - Group Service
     - Cronjob Service
@@ -80,6 +79,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 ## Deployed Services
 
 - [API Gateway](https://api.toxictoast.de/)
+- [Authentication Service](https://api.toxictoast.de/)
 
 ## Infrastructure
 
@@ -93,6 +93,8 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 - ReactJS (UI)
 - Redux-Toolkit (State Management)
 - API Alerts (Alerting)
+- OpenTelemetry (Tracing)
+- SigNoz (Tracing - Visually)
 
 ## Gateway
 
