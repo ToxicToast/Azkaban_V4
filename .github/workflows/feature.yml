@@ -8,11 +8,11 @@ env:
   NX_BRANCH: ${GITHUB_REF##*/}
   NODE_VERSION: 21
   MAX_PARALLEL: 3
-  RUNS_ON: ubuntu-24.04
+  RUNNER_IMAGE: ubuntu-24.04
 
 jobs:
   Feature:
-    runs-on: ${{ env.RUNS_ON }}
+    runs-on: ${{ env.RUNNER_IMAGE }}
 
     steps:
       - uses: actions/checkout@v4
