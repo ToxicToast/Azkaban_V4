@@ -42,12 +42,5 @@
 			},
 			"exclude": ["apps/gateway-e2e/**/*", "apps/auth-service-e2e/**/*"]
 		}
-	],
-	"targetDefaults": {
-		"@nx/js:tsc": {
-			"cache": true,
-			"dependsOn": ["^build"],
-			"inputs": ["production", "^production"]
-		}
-	}
+	]
 }
