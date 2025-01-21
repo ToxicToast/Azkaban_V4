@@ -1,75 +1,72 @@
 name: Feature
 
 on:
-  push:
-    branches: [main]
+    push:
+        branches: [main]
 
 env:
-  NX_BRANCH: main
-  NODE_VERSION: 21
-  MAX_PARALLEL: 3
-  RUNNER_IMAGE: ubuntu-24.04
+    NX_BRANCH: main
+    NODE_VERSION: 21
+    MAX_PARALLEL: 3
 
 jobs:
-  Feature:
-    runs-on: ${{ env.RUNNER_IMAGE }}
+    Versioning:
+        runs-on: ubuntu-24.04
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
-      # - uses: nrwl/nx-set-shas@v4
+            # - uses: nrwl/nx-set-shas@v4
 
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
 
-      - name: 📦 Install dependencies
-        run: npm install
+            - name: 📦 Install dependencies
+              run: npm install
 
-      - name: 📦 Install NX-Linux
-        run: npm install @nx/nx-linux-x64-gnu@latest
+            - name: 📦 Install NX-Linux
+              run: npm install @nx/nx-linux-x64-gnu@latest
 
-      - name: 🪐 Minor version for each merge (Dry Run)
-        id: taggerDryRun
-        uses: anothrNick/github-tag-action@1.71.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: minor
-          PRE_RELEASE: true
-          DRY_RUN: true
+            - name: 🪐 Minor version for each merge (Dry Run)
+              id: taggerDryRun
+              uses: anothrNick/github-tag-action@1.71.0
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+                  WITH_V: true
+                  DEFAULT_BUMP: minor
+                  PRE_RELEASE: true
+                  DRY_RUN: true
 
-      - name: 🚀 Check Format
-        run: npm run nx format:check
+            - name: 🚀 Check Format
+              run: npm run nx format:check
 
-      - name: 🚀 Lint Apps
-        run: npm run nx affected:lint --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
+            - name: 🚀 Lint Apps
+              run: npm run nx affected:lint --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
 
-      - name: 🚀 Test Apps
-        run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
+            - name: 🚀 Test Apps
+              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
 
-      - name: 🚀 e2e Apps
-        run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
+            - name: 🚀 e2e Apps
+              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
 
-      - name: 🚀 Build Apps
-        run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
+            - name: 🚀 Build Apps
+              run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
 
-      - name: 🏗 Build Docker Images
-        run: npm run nx affected -t docker-build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }} --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
+            - name: 🏗 Build Docker Images
+              run: npm run nx affected -t docker-build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }} --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
 
-      - name: 🏗 Push Docker Images
-        run: npm run nx affected -t docker-push --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }} --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
+            - name: 🏗 Push Docker Images
+              run: npm run nx affected -t docker-push --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }} --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
 
-      - name: 🏗 API Alerts Notify
-        uses: apialerts/notify-action@v2
-        with:
-          api_key: ${{ secrets.API_ALERTS_KEY }}
-          message: '🚢 Feature - New Minor Version Released (${{ steps.taggerDryRun.outputs.new_tag }})'
-          tags: 'Azkaban,Minor'
-          link: 'https://github.com/ToxicToast/Azkaban_V4'
-          channel: 'cicd'
-
-
+            - name: 🏗 API Alerts Notify
+              uses: apialerts/notify-action@v2
+              with:
+                  api_key: ${{ secrets.API_ALERTS_KEY }}
+                  message: '🚢 Feature - New Minor Version Released (${{ steps.taggerDryRun.outputs.new_tag }})'
+                  tags: 'Azkaban,Minor'
+                  link: 'https://github.com/ToxicToast/Azkaban_V4'
+                  channel: 'cicd'
