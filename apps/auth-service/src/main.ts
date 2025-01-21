@@ -1,3 +1,4 @@
+import { TelemetryHelper } from '@azkaban/shared';
 import { INestApplication, Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
@@ -54,6 +55,7 @@ async function startApp(app: INestApplication): Promise<void> {
 }
 
 async function bootstrap() {
+	await TelemetryHelper('auth', process.env.APP_VERSION);
 	const app = await createApp();
 	configureApp(app);
 	await createMicroservice(app);
