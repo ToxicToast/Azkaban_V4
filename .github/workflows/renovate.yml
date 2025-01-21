@@ -28,7 +28,7 @@ jobs:
               run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 📦 Install dependencies
-              run: npm install
+              run: npm ci
 
             - name: 📦 Reset NX Cache
               run: npx nx reset
