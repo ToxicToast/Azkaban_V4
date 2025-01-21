@@ -6,13 +6,10 @@ on:
 
 env:
     NX_BRANCH: ${GITHUB_REF##*/}
-    NODE_VERSION: 21
-    MAX_PARALLEL: 3
-    RUNS_ON: ubuntu-24.04
 
 jobs:
     Feature:
-        runs-on: ${{ env.RUNS_ON }}
+        runs-on: ubuntu-24.04
 
         steps:
             - uses: actions/checkout@v4
@@ -24,7 +21,7 @@ jobs:
             - name: 📦 Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: ${{ env.NODE_VERSION }}
+                  node-version: 21
 
             - name: 📦 Install dependencies
               run: npm install
@@ -36,13 +33,13 @@ jobs:
               run: npm run nx format:check
 
             - name: 🚀 Lint Apps
-              run: npm run nx affected:lint --parallel --maxParallel=${{ env.MAX_PARALLEL }}
+              run: npm run nx affected:lint --parallel --maxParallel=3
 
             - name: 🚀 Test Apps
-              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }}
+              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=3
 
             - name: 🚀 e2e Apps
-              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }}
+              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=3
 
             - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }}
+              run: npm run nx affected:build --parallel --maxParallel=3
