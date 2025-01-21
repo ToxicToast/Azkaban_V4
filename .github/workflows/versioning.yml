@@ -91,14 +91,11 @@ jobs:
             - name: 📦 Install dependencies
               run: npm ci
 
-            - name: 📦 Reset NX Cache
-              run: npx nx reset
-
             - name: 🏗 Build Docker Images
-              run: npx nx affected -t docker-build --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
+              run: npm run nx affected -t docker-build --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
             - name: 🏗 Push Docker Images
-              run: npx nx affected -t docker-push --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
+              run: npm run nx affected -t docker-push --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
     notify:
         needs: [docker]

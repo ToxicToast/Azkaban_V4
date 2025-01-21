@@ -30,20 +30,17 @@ jobs:
             - name: 📦 Install dependencies
               run: npm ci
 
-            - name: 📦 Reset NX Cache
-              run: npx nx reset
-
             - name: 🚀 Check Format
-              run: npx nx format:check
+              run: npm run nx format:check
 
             - name: 🚀 Lint Apps
-              run: npx nx affected:lint --parallel --maxParallel=3
+              run: npm run nx affected:lint --parallel --maxParallel=3
 
             - name: 🚀 Test Apps
-              run: npx nx affected:test --passWithNoTests --parallel --maxParallel=3
+              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=3
 
             - name: 🚀 e2e Apps
-              run: npx nx affected:e2e --passWithNoTests --parallel --maxParallel=3
+              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=3
 
             - name: 🚀 Build Apps
-              run: npx nx affected:build --parallel --maxParallel=3
+              run: npm run nx affected:build --parallel --maxParallel=3
