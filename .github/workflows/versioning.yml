@@ -10,7 +10,7 @@ env:
 
 jobs:
     prepare:
-        runs-on: ubuntu-24.04
+        runs-on: self-hosted
         name: 'Prepare PR'
         outputs:
             version: ${{ steps.taggerDryRun.outputs.new_tag }}
@@ -64,7 +64,7 @@ jobs:
 
     docker:
         needs: [prepare, linting, testing, building]
-        runs-on: ubuntu-24.04
+        runs-on: self-hosted
         name: 'Publish Docker Image'
         steps:
             - uses: actions/checkout@v4
@@ -99,7 +99,7 @@ jobs:
 
     notify:
         needs: [docker]
-        runs-on: ubuntu-24.04
+        runs-on: self-hosted
         name: 'Notify'
         steps:
             - uses: actions/checkout@v4
