@@ -9,7 +9,8 @@
 		"update:filtered": "npx npm-check-updates -u --filter @nestjs",
 		"upgrade:workspace": "nx migrate latest",
 		"upgrade:migrations": "nx migrate --run-migrations",
-		"report": "nx report"
+		"report": "nx report",
+		"format:check": "nx format:check"
 	},
 	"private": true,
 	"devDependencies": {
