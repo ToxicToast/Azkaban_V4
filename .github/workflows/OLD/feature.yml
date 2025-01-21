@@ -43,7 +43,7 @@ jobs:
 
             - name: 🪐 Output Branch
               run: |
-                echo "${{ steps.extract_branch.outputs.branch }}"
+                  echo "${{ steps.extract_branch.outputs.branch }}"
 
     linting:
         needs: [prepare]
@@ -81,7 +81,7 @@ jobs:
               with:
                   fetch-depth: 0
 
-          # - uses: nrwl/nx-set-shas@v4
+            # - uses: nrwl/nx-set-shas@v4
 
             - name: 📦 Login into Docker
               uses: docker/login-action@v3
