@@ -86,7 +86,7 @@ jobs:
                   cache: 'npm'
 
             - name: 📦 Install dependencies
-              run: npm ci
+              run: npm install
 
             - name: 📦 Install NX-Linux
               run: npm install @nx/nx-linux-x64-gnu@latest
