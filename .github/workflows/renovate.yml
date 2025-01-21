@@ -9,7 +9,7 @@ env:
 
 jobs:
     Feature:
-        runs-on: self-hosted
+        runs-on: ubuntu-24.04
 
         steps:
             - uses: actions/checkout@v4

@@ -10,7 +10,7 @@ env:
 
 jobs:
     prepare:
-        runs-on: self-hosted
+        runs-on: ubuntu-24.04
         name: 'Prepare Feature'
         outputs:
             branch: ${{ steps.extract_branch.outputs.branch }}
@@ -74,7 +74,7 @@ jobs:
         secrets: inherit
     docker:
         needs: [prepare, linting, testing, building]
-        runs-on: self-hosted
+        runs-on: ubuntu-24.04
         name: 'Publish Docker Image'
         steps:
             - uses: actions/checkout@v4
@@ -92,8 +92,7 @@ jobs:
             - name: 📦 Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 21
-                  cache: 'npm'
+                  node-version: ${{ needs.prepare.outputs.node_version }}
 
             - name: 📦 Install dependencies
               run: npm install
@@ -109,7 +108,7 @@ jobs:
 
     notify:
         needs: [docker]
-        runs-on: self-hosted
+        runs-on: ubuntu-24.04
         name: 'Notify'
         steps:
             - uses: actions/checkout@v4
