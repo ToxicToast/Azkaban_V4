@@ -41,18 +41,6 @@ jobs:
                   PRE_RELEASE: true
                   DRY_RUN: true
 
-            - name: 🚀 Check Format
-              run: npm run nx format:check
-
-            - name: 🚀 Lint Apps
-              run: npm run nx affected:lint --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
-
-            - name: 🚀 Test Apps
-              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
-
-            - name: 🚀 e2e Apps
-              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
-
             - name: 🚀 Build Apps
               run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
 

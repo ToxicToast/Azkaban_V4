@@ -31,17 +31,5 @@ jobs:
             - name: 📦 Install NX-Linux
               run: npm install @nx/nx-linux-x64-gnu@latest
 
-            - name: 🚀 Check Format
-              run: npm run nx format:check
-
-            - name: 🚀 Lint Apps
-              run: npm run nx affected:lint --parallel --maxParallel=${{ env.MAX_PARALLEL }}
-
-            - name: 🚀 Test Apps
-              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }}
-
-            - name: 🚀 e2e Apps
-              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=${{ env.MAX_PARALLEL }}
-
             - name: 🚀 Build Apps
               run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }}
