@@ -5,7 +5,6 @@ on:
         branches: [feature/**/*, feature/*]
 
 env:
-    NX_BRANCH: ${GITHUB_REF##*/}
     NODE_VERSION: 21
     MAX_PARALLEL: 3
 
@@ -18,7 +17,7 @@ jobs:
               with:
                   fetch-depth: 0
 
-            # - uses: nrwl/nx-set-shas@v4
+            - uses: nrwl/nx-set-shas@v4
 
             - name: 📦 Setup Node.js
               uses: actions/setup-node@v4
@@ -41,14 +40,19 @@ jobs:
                   PRE_RELEASE: true
                   DRY_RUN: true
 
+            - name: Extract branch name
+              shell: bash
+              run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+              id: extract_branch
+
             - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }}
+              run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ steps.extract_branch.outputs.branch }}~1 --head=${{ steps.extract_branch.outputs.branch }}
 
             - name: 🏗 Build Docker Images
-              run: npm run nx affected -t docker-build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }} --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
+              run: npm run nx affected -t docker-build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ steps.extract_branch.outputs.branch }}~1 --head=${{ steps.extract_branch.outputs.branch }} --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
 
             - name: 🏗 Push Docker Images
-              run: npm run nx affected -t docker-push --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ env.NX_BRANCH }}~1 --head=${{ env.NX_BRANCH }} --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
+              run: npm run nx affected -t docker-push --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ steps.extract_branch.outputs.branch }}~1 --head=${{ steps.extract_branch.outputs.branch }} --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
 
             - name: 🏗 API Alerts Notify
               uses: apialerts/notify-action@v2
