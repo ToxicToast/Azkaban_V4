@@ -4,6 +4,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
+const telemetry = TelemetryHelper(
+	process.env.TELEMETRY_URL,
+	'auth-service',
+	process.env.APP_VERSION,
+);
+
 async function createApp(): Promise<INestApplication> {
 	return await NestFactory.create(AppModule);
 }
@@ -55,11 +61,7 @@ async function startApp(app: INestApplication): Promise<void> {
 }
 
 async function bootstrap() {
-	await TelemetryHelper(
-		process.env.TELEMETRY_URL,
-		'auth',
-		process.env.APP_VERSION,
-	);
+	telemetry.start();
 	const app = await createApp();
 	configureApp(app);
 	await createMicroservice(app);
@@ -67,4 +69,11 @@ async function bootstrap() {
 	Logger.log(`🚀 Auth-Service is running`);
 	Logger.log(`🚀 Version: ${process.env.APP_VERSION}`);
 }
-bootstrap().catch((err) => Logger.error(err));
+bootstrap().catch((err) => {
+	Logger.error(err);
+	telemetry
+		.shutdown()
+		.then(() => Logger.log('Tracing terminated'))
+		.catch((error) => Logger.error('Error terminating tracing', error))
+		.finally(() => process.exit(0));
+});
