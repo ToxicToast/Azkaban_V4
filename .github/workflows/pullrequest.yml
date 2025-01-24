@@ -1,0 +1,39 @@
+name: Feature
+
+on:
+    pull_request:
+        branches: [feature/**/*, feature/*, main]
+
+env:
+    NODE_VERSION: 21
+    MAX_PARALLEL: 3
+
+jobs:
+    Feature:
+        runs-on: ubuntu-24.04
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - uses: nrwl/nx-set-shas@v4
+
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+
+            - name: 📦 Install dependencies
+              run: npm install
+
+            - name: 📦 Install NX-Linux
+              run: npm install @nx/nx-linux-x64-gnu@latest
+
+            - name: Extract branch name
+              shell: bash
+              run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+              id: extract_branch
+
+            - name: 🚀 Build Apps
+              run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ steps.extract_branch.outputs.branch }}~1 --head=${{ steps.extract_branch.outputs.branch }}
