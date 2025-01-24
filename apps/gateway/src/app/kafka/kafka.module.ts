@@ -30,6 +30,8 @@ import {
 	CoworkingTasksTopicArray,
 	WarcraftAuditTopicArray,
 	AzkabanWebhookTopicArray,
+	DiscordAscendApplyBotTopicArray,
+	DiscordAscendJoinBotTopicArray,
 } from '@azkaban/shared';
 import { AppConfig } from '../../config';
 
@@ -75,6 +77,8 @@ import { AppConfig } from '../../config';
 				...WarcraftRaiderTopicArray,
 				...WarcraftAuditTopicArray,
 				...CoworkingTasksTopicArray,
+				...DiscordAscendApplyBotTopicArray,
+				...DiscordAscendJoinBotTopicArray,
 			],
 			AppConfig.environment,
 		),

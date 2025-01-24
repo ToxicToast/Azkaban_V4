@@ -56,7 +56,6 @@ jobs:
 
     testing:
         needs: [prepare]
-        name: 'Test Apps'
         uses: ./.github/workflows/testing.yml
         with:
             branch: ${{ needs.prepare.outputs.branch }}
