@@ -5,6 +5,7 @@ import { FoodfolioVersionsService } from './foodfolio-versions.service';
 import { TwitchVersionsService } from './twitch-versions.service';
 import { WarcraftVersionsService } from './warcraft-versions.service';
 import { CoworkingVersionsService } from './coworking-versions.service';
+import { DiscordVersionsService } from './discord-versions.service';
 
 @Injectable()
 export class VersionService {
@@ -15,6 +16,7 @@ export class VersionService {
 		private readonly twitch: TwitchVersionsService,
 		private readonly warcraft: WarcraftVersionsService,
 		private readonly coworking: CoworkingVersionsService,
+		private readonly discord: DiscordVersionsService,
 		private readonly cacheService: CacheService,
 	) {}
 
@@ -42,6 +44,10 @@ export class VersionService {
 		return await this.coworking.getVersions();
 	}
 
+	private async discordVersion(): Promise<unknown> {
+		return await this.discord.getVersions();
+	}
+
 	async generateVersions(): Promise<unknown> {
 		const cacheKey = `${versionFolder}:${VersionCache.AZKABANGATEWAY}`;
 		const inCache = await this.cacheService.inCache(cacheKey);
@@ -52,6 +58,7 @@ export class VersionService {
 			const twitch = await this.twitchVersion();
 			const warcraft = await this.warcraftVersion();
 			const coworking = await this.coworkingVersion();
+			const discord = await this.discordVersion();
 			//
 			const versions = {
 				gateway,
@@ -60,6 +67,7 @@ export class VersionService {
 				twitch,
 				warcraft,
 				coworking,
+				discord,
 			};
 			//
 			await this.cacheService.setKey(cacheKey, versions);

@@ -35,4 +35,7 @@ export enum VersionCache {
 	WARCRAFTAPI = 'warcraft.api',
 	WARCRAFTRAIDER = 'warcraft.raider',
 	WARCRAFTAUDIT = 'warcraft.audit',
+	//
+	DISCORDASCENDJOINBOT = 'discord.ascendjoinbot',
+	DISCORDASCENDAPPLYBOT = 'discord.ascendapplybot',
 }
