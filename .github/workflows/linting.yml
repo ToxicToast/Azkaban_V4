@@ -1,16 +1,22 @@
-name: Renovate
+name: Check Format and Linting
 
 on:
-    push:
-        branches: [renovate/**/*, renovate/*]
-
-env:
-    NX_BRANCH: ${GITHUB_REF##*/}
+    workflow_call:
+        inputs:
+            max-parallel:
+                required: true
+                type: string
+            branch:
+                required: true
+                type: string
+            node-version:
+                required: true
+                type: string
 
 jobs:
-    Feature:
+    build:
         runs-on: ubuntu-24.04
-
+        name: 'Check Format and Linting'
         steps:
             - uses: actions/checkout@v4
               with:
@@ -21,7 +27,7 @@ jobs:
             - name: 📦 Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 21
+                  node-version: ${{ inputs.node-version }}
 
             - name: 📦 Install dependencies
               run: npm install
@@ -33,13 +39,4 @@ jobs:
               run: npm run nx format:check
 
             - name: 🚀 Lint Apps
-              run: npm run nx affected:lint --parallel --maxParallel=3
-
-            - name: 🚀 Test Apps
-              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=3
-
-            - name: 🚀 e2e Apps
-              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=3
-
-            - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=3
+              run: npm run nx affected:lint --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
