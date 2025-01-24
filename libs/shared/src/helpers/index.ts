@@ -1,2 +1,2 @@
 export * from './uuid.helpers';
-// export * from './telemetry.helper';
+export * from './telemetry.helper';

@@ -1,20 +1,13 @@
-# Stufe 1: Build-Image
-FROM docker.io/node:22-alpine as build
+FROM docker.io/node:23-alpine as build
 WORKDIR /app
 COPY dist/apps/gateway .
 COPY package*.json ./
 RUN npm install --omit=dev
 
-# Stufe 2: Produktions-Image
 
-ENV APP_VERSION = local
-
-FROM docker.io/node:22-alpine
+FROM docker.io/node:23-alpine
 WORKDIR /app
 COPY --from=build /app /app
-
-# Expose Port
 EXPOSE 3000
-
-# Entry Point
+ENV APP_VERSION = local
 CMD [ "node", "main.js" ]

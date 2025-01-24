@@ -1,21 +1,55 @@
-export const AppConfig = {
-	environment: process.env.APP_VERSION,
+type EnvironmentConfig = {
+	environment: string;
 	redis: {
-		redisHost: process.env.REDIS_HOST,
-		redisPort: Number(process.env.REDIS_PORT),
-		redisPassword: process.env.REDIS_PASSWORD,
+		redisHost: string;
+		redisPort: number;
+		redisPassword: string;
+	};
+	circuit: {
+		timeout: number;
+	};
+	health: {
+		memoryRSSTreshold: number;
+		memoryHeapTreshold: number;
+	};
+	broker: {
+		brokerHost: string;
+		brokerPort: number;
+		brokerUsername: string;
+		brokerPassword: string;
+	};
+};
+
+export const AppConfig: EnvironmentConfig = {
+	environment: process.env.APP_VERSION ?? 'local',
+	redis: {
+		redisHost: process.env.REDIS_HOST ?? 'localhost',
+		redisPort: process.env.REDIS_PORT
+			? Number(process.env.REDIS_PORT)
+			: 6379,
+		redisPassword: process.env.REDIS_PASSWORD ?? '',
 	},
 	circuit: {
-		timeout: Number(process.env.CIRCUIT_BREAKER_TIMEOUT),
+		timeout: process.env.CIRCUIT_BREAKER_TIMEOUT
+			? Number(process.env.CIRCUIT_BREAKER_TIMEOUT)
+			: 10000,
 	},
 	health: {
-		memoryRSSTreshold: Number(process.env.MEMORY_RSS_TRESHOLD),
-		memoryHeapTreshold: Number(process.env.MEMORY_HEAP_TRESHOLD),
+		memoryRSSTreshold: process.env.MEMORY_RSS_TRESHOLD
+			? Number(process.env.MEMORY_RSS_TRESHOLD)
+			: 157286400,
+		memoryHeapTreshold: process.env.MEMORY_HEAP_TRESHOLD
+			? Number(process.env.MEMORY_HEAP_TRESHOLD)
+			: 157286400,
 	},
 	broker: {
-		brokerHost: process.env.BROKER_HOST,
-		brokerPort: Number(process.env.BROKER_PORT),
-		brokerUsername: process.env.BROKER_USERNAME,
-		brokerPassword: process.env.BROKER_PASSWORD,
+		brokerHost: process.env.BROKER_HOST ?? 'localhost',
+		brokerPort: process.env.BROKER_PORT
+			? Number(process.env.BROKER_PORT)
+			: 9092,
+		brokerUsername: process.env.BROKER_USERNAME ?? 'admin',
+		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
 	},
 };
+
+console.error('AppConfig', AppConfig);
