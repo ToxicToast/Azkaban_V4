@@ -30,16 +30,16 @@ jobs:
               run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🚀 Check Format
-              run: npm run nx format:check
+              run: npx nx format:check
 
             - name: 🚀 Lint Apps
-              run: npm run nx affected:lint --parallel --maxParallel=3
+              run: npx nx affected:lint --parallel --maxParallel=3
 
             - name: 🚀 Test Apps
-              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=3
+              run: npx nx affected:test --passWithNoTests --parallel --maxParallel=3
 
             - name: 🚀 e2e Apps
-              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=3
+              run: npx nx affected:e2e --passWithNoTests --parallel --maxParallel=3
 
             - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=3
+              run: npx nx affected:build --parallel --maxParallel=3

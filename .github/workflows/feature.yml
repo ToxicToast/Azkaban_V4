@@ -101,10 +101,10 @@ jobs:
               run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🏗 Build Docker Images
-              run: npm run nx affected -t docker-build --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }} --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
+              run: npx nx affected -t docker-build --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }} --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
             - name: 🏗 Push Docker Images
-              run: npm run affected -t docker-push --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }} --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
+              run: npx nx affected -t docker-push --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }} --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
     notify:
         needs: [docker]

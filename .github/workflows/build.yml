@@ -36,4 +36,4 @@ jobs:
               run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
+              run: npx nx affected:build --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}

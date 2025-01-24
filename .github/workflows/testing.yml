@@ -37,7 +37,7 @@ jobs:
               run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🚀 Test Apps
-              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
+              run: npx nx affected:test --passWithNoTests --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
 
             - name: 🚀 e2e Apps
-              run: npm run nx affected:e2e --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
+              run: npx nx affected:e2e --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}

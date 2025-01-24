@@ -36,7 +36,7 @@ jobs:
               run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🚀 Check Format
-              run: npm run nx format:check
+              run: npx nx format:check
 
             - name: 🚀 Lint Apps
-              run: npm run nx affected:lint --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
+              run: npx nx affected:lint --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
