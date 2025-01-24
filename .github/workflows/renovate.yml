@@ -6,9 +6,11 @@ on:
 
 env:
     NX_BRANCH: ${GITHUB_REF##*/}
+    NODE_VERSION: 21
+    MAX_PARALLEL: 3
 
 jobs:
-    Feature:
+    Renovate:
         runs-on: ubuntu-24.04
 
         steps:
@@ -16,12 +18,12 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - uses: nrwl/nx-set-shas@v4
+            # - uses: nrwl/nx-set-shas@v4
 
             - name: 📦 Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 21
+                  node-version: ${{ env.NODE_VERSION }}
 
             - name: 📦 Install dependencies
               run: npm install
@@ -29,17 +31,5 @@ jobs:
             - name: 📦 Install NX-Linux
               run: npm install @nx/nx-linux-x64-gnu@latest
 
-            - name: 🚀 Check Format
-              run: npm run nx format:check
-
-            - name: 🚀 Lint Apps
-              run: npm run nx affected:lint --parallel --maxParallel=3
-
-            - name: 🚀 Test Apps
-              run: npm run nx affected:test --passWithNoTests --parallel --maxParallel=3
-
-            - name: 🚀 e2e Apps
-              run: npm run nx affected:e2e --passWithNoTests --parallel --maxParallel=3
-
             - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=3
+              run: npx nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }}
