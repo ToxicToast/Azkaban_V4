@@ -29,7 +29,11 @@ import {
 	WarcraftRaiderTopicArray,
 	CoworkingTasksTopicArray,
 	WarcraftAuditTopicArray,
+	AzkabanWebhookTopicArray,
+	DiscordAscendApplyBotTopicArray,
+	DiscordAscendJoinBotTopicArray,
 } from '@azkaban/shared';
+import { AppConfig } from '../../config';
 
 @Module({
 	imports: [
@@ -38,8 +42,10 @@ import {
 			{
 				clientId: 'gateway',
 				groupId: 'gateway-consumer',
-				brokerHost: process.env.BROKER_HOST,
-				brokerPort: Number(process.env.BROKER_PORT),
+				brokerHost: AppConfig.broker.brokerHost,
+				brokerPort: AppConfig.broker.brokerPort,
+				brokerUsername: AppConfig.broker.brokerUsername,
+				brokerPassword: AppConfig.broker.brokerPassword,
 			},
 			[
 				...AzkabanAuthTopicArray,
@@ -49,6 +55,7 @@ import {
 				...AzkabanNotificationTopicArray,
 				...AzkabanSSETopicArray,
 				...AzkabanUserTopicArray,
+				...AzkabanWebhookTopicArray,
 				...FoodFolioCategoryTopicArray,
 				...FoodFolioCompanyTopicArray,
 				...FoodFolioItemTopicArray,
@@ -70,7 +77,10 @@ import {
 				...WarcraftRaiderTopicArray,
 				...WarcraftAuditTopicArray,
 				...CoworkingTasksTopicArray,
+				...DiscordAscendApplyBotTopicArray,
+				...DiscordAscendJoinBotTopicArray,
 			],
+			AppConfig.environment,
 		),
 	],
 })

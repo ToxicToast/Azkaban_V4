@@ -7,4 +7,7 @@ export interface UserAnemic extends Anemic {
 	readonly banned_at: Nullable<Date>;
 	readonly activated_at: Nullable<Date>;
 	readonly loggedin_at: Nullable<Date>;
+	readonly isBanned: boolean;
+	readonly isActivated: boolean;
+	readonly isLoggedin: boolean;
 }

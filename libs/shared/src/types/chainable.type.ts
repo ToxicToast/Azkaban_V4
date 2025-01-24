@@ -1,1 +1,1 @@
-export type ChainableType<LeftType, RightType> = LeftType & RightType;
+export type Chainable<LeftType, RightType> = LeftType & RightType;

@@ -1,10 +1,17 @@
 import { INestApplication, Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
+import { TelemetryHelper } from '@azkaban/shared';
+import { AppConfig } from './config';
+
+const telemetry = TelemetryHelper(
+	AppConfig.telemetry,
+	'gateway',
+	AppConfig.environment,
+);
 
 async function createApp(): Promise<INestApplication> {
 	return await NestFactory.create(AppModule);
@@ -34,18 +41,26 @@ function configureCors(app: INestApplication): void {
 }
 
 async function startApp(app: INestApplication): Promise<void> {
-	const port = process.env.PORT ?? 3000;
+	const port = AppConfig.port;
 	await app.listen(port);
 	Logger.log(`🚀 Listening on Port: ${port}`);
 }
 
 async function bootstrap() {
+	telemetry.start();
 	const app = await createApp();
 	configureApp(app);
 	addModules(app);
 	configureCors(app);
 	await startApp(app);
-	Logger.log(`🚀 Gateway is running`);
-	Logger.log(`🚀 Version: ${process.env.APP_VERSION}`);
+	Logger.log(`🚀 Dementor is running`);
+	Logger.log(`🚀 Version: ${AppConfig.environment}`);
 }
-bootstrap().catch((err) => Logger.error(err));
+bootstrap().catch((err) => {
+	Logger.error(err);
+	telemetry
+		.shutdown()
+		.then(() => Logger.log('Tracing terminated'))
+		.catch((error) => Logger.error('Error terminating tracing', error))
+		.finally(() => process.exit(0));
+});

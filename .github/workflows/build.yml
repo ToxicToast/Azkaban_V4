@@ -28,13 +28,12 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ inputs.node-version }}
-                  cache: 'npm'
-
-            - name: 📦 Install NX-Linux
-              run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 📦 Install dependencies
               run: npm install
+
+            - name: 📦 Install NX-Linux
+              run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🚀 Build Apps
               run: npx nx affected:build --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}

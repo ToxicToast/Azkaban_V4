@@ -21,6 +21,15 @@ export class UserAggregate implements Domain<UserAnemic> {
 	isDeleted(): boolean {
 		return !!this.deleted_at;
 	}
+	isBanned(): boolean {
+		return !!this.banned_at;
+	}
+	isActivated(): boolean {
+		return !!this.activated_at;
+	}
+	isLoggedin(): boolean {
+		return !!this.loggedin_at;
+	}
 
 	toAnemic(): UserAnemic {
 		return {
@@ -36,6 +45,9 @@ export class UserAggregate implements Domain<UserAnemic> {
 			deleted_at: this.deleted_at,
 			isUpdated: this.isUpdated(),
 			isDeleted: this.isDeleted(),
+			isBanned: this.isBanned(),
+			isActivated: this.isActivated(),
+			isLoggedin: this.isLoggedin(),
 		};
 	}
 

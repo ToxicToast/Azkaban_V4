@@ -9,6 +9,7 @@ export class AuthService {
 				username: username,
 				pasword: password,
 			},
+			token: '',
 		};
 	}
 

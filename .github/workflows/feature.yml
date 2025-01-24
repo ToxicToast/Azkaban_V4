@@ -41,6 +41,10 @@ jobs:
               run: |
                   echo "${{ steps.taggerDryRun.outputs.new_tag }}"
 
+            - name: 🪐 Output Branch
+              run: |
+                  echo "${{ steps.extract_branch.outputs.branch }}"
+
     linting:
         needs: [prepare]
         uses: ./.github/workflows/linting.yml
@@ -52,7 +56,6 @@ jobs:
 
     testing:
         needs: [prepare]
-        name: 'Test Apps'
         uses: ./.github/workflows/testing.yml
         with:
             branch: ${{ needs.prepare.outputs.branch }}
@@ -88,14 +91,13 @@ jobs:
             - name: 📦 Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 21
-                  cache: 'npm'
-
-            - name: 📦 Install NX-Linux
-              run: npm install @nx/nx-linux-x64-gnu@latest
+                  node-version: ${{ needs.prepare.outputs.node_version }}
 
             - name: 📦 Install dependencies
               run: npm install
+
+            - name: 📦 Install NX-Linux
+              run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🏗 Build Docker Images
               run: npx nx affected -t docker-build --base=${{ needs.prepare.outputs.branch }}~1 --head=${{ needs.prepare.outputs.branch }} --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CoworkingTasksTopics } from '@azkaban/shared';
+import { CoworkingTasksTopics, VersionCache } from '@azkaban/shared';
 import { QueryBus } from '@nestjs/cqrs';
 import { VersionQuery } from './queries';
 
@@ -9,7 +9,10 @@ export class CoworkingVersionsService {
 
 	private async tasksVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(CoworkingTasksTopics.VERSION),
+			new VersionQuery(
+				CoworkingTasksTopics.VERSION,
+				VersionCache.COWORKINGTASKS,
+			),
 		);
 	}
 

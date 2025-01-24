@@ -4,17 +4,13 @@
 
 <div align="center">
 
-[![Node Version](https://img.shields.io/static/v1?label=Node&message=21.2.0&color=purple&style=for-the-badge)](https://nodejs.org)
-[![npm Version](https://img.shields.io/static/v1?label=npm&message=10.9.0&color=purple&style=for-the-badge)](https://nodejs.org)
-[![Typescript Version](https://img.shields.io/static/v1?label=Typescript&message=5.7.2&color=purple&style=for-the-badge)](https://typescriptlang.org)
-[![NX Version](https://img.shields.io/static/v1?label=NX&message=20.1.4&color=purple&style=for-the-badge)](https://nx.dev)
+[![Node Version](https://img.shields.io/static/v1?label=Node&message=23.4.0&color=purple&style=for-the-badge)](https://nodejs.org)
+[![npm Version](https://img.shields.io/static/v1?label=npm&message=11.0.0&color=purple&style=for-the-badge)](https://nodejs.org)
+[![Typescript Version](https://img.shields.io/static/v1?label=Typescript&message=5.7.3&color=purple&style=for-the-badge)](https://typescriptlang.org)
+[![NX Version](https://img.shields.io/static/v1?label=NX&message=20.3.1&color=purple&style=for-the-badge)](https://nx.dev)
 ![GitHub package.json dynamic](https://img.shields.io/github/package-json/version/ToxicToast/Azkaban_V4?style=for-the-badge&label=VERSION&color=purple)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/ToxicToast/Azkaban_V4?style=for-the-badge&label=COMMITS&color=purple)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/ToxicToast/Azkaban_V4?style=for-the-badge&label=LAST%20COMMIT&color=purple)
-
-![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-errors?label=Base%20Errors&style=for-the-badge&color=purple)
-![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-helpers?label=Base%20Helpers&style=for-the-badge&color=purple)
-![NPM Version](https://img.shields.io/npm/v/%40toxictoast%2Fsleepyazkaban-base-types?label=Base%20Types&style=for-the-badge&color=purple)
 
 </div>
 
@@ -29,57 +25,61 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 
 - **Azkaban Services**
 
-    - Authentication Service
     - User Service
     - Group Service
     - Cronjob Service
+    - Email Service
+    - Notification Service
     - SSE Service
     - Webhook Service
-    - API Alerts Service
-    - Logging Service
 
 - **FoodFolio Services**
 
     - Category
     - Company
     - Location
-    - Item
-    - Item Detail
-    - Size
     - Type
-    - Item Detail
+    - Size
+    - Item
     - Item Variant
+    - Item Detail
     - Warehouse
     - Shoppinglist
-    - Recipelist
-    - Receipt
-        - Rewe
-        - Aldi
-    - Deals
-        - Rewe
 
 - **Twitch Services**
 
+    - Api Service
     - Bot Service
     - Viewer Service
     - Messages Service
-    - Channel Service
     - Streams Service
+    - Channel Service
 
 - **Warcraft Services**
 
-    - Api Service
     - Character Service
+    - Api Service
     - Raider IO Service
+    - WowAudit Service
 
 - **Co-Working Services**
+
     - Task Service
+
+- **UI Services**
+    - Admin UI
+    - Foodfolio UI
+    - CoWorking UI (Task List Overlay)
+    - Version UI (All Versions from API)
 
 ## In Development
 
-- API Gateway
+- Authentication Service
 
 ## Deployed Services
+
+- [API Gateway](https://api.toxictoast.de/)
+- [Authentication Service](https://api.toxictoast.de/)
 
 ## Infrastructure
 
@@ -93,6 +93,8 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 - ReactJS (UI)
 - Redux-Toolkit (State Management)
 - API Alerts (Alerting)
+- OpenTelemetry (Tracing)
+- SigNoz (Tracing - Visually)
 
 ## Gateway
 

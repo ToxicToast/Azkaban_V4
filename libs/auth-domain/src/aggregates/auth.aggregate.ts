@@ -21,23 +21,36 @@ export class AuthAggregate implements Domain<AuthAnemic> {
 	}
 
 	addGroup(group: GroupAggregate): void {
-		this.groups.push(group);
+		const found = this.groups.find(
+			(g) => g.toAnemic().id === group.toAnemic().id,
+		);
+		if (!found) {
+			this.groups.push(group);
+		}
 	}
 
 	banUser(): void {
-		this.user.updateBan(new Date());
+		if (!this.user.isBanned()) {
+			this.user.updateBan(new Date());
+		}
 	}
 
 	unbanUser(): void {
-		this.user.updateBan(null);
+		if (this.user.isBanned()) {
+			this.user.updateBan(null);
+		}
 	}
 
 	activateUser(): void {
-		this.user.updateActivation(new Date());
+		if (!this.user.isActivated()) {
+			this.user.updateActivation(new Date());
+		}
 	}
 
 	deactivateUser(): void {
-		this.user.updateActivation(null);
+		if (this.user.isActivated()) {
+			this.user.updateActivation(null);
+		}
 	}
 
 	loginUser(): void {

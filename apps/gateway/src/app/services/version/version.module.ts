@@ -7,6 +7,8 @@ import { FoodfolioVersionsService } from './foodfolio-versions.service';
 import { TwitchVersionsService } from './twitch-versions.service';
 import { WarcraftVersionsService } from './warcraft-versions.service';
 import { CoworkingVersionsService } from './coworking-versions.service';
+import { DiscordVersionsService } from './discord-versions.service';
+import { AppConfig } from '../../../config';
 
 export const CommandHandlers = [];
 export const EventHandlers = [];
@@ -20,13 +22,14 @@ export const QueryHandlers = [VersionQueryHandler];
 		...QueryHandlers,
 		{
 			provide: 'APP_VERSION',
-			useValue: process.env.APP_VERSION,
+			useValue: AppConfig.environment,
 		},
 		AzkabanVersionsService,
 		FoodfolioVersionsService,
 		TwitchVersionsService,
 		WarcraftVersionsService,
 		CoworkingVersionsService,
+		DiscordVersionsService,
 		VersionService,
 	],
 })

@@ -1,14 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CacheModule as BaseModule } from '@azkaban/shared';
+import { AppConfig } from '../../config';
 
 const global = true;
-const redis = {
-	redisHost: process.env.REDIS_HOST,
-	redisPort: Number(process.env.REDIS_PORT),
-	redisPassword: process.env.REDIS_PASSWORD,
-};
 
 @Module({
-	imports: [BaseModule.forRoot(global, redis)],
+	imports: [BaseModule.forRoot(global, AppConfig.redis)],
 })
 export class CacheModule {}

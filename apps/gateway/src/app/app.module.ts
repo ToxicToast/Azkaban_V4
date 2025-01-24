@@ -5,7 +5,7 @@ import { CacheModule } from './cache/cache.module';
 import { ServicesModule } from './services/services.module';
 import { CircuitModule } from './circuit/circuit.module';
 import { KafkaModule } from './kafka/kafka.module';
-import { CqrsModule } from '@nestjs/cqrs';
+import { CqrsModule } from './cqrs/cqrs.module';
 
 @Module({
 	imports: [
@@ -14,7 +14,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 		CacheModule,
 		CircuitModule,
 		KafkaModule,
-		CqrsModule.forRoot(),
+		CqrsModule,
 		ServicesModule,
 	],
 })

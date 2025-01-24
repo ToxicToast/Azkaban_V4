@@ -10,6 +10,7 @@ import {
 	FoodFolioSizeTopics,
 	FoodFolioTypeTopics,
 	FoodFolioWarehouseTopics,
+	VersionCache,
 } from '@azkaban/shared';
 import { QueryBus } from '@nestjs/cqrs';
 import { VersionQuery } from './queries';
@@ -20,61 +21,91 @@ export class FoodfolioVersionsService {
 
 	private async getFoodFolioCategoryVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioCategoryTopics.VERSION),
+			new VersionQuery(
+				FoodFolioCategoryTopics.VERSION,
+				VersionCache.FOODFOLIOCATEGORY,
+			),
 		);
 	}
 
 	private async getFoodFolioCompanyVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioCompanyTopics.VERSION),
+			new VersionQuery(
+				FoodFolioCompanyTopics.VERSION,
+				VersionCache.FOODFOLIOCOMPANY,
+			),
 		);
 	}
 
 	private async getFoodFolioLocationVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioLocationTopics.VERSION),
+			new VersionQuery(
+				FoodFolioLocationTopics.VERSION,
+				VersionCache.FOODFOLIOLOCATION,
+			),
 		);
 	}
 
 	private async getFoodFolioSizeVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioSizeTopics.VERSION),
+			new VersionQuery(
+				FoodFolioSizeTopics.VERSION,
+				VersionCache.FOODFOLIOSIZE,
+			),
 		);
 	}
 
 	private async getFoodFolioTypeVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioTypeTopics.VERSION),
+			new VersionQuery(
+				FoodFolioTypeTopics.VERSION,
+				VersionCache.FOODFOLIOTYPE,
+			),
 		);
 	}
 
 	private async getFoodFolioItemVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioItemTopics.VERSION),
+			new VersionQuery(
+				FoodFolioItemTopics.VERSION,
+				VersionCache.FOODFOLIOITEM,
+			),
 		);
 	}
 
 	private async getFoodFolioItemDetailVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioItemDetailTopics.VERSION),
+			new VersionQuery(
+				FoodFolioItemDetailTopics.VERSION,
+				VersionCache.FOODFOLIOITEMDETAIL,
+			),
 		);
 	}
 
 	private async getFoodFolioItemVariantVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioItemVariantTopics.VERSION),
+			new VersionQuery(
+				FoodFolioItemVariantTopics.VERSION,
+				VersionCache.FOODFOLIOITEMVARIANT,
+			),
 		);
 	}
 
 	private async getFoodFolioWarehouseVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioWarehouseTopics.VERSION),
+			new VersionQuery(
+				FoodFolioWarehouseTopics.VERSION,
+				VersionCache.FOODFOLIOWAREHOUSE,
+			),
 		);
 	}
 
 	private async getFoodFolioShoppingListVersion(): Promise<string> {
 		return await this.queryBus.execute(
-			new VersionQuery(FoodFolioShoppinglistTopics.VERSION),
+			new VersionQuery(
+				FoodFolioShoppinglistTopics.VERSION,
+				VersionCache.FOODFOLIOSHOPPINGLIST,
+			),
 		);
 	}
 
