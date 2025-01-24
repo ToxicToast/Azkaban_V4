@@ -3,10 +3,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { AzkabanAuthTopics, VersionRoutes } from '@azkaban/shared';
 import { VersionService } from './version.service';
 
-@Controller({
-	path: VersionRoutes.CONTROLLER,
-	version: '1',
-})
+@Controller(VersionRoutes.CONTROLLER)
 export class VersionController {
 	constructor(private readonly service: VersionService) {}
 
