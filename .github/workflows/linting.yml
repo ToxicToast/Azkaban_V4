@@ -1,4 +1,4 @@
-name: Build Apps
+name: Check Format and Linting
 
 on:
     workflow_call:
@@ -16,13 +16,13 @@ on:
 jobs:
     build:
         runs-on: ubuntu-24.04
-        name: 'Build Apps'
+        name: 'Check Format and Linting'
         steps:
             - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
 
-            # - uses: nrwl/nx-set-shas@v4
+            - uses: nrwl/nx-set-shas@v4
 
             - name: 📦 Setup Node.js
               uses: actions/setup-node@v4
@@ -35,5 +35,8 @@ jobs:
             - name: 📦 Install NX-Linux
               run: npm install @nx/nx-linux-x64-gnu@latest
 
-            - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}
+            - name: 🚀 Check Format
+              run: npm run nx format:check
+
+            - name: 🚀 Lint Apps
+              run: npm run nx affected:lint --parallel --maxParallel=${{ inputs.max-parallel }} --base=${{ inputs.branch }}~1 --head=${{ inputs.branch }}

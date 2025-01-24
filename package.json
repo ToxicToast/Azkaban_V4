@@ -11,7 +11,7 @@
 		"affected:lint": "nx affected:lint --parallel --maxParallel=3",
 		"affected:test": "nx affected:test --parallel --maxParallel=3 --passWithNoTests",
 		"lintstaged": "lint-staged",
-		"husky:scripts": "npm run format:check && npm run affected:lint && npm run affected:test && npm run lintstaged",
+		"husky:scripts": "npm run format:check && npm run affected:lint && npm run lintstaged",
 		"upgrade:workspace": "nx migrate latest",
 		"upgrade:migrations": "nx migrate --run-migrations",
 		"report": "nx report"

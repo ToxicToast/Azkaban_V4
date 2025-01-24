@@ -1,4 +1,4 @@
-name: Feature
+name: Versioning
 
 on:
     push:
@@ -9,32 +9,17 @@ env:
     MAX_PARALLEL: 3
 
 jobs:
-    Versioning:
+    prepare:
         runs-on: ubuntu-24.04
-
+        name: 'Prepare PR'
+        outputs:
+            version: ${{ steps.taggerDryRun.outputs.new_tag }}
+            node_version: ${{ env.NODE_VERSION }}
+            max_parallel: ${{ env.MAX_PARALLEL }}
         steps:
             - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-
-            - uses: nrwl/nx-set-shas@v4
-
-            - name: 📦 Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ env.NODE_VERSION }}
-
-            - name: 📦 Login into Docker
-              uses: docker/login-action@v3
-              with:
-                  username: ${{ secrets.DOCKERHUB_USERNAME }}
-                  password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-            - name: 📦 Install dependencies
-              run: npm install
-
-            - name: 📦 Install NX-Linux
-              run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🪐 Minor version for each merge (Dry Run)
               id: taggerDryRun
@@ -46,23 +31,95 @@ jobs:
                   PRE_RELEASE: true
                   DRY_RUN: true
 
-            - name: NX Report
-              run: npx nx report
+            - name: 🪐 Output Tag
+              run: |
+                  echo "${{ steps.taggerDryRun.outputs.new_tag }}"
 
-            - name: 🚀 Build Apps
-              run: npx nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main
+    linting:
+        needs: [prepare]
+        uses: ./.github/workflows/linting.yml
+        with:
+            branch: main
+            max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+            node-version: ${{ needs.prepare.outputs.node_version }}
+        secrets: inherit
+
+    testing:
+        needs: [prepare]
+        uses: ./.github/workflows/testing.yml
+        with:
+            branch: main
+            max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+            node-version: ${{ needs.prepare.outputs.node_version }}
+        secrets: inherit
+
+    building:
+        needs: [prepare]
+        uses: ./.github/workflows/build.yml
+        with:
+            branch: main
+            max-parallel: ${{ needs.prepare.outputs.max_parallel }}
+            node-version: ${{ needs.prepare.outputs.node_version }}
+        secrets: inherit
+
+    docker:
+        needs: [prepare, linting, testing, building]
+        runs-on: ubuntu-24.04
+        name: 'Publish Docker Image'
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - uses: nrwl/nx-set-shas@v4
+
+            - name: 📦 Login into Docker
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 21
+                  cache: 'npm'
+
+            - name: 📦 Install dependencies
+              run: npm install
+
+            - name: 📦 Install NX-Linux
+              run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🏗 Build Docker Images
-              run: npx nx affected -t docker-build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
+              run: npm run nx affected -t docker-build --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
             - name: 🏗 Push Docker Images
-              run: npx nx affected -t docker-push --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
+              run: npm run nx affected -t docker-push --base=main~1 --head=main --parallel --maxParallel=3 --VERSION=${{ needs.prepare.outputs.version }}
 
-            - name: 🏗 API Alerts Notify
+    notify:
+        needs: [docker]
+        runs-on: ubuntu-24.04
+        name: 'Notify'
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: 🪐 Minor version for each merge
+              id: taggerDryRun
+              uses: anothrNick/github-tag-action@1.71.0
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+                  WITH_V: true
+                  DEFAULT_BUMP: minor
+                  PRE_RELEASE: true
+
+            - name: API Alerts Notify
               uses: apialerts/notify-action@v2
               with:
                   api_key: ${{ secrets.API_ALERTS_KEY }}
                   message: '🚢 Feature - New Minor Version Released (${{ steps.taggerDryRun.outputs.new_tag }})'
-                  tags: 'Azkaban,Minor'
+                  tags: 'Azkaban,Feature'
                   link: 'https://github.com/ToxicToast/Azkaban_V4'
                   channel: 'cicd'
