@@ -1,5 +1,3 @@
-import { Logger } from '@nestjs/common';
-
 type EnvironmentConfig = {
 	port: number;
 	environment: string;
@@ -26,7 +24,7 @@ type EnvironmentConfig = {
 };
 
 export const AppConfig: EnvironmentConfig = {
-	port: process.env.PORT ? Number(process.env.PORT) : 3001,
+	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	database: {
 		databaseType: process.env.DATABASE_TYPE ?? 'postgres',
@@ -57,5 +55,3 @@ export const AppConfig: EnvironmentConfig = {
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
 	jwt: process.env.JWT_SECRET ?? 'jwtsecret',
 };
-
-Logger.debug(AppConfig, 'AppConfig');

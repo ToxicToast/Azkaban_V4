@@ -1,5 +1,3 @@
-import { Logger } from '@nestjs/common';
-
 type EnvironmentConfig = {
 	port: number;
 	environment: string;
@@ -57,5 +55,3 @@ export const AppConfig: EnvironmentConfig = {
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
 };
-
-Logger.debug(AppConfig, 'AppConfig');
