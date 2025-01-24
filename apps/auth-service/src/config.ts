@@ -1,12 +1,13 @@
 type EnvironmentConfig = {
+	port: number;
 	environment: string;
-	redis: {
-		redisHost: string;
-		redisPort: number;
-		redisPassword: string;
-	};
-	circuit: {
-		timeout: number;
+	database: {
+		databaseType: string;
+		databaseHost: string;
+		databasePort: number;
+		databaseUsername: string;
+		databasePassword: string;
+		databaseTable: string;
 	};
 	health: {
 		memoryRSSTreshold: number;
@@ -18,21 +19,22 @@ type EnvironmentConfig = {
 		brokerUsername: string;
 		brokerPassword: string;
 	};
+	telemetry: string;
+	jwt: string;
 };
 
 export const AppConfig: EnvironmentConfig = {
+	port: process.env.PORT ? Number(process.env.PORT) : 3001,
 	environment: process.env.APP_VERSION ?? 'local',
-	redis: {
-		redisHost: process.env.REDIS_HOST ?? 'localhost',
-		redisPort: process.env.REDIS_PORT
-			? Number(process.env.REDIS_PORT)
-			: 6379,
-		redisPassword: process.env.REDIS_PASSWORD ?? '',
-	},
-	circuit: {
-		timeout: process.env.CIRCUIT_BREAKER_TIMEOUT
-			? Number(process.env.CIRCUIT_BREAKER_TIMEOUT)
-			: 10000,
+	database: {
+		databaseType: process.env.DATABASE_TYPE ?? 'postgres',
+		databaseHost: process.env.DATABASE_HOST ?? '',
+		databasePort: process.env.DATABASE_PORT
+			? Number(process.env.DATABASE_PORT)
+			: 5432,
+		databaseUsername: process.env.DATABASE_USERNAME ?? 'root',
+		databasePassword: process.env.DATABASE_PASSWORD ?? 'root',
+		databaseTable: process.env.DATABASE_TABLE ?? 'azkaban',
 	},
 	health: {
 		memoryRSSTreshold: process.env.MEMORY_RSS_TRESHOLD
@@ -50,6 +52,6 @@ export const AppConfig: EnvironmentConfig = {
 		brokerUsername: process.env.BROKER_USERNAME ?? 'admin',
 		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
 	},
+	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
+	jwt: process.env.JWT_SECRET ?? 'jwtsecret',
 };
-
-console.error('AppConfig', AppConfig);

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HealthModule as BaseModule } from '@azkaban/shared';
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../../config';
 
 const global = false;
 

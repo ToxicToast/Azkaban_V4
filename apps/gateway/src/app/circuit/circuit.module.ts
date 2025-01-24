@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CircuitModule as BaseModule } from '@azkaban/shared';
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../../config';
 
 const global = true;
 const config = {

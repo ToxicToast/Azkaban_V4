@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
 import { HealthModule as BaseModule } from '@azkaban/shared';
+import { AppConfig } from '../../config';
 
 const global = false;
 const config = {
-	memoryRSSTreshold: Number(process.env.MEMORY_RSS_TRESHOLD),
-	memoryHeapTreshold: Number(process.env.MEMORY_HEAP_TRESHOLD),
+	memoryRSSTreshold: AppConfig.health.memoryRSSTreshold,
+	memoryHeapTreshold: AppConfig.health.memoryHeapTreshold,
 };
 const broker = {
-	brokerHost: process.env.BROKER_HOST,
-	brokerPort: Number(process.env.BROKER_PORT),
-	brokerUsername: process.env.BROKER_USERNAME,
-	brokerPassword: process.env.BROKER_PASSWORD,
+	brokerHost: AppConfig.broker.brokerHost,
+	brokerPort: AppConfig.broker.brokerPort,
+	brokerUsername: AppConfig.broker.brokerUsername,
+	brokerPassword: AppConfig.broker.brokerPassword,
 };
 
 @Module({

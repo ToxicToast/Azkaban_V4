@@ -5,11 +5,12 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
 import { TelemetryHelper } from '@azkaban/shared';
+import { AppConfig } from './config';
 
 const telemetry = TelemetryHelper(
-	process.env.TELEMETRY_URL,
+	AppConfig.telemetry,
 	'gateway',
-	process.env.APP_VERSION,
+	AppConfig.environment,
 );
 
 async function createApp(): Promise<INestApplication> {
@@ -40,7 +41,7 @@ function configureCors(app: INestApplication): void {
 }
 
 async function startApp(app: INestApplication): Promise<void> {
-	const port = process.env.PORT ?? 3000;
+	const port = AppConfig.port;
 	await app.listen(port);
 	Logger.log(`🚀 Listening on Port: ${port}`);
 }
@@ -53,7 +54,7 @@ async function bootstrap() {
 	configureCors(app);
 	await startApp(app);
 	Logger.log(`🚀 Dementor is running`);
-	Logger.log(`🚀 Version: ${process.env.APP_VERSION}`);
+	Logger.log(`🚀 Version: ${AppConfig.environment}`);
 }
 bootstrap().catch((err) => {
 	Logger.error(err);

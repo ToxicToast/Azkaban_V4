@@ -31,7 +31,7 @@ import {
 	WarcraftAuditTopicArray,
 	AzkabanWebhookTopicArray,
 } from '@azkaban/shared';
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../../config';
 
 @Module({
 	imports: [
