@@ -65,7 +65,7 @@
 		"@nestjs/platform-express": "^10.4.15",
 		"@nestjs/terminus": "^10.2.3",
 		"@nestjs/typeorm": "^10.0.2",
-		"@nx/nest": "20.3.1",
+		"@nx/nest": "20.3.3",
 		"axios": "^1.7.9",
 		"bcrypt": "^5.1.1",
 		"cache-manager": "^5.7.6",
