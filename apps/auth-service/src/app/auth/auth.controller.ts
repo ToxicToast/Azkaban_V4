@@ -3,7 +3,10 @@ import { AuthRoutes, AzkabanAuthTopics } from '@azkaban/shared';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 
-@Controller(AuthRoutes.CONTROLLER)
+@Controller({
+	path: AuthRoutes.CONTROLLER,
+	version: '1',
+})
 export class AuthController {
 	constructor(private readonly service: AuthService) {}
 
