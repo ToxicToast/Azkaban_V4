@@ -9,7 +9,7 @@ env:
     MAX_PARALLEL: 3
 
 jobs:
-    Feature:
+    PullRequest:
         runs-on: ubuntu-24.04
 
         steps:
