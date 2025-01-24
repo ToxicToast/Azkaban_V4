@@ -45,6 +45,9 @@ jobs:
               run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
               id: extract_branch
 
+            - name: NX Reset
+              run: npx nx reset
+
             - name: 🚀 Build Apps
               run: npx nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ steps.extract_branch.outputs.branch }}~1 --head=${{ steps.extract_branch.outputs.branch }}
 

@@ -40,6 +40,9 @@ jobs:
                   PRE_RELEASE: true
                   DRY_RUN: true
 
+            - name: NX Reset
+              run: npx nx reset
+
             - name: 🚀 Build Apps
               run: npx nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main
 
