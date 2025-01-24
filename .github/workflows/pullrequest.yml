@@ -2,7 +2,7 @@ name: Feature
 
 on:
     pull_request:
-        branches: [feature/**/*, feature/*, main]
+        branches: [main]
 
 env:
     NODE_VERSION: 21
