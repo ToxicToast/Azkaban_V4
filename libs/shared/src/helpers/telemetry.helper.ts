@@ -1,4 +1,4 @@
-import { Resource } from '@opentelemetry/resources';
+/*import { Resource } from '@opentelemetry/resources';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import {
 	ATTR_SERVICE_NAME,
@@ -34,3 +34,4 @@ export function TelemetryHelper(
 
 	return sdk;
 }
+*/

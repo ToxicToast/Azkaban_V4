@@ -1,4 +1,3 @@
-import { TelemetryHelper } from '@azkaban/shared';
 import { INestApplication, Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
@@ -6,12 +5,6 @@ import { AppModule } from './app/app.module';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
-
-const telemetry = TelemetryHelper(
-	process.env.TELEMETRY_URL,
-	'gateway',
-	process.env.APP_VERSION,
-);
 
 async function createApp(): Promise<INestApplication> {
 	return await NestFactory.create(AppModule);
@@ -47,7 +40,6 @@ async function startApp(app: INestApplication): Promise<void> {
 }
 
 async function bootstrap() {
-	telemetry.start();
 	const app = await createApp();
 	configureApp(app);
 	addModules(app);
@@ -58,9 +50,4 @@ async function bootstrap() {
 }
 bootstrap().catch((err) => {
 	Logger.error(err);
-	telemetry
-		.shutdown()
-		.then(() => Logger.log('Tracing terminated'))
-		.catch((error) => Logger.error('Error terminating tracing', error))
-		.finally(() => process.exit(0));
 });
