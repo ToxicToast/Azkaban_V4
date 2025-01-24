@@ -36,4 +36,4 @@ jobs:
               id: extract_branch
 
             - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ steps.extract_branch.outputs.branch }}~1 --head=${{ steps.extract_branch.outputs.branch }}
+              run: npx nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=${{ steps.extract_branch.outputs.branch }}~1 --head=${{ steps.extract_branch.outputs.branch }}

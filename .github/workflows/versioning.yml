@@ -41,13 +41,13 @@ jobs:
                   DRY_RUN: true
 
             - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main
+              run: npx nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main
 
             - name: 🏗 Build Docker Images
-              run: npm run nx affected -t docker-build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
+              run: npx nx affected -t docker-build --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
 
             - name: 🏗 Push Docker Images
-              run: npm run nx affected -t docker-push --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
+              run: npx nx affected -t docker-push --parallel --maxParallel=${{ env.MAX_PARALLEL }} --base=main~1 --head=main --VERSION=${{ steps.taggerDryRun.outputs.new_tag }}
 
             - name: 🏗 API Alerts Notify
               uses: apialerts/notify-action@v2

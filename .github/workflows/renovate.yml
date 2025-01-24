@@ -32,4 +32,4 @@ jobs:
               run: npm install @nx/nx-linux-x64-gnu@latest
 
             - name: 🚀 Build Apps
-              run: npm run nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }}
+              run: npx nx affected:build --parallel --maxParallel=${{ env.MAX_PARALLEL }}
