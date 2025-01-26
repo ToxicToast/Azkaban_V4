@@ -8,7 +8,6 @@ export enum VersionCache {
 	AZKABANGROUP = 'azkaban.group',
 	AZKABANCRONJOB = 'azkaban.cronjob',
 	AZKABANEMAIL = 'azkaban.email',
-	AZKABANNOTIFICATION = 'azkaban.notification',
 	AZKABANWEBHOOK = 'azkaban.webhook',
 	//
 	COWORKINGTASKS = 'coworking.tasks',

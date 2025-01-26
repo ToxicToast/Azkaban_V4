@@ -4,7 +4,6 @@ import {
 	AzkabanGroupTopics,
 	AzkabanUserTopics,
 	AzkabanCronjobTopics,
-	AzkabanNotificationTopics,
 	AzkabanEmailTopics,
 	AzkabanSSETopics,
 	AzkabanWebhookTopics,
@@ -68,15 +67,6 @@ export class AzkabanVersionsService {
 		);
 	}
 
-	private async notificationVersion(): Promise<string> {
-		return await this.queryBus.execute(
-			new VersionQuery(
-				AzkabanNotificationTopics.VERSION,
-				VersionCache.AZKABANNOTIFICATION,
-			),
-		);
-	}
-
 	private async webhookVersion(): Promise<string> {
 		return await this.queryBus.execute(
 			new VersionQuery(
@@ -87,13 +77,12 @@ export class AzkabanVersionsService {
 	}
 
 	async getVersions() {
+		const sse = await this.sseVersion();
 		const auth = await this.authVersion();
 		const user = await this.userVersion();
 		const group = await this.groupVersion();
 		const cronjob = await this.cronjobVersion();
 		const email = await this.emailVersion();
-		const notification = await this.notificationVersion();
-		const sse = await this.sseVersion();
 		const webhook = await this.webhookVersion();
 		//
 		return {
@@ -103,7 +92,6 @@ export class AzkabanVersionsService {
 			group,
 			cronjob,
 			email,
-			notification,
 			webhook,
 		};
 	}
