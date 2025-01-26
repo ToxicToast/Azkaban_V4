@@ -1,7 +1,7 @@
 {
-	"name": "sse",
+	"name": "sse-service",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "apps/sse/src",
+	"sourceRoot": "apps/sse-service/src",
 	"projectType": "application",
 	"tags": ["scope:application"],
 	"targets": {
@@ -22,21 +22,21 @@
 			"defaultConfiguration": "development",
 			"dependsOn": ["build"],
 			"options": {
-				"buildTarget": "sse:build",
+				"buildTarget": "sse-service:build",
 				"runBuildTargetDependencies": false
 			},
 			"configurations": {
 				"development": {
-					"buildTarget": "sse:build:development"
+					"buildTarget": "sse-service:build:development"
 				},
 				"production": {
-					"buildTarget": "sse:build:production"
+					"buildTarget": "sse-service:build:production"
 				}
 			}
 		},
 		"docker-build": {
 			"dependsOn": ["build"],
-			"command": "docker build -f apps/sse/Dockerfile . -t toxictoast/sse:{args.VERSION}"
+			"command": "docker build -f apps/sse-service/Dockerfile . -t toxictoast/sse:{args.VERSION}"
 		},
 		"docker-push": {
 			"command": "docker push toxictoast/sse:{args.VERSION}"

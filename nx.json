@@ -41,7 +41,7 @@
 			"options": {
 				"targetName": "test"
 			},
-			"exclude": ["apps/sse-e2e/**/*"]
+			"exclude": []
 		}
 	]
 }

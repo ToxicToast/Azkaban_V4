@@ -1,6 +1,6 @@
 FROM docker.io/node:23-alpine as build
 WORKDIR /app
-COPY dist/apps/sse .
+COPY dist/apps/sse-service .
 COPY package*.json ./
 RUN npm install --omit=dev
 

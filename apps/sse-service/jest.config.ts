@@ -1,5 +1,5 @@
 export default {
-	displayName: 'sse',
+	displayName: 'sse-service',
 	preset: '../../jest.preset.js',
 	testEnvironment: 'node',
 	transform: {
@@ -9,5 +9,5 @@ export default {
 		],
 	},
 	moduleFileExtensions: ['ts', 'js', 'html'],
-	coverageDirectory: '../../coverage/apps/sse',
+	coverageDirectory: '../../coverage/apps/sse-service',
 };
