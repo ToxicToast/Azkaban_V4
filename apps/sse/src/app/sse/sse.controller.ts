@@ -1,6 +1,7 @@
 import { Controller, Sse } from '@nestjs/common';
-import { SSERoutes } from '@azkaban/shared';
+import { AzkabanNotificationTopics, SSERoutes } from '@azkaban/shared';
 import { Observable, Subject } from 'rxjs';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @Controller({
 	path: SSERoutes.CONTROLLER,
@@ -18,6 +19,27 @@ export class SseController {
 				data,
 			},
 		});
+	}
+
+	private onSendNextEvent(event: string, data: unknown): void {
+		const messageEvent = this.transformToMessageEvent(event, data);
+		this.events$.next(messageEvent);
+	}
+
+	@EventPattern(AzkabanNotificationTopics.LOGIN)
+	onLogin(
+		@Payload('event') event: string,
+		@Payload('data') data: unknown,
+	): void {
+		this.onSendNextEvent(event, data);
+	}
+
+	@EventPattern(AzkabanNotificationTopics.REGISTER)
+	onRegister(
+		@Payload('event') event: string,
+		@Payload('data') data: unknown,
+	): void {
+		this.onSendNextEvent(event, data);
 	}
 
 	@Sse()
