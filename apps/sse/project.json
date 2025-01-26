@@ -39,7 +39,7 @@
 			"command": "docker build -f apps/sse/Dockerfile . -t toxictoast/sse:{args.VERSION}"
 		},
 		"docker-push": {
-			"command": "docker push toxictoast/dementor:{args.VERSION}"
+			"command": "docker push toxictoast/sse:{args.VERSION}"
 		}
 	}
 }
