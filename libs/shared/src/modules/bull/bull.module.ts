@@ -33,4 +33,16 @@ export class BullModule {
 			global,
 		};
 	}
+
+	static registerQueue(name: string): DynamicModule {
+		return {
+			module: BullModule,
+			imports: [
+				BaseModule.registerQueue({
+					name,
+				}),
+			],
+			exports: [BaseModule],
+		};
+	}
 }
