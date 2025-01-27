@@ -1,7 +1,7 @@
 {
-	"name": "sse",
+	"name": "cronjob-service",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "apps/sse/src",
+	"sourceRoot": "apps/cronjob-service/src",
 	"projectType": "application",
 	"tags": ["scope:application"],
 	"targets": {
@@ -22,24 +22,24 @@
 			"defaultConfiguration": "development",
 			"dependsOn": ["build"],
 			"options": {
-				"buildTarget": "sse:build",
+				"buildTarget": "cronjob-service:build",
 				"runBuildTargetDependencies": false
 			},
 			"configurations": {
 				"development": {
-					"buildTarget": "sse:build:development"
+					"buildTarget": "cronjob-service:build:development"
 				},
 				"production": {
-					"buildTarget": "sse:build:production"
+					"buildTarget": "cronjob-service:build:production"
 				}
 			}
 		},
 		"docker-build": {
 			"dependsOn": ["build"],
-			"command": "docker build -f apps/sse/Dockerfile . -t toxictoast/sse:{args.VERSION}"
+			"command": "docker build -f apps/cronjob-service/Dockerfile . -t toxictoast/cronjob:{args.VERSION}"
 		},
 		"docker-push": {
-			"command": "docker push toxictoast/sse:{args.VERSION}"
+			"command": "docker push toxictoast/cronjob:{args.VERSION}"
 		}
 	}
 }

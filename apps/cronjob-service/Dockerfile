@@ -1,9 +1,8 @@
 FROM docker.io/node:23-alpine as build
 WORKDIR /app
-COPY dist/apps/sse .
+COPY dist/apps/cronjob-service .
 COPY package*.json ./
 RUN npm install --omit=dev
-
 
 FROM docker.io/node:23-alpine
 WORKDIR /app

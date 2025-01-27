@@ -19,8 +19,8 @@
 		"appsDir": "apps",
 		"libsDir": "libs"
 	},
-	"nxCloudId": "672cec5ff66c74057ce60a3a",
-	"neverConnectToCloud": false,
+	"old_nxCloudId": "672cec5ff66c74057ce60a3a",
+	"neverConnectToCloud": true,
 	"plugins": [
 		{
 			"plugin": "@nx/webpack/plugin",
@@ -41,7 +41,7 @@
 			"options": {
 				"targetName": "test"
 			},
-			"exclude": ["apps/sse-e2e/**/*"]
+			"exclude": []
 		}
 	]
 }

@@ -1,12 +1,8 @@
-import { Controller, Sse } from '@nestjs/common';
-import { SSERoutes } from '@azkaban/shared';
+import { Injectable } from '@nestjs/common';
 import { Observable, Subject } from 'rxjs';
 
-@Controller({
-	path: SSERoutes.CONTROLLER,
-	version: '1',
-})
-export class SseController {
+@Injectable()
+export class SseService {
 	private readonly events$ = new Subject<MessageEvent>();
 
 	private transformToMessageEvent(
@@ -20,13 +16,12 @@ export class SseController {
 		});
 	}
 
-	private onSendNextEvent(event: string, data: unknown): void {
+	onSendNextEvent<DataType>(event: string, data: DataType): void {
 		const messageEvent = this.transformToMessageEvent(event, data);
 		this.events$.next(messageEvent);
 	}
 
-	@Sse()
-	onEvents(): Observable<MessageEvent> {
+	getObservable(): Observable<MessageEvent<unknown>> {
 		return this.events$.asObservable();
 	}
 }

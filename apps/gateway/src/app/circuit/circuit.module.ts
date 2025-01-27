@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { CircuitModule as BaseModule } from '@azkaban/shared';
 import { AppConfig } from '../../config';
 
-const global = true;
 const config = {
 	name: 'gateway',
 	slidingWindowSize: 6,
@@ -17,6 +16,6 @@ const config = {
 };
 
 @Module({
-	imports: [BaseModule.forRoot(global, config)],
+	imports: [BaseModule.forRoot(true, config)],
 })
 export class CircuitModule {}
