@@ -17,6 +17,7 @@ type EnvironmentConfig = {
 		brokerPassword: string;
 	};
 	telemetry: string;
+	gateway: string;
 };
 
 export const AppConfig: EnvironmentConfig = {
@@ -46,4 +47,5 @@ export const AppConfig: EnvironmentConfig = {
 		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
+	gateway: process.env.GATEWAY_URL ?? 'http://localhost:3000/api/v1',
 };
