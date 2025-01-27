@@ -4,6 +4,7 @@ import { MetricsModule } from './metrics/metrics.module';
 import { VersionModule } from './version/version.module';
 import { CronjobModule } from './cronjob/cronjob.module';
 import { QueueModule } from './queue/queue.module';
+import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({
 	imports: [
@@ -11,6 +12,7 @@ import { QueueModule } from './queue/queue.module';
 		MetricsModule,
 		VersionModule,
 		QueueModule,
+		ScheduleModule,
 		CronjobModule,
 	],
 })
