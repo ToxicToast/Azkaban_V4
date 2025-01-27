@@ -19,7 +19,7 @@
 		"appsDir": "apps",
 		"libsDir": "libs"
 	},
-	"nxCloudId": "672cec5ff66c74057ce60a3a",
+	"old_nxCloudId": "672cec5ff66c74057ce60a3a",
 	"neverConnectToCloud": true,
 	"plugins": [
 		{
