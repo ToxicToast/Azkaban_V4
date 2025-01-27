@@ -2,6 +2,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { BrokerConfig } from './broker.config';
 import { KafkaService } from './kafka.service';
+import { Partitioners } from 'kafkajs';
 
 @Module({})
 export class KafkaModule {
@@ -37,6 +38,10 @@ export class KafkaModule {
 							},
 							consumer: {
 								groupId: config.groupId,
+							},
+							producer: {
+								createPartitioner:
+									Partitioners.LegacyPartitioner,
 							},
 						},
 					},
