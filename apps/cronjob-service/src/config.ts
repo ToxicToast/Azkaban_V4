@@ -1,6 +1,11 @@
 type EnvironmentConfig = {
 	port: number;
 	environment: string;
+	redis: {
+		redisHost: string;
+		redisPort: number;
+		redisPassword: string;
+	};
 	health: {
 		memoryRSSTreshold: number;
 		memoryHeapTreshold: number;
@@ -17,6 +22,13 @@ type EnvironmentConfig = {
 export const AppConfig: EnvironmentConfig = {
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
+	redis: {
+		redisHost: process.env.REDIS_HOST ?? 'localhost',
+		redisPort: process.env.REDIS_PORT
+			? Number(process.env.REDIS_PORT)
+			: 6379,
+		redisPassword: process.env.REDIS_PASSWORD ?? '',
+	},
 	health: {
 		memoryRSSTreshold: process.env.MEMORY_RSS_TRESHOLD
 			? Number(process.env.MEMORY_RSS_TRESHOLD)
