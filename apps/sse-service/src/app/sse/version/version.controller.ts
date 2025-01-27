@@ -1,4 +1,4 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { CronjobEvents, SSERoutes } from '@azkaban/shared';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { SseService } from '../sse.service';
