@@ -1,5 +1,3 @@
-export enum CronjobEvents {
-	VERSION = 'azkaban.cronjob.events.version',
-}
+export enum CronjobEvents {}
 
 export const CronjobEventsArray = Object.values(CronjobEvents);
