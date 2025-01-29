@@ -34,7 +34,7 @@ function addModules(app: INestApplication): void {
 
 function configureCors(app: INestApplication): void {
 	app.enableCors({
-		origin: ['localhost', 'version.toxictoast.de'],
+		origin: ['http://localhost', 'https://version.toxictoast.de'],
 		maxAge: 3600,
 		optionsSuccessStatus: 200,
 	});
