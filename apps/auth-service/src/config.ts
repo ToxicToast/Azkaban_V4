@@ -19,6 +19,11 @@ type EnvironmentConfig = {
 		brokerUsername: string;
 		brokerPassword: string;
 	};
+	authorizer: {
+		url: string;
+		clientId: string;
+		clientSecret: string;
+	};
 	telemetry: string;
 	jwt: string;
 };
@@ -51,6 +56,11 @@ export const AppConfig: EnvironmentConfig = {
 			: 9092,
 		brokerUsername: process.env.BROKER_USERNAME ?? 'admin',
 		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
+	},
+	authorizer: {
+		url: process.env.AUTHORIZER_URL ?? 'localhost:8080',
+		clientId: process.env.AUTHORIZER_CLIENT_ID ?? '',
+		clientSecret: process.env.AUTHORIZER_CLIENT_SECRET ?? '',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
 	jwt: process.env.JWT_SECRET ?? 'jwtsecret',

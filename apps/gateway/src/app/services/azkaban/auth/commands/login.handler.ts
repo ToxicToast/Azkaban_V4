@@ -13,13 +13,13 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 	) {}
 
 	private createCircuitBreaker(command: LoginCommand) {
-		const { username, password } = command;
+		const { email, password } = command;
 		const topic = AzkabanAuthTopics.LOGIN;
 		//
 		const circuit = this.circuit.createCircuitBreaker(topic);
 		circuit.fn(async () => {
 			return await this.client
-				.send(topic, { username, password })
+				.send(topic, { email, password })
 				.toPromise();
 		});
 		return circuit.execute();

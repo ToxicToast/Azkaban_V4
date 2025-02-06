@@ -7,6 +7,7 @@ import {
 	LoginCommandHandler,
 	RegisterCommandHandler,
 } from './commands';
+import { ProfileQueryHandler } from './queries';
 
 export const CommandHandlers = [
 	ForgetPasswordCommandHandler,
@@ -14,7 +15,7 @@ export const CommandHandlers = [
 	RegisterCommandHandler,
 ];
 export const EventHandlers = [];
-export const QueryHandlers = [];
+export const QueryHandlers = [ProfileQueryHandler];
 
 @Module({
 	controllers: [AuthController],
