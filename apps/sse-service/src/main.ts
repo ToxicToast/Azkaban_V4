@@ -54,6 +54,19 @@ function configureApp(app: INestApplication): void {
 	});
 }
 
+function configureCors(app: INestApplication): void {
+	app.enableCors({
+		origin: [
+			'http://localhost:5173',
+			'http://localhost:4200',
+			'https://version.toxictoast.de',
+			'https://www.toxictoast.de',
+		],
+		maxAge: 3600,
+		optionsSuccessStatus: 200,
+	});
+}
+
 async function startApp(app: INestApplication): Promise<void> {
 	const port = AppConfig.port;
 	await app.startAllMicroservices();
@@ -66,6 +79,7 @@ async function bootstrap() {
 	const app = await createApp();
 	configureApp(app);
 	await createMicroservice(app);
+	configureCors(app);
 	await startApp(app);
 	Logger.log(`🚀 SSE-Service is running`);
 	Logger.log(`🚀 Version: ${AppConfig.environment}`);
