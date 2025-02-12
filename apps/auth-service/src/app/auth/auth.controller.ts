@@ -33,10 +33,7 @@ export class AuthController {
 	}
 
 	@MessagePattern(AzkabanAuthTopics.FORGET_PASSWORD)
-	async reset(
-		@Payload('email') email: string,
-		@Payload('username') username: string,
-	): Promise<unknown> {
-		return await this.service.reset(email, username);
+	async reset(@Payload('email') email: string): Promise<unknown> {
+		return await this.service.reset(email);
 	}
 }

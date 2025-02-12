@@ -5,6 +5,8 @@ import {
 	AuthToken,
 	User,
 } from '@authorizerdev/authorizer-js';
+import { ProfilePresenter } from '../presenter/profile.presenter';
+import { LoginPresenter } from '../presenter/login.presenter';
 
 @Injectable()
 export class AuthService {
@@ -21,22 +23,20 @@ export class AuthService {
 		});
 	}
 
-	async login(
-		email: string,
-		password: string,
-	): Promise<ApiResponse<AuthToken>> {
+	async login(email: string, password: string): Promise<unknown> {
 		const data = await this.instance.login({
 			email: email,
 			password: password,
 		});
-		return data;
+		const presenter = new LoginPresenter(data);
+		return presenter.transform();
 	}
 
 	async register(
 		email: string,
 		username: string,
 		password: string,
-	): Promise<ApiResponse<AuthToken>> {
+	): Promise<unknown> {
 		const data = await this.instance.signup({
 			email,
 			password,
@@ -44,23 +44,22 @@ export class AuthService {
 			nickname: username,
 			roles: ['User'],
 		});
+		const presenter = new LoginPresenter(data);
+		return presenter.transform();
+	}
+
+	async reset(email: string): Promise<unknown> {
+		const data = await this.instance.forgotPassword({
+			email,
+		});
 		return data;
 	}
 
-	async reset(email: string, username: string): Promise<unknown> {
-		return {
-			user: {
-				id: 'TEST-ID',
-				email: email,
-				username: username,
-			},
-		};
-	}
-
-	async profile(token: string): Promise<ApiResponse<User>> {
+	async profile(token: string): Promise<unknown> {
 		const data = await this.instance.getProfile({
 			Authorization: `Bearer ${token}`,
 		});
-		return data;
+		const presenter = new ProfilePresenter(data);
+		return presenter.transform();
 	}
 }
