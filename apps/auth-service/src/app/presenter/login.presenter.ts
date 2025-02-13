@@ -6,16 +6,16 @@ export class LoginPresenter {
 	public transform() {
 		return {
 			data: {
-				accessToken: this.token.data.access_token,
-				idToken: this.token.data.id_token,
+				accessToken: this.token.data?.access_token ?? null,
+				idToken: this.token.data?.id_token ?? null,
 				refreshToken: this.token.data?.refresh_token ?? null,
-				expiresIn: this.token.data.expires_in,
+				expiresIn: this.token.data?.expires_in ?? 0,
 				user: {
-					id: this.token.data.user?.id ?? null,
-					email: this.token.data.user?.email ?? null,
-					username: this.token.data.user?.nickname ?? null,
-					avatar: this.token.data.user?.picture ?? null,
-					roles: this.token.data.user?.roles ?? [],
+					id: this.token.data?.user?.id ?? null,
+					email: this.token.data?.user?.email ?? null,
+					username: this.token.data?.user?.nickname ?? null,
+					avatar: this.token.data?.user?.picture ?? null,
+					roles: this.token.data?.user?.roles ?? [],
 				},
 				config: {
 					shouldShowEmailOTP:
@@ -26,7 +26,7 @@ export class LoginPresenter {
 						this.token.data?.should_show_totp_screen ?? false,
 				},
 			},
-			error: this.token.errors,
+			error: this.token?.errors ?? [],
 		};
 	}
 }
