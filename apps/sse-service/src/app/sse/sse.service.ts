@@ -5,9 +5,9 @@ import { Observable, Subject } from 'rxjs';
 export class SseService {
 	private readonly events$ = new Subject<MessageEvent>();
 
-	private transformToMessageEvent(
+	private transformToMessageEvent<DataType>(
 		event: string,
-		data: unknown,
+		data: DataType,
 	): MessageEvent {
 		return new MessageEvent(event, {
 			data: {
@@ -17,7 +17,10 @@ export class SseService {
 	}
 
 	onSendNextEvent<DataType>(event: string, data: DataType): void {
-		const messageEvent = this.transformToMessageEvent(event, data);
+		const messageEvent = this.transformToMessageEvent<DataType>(
+			event,
+			data,
+		);
 		this.events$.next(messageEvent);
 	}
 
