@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LoginCommand } from './login.command';
-import { HttpException, Inject } from '@nestjs/common';
+import { HttpException, Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { AzkabanAuthTopics, CircuitService } from '@azkaban/shared';
 import { LoginDAO } from '../dao';
@@ -31,6 +31,7 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 				return res;
 			})
 			.catch((err) => {
+				Logger.error(err.message, err.stack, 'LoginCommandHandler');
 				throw new HttpException(err.message, err.status ?? 503);
 			});
 	}

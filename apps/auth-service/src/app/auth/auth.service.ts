@@ -1,10 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-	ApiResponse,
-	Authorizer,
-	AuthToken,
-	User,
-} from '@authorizerdev/authorizer-js';
+import { Authorizer } from '@authorizerdev/authorizer-js';
 import { ProfilePresenter } from '../presenter/profile.presenter';
 import { LoginPresenter } from '../presenter/login.presenter';
 
@@ -17,8 +12,8 @@ export class AuthService {
 		@Inject('AUTHORIZER_CLIENT_ID') private readonly clientId: string,
 	) {
 		this.instance = new Authorizer({
-			authorizerURL: url,
-			clientID: clientId,
+			authorizerURL: this.url,
+			clientID: this.clientId,
 			redirectURL: 'https://www.toxictoast.de',
 		});
 	}

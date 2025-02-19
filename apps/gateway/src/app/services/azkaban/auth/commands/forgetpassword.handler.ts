@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ForgetPasswordCommand } from './forgetpassword.command';
-import { HttpException, Inject } from '@nestjs/common';
+import { HttpException, Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { AzkabanAuthTopics, CircuitService } from '@azkaban/shared';
 
@@ -32,6 +32,11 @@ export class ForgetPasswordCommandHandler
 				return res;
 			})
 			.catch((err) => {
+				Logger.error(
+					err.message,
+					err.stack,
+					'ForgetPasswordCommandHandler',
+				);
 				throw new HttpException(err.message, err.status ?? 503);
 			});
 	}
