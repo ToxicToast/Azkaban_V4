@@ -25,8 +25,6 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 
 - **Azkaban Services**
 
-    - User Service
-    - Group Service
     - Email Service
     - Webhook Service
         - Zapier
@@ -69,19 +67,25 @@ Azkaban is a complete Rewrite of my Microservices at Home.
     - Admin UI
     - Foodfolio UI
     - CoWorking UI (Task List Overlay)
-    - Version UI (All Versions from API)
+    - Blog UI
 
 ## In Development
 
 - Azkaban Services
+- Twitch Services
 
 ## Deployed Services
 
 - [API Gateway](https://api.toxictoast.de/)
-- [Authentication Service](https://api.toxictoast.de/)
+- [Authentication Service](https://auth.toxictoast.de/)
 - [Cronjob Service](https://api.toxictoast.de/)
 - [SSE Service](https://sse.toxictoast.de/)
 - [Version UI](https://version.toxictoast.de/)
+- [Blog UI](https://www.toxictoast.de/)
+
+## Needs Refactoring
+
+- [User Service](https://api.toxictoast.de/)
 
 ## Infrastructure
 
