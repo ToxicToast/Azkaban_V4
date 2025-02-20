@@ -7,7 +7,7 @@
 [![Node Version](https://img.shields.io/static/v1?label=Node&message=23.4.0&color=purple&style=for-the-badge)](https://nodejs.org)
 [![npm Version](https://img.shields.io/static/v1?label=npm&message=11.0.0&color=purple&style=for-the-badge)](https://nodejs.org)
 [![Typescript Version](https://img.shields.io/static/v1?label=Typescript&message=5.7.3&color=purple&style=for-the-badge)](https://typescriptlang.org)
-[![NX Version](https://img.shields.io/static/v1?label=NX&message=20.3.1&color=purple&style=for-the-badge)](https://nx.dev)
+[![NX Version](https://img.shields.io/static/v1?label=NX&message=20.4.5&color=purple&style=for-the-badge)](https://nx.dev)
 ![GitHub package.json dynamic](https://img.shields.io/github/package-json/version/ToxicToast/Azkaban_V4?style=for-the-badge&label=VERSION&color=purple)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/ToxicToast/Azkaban_V4?style=for-the-badge&label=COMMITS&color=purple)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/ToxicToast/Azkaban_V4?style=for-the-badge&label=LAST%20COMMIT&color=purple)
