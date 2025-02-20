@@ -1,14 +1,6 @@
 type EnvironmentConfig = {
 	port: number;
 	environment: string;
-	database: {
-		databaseType: string;
-		databaseHost: string;
-		databasePort: number;
-		databaseUsername: string;
-		databasePassword: string;
-		databaseTable: string;
-	};
 	health: {
 		memoryRSSTreshold: number;
 		memoryHeapTreshold: number;
@@ -19,10 +11,13 @@ type EnvironmentConfig = {
 		brokerUsername: string;
 		brokerPassword: string;
 	};
-	authorizer: {
-		url: string;
+	twitch: {
+		userId: string;
 		clientId: string;
 		clientSecret: string;
+		accessToken: string;
+		refreshToken: string;
+		channels: Array<string>;
 	};
 	telemetry: string;
 };
@@ -30,16 +25,6 @@ type EnvironmentConfig = {
 export const AppConfig: EnvironmentConfig = {
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
-	database: {
-		databaseType: process.env.DATABASE_TYPE ?? 'postgres',
-		databaseHost: process.env.DATABASE_HOST ?? '',
-		databasePort: process.env.DATABASE_PORT
-			? Number(process.env.DATABASE_PORT)
-			: 5432,
-		databaseUsername: process.env.DATABASE_USERNAME ?? 'root',
-		databasePassword: process.env.DATABASE_PASSWORD ?? 'root',
-		databaseTable: process.env.DATABASE_TABLE ?? 'azkaban',
-	},
 	health: {
 		memoryRSSTreshold: process.env.MEMORY_RSS_TRESHOLD
 			? Number(process.env.MEMORY_RSS_TRESHOLD)
@@ -56,10 +41,13 @@ export const AppConfig: EnvironmentConfig = {
 		brokerUsername: process.env.BROKER_USERNAME ?? 'admin',
 		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
 	},
-	authorizer: {
-		url: process.env.AUTHORIZER_URL ?? 'localhost:8080',
-		clientId: process.env.AUTHORIZER_CLIENT_ID ?? '',
-		clientSecret: process.env.AUTHORIZER_CLIENT_SECRET ?? '',
+	twitch: {
+		userId: process.env.TWITCH_USER_ID ?? '',
+		clientId: process.env.TWITCH_CLIENT_ID ?? '',
+		clientSecret: process.env.TWITCH_CLIENT_SECRET ?? '',
+		accessToken: process.env.TWITCH_ACCESS_TOKEN ?? '',
+		refreshToken: process.env.TWITCH_REFRESH_TOKEN ?? '',
+		channels: process.env.TWITCH_CHANNELS.split(',') ?? [],
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
 };
