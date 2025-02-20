@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UserRoutes } from '@azkaban/shared';
 import { UserService } from './user.service';
 
@@ -12,5 +12,10 @@ export class UserController {
 	@Get(UserRoutes.INDEX)
 	async getList(): Promise<unknown> {
 		return await this.service.userList();
+	}
+
+	@Get(UserRoutes.BYID)
+	async getById(@Param('id') id: string): Promise<unknown> {
+		return await this.service.userById(id);
 	}
 }

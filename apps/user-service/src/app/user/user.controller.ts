@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { AzkabanUserTopics, UserRoutes } from '@azkaban/shared';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 
 @Controller({
@@ -13,5 +13,10 @@ export class UserController {
 	@MessagePattern(AzkabanUserTopics.LIST)
 	async list(): Promise<Array<unknown>> {
 		return await this.service.userList();
+	}
+
+	@MessagePattern(AzkabanUserTopics.ID)
+	async id(@Payload('id') id: string): Promise<unknown> {
+		return await this.service.userById(id);
 	}
 }
