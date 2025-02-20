@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LoginCommand } from './login.command';
-import { HttpException, Inject } from '@nestjs/common';
+import { HttpException, Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { AzkabanAuthTopics, CircuitService } from '@azkaban/shared';
 import { LoginDAO } from '../dao';
@@ -13,13 +13,13 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 	) {}
 
 	private createCircuitBreaker(command: LoginCommand) {
-		const { username, password } = command;
+		const { email, password } = command;
 		const topic = AzkabanAuthTopics.LOGIN;
 		//
 		const circuit = this.circuit.createCircuitBreaker(topic);
 		circuit.fn(async () => {
 			return await this.client
-				.send(topic, { username, password })
+				.send(topic, { email, password })
 				.toPromise();
 		});
 		return circuit.execute();
@@ -31,6 +31,7 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 				return res;
 			})
 			.catch((err) => {
+				Logger.error(err.message, err.stack, 'LoginCommandHandler');
 				throw new HttpException(err.message, err.status ?? 503);
 			});
 	}

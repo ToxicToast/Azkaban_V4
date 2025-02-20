@@ -1,20 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { ForgetPasswordDTO, LoginDTO, RegisterDTO } from './dto';
 import { LoginDAO, RegisterDAO, ForgetPasswordDAO } from './dao';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
 	ForgetPasswordCommand,
 	LoginCommand,
 	RegisterCommand,
 } from './commands';
+import { ProfileQuery } from './queries';
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly commandBus: CommandBus) {}
+	constructor(
+		private readonly commandBus: CommandBus,
+		private readonly queryBus: QueryBus,
+	) {}
 
 	async login(data: LoginDTO): Promise<LoginDAO> {
 		return await this.commandBus.execute(
-			new LoginCommand(data.username, data.password),
+			new LoginCommand(data.email, data.password),
 		);
 	}
 
@@ -28,5 +32,9 @@ export class AuthService {
 		return await this.commandBus.execute(
 			new ForgetPasswordCommand(data.email, data.username),
 		);
+	}
+
+	async profile(token: string): Promise<unknown> {
+		return await this.queryBus.execute(new ProfileQuery(token));
 	}
 }

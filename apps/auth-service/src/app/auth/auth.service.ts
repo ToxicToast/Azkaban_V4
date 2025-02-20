@@ -1,16 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { Authorizer } from '@authorizerdev/authorizer-js';
+import { ProfilePresenter } from '../presenter/profile.presenter';
+import { LoginPresenter } from '../presenter/login.presenter';
 
 @Injectable()
 export class AuthService {
-	async login(username: string, password: string): Promise<unknown> {
-		return {
-			user: {
-				id: 'TEST-ID',
-				username: username,
-				pasword: password,
-			},
-			token: '',
-		};
+	private readonly instance: Authorizer;
+
+	constructor(
+		@Inject('AUTHORIZER_URL') private readonly url: string,
+		@Inject('AUTHORIZER_CLIENT_ID') private readonly clientId: string,
+	) {
+		this.instance = new Authorizer({
+			authorizerURL: this.url,
+			clientID: this.clientId,
+			redirectURL: 'https://www.toxictoast.de',
+		});
+	}
+
+	async login(email: string, password: string): Promise<unknown> {
+		const data = await this.instance.login({
+			email: email,
+			password: password,
+		});
+		const presenter = new LoginPresenter(data);
+		return presenter.transform();
 	}
 
 	async register(
@@ -18,23 +32,29 @@ export class AuthService {
 		username: string,
 		password: string,
 	): Promise<unknown> {
-		return {
-			user: {
-				id: 'TEST-ID',
-				email: email,
-				username: username,
-				pasword: password,
-			},
-		};
+		const data = await this.instance.signup({
+			email,
+			password,
+			confirm_password: password,
+			nickname: username,
+			roles: ['User'],
+		});
+		const presenter = new LoginPresenter(data);
+		return presenter.transform();
 	}
 
-	async reset(email: string, username: string): Promise<unknown> {
-		return {
-			user: {
-				id: 'TEST-ID',
-				email: email,
-				username: username,
-			},
-		};
+	async reset(email: string): Promise<unknown> {
+		const data = await this.instance.forgotPassword({
+			email,
+		});
+		return data;
+	}
+
+	async profile(token: string): Promise<unknown> {
+		const data = await this.instance.getProfile({
+			Authorization: `Bearer ${token}`,
+		});
+		const presenter = new ProfilePresenter(data);
+		return presenter.transform();
 	}
 }

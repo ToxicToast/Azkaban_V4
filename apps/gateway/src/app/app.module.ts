@@ -6,6 +6,7 @@ import { ServicesModule } from './services/services.module';
 import { CircuitModule } from './circuit/circuit.module';
 import { KafkaModule } from './kafka/kafka.module';
 import { CqrsModule } from './cqrs/cqrs.module';
+import { JwtModule } from './jwt/jwt.module';
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { CqrsModule } from './cqrs/cqrs.module';
 		CircuitModule,
 		KafkaModule,
 		CqrsModule,
+		JwtModule,
 		ServicesModule,
 	],
 })

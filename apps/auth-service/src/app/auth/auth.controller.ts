@@ -12,10 +12,10 @@ export class AuthController {
 
 	@MessagePattern(AzkabanAuthTopics.LOGIN)
 	async login(
-		@Payload('username') username: string,
+		@Payload('email') email: string,
 		@Payload('password') password: string,
 	): Promise<unknown> {
-		return await this.service.login(username, password);
+		return await this.service.login(email, password);
 	}
 
 	@MessagePattern(AzkabanAuthTopics.REGISTER)
@@ -27,11 +27,13 @@ export class AuthController {
 		return await this.service.register(email, username, password);
 	}
 
+	@MessagePattern(AzkabanAuthTopics.PROFILE)
+	async profile(@Payload('token') token: string): Promise<unknown> {
+		return await this.service.profile(token);
+	}
+
 	@MessagePattern(AzkabanAuthTopics.FORGET_PASSWORD)
-	async reset(
-		@Payload('email') email: string,
-		@Payload('username') username: string,
-	): Promise<unknown> {
-		return await this.service.reset(email, username);
+	async reset(@Payload('email') email: string): Promise<unknown> {
+		return await this.service.reset(email);
 	}
 }
