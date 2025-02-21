@@ -92,6 +92,8 @@
 		"@opentelemetry/instrumentation-redis": "^0.46.1",
 		"@opentelemetry/sdk-node": "^0.57.2",
 		"@opentelemetry/sdk-trace-node": "^1.30.1",
+		"@toxictoast/azkaban-twitch-bot": "^0.0.1",
+		"@toxictoast/azkaban-twitch-bot-events": "^0.0.1",
 		"@willsoto/nestjs-prometheus": "^6.0.1",
 		"bullmq": "^5.41.3",
 		"cache-manager-redis-yet": "^5.1.5",

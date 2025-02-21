@@ -43,12 +43,7 @@ export function TelemetryHelper(
 		const traceExporter = new ConsoleSpanExporter();
 		const sdk = new NodeSDK({
 			traceExporter,
-			instrumentations: [
-				new NestInstrumentation(),
-				new HttpInstrumentation(),
-				new ExpressInstrumentation(),
-				new RedisInstrumentation(),
-			],
+			instrumentations: [],
 			resource: new Resource({
 				[ATTR_SERVICE_NAME]: serviceName + '-local',
 				[ATTR_SERVICE_VERSION]: serviceVersion,

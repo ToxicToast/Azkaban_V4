@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppConfig } from '../../config';
+import { BotService } from './bot.service';
+import { BotController } from './bot.controller';
+import { SSEService } from './sse.service';
+import { ViewerService } from './viewer.service';
 
 @Module({
-	controllers: [],
+	controllers: [BotController],
 	providers: [
 		{
 			provide: 'TWITCH_USER_ID',
@@ -28,6 +32,9 @@ import { AppConfig } from '../../config';
 			provide: 'TWITCH_CHANNELS',
 			useValue: AppConfig.twitch.channels,
 		},
+		SSEService,
+		ViewerService,
+		BotService,
 	],
 })
 export class BotModule {}
