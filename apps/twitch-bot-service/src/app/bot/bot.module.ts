@@ -32,6 +32,10 @@ import { ViewerService } from './viewer.service';
 			provide: 'TWITCH_CHANNELS',
 			useValue: AppConfig.twitch.channels,
 		},
+		{
+			provide: 'TWITCH_LOGGING',
+			useValue: AppConfig.twitch.logging,
+		},
 		SSEService,
 		ViewerService,
 		BotService,

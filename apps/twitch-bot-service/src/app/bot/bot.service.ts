@@ -12,9 +12,10 @@ export class BotService {
 		@Inject('TWITCH_ACCESS_TOKEN') private readonly accessToken: string,
 		@Inject('TWITCH_REFRESH_TOKEN') private readonly refreshToken: string,
 		@Inject('TWITCH_CHANNELS') private readonly channels: Array<string>,
+		@Inject('TWITCH_LOGGING') private readonly logging: boolean,
 	) {
 		this.toasty = new Bot({
-			logging: true,
+			logging: this.logging,
 			authentication: {
 				userId: this.userId,
 				clientId: this.clientId,

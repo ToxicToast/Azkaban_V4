@@ -18,6 +18,7 @@ type EnvironmentConfig = {
 		accessToken: string;
 		refreshToken: string;
 		channels: Array<string>;
+		logging: boolean;
 	};
 	telemetry: string;
 };
@@ -48,6 +49,7 @@ export const AppConfig: EnvironmentConfig = {
 		accessToken: process.env.TWITCH_ACCESS_TOKEN ?? '',
 		refreshToken: process.env.TWITCH_REFRESH_TOKEN ?? '',
 		channels: process.env.TWITCH_CHANNELS.split(',') ?? [],
+		logging: process.env.TWITCH_LOGGING === 'true' ? true : false,
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
 };
