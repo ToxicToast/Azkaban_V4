@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { CallbackController } from './callback.controller';
 import { AuthCallbackController } from './auth.controller';
 import { LoginCommandHandler } from './commands';
 
@@ -8,7 +7,7 @@ export const EventHandlers = [];
 export const QueryHandlers = [];
 
 @Module({
-	controllers: [CallbackController, AuthCallbackController],
+	controllers: [AuthCallbackController],
 	providers: [...CommandHandlers, ...EventHandlers, ...QueryHandlers],
 })
-export class CallbackModule {}
+export class CallbackAuthModule {}

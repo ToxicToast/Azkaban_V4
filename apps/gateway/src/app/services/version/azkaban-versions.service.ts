@@ -79,8 +79,6 @@ export class AzkabanVersionsService {
 	async getVersions() {
 		const sse = await this.sseVersion();
 		const auth = await this.authVersion();
-		const user = await this.userVersion();
-		const group = await this.groupVersion();
 		const cronjob = await this.cronjobVersion();
 		const email = await this.emailVersion();
 		const webhook = await this.webhookVersion();
@@ -88,8 +86,6 @@ export class AzkabanVersionsService {
 		return {
 			sse,
 			auth,
-			user,
-			group,
 			cronjob,
 			email,
 			webhook,

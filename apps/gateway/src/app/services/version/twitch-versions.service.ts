@@ -3,6 +3,8 @@ import {
 	TwitchApiTopics,
 	TwitchBotTopics,
 	TwitchChannelTopics,
+	TwitchFollowerTopics,
+	TwitchFollowsTopics,
 	TwitchMessageTopics,
 	TwitchStreamTopics,
 	TwitchViewerTopics,
@@ -63,6 +65,24 @@ export class TwitchVersionsService {
 		);
 	}
 
+	private async getFollowerVersion(): Promise<string> {
+		return await this.queryBus.execute(
+			new VersionQuery(
+				TwitchFollowerTopics.VERSION,
+				VersionCache.TWITCHFOLLOWER,
+			),
+		);
+	}
+
+	private async getFollowsVersion(): Promise<string> {
+		return await this.queryBus.execute(
+			new VersionQuery(
+				TwitchFollowsTopics.VERSION,
+				VersionCache.TWITCHFOLLOWS,
+			),
+		);
+	}
+
 	async getVersions() {
 		const api = await this.getApiVersion();
 		const bot = await this.getBotVersion();
@@ -70,6 +90,8 @@ export class TwitchVersionsService {
 		const message = await this.getMessageVersion();
 		const stream = await this.getStreamVersion();
 		const channel = await this.getChannelVersion();
+		const follower = await this.getFollowerVersion();
+		const follows = await this.getFollowsVersion();
 		//
 		return {
 			api,
@@ -78,6 +100,8 @@ export class TwitchVersionsService {
 			message,
 			stream,
 			channel,
+			follower,
+			follows,
 		};
 	}
 }

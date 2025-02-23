@@ -4,6 +4,7 @@ import { BotService } from './bot.service';
 import { BotController } from './bot.controller';
 import { SSEService } from './sse.service';
 import { ViewerService } from './viewer.service';
+import { MessageService } from './message.service';
 
 @Module({
 	controllers: [BotController],
@@ -39,6 +40,7 @@ import { ViewerService } from './viewer.service';
 		SSEService,
 		ViewerService,
 		BotService,
+		MessageService,
 	],
 })
 export class BotModule {}
