@@ -4,6 +4,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppConfig } from './config';
+import {
+	FastifyAdapter,
+	NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
@@ -12,7 +16,10 @@ const telemetry = TelemetryHelper(
 );
 
 async function createApp(): Promise<INestApplication> {
-	return await NestFactory.create(AppModule);
+	return await NestFactory.create<NestFastifyApplication>(
+		AppModule,
+		new FastifyAdapter(),
+	);
 }
 
 async function createMicroservice(app: INestApplication): Promise<void> {
