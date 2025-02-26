@@ -64,7 +64,7 @@ function configureApp(app: INestApplication): void {
 async function startApp(app: INestApplication): Promise<void> {
 	const port = AppConfig.port;
 	await app.startAllMicroservices();
-	await app.listen(port);
+	await app.listen(port, '0.0.0.0');
 	Logger.log(`🚀 Listening on Port: ${port}`);
 }
 
