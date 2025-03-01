@@ -1,4 +1,3 @@
-import { Optional } from '../types';
 import { Resource } from '@opentelemetry/resources';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import {
@@ -9,7 +8,7 @@ import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core'
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-
+import { FastifyOtelInstrumentation } from '@fastify/otel';
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis';
 
@@ -27,10 +26,22 @@ export function TelemetryHelper(
 		const sdk = new NodeSDK({
 			traceExporter,
 			instrumentations: [
-				new NestInstrumentation(),
-				new HttpInstrumentation(),
-				new ExpressInstrumentation(),
-				new RedisInstrumentation(),
+				new NestInstrumentation({
+					enabled: true,
+				}),
+				new HttpInstrumentation({
+					enabled: true,
+				}),
+				new ExpressInstrumentation({
+					enabled: true,
+				}),
+				new RedisInstrumentation({
+					enabled: true,
+				}),
+				new FastifyOtelInstrumentation({
+					servername: serviceName,
+					registerOnInitialization: true,
+				}),
 			],
 			resource: new Resource({
 				[ATTR_SERVICE_NAME]: serviceName,

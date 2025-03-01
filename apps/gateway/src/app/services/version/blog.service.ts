@@ -33,10 +33,8 @@ export class BlogVersionsService {
 		const comments = await this.blogComments();
 		//
 		return {
-			blog: {
-				news,
-				comments,
-			},
+			news,
+			comments,
 		};
 	}
 }

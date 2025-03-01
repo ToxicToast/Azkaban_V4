@@ -10,6 +10,7 @@ import compression from 'compression';
 import helmet from 'helmet';
 import { TelemetryHelper } from '@azkaban/shared';
 import { AppConfig } from './config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
@@ -39,6 +40,22 @@ function addModules(app: INestApplication): void {
 	app.use(cookieParser());
 }
 
+function configureSwagger(app: INestApplication): void {
+	const config = new DocumentBuilder()
+		.setTitle('Dementor')
+		.setVersion('v0.5.8')
+		.addBearerAuth()
+		.addOAuth2()
+		.build();
+	const document = SwaggerModule.createDocument(app, config);
+	//
+	SwaggerModule.setup('swagger', app, document);
+}
+
+function configureGuards(app: INestApplication): void {
+	//
+}
+
 function configureCors(app: INestApplication): void {
 	app.enableCors({
 		origin: [
@@ -63,6 +80,8 @@ async function bootstrap() {
 	const app = await createApp();
 	configureApp(app);
 	addModules(app);
+	configureSwagger(app);
+	configureGuards(app);
 	configureCors(app);
 	await startApp(app);
 	Logger.log(`🚀 Dementor is running`);
