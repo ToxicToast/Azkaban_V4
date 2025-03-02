@@ -1,7 +1,9 @@
 import { Controller, Get, HttpException, Res } from '@nestjs/common';
 import { PrometheusController } from '@willsoto/nestjs-prometheus';
 import { MetricsRoutes } from '../../routes';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller({
 	path: MetricsRoutes.CONTROLLER,
 	version: '1',
