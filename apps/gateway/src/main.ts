@@ -6,6 +6,7 @@ import compression from 'compression';
 import helmet from 'helmet';
 import { TelemetryHelper } from '@azkaban/shared';
 import { AppConfig } from './config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
@@ -14,7 +15,7 @@ const telemetry = TelemetryHelper(
 );
 
 async function createApp(): Promise<INestApplication> {
-	return await NestFactory.create(AppModule);
+	return await NestFactory.create<INestApplication>(AppModule);
 }
 
 function configureApp(app: INestApplication): void {
@@ -32,6 +33,22 @@ function addModules(app: INestApplication): void {
 	app.use(cookieParser());
 }
 
+function configureSwagger(app: INestApplication): void {
+	const config = new DocumentBuilder()
+		.setTitle('Dementor')
+		.setVersion('v0.5.8')
+		.addBearerAuth()
+		.addOAuth2()
+		.build();
+	const document = SwaggerModule.createDocument(app, config);
+	//
+	SwaggerModule.setup('swagger', app, document);
+}
+
+function configureGuards(app: INestApplication): void {
+	//
+}
+
 function configureCors(app: INestApplication): void {
 	app.enableCors({
 		origin: [
@@ -47,7 +64,7 @@ function configureCors(app: INestApplication): void {
 
 async function startApp(app: INestApplication): Promise<void> {
 	const port = AppConfig.port;
-	await app.listen(port);
+	await app.listen(port, '0.0.0.0');
 	Logger.log(`🚀 Listening on Port: ${port}`);
 }
 
@@ -56,6 +73,8 @@ async function bootstrap() {
 	const app = await createApp();
 	configureApp(app);
 	addModules(app);
+	configureSwagger(app);
+	configureGuards(app);
 	configureCors(app);
 	await startApp(app);
 	Logger.log(`🚀 Dementor is running`);

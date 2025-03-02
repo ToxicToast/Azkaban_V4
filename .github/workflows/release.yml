@@ -36,5 +36,5 @@ jobs:
                   api_key: ${{ secrets.API_ALERTS_KEY }}
                   message: '🚢 Feature - New Version Released (${{ steps.taggerDryRun.outputs.new_tag }})'
                   tags: 'Azkaban,Release'
-                  link: 'https://github.com/ToxicToast/Azkaban_V4'
+                  link: 'https://shortener.toxictoast.de/api/v1/redirect/HhVQo71i'
                   channel: 'cicd'

@@ -25,7 +25,6 @@ type EnvironmentConfig = {
 		clientSecret: string;
 	};
 	telemetry: string;
-	jwt: string;
 };
 
 export const AppConfig: EnvironmentConfig = {
@@ -63,5 +62,4 @@ export const AppConfig: EnvironmentConfig = {
 		clientSecret: process.env.AUTHORIZER_CLIENT_SECRET ?? '',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
-	jwt: process.env.JWT_SECRET ?? 'jwtsecret',
 };
