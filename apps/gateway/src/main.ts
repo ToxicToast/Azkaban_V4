@@ -1,8 +1,4 @@
 import { INestApplication, Logger, VersioningType } from '@nestjs/common';
-import {
-	FastifyAdapter,
-	NestFastifyApplication,
-} from '@nestjs/platform-fastify';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import cookieParser from 'cookie-parser';
@@ -19,10 +15,7 @@ const telemetry = TelemetryHelper(
 );
 
 async function createApp(): Promise<INestApplication> {
-	return await NestFactory.create<NestFastifyApplication>(
-		AppModule,
-		new FastifyAdapter(),
-	);
+	return await NestFactory.create<INestApplication>(AppModule);
 }
 
 function configureApp(app: INestApplication): void {
