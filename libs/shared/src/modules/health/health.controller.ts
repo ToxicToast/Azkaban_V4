@@ -10,9 +10,7 @@ import {
 } from '@nestjs/terminus';
 import { Transport } from '@nestjs/microservices';
 import { HealthRoutes } from '../../routes';
-import { SkipThrottle } from '@nestjs/throttler';
 
-@SkipThrottle()
 @Controller({
 	path: HealthRoutes.CONTROLLER,
 	version: '1',
