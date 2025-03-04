@@ -33,8 +33,22 @@ export class UserService {
 		});
 	}
 
-	async userById(id: string): Promise<Nullable<UserModel>> {
+	async userById(id: string): Promise<UserModel> {
 		const user = await this.infrastructureService.getUserById(id);
+		const presenter = new UserPresenter(user);
+		return presenter.transform();
+	}
+
+	async userCreate(
+		username: string,
+		email: string,
+		password: string,
+	): Promise<UserModel> {
+		const user = await this.infrastructureService.createUser({
+			username,
+			email,
+			password,
+		});
 		const presenter = new UserPresenter(user);
 		return presenter.transform();
 	}

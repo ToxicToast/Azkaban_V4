@@ -20,4 +20,13 @@ export class UserController {
 	async id(@Payload('id') id: string): Promise<Nullable<UserModel>> {
 		return await this.service.userById(id);
 	}
+
+	@MessagePattern(AzkabanUserTopics.CREATE)
+	async create(
+		@Payload('username') username: string,
+		@Payload('email') email: string,
+		@Payload('password') password: string,
+	): Promise<Nullable<UserModel>> {
+		return await this.service.userCreate(username, email, password);
+	}
 }
