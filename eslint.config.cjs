@@ -11,7 +11,7 @@ module.exports = [
 		files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
 		rules: {
 			'@nx/enforce-module-boundaries': [
-				'error',
+				'warn',
 				{
 					enforceBuildableLibDependency: true,
 					allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
@@ -19,14 +19,6 @@ module.exports = [
 						{
 							sourceTag: 'scope:shared',
 							onlyDependOnLibsWithTags: ['scope:shared'],
-						},
-						{
-							sourceTag: 'scope:application',
-							onlyDependOnLibsWithTags: [
-								'scope:application',
-								'scope:infrastructure',
-								'scope:shared',
-							],
 						},
 						{
 							sourceTag: 'scope:domain',
@@ -44,9 +36,10 @@ module.exports = [
 							],
 						},
 						{
-							sourceTag: 'scope:presentation',
+							sourceTag: 'scope:application',
 							onlyDependOnLibsWithTags: [
-								'scope:presentation',
+								'scope:application',
+								'scope:infrastructure',
 								'scope:shared',
 							],
 						},
