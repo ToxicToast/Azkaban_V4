@@ -1,9 +1,9 @@
 {
-	"name": "user-domain",
+	"name": "user-infrastructure",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "libs/user-domain/src",
+	"sourceRoot": "libs/user-infrastructure/src",
 	"projectType": "library",
-	"tags": ["scope:domain"],
+	"tags": ["scope:infrastructure"],
 	"targets": {
 		"test": {
 			"options": {
