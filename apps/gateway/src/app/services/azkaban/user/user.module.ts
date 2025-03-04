@@ -1,11 +1,19 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
-import { IdQueryHandler, ListQueryHandler } from './queries';
+import {
+	CreateQueryHandler,
+	IdQueryHandler,
+	ListQueryHandler,
+} from './queries';
 import { UserService } from './user.service';
 
 export const CommandHandlers = [];
 export const EventHandlers = [];
-export const QueryHandlers = [ListQueryHandler, IdQueryHandler];
+export const QueryHandlers = [
+	ListQueryHandler,
+	IdQueryHandler,
+	CreateQueryHandler,
+];
 
 @Module({
 	controllers: [UserController],

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { IdQuery, ListQuery } from './queries';
+import { CreateQuery, IdQuery, ListQuery } from './queries';
 import { UserDAO } from '@azkaban/user-infrastructure';
 import { Nullable } from '@azkaban/shared';
 
@@ -14,5 +14,15 @@ export class UserService {
 
 	async userById(id: string): Promise<Nullable<UserDAO>> {
 		return await this.queryBus.execute(new IdQuery(id));
+	}
+
+	async createUser(
+		username: string,
+		email: string,
+		password: string,
+	): Promise<UserDAO> {
+		return await this.queryBus.execute(
+			new CreateQuery(username, email, password),
+		);
 	}
 }

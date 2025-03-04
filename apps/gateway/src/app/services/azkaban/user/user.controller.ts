@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Nullable, UserRoutes } from '@azkaban/shared';
 import { UserService } from './user.service';
 import { UserDAO } from '@azkaban/user-infrastructure';
@@ -18,5 +18,14 @@ export class UserController {
 	@Get(UserRoutes.BYID)
 	async getById(@Param('id') id: string): Promise<Nullable<UserDAO>> {
 		return await this.service.userById(id);
+	}
+
+	@Post(UserRoutes.INDEX)
+	async create(
+		@Body('username') username: string,
+		@Body('email') email: string,
+		@Body('password') password: string,
+	): Promise<UserDAO> {
+		return await this.service.createUser(username, email, password);
 	}
 }
