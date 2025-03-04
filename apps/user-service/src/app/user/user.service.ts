@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Nullable } from '@azkaban/shared';
 import { UserPresenter } from './user.presenter';
 import { UserModel } from './user.model';
 import {
