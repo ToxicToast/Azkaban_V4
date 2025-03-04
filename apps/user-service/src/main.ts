@@ -7,7 +7,7 @@ import { AppConfig } from './config';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
-	'user-service',
+	AppConfig.name,
 	AppConfig.environment,
 );
 
@@ -25,7 +25,7 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 		transport: Transport.KAFKA,
 		options: {
 			client: {
-				clientId: 'user',
+				clientId: AppConfig.name,
 				brokers: [brokerUrl],
 				sasl:
 					environment !== 'local'
@@ -39,7 +39,7 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 				authenticationTimeout: 4000,
 			},
 			consumer: {
-				groupId: 'user-consumer',
+				groupId: AppConfig.name + '-consumer',
 			},
 		},
 	});
