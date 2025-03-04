@@ -11,7 +11,7 @@ module.exports = [
 		files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
 		rules: {
 			'@nx/enforce-module-boundaries': [
-				'warn',
+				'error',
 				{
 					enforceBuildableLibDependency: false,
 					allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
