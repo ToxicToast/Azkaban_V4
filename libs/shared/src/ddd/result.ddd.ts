@@ -10,11 +10,13 @@ export class Result<ValueType> {
 	private _isSuccess: boolean;
 	private _isFailure: boolean;
 	private _error?: Optional<Either<ValueType, string>>;
+	private _errorCode?: Optional<number>;
 	private _value?: Optional<ValueType>;
 
 	constructor(
 		isSuccess: boolean,
 		error?: Optional<Either<ValueType, string>>,
+		errorCode?: Optional<number>,
 		value?: Optional<ValueType>,
 	) {
 		if (isSuccess && error) {
@@ -27,6 +29,7 @@ export class Result<ValueType> {
 		this._isFailure = !isSuccess;
 		this._error = error;
 		this._value = value;
+		this._errorCode = errorCode ?? 500;
 		Object.freeze(this);
 	}
 
@@ -44,6 +47,13 @@ export class Result<ValueType> {
 		return this._error;
 	}
 
+	get errorCode(): Optional<number> {
+		if (!this._isFailure) {
+			throw new onValueError();
+		}
+		return this._errorCode;
+	}
+
 	get isSuccess(): boolean {
 		return this._isSuccess;
 	}
@@ -55,12 +65,13 @@ export class Result<ValueType> {
 	public static ok<ResultType>(
 		value?: Optional<ResultType>,
 	): Result<ResultType> {
-		return new Result<ResultType>(true, undefined, value);
+		return new Result<ResultType>(true, undefined, undefined, value);
 	}
 
 	public static fail<ResultType>(
 		error: Either<ResultType, string>,
+		code: number,
 	): Result<ResultType> {
-		return new Result<ResultType>(false, error);
+		return new Result<ResultType>(false, error, code, undefined);
 	}
 }

@@ -1,13 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { IdQuery } from './id.query';
-import {
-	HttpException,
-	Inject,
-	Logger,
-	NotFoundException,
-} from '@nestjs/common';
+import { HttpException, Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { AzkabanUserTopics, CircuitService, Nullable } from '@azkaban/shared';
+import { AzkabanUserTopics, CircuitService, Response } from '@azkaban/shared';
 import { UserDAO } from '@azkaban/user-infrastructure';
 
 @QueryHandler(IdQuery)
@@ -33,11 +28,11 @@ export class IdQueryHandler implements IQueryHandler<IdQuery> {
 
 	async execute(query: IdQuery) {
 		return await this.createCircuitBreaker(query)
-			.then((res: Nullable<UserDAO>) => {
-				if (res !== null) {
-					return res;
+			.then((res: Response<UserDAO>) => {
+				if (res.error !== null) {
+					throw new HttpException(res.error, res.errorCode ?? 500);
 				}
-				throw new NotFoundException('User not found');
+				return res.data;
 			})
 			.catch((err) => {
 				Logger.error(err.message, err.stack, 'IdQueryHandler');

@@ -1,3 +1,5 @@
+import { Response } from '@azkaban/shared';
+
 export interface UserModel {
 	id: string;
 	username: string;
@@ -6,3 +8,6 @@ export interface UserModel {
 	isBanned: boolean;
 	isLoggedIn: boolean;
 }
+
+export type UsersResponse = Response<Array<UserModel>>;
+export type UserResponse = Response<UserModel>;

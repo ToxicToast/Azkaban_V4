@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { CreateQuery } from './create.query';
 import { HttpException, Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { AzkabanUserTopics, CircuitService } from '@azkaban/shared';
+import { AzkabanUserTopics, CircuitService, Response } from '@azkaban/shared';
 import { UserDAO } from '@azkaban/user-infrastructure';
 
 @QueryHandler(CreateQuery)
@@ -30,9 +30,11 @@ export class CreateQueryHandler implements IQueryHandler<CreateQuery> {
 
 	async execute(query: CreateQuery) {
 		return await this.createCircuitBreaker(query)
-			.then((res: Array<UserDAO>) => {
-				Logger.debug('CreateQueryHandler', res);
-				return res;
+			.then((res: Response<UserDAO>) => {
+				if (res.error !== null) {
+					throw new HttpException(res.error, res.errorCode ?? 500);
+				}
+				return res.data;
 			})
 			.catch((err) => {
 				Logger.error(err.message, err.stack, 'CreateQueryHandler');

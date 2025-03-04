@@ -14,7 +14,7 @@ export class UserService {
 			const result = await this.repository.save(anemic);
 			return Result.ok<UserAnemic>(result);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -23,7 +23,7 @@ export class UserService {
 			const result = await this.repository.findList();
 			return Result.ok<Array<UserAnemic>>(result);
 		} catch (error) {
-			return Result.fail<Array<UserAnemic>>(error);
+			return Result.fail<Array<UserAnemic>>(error, 500);
 		}
 	}
 
@@ -32,7 +32,7 @@ export class UserService {
 			const result = await this.repository.findById(id);
 			return Result.ok<UserAnemic>(result);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -41,7 +41,7 @@ export class UserService {
 			const aggregate = this.factory.createDomain(data);
 			return await this.save(aggregate.toAnemic());
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -66,9 +66,9 @@ export class UserService {
 				}
 				return await this.save(aggregate.toAnemic());
 			}
-			return Result.fail<UserAnemic>(result.errorValue);
+			return Result.fail<UserAnemic>(result.errorValue, 500);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -80,9 +80,9 @@ export class UserService {
 				aggregate.banUser();
 				return await this.save(aggregate.toAnemic());
 			}
-			return Result.fail<UserAnemic>(result.errorValue);
+			return Result.fail<UserAnemic>(result.errorValue, 500);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -94,9 +94,9 @@ export class UserService {
 				aggregate.unbanUser();
 				return await this.save(aggregate.toAnemic());
 			}
-			return Result.fail<UserAnemic>(result.errorValue);
+			return Result.fail<UserAnemic>(result.errorValue, 500);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -108,9 +108,9 @@ export class UserService {
 				aggregate.activateUser();
 				return await this.save(aggregate.toAnemic());
 			}
-			return Result.fail<UserAnemic>(result.errorValue);
+			return Result.fail<UserAnemic>(result.errorValue, 500);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -122,9 +122,9 @@ export class UserService {
 				aggregate.deactivateUser();
 				return await this.save(aggregate.toAnemic());
 			}
-			return Result.fail<UserAnemic>(result.errorValue);
+			return Result.fail<UserAnemic>(result.errorValue, 500);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -136,9 +136,9 @@ export class UserService {
 				aggregate.deleteUser();
 				return await this.save(aggregate.toAnemic());
 			}
-			return Result.fail<UserAnemic>(result.errorValue);
+			return Result.fail<UserAnemic>(result.errorValue, 500);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 
@@ -150,9 +150,9 @@ export class UserService {
 				aggregate.restoreUser();
 				return await this.save(aggregate.toAnemic());
 			}
-			return Result.fail<UserAnemic>(result.errorValue);
+			return Result.fail<UserAnemic>(result.errorValue, 500);
 		} catch (error) {
-			return Result.fail<UserAnemic>(error);
+			return Result.fail<UserAnemic>(error, 500);
 		}
 	}
 }
