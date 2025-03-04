@@ -1,5 +1,5 @@
-export interface Factory<Anemic, Domain, Data> {
-	reconstitute(data: Anemic): Domain;
-	constitute(data: Domain): Anemic;
-	createDomain(data: Data): Domain;
+export interface Factory<Anemic, Domain, Data, Aggregate> {
+	reconstitute(anemic: Anemic): Aggregate;
+	constitute(domain: Domain): Anemic;
+	createDomain(data: Data): Aggregate;
 }
