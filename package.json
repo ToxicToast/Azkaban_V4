@@ -14,7 +14,8 @@
 		"husky:scripts": "npm run format:check && npm run affected:lint && npm run lintstaged",
 		"upgrade:workspace": "nx migrate latest",
 		"upgrade:migrations": "nx migrate --run-migrations",
-		"report": "nx report"
+		"report": "nx report",
+		"serve:gateway": "nx serve gateway"
 	},
 	"private": true,
 	"devDependencies": {
@@ -110,6 +111,7 @@
 		"cookie-parser": "^1.4.7",
 		"helmet": "^8.0.0",
 		"mollitia": "^0.1.1",
+		"pg": "^8.13.3",
 		"uuid": "^11.1.0"
 	},
 	"workspaces": [
