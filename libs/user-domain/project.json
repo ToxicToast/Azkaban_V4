@@ -1,0 +1,63 @@
+{
+	"name": "user-domain",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/user-domain/src",
+	"projectType": "application",
+	"tags": ["scope:domain"],
+	"targets": {
+		"build": {
+			"executor": "@nx/esbuild:esbuild",
+			"outputs": ["{options.outputPath}"],
+			"defaultConfiguration": "production",
+			"options": {
+				"platform": "node",
+				"outputPath": "dist/libs/user-domain",
+				"format": ["cjs"],
+				"bundle": false,
+				"main": "libs/user-domain/src/index.ts",
+				"tsConfig": "libs/user-domain/tsconfig.app.json",
+				"assets": ["libs/user-domain/src/assets"],
+				"generatePackageJson": true,
+				"esbuildOptions": {
+					"sourcemap": true,
+					"outExtension": {
+						".js": ".js"
+					}
+				}
+			},
+			"configurations": {
+				"development": {},
+				"production": {
+					"esbuildOptions": {
+						"sourcemap": false,
+						"outExtension": {
+							".js": ".js"
+						}
+					}
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"dependsOn": ["build"],
+			"options": {
+				"buildTarget": "user-domain:build",
+				"runBuildTargetDependencies": false
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "user-domain:build:development"
+				},
+				"production": {
+					"buildTarget": "user-domain:build:production"
+				}
+			}
+		},
+		"test": {
+			"options": {
+				"passWithNoTests": true
+			}
+		}
+	}
+}
