@@ -6,7 +6,7 @@ import { TwitchVersionsService } from './twitch-versions.service';
 import { WarcraftVersionsService } from './warcraft-versions.service';
 import { CoworkingVersionsService } from './coworking-versions.service';
 import { DiscordVersionsService } from './discord-versions.service';
-import { BlogVersionsService } from './blog.service';
+import { BlogVersionsService } from './blog-versions.service';
 
 @Injectable()
 export class VersionService {

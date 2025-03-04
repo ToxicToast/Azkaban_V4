@@ -4,8 +4,6 @@ import { VersionQuery } from './queries';
 import {
 	BlogCommentTopics,
 	BlogNewsTopics,
-	DiscordAscendApplyBotTopics,
-	DiscordAscendJoinBotTopics,
 	VersionCache,
 } from '@azkaban/shared';
 

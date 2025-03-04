@@ -36,17 +36,13 @@ function addModules(app: INestApplication): void {
 function configureSwagger(app: INestApplication): void {
 	const config = new DocumentBuilder()
 		.setTitle('Dementor')
-		.setVersion('v0.5.8')
+		.setVersion('v0.6.0')
 		.addBearerAuth()
 		.addOAuth2()
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
 	//
 	SwaggerModule.setup('swagger', app, document);
-}
-
-function configureGuards(app: INestApplication): void {
-	//
 }
 
 function configureCors(app: INestApplication): void {
@@ -73,8 +69,9 @@ async function bootstrap() {
 	const app = await createApp();
 	configureApp(app);
 	addModules(app);
-	configureSwagger(app);
-	configureGuards(app);
+	if (AppConfig.environment === 'local') {
+		configureSwagger(app);
+	}
 	configureCors(app);
 	await startApp(app);
 	Logger.log(`🚀 Dementor is running`);
