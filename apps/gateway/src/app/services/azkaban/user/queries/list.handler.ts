@@ -3,6 +3,7 @@ import { ListQuery } from './list.query';
 import { HttpException, Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { AzkabanUserTopics, CircuitService } from '@azkaban/shared';
+import { UserDAO } from '@azkaban/user-infrastructure';
 
 @QueryHandler(ListQuery)
 export class ListQueryHandler implements IQueryHandler<ListQuery> {
@@ -23,7 +24,7 @@ export class ListQueryHandler implements IQueryHandler<ListQuery> {
 
 	async execute() {
 		return await this.createCircuitBreaker()
-			.then((res: unknown) => {
+			.then((res: Array<UserDAO>) => {
 				Logger.debug('ListQueryHandler', res);
 				return res;
 			})

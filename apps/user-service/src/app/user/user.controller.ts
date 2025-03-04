@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { AzkabanUserTopics, Nullable, UserRoutes } from '@azkaban/shared';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { UserModel } from './user.model';
 
@@ -13,12 +13,23 @@ export class UserController {
 
 	@MessagePattern(AzkabanUserTopics.LIST)
 	async list(): Promise<Array<UserModel>> {
-		return await this.service.userList();
+		try {
+			return await this.service.userList();
+		} catch (error) {
+			throw new RpcException(error);
+		}
 	}
 
 	@MessagePattern(AzkabanUserTopics.ID)
 	async id(@Payload('id') id: string): Promise<Nullable<UserModel>> {
-		return await this.service.userById(id);
+		try {
+			if (!id) {
+				throw new RpcException('Id is required');
+			}
+			return await this.service.userById(id);
+		} catch (error) {
+			throw new RpcException(error);
+		}
 	}
 
 	@MessagePattern(AzkabanUserTopics.CREATE)
@@ -27,6 +38,10 @@ export class UserController {
 		@Payload('email') email: string,
 		@Payload('password') password: string,
 	): Promise<Nullable<UserModel>> {
-		return await this.service.userCreate(username, email, password);
+		try {
+			return await this.service.userCreate(username, email, password);
+		} catch (error) {
+			throw new RpcException(error);
+		}
 	}
 }
