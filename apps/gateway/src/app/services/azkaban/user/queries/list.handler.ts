@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { ListQuery } from './list.query';
-import { HttpException, Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { AzkabanUserTopics, CircuitService, Response } from '@azkaban/shared';
 import { UserDAO } from '@azkaban/user-infrastructure';
@@ -25,14 +25,14 @@ export class ListQueryHandler implements IQueryHandler<ListQuery> {
 	async execute() {
 		return await this.createCircuitBreaker()
 			.then((res: Response<Array<UserDAO>>) => {
-				if (res.error !== null) {
-					throw new HttpException(res.error, res.errorCode ?? 500);
-				}
-				return res.data;
+				return res;
 			})
 			.catch((err) => {
-				Logger.error(err.message, err.stack, 'ListQueryHandler');
-				throw new HttpException(err.message, err.status ?? 503);
+				return {
+					data: [],
+					error: err.message,
+					errorCode: err.status ?? 503,
+				};
 			});
 	}
 }
