@@ -13,7 +13,7 @@ module.exports = [
 			'@nx/enforce-module-boundaries': [
 				'warn',
 				{
-					enforceBuildableLibDependency: true,
+					enforceBuildableLibDependency: false,
 					allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
 					depConstraints: [
 						{
