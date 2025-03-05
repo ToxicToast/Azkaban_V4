@@ -7,10 +7,11 @@ import helmet from 'helmet';
 import { TelemetryHelper } from '@azkaban/shared';
 import { AppConfig } from './config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ErrorMiddleware } from './app/middlewares';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
-	'gateway',
+	AppConfig.name,
 	AppConfig.environment,
 );
 
@@ -31,6 +32,10 @@ function addModules(app: INestApplication): void {
 	app.use(compression({}));
 	app.use(helmet());
 	app.use(cookieParser());
+}
+
+function addMiddleware(app: INestApplication): void {
+	app.use(ErrorMiddleware);
 }
 
 function configureSwagger(app: INestApplication): void {
@@ -60,15 +65,18 @@ function configureCors(app: INestApplication): void {
 
 async function startApp(app: INestApplication): Promise<void> {
 	const port = AppConfig.port;
-	await app.listen(port, '0.0.0.0');
+	await app.listen(port);
 	Logger.log(`🚀 Listening on Port: ${port}`);
 }
 
 async function bootstrap() {
-	telemetry.start();
+	if (AppConfig.environment !== 'local') {
+		telemetry.start();
+	}
 	const app = await createApp();
 	configureApp(app);
 	addModules(app);
+	addMiddleware(app);
 	if (AppConfig.environment === 'local') {
 		configureSwagger(app);
 	}
@@ -79,9 +87,11 @@ async function bootstrap() {
 }
 bootstrap().catch((err) => {
 	Logger.error(err);
-	telemetry
-		.shutdown()
-		.then(() => Logger.log('Tracing terminated'))
-		.catch((error) => Logger.error('Error terminating tracing', error))
-		.finally(() => process.exit(0));
+	if (AppConfig.environment !== 'local') {
+		telemetry
+			.shutdown()
+			.then(() => Logger.log('Tracing terminated'))
+			.catch((error) => Logger.error('Error terminating tracing', error))
+			.finally(() => process.exit(0));
+	}
 });
