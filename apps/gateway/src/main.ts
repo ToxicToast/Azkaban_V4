@@ -35,7 +35,7 @@ function addModules(app: INestApplication): void {
 }
 
 function addMiddleware(app: INestApplication): void {
-	app.use(ErrorMiddleware);
+	// app.use(ErrorMiddleware);
 }
 
 function configureSwagger(app: INestApplication): void {
