@@ -3,7 +3,7 @@ import { CircuitModule as BaseModule } from '@azkaban/shared';
 import { AppConfig } from '../../config';
 
 const config = {
-	name: 'gateway',
+	name: AppConfig.name,
 	slidingWindowSize: 6,
 	minimumNumberOfCalls: 3,
 	failureRateThreshold: 60,

@@ -53,8 +53,8 @@ export const AppConfig: EnvironmentConfig = {
 		brokerPort: process.env.BROKER_PORT
 			? Number(process.env.BROKER_PORT)
 			: 9092,
-		brokerUsername: process.env.BROKER_USERNAME ?? 'admin',
-		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
+		brokerUsername: process.env.BROKER_USERNAME ?? '',
+		brokerPassword: process.env.BROKER_PASSWORD ?? '',
 	},
 	authorizer: {
 		url: process.env.AUTHORIZER_URL ?? 'localhost:8080',

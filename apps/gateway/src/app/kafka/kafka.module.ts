@@ -7,6 +7,7 @@ import {
 	AzkabanGroupTopicArray,
 	AzkabanSSETopicArray,
 	AzkabanUserTopicArray,
+	AzkabanWebhookTopicArray,
 	FoodFolioCategoryTopicArray,
 	FoodFolioCompanyTopicArray,
 	FoodFolioItemDetailTopicArray,
@@ -26,9 +27,8 @@ import {
 	WarcraftApiTopicArray,
 	WarcraftCharacterTopicArray,
 	WarcraftRaiderTopicArray,
-	CoworkingTasksTopicArray,
 	WarcraftAuditTopicArray,
-	AzkabanWebhookTopicArray,
+	CoworkingTasksTopicArray,
 	DiscordAscendApplyBotTopicArray,
 	DiscordAscendJoinBotTopicArray,
 } from '@azkaban/shared';
@@ -39,8 +39,8 @@ import { AppConfig } from '../../config';
 		BaseModule.forRoot(
 			true,
 			{
-				clientId: 'gateway',
-				groupId: 'gateway-consumer',
+				clientId: AppConfig.name,
+				groupId: AppConfig.name + '-consumer',
 				brokerHost: AppConfig.broker.brokerHost,
 				brokerPort: AppConfig.broker.brokerPort,
 				brokerUsername: AppConfig.broker.brokerUsername,

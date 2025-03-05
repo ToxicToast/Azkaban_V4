@@ -5,9 +5,12 @@ import { LoginDAO, RegisterDAO, ForgetPasswordDAO } from './dao';
 import { LoginDTO, RegisterDTO, ForgetPasswordDTO } from './dto';
 import { JwtGuard } from '../../../guards';
 
+/**
+ * @deprecated This will be refactored in the future
+ * */
 @Controller({
 	path: AuthRoutes.CONTROLLER,
-	version: '1',
+	version: '0',
 })
 export class AuthController {
 	constructor(private readonly service: AuthService) {}
