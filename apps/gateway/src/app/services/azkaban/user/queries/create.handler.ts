@@ -6,6 +6,7 @@ import {
 	AzkabanUserTopics,
 	CircuitService,
 	createCircuitBreaker,
+	PasswordHash,
 } from '@azkaban/shared';
 
 @QueryHandler(CreateQuery)
@@ -16,9 +17,13 @@ export class CreateQueryHandler implements IQueryHandler<CreateQuery> {
 	) {}
 
 	private createCircuitBreaker(query: CreateQuery) {
+		const data = {
+			...query,
+			password: PasswordHash(query.password),
+		};
 		const topic = AzkabanUserTopics.CREATE;
 		return createCircuitBreaker<CreateQuery>(
-			query,
+			data,
 			topic,
 			this.circuit,
 			this.client,

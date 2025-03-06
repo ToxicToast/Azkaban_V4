@@ -4,3 +4,4 @@ export * from './typeorm.helper';
 export * from './uuid.helper';
 export * from './response.helper';
 export * from './circuitbreaker.helper';
+export * from './password.helper';
