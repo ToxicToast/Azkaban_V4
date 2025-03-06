@@ -47,15 +47,6 @@ export class CircuitModule {
 						delay: config.timeout,
 					}),
 				},
-				{
-					provide: 'CIRCUIT_RETRY',
-					useValue: new Retry({
-						attempts: 3,
-						interval: 1000,
-						mode: RetryMode.CONSTANT,
-						factor: 1,
-					}),
-				},
 				CircuitService,
 			],
 			exports: [CircuitService],
