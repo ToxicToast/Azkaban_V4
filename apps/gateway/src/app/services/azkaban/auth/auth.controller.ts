@@ -10,7 +10,7 @@ import { JwtGuard } from '../../../guards';
  * */
 @Controller({
 	path: AuthRoutes.CONTROLLER,
-	version: '0',
+	version: '1',
 })
 export class AuthController {
 	constructor(private readonly service: AuthService) {}

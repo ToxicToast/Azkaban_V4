@@ -1,8 +1,12 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { ProfileQuery } from './profile.query';
-import { HttpException, Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { AzkabanAuthTopics, CircuitService } from '@azkaban/shared';
+import {
+	AzkabanAuthTopics,
+	CircuitService,
+	createCircuitBreaker,
+} from '@azkaban/shared';
 
 @QueryHandler(ProfileQuery)
 export class ProfileQueryHandler implements IQueryHandler<ProfileQuery> {
@@ -12,24 +16,16 @@ export class ProfileQueryHandler implements IQueryHandler<ProfileQuery> {
 	) {}
 
 	private createCircuitBreaker(query: ProfileQuery) {
-		const { token } = query;
 		const topic = AzkabanAuthTopics.PROFILE;
-		//
-		const circuit = this.circuit.createCircuitBreaker(topic);
-		circuit.fn(async () => {
-			return await this.client.send(topic, { token }).toPromise();
-		});
-		return circuit.execute();
+		return createCircuitBreaker<ProfileQuery>(
+			query,
+			topic,
+			this.circuit,
+			this.client,
+		);
 	}
 
 	async execute(query: ProfileQuery) {
-		return await this.createCircuitBreaker(query)
-			.then((res: unknown) => {
-				return res;
-			})
-			.catch((err) => {
-				Logger.error(err.message, err.stack, 'ProfileQueryHandler');
-				throw new HttpException(err.message, err.status ?? 503);
-			});
+		return await this.createCircuitBreaker(query);
 	}
 }
