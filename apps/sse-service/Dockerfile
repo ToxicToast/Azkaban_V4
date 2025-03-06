@@ -3,6 +3,7 @@ WORKDIR /app
 COPY dist/apps/sse-service .
 COPY package*.json ./
 RUN npm install --omit=dev
+RUN npm install --save-dev bcrypt @types/bcrypt
 
 
 FROM docker.io/node:23-alpine
