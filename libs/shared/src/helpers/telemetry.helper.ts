@@ -11,56 +11,51 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { FastifyOtelInstrumentation } from '@fastify/otel';
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis';
+import { KafkaJsInstrumentation } from 'opentelemetry-instrumentation-kafkajs';
 
 export function TelemetryHelper(
 	telemetryUrl: string,
 	serviceName: string,
 	serviceVersion: string,
 ) {
-	if (serviceVersion !== 'local') {
-		const exporterOptions = {
-			url: telemetryUrl,
-		};
+	const exporterOptions = {
+		url: telemetryUrl,
+		plugins: {
+			kafkajs: {
+				enabled: false,
+				path: 'open-telemetry-plugin-kafkajs',
+			},
+		},
+	};
 
-		const traceExporter = new OTLPTraceExporter(exporterOptions);
-		const sdk = new NodeSDK({
-			traceExporter,
-			instrumentations: [
-				new NestInstrumentation({
-					enabled: true,
-				}),
-				new HttpInstrumentation({
-					enabled: true,
-				}),
-				new ExpressInstrumentation({
-					enabled: true,
-				}),
-				new RedisInstrumentation({
-					enabled: true,
-				}),
-				new FastifyOtelInstrumentation({
-					servername: serviceName,
-					registerOnInitialization: true,
-				}),
-			],
-			resource: new Resource({
-				[ATTR_SERVICE_NAME]: serviceName,
-				[ATTR_SERVICE_VERSION]: serviceVersion,
+	const traceExporter = new OTLPTraceExporter(exporterOptions);
+	const sdk = new NodeSDK({
+		traceExporter,
+		instrumentations: [
+			new NestInstrumentation({
+				enabled: true,
 			}),
-		});
-
-		return sdk;
-	} else {
-		const traceExporter = new ConsoleSpanExporter();
-		const sdk = new NodeSDK({
-			traceExporter,
-			instrumentations: [],
-			resource: new Resource({
-				[ATTR_SERVICE_NAME]: serviceName + '-local',
-				[ATTR_SERVICE_VERSION]: serviceVersion,
+			new HttpInstrumentation({
+				enabled: true,
 			}),
-		});
-
-		return sdk;
-	}
+			new ExpressInstrumentation({
+				enabled: true,
+			}),
+			new RedisInstrumentation({
+				enabled: true,
+			}),
+			new FastifyOtelInstrumentation({
+				servername: serviceName,
+				registerOnInitialization: true,
+			}),
+			new KafkaJsInstrumentation({
+				enabled: true,
+			}),
+		],
+		resource: new Resource({
+			[ATTR_SERVICE_NAME]: serviceName,
+			[ATTR_SERVICE_VERSION]: serviceVersion,
+		}),
+	});
+	return sdk;
 }
