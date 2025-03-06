@@ -1,8 +1,12 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { IdQuery } from './id.query';
-import { HttpException, HttpStatus, Inject } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { AzkabanUserTopics, CircuitService } from '@azkaban/shared';
+import {
+	AzkabanUserTopics,
+	CircuitService,
+	createCircuitBreaker,
+} from '@azkaban/shared';
 
 @QueryHandler(IdQuery)
 export class IdQueryHandler implements IQueryHandler<IdQuery> {
@@ -13,18 +17,12 @@ export class IdQueryHandler implements IQueryHandler<IdQuery> {
 
 	private createCircuitBreaker(query: IdQuery) {
 		const topic = AzkabanUserTopics.ID;
-		//
-		const circuit = this.circuit.createCircuitBreaker(topic);
-		circuit.fn(async () => {
-			return await this.client
-				.send(topic, {
-					id: query.id,
-				})
-				.toPromise();
-		});
-		return circuit.execute().catch((error) => {
-			throw new HttpException(error, HttpStatus.SERVICE_UNAVAILABLE);
-		});
+		return createCircuitBreaker<IdQuery>(
+			query,
+			topic,
+			this.circuit,
+			this.client,
+		);
 	}
 
 	async execute(query: IdQuery) {
