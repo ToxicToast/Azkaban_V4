@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, HttpStatus } from '@nestjs/common';
 import { AzkabanUserTopics, UserRoutes } from '@azkaban/shared';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { UserService } from './user.service';
@@ -13,27 +13,25 @@ export class UserController {
 
 	@MessagePattern(AzkabanUserTopics.LIST)
 	async list(): Promise<UsersResponse> {
-		try {
-			return await this.service.userList();
-		} catch (error) {
-			throw new RpcException(error);
-		}
+		return await this.service.userList();
 	}
 
 	@MessagePattern(AzkabanUserTopics.ID)
 	async id(@Payload('id') id: string): Promise<UserResponse> {
-		try {
-			if (!id) {
-				throw new RpcException('Id is required');
-			}
-			const response = await this.service.userById(id);
-			if (response === null) {
-				throw new RpcException('User not found');
-			}
-			return response;
-		} catch (error) {
-			throw new RpcException(error);
+		if (!id) {
+			throw new RpcException({
+				message: 'Id is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
 		}
+		const response = await this.service.userById(id);
+		if (response === null) {
+			throw new RpcException({
+				message: 'User not found',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
+		return response;
 	}
 
 	@MessagePattern(AzkabanUserTopics.CREATE)
@@ -42,25 +40,33 @@ export class UserController {
 		@Payload('email') email: string,
 		@Payload('password') password: string,
 	): Promise<UserResponse> {
-		try {
-			if (!username) {
-				throw new RpcException('Username is required');
-			} else if (!email) {
-				throw new RpcException('Email is required');
-			} else if (!password) {
-				throw new RpcException('Password is required');
-			}
-			const response = await this.service.userCreate(
-				username,
-				email,
-				password,
-			);
-			if (response === null) {
-				throw new RpcException('User not created');
-			}
-			return response;
-		} catch (error) {
-			throw new RpcException(error);
+		if (!username) {
+			throw new RpcException({
+				message: 'Username is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		} else if (!email) {
+			throw new RpcException({
+				message: 'Email is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		} else if (!password) {
+			throw new RpcException({
+				message: 'Password is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
 		}
+		const response = await this.service.userCreate(
+			username,
+			email,
+			password,
+		);
+		if (response === null) {
+			throw new RpcException({
+				message: 'User not created',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
+		return response;
 	}
 }

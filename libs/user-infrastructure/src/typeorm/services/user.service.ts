@@ -1,9 +1,10 @@
 import { UserService as DomainService } from '@azkaban/user-domain';
 import { UserRepository } from '../repositories';
 import { Nullable, UuidHelper } from '@azkaban/shared';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { UserDAO } from '../../dao';
 import { CreateUserDTO, UpdateUserDTO } from '../../dto';
+import { RpcException } from '@nestjs/microservices';
 
 export class UserService {
 	private readonly domainService: DomainService;
@@ -26,7 +27,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new NotFoundException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
 		}
 	}
 
@@ -36,7 +41,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new BadRequestException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.BAD_REQUEST,
+				message: 'Could not create user',
+				raw: result.errorValue,
+			});
 		}
 	}
 
@@ -50,7 +59,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new NotFoundException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
 		}
 	}
 
@@ -59,7 +72,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new NotFoundException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
 		}
 	}
 
@@ -68,7 +85,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new NotFoundException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
 		}
 	}
 
@@ -77,7 +98,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new NotFoundException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
 		}
 	}
 
@@ -86,7 +111,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new NotFoundException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
 		}
 	}
 
@@ -95,7 +124,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new NotFoundException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
 		}
 	}
 
@@ -104,7 +137,11 @@ export class UserService {
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			throw new NotFoundException(result.errorValue);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
 		}
 	}
 }
