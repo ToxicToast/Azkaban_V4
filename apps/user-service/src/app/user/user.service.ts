@@ -34,8 +34,11 @@ export class UserService {
 
 	async userById(id: string): Promise<UserModel> {
 		const user = await this.infrastructureService.getUserById(id);
-		const presenter = new UserPresenter(user);
-		return presenter.transform();
+		if (user !== null) {
+			const presenter = new UserPresenter(user);
+			return presenter.transform();
+		}
+		return null;
 	}
 
 	async userCreate(
@@ -48,7 +51,10 @@ export class UserService {
 			email,
 			password,
 		});
-		const presenter = new UserPresenter(user);
-		return presenter.transform();
+		if (user !== null) {
+			const presenter = new UserPresenter(user);
+			return presenter.transform();
+		}
+		return null;
 	}
 }

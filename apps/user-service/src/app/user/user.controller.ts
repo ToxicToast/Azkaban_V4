@@ -1,6 +1,6 @@
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AzkabanUserTopics, UserRoutes } from '@azkaban/shared';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { UserResponse, UsersResponse } from './user.model';
 
@@ -11,33 +11,12 @@ import { UserResponse, UsersResponse } from './user.model';
 export class UserController {
 	constructor(private readonly service: UserService) {}
 
-	private transformInternalServerError(error: string) {
-		return {
-			data: null,
-			error,
-			errorCode: HttpStatus.INTERNAL_SERVER_ERROR,
-		};
-	}
-
-	private transformBadRequestError(error: string) {
-		return {
-			data: null,
-			error,
-			errorCode: HttpStatus.BAD_REQUEST,
-		};
-	}
-
 	@MessagePattern(AzkabanUserTopics.LIST)
 	async list(): Promise<UsersResponse> {
 		try {
-			const response = await this.service.userList();
-			return {
-				data: response,
-				error: null,
-				errorCode: null,
-			};
+			return await this.service.userList();
 		} catch (error) {
-			return this.transformInternalServerError(error);
+			throw new RpcException(error);
 		}
 	}
 
@@ -45,16 +24,15 @@ export class UserController {
 	async id(@Payload('id') id: string): Promise<UserResponse> {
 		try {
 			if (!id) {
-				return this.transformBadRequestError('Id is required');
+				throw new RpcException('Id is required');
 			}
 			const response = await this.service.userById(id);
-			return {
-				data: response,
-				error: null,
-				errorCode: null,
-			};
+			if (response === null) {
+				throw new RpcException('User not found');
+			}
+			return response;
 		} catch (error) {
-			return this.transformInternalServerError(error);
+			throw new RpcException(error);
 		}
 	}
 
@@ -66,24 +44,23 @@ export class UserController {
 	): Promise<UserResponse> {
 		try {
 			if (!username) {
-				return this.transformBadRequestError('Username is required');
+				throw new RpcException('Username is required');
 			} else if (!email) {
-				return this.transformBadRequestError('Email is required');
+				throw new RpcException('Email is required');
 			} else if (!password) {
-				return this.transformBadRequestError('Password is required');
+				throw new RpcException('Password is required');
 			}
 			const response = await this.service.userCreate(
 				username,
 				email,
 				password,
 			);
-			return {
-				data: response,
-				error: null,
-				errorCode: null,
-			};
+			if (response === null) {
+				throw new RpcException('User not created');
+			}
+			return response;
 		} catch (error) {
-			return this.transformInternalServerError(error);
+			throw new RpcException(error);
 		}
 	}
 }

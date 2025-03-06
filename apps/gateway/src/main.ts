@@ -8,6 +8,8 @@ import { TelemetryHelper } from '@azkaban/shared';
 import { AppConfig } from './config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ErrorMiddleware } from './app/middlewares';
+import { HttpExceptionFilter } from './app/filters/httpException.filter';
+import { RpcExceptionFilter } from './app/filters';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
@@ -36,6 +38,11 @@ function addModules(app: INestApplication): void {
 
 function addMiddleware(app: INestApplication): void {
 	// app.use(ErrorMiddleware);
+}
+
+function addFilters(app: INestApplication): void {
+	app.useGlobalFilters(new HttpExceptionFilter());
+	app.useGlobalFilters(new RpcExceptionFilter());
 }
 
 function configureSwagger(app: INestApplication): void {
@@ -77,6 +84,7 @@ async function bootstrap() {
 	configureApp(app);
 	addModules(app);
 	addMiddleware(app);
+	addFilters(app);
 	if (AppConfig.environment === 'local') {
 		configureSwagger(app);
 	}

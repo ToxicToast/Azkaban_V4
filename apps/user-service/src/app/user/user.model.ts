@@ -1,5 +1,3 @@
-import { Response } from '@azkaban/shared';
-
 export interface UserModel {
 	id: string;
 	username: string;
@@ -9,5 +7,5 @@ export interface UserModel {
 	isLoggedIn: boolean;
 }
 
-export type UsersResponse = Response<Array<UserModel>>;
-export type UserResponse = Response<UserModel>;
+export type UsersResponse = Array<UserModel>;
+export type UserResponse = UserModel;
