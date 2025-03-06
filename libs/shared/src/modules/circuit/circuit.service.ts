@@ -1,11 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-	Circuit,
-	Fallback,
-	Retry,
-	SlidingCountBreaker,
-	Timeout,
-} from 'mollitia';
+import { Circuit, Fallback, SlidingCountBreaker, Timeout } from 'mollitia';
 
 @Injectable()
 export class CircuitService {
@@ -16,8 +10,6 @@ export class CircuitService {
 		private readonly fallback: Fallback,
 		@Inject('CIRCUIT_TIMEOUT')
 		private readonly timeout: Timeout,
-		@Inject('CIRCUIT_RETRY')
-		private readonly retry: Retry,
 	) {}
 
 	createCircuitBreaker(name: string): Circuit {
@@ -28,7 +20,6 @@ export class CircuitService {
 					this.slidingCountBreaker,
 					this.fallback,
 					this.timeout,
-					this.retry,
 				],
 			},
 		});

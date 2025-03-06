@@ -9,7 +9,6 @@ import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { FastifyOtelInstrumentation } from '@fastify/otel';
-import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis';
 import { KafkaJsInstrumentation } from 'opentelemetry-instrumentation-kafkajs';
 
