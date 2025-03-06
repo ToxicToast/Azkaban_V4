@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { CircuitConfig } from './circuit.config';
-import { Fallback, SlidingCountBreaker, Timeout } from 'mollitia';
+import { SlidingCountBreaker, Timeout } from 'mollitia';
 import { CircuitService } from './circuit.service';
 
 @Module({})
@@ -23,16 +23,6 @@ export class CircuitModule {
 							config.permittedNumberOfCallsInHalfOpenState,
 						openStateDelay: config.openStateDelay,
 						halfOpenStateMaxDelay: config.halfOpenStateMaxDelay,
-					}),
-				},
-				{
-					provide: 'CIRCUIT_FALLBACK',
-					useValue: new Fallback({
-						callback: () => {
-							return {
-								message: 'Service is currently unavailable',
-							};
-						},
 					}),
 				},
 				{

@@ -1,6 +1,6 @@
-import { ClientKafka, RpcException } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { CircuitService } from '../modules';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, Logger } from '@nestjs/common';
 
 export function createCircuitBreaker<DataType>(
 	data: DataType,
@@ -12,10 +12,13 @@ export function createCircuitBreaker<DataType>(
 	cicuitBreaker.fn(async () => {
 		return await client.send(topic, data).toPromise();
 	});
-	return cicuitBreaker.execute().catch((error) => {
-		if (error instanceof RpcException) {
-			throw new HttpException(error.getError(), HttpStatus.BAD_GATEWAY);
-		}
-		throw new HttpException(error, HttpStatus.SERVICE_UNAVAILABLE);
-	});
+	return cicuitBreaker
+		.execute()
+		.catch((error: { message: string; status: number }) => {
+			Logger.error(error, error.message, error.status, 'CircuitBreaker');
+			throw new HttpException(error.message, error.status);
+		})
+		.finally(() => {
+			cicuitBreaker.dispose();
+		});
 }

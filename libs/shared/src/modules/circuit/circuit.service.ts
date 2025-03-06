@@ -6,8 +6,6 @@ export class CircuitService {
 	constructor(
 		@Inject('CIRCUIT_CONFIG')
 		private readonly slidingCountBreaker: SlidingCountBreaker,
-		@Inject('CIRCUIT_FALLBACK')
-		private readonly fallback: Fallback,
 		@Inject('CIRCUIT_TIMEOUT')
 		private readonly timeout: Timeout,
 	) {}
@@ -16,11 +14,7 @@ export class CircuitService {
 		return new Circuit({
 			name,
 			options: {
-				modules: [
-					this.slidingCountBreaker,
-					this.fallback,
-					this.timeout,
-				],
+				modules: [this.slidingCountBreaker, this.timeout],
 			},
 		});
 	}
