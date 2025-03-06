@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Circuit, Fallback, SlidingCountBreaker, Timeout } from 'mollitia';
+import { Circuit, SlidingCountBreaker, Timeout } from 'mollitia';
 
 @Injectable()
 export class CircuitService {
