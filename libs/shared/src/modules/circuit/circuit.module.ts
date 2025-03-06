@@ -1,12 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { CircuitConfig } from './circuit.config';
-import {
-	Fallback,
-	Retry,
-	RetryMode,
-	SlidingCountBreaker,
-	Timeout,
-} from 'mollitia';
+import { Fallback, SlidingCountBreaker, Timeout } from 'mollitia';
 import { CircuitService } from './circuit.service';
 
 @Module({})
