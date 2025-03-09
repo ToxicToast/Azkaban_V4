@@ -15,6 +15,17 @@ export class AuthController {
 		@Payload('email') email: string,
 		@Payload('password') password: string,
 	): Promise<unknown> {
+		if (!email) {
+			throw new RpcException({
+				message: 'Email is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		} else if (!password) {
+			throw new RpcException({
+				message: 'Password is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
 		return await this.service.login(email, password);
 	}
 
@@ -24,16 +35,33 @@ export class AuthController {
 		@Payload('username') username: string,
 		@Payload('password') password: string,
 	): Promise<unknown> {
+		if (!email) {
+			throw new RpcException({
+				message: 'Email is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		} else if (!username) {
+			throw new RpcException({
+				message: 'Username is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		} else if (!password) {
+			throw new RpcException({
+				message: 'Password is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
 		return await this.service.register(email, username, password);
-	}
-
-	@MessagePattern(AzkabanAuthTopics.PROFILE)
-	async profile(@Payload('token') token: string): Promise<unknown> {
-		return await this.service.profile(token);
 	}
 
 	@MessagePattern(AzkabanAuthTopics.FORGET_PASSWORD)
 	async reset(@Payload('email') email: string): Promise<unknown> {
+		if (!email) {
+			throw new RpcException({
+				message: 'Email is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
 		return await this.service.reset(email);
 	}
 }
