@@ -1,5 +1,5 @@
 {
-	"name": "@azkaban-v4",
+	"name": "@azkaban",
 	"version": "0.6.0",
 	"license": "MIT",
 	"scripts": {
