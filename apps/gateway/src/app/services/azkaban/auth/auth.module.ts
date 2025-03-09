@@ -6,16 +6,18 @@ import {
 	ForgetPasswordCommandHandler,
 	LoginCommandHandler,
 	RegisterCommandHandler,
+	WelcomeCommandHandler,
 } from './commands';
-import { ProfileQueryHandler } from './queries';
+import { RegisterSaga } from './sagas';
 
 export const CommandHandlers = [
 	ForgetPasswordCommandHandler,
 	LoginCommandHandler,
 	RegisterCommandHandler,
+	WelcomeCommandHandler,
 ];
 export const EventHandlers = [];
-export const QueryHandlers = [ProfileQueryHandler];
+export const QueryHandlers = [];
 
 @Module({
 	controllers: [AuthController],
@@ -25,6 +27,7 @@ export const QueryHandlers = [ProfileQueryHandler];
 		...QueryHandlers,
 		AuthSaga,
 		AuthService,
+		RegisterSaga,
 	],
 })
 export class AuthModule {}

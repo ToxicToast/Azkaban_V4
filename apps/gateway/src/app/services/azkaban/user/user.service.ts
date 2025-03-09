@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
-import { CreateQuery, IdQuery, ListQuery } from './queries';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { IdQuery, ListQuery } from './queries';
 import { UserDAO } from '@azkaban/user-infrastructure';
+import { CreateCommand } from './commands';
 
 @Injectable()
 export class UserService {
-	constructor(private readonly queryBus: QueryBus) {}
+	constructor(
+		private readonly queryBus: QueryBus,
+		private readonly commandBus: CommandBus,
+	) {}
 
 	async userList(): Promise<Array<UserDAO>> {
 		return await this.queryBus.execute(new ListQuery());
@@ -20,8 +24,8 @@ export class UserService {
 		email: string,
 		password: string,
 	): Promise<UserDAO> {
-		return await this.queryBus.execute(
-			new CreateQuery(username, email, password),
+		return await this.commandBus.execute(
+			new CreateCommand(username, email, password),
 		);
 	}
 }

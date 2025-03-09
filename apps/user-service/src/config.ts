@@ -2,6 +2,11 @@ type EnvironmentConfig = {
 	name: string;
 	port: number;
 	environment: string;
+	redis: {
+		redisHost: string;
+		redisPort: number;
+		redisPassword: string;
+	};
 	database: {
 		databaseType: string;
 		databaseHost: string;
@@ -27,6 +32,13 @@ export const AppConfig: EnvironmentConfig = {
 	name: 'user-service',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
+	redis: {
+		redisHost: process.env.REDIS_HOST ?? 'localhost',
+		redisPort: process.env.REDIS_PORT
+			? Number(process.env.REDIS_PORT)
+			: 6379,
+		redisPassword: process.env.REDIS_PASSWORD ?? '',
+	},
 	database: {
 		databaseType: process.env.DATABASE_TYPE ?? 'postgres',
 		databaseHost: process.env.DATABASE_HOST ?? '',

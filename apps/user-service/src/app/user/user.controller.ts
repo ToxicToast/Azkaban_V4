@@ -3,17 +3,23 @@ import { AzkabanUserTopics, UserRoutes } from '@azkaban/shared';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { UserResponse, UsersResponse } from './user.model';
+import { UserCache } from './user.cache';
 
 @Controller({
 	path: UserRoutes.CONTROLLER,
 	version: '1',
 })
 export class UserController {
-	constructor(private readonly service: UserService) {}
+	constructor(
+		private readonly service: UserService,
+		private readonly cache: UserCache,
+	) {}
 
 	@MessagePattern(AzkabanUserTopics.LIST)
 	async list(): Promise<UsersResponse> {
-		return await this.service.userList();
+		const userList = await this.service.userList();
+		await this.cache.cacheUserList(userList);
+		return userList;
 	}
 
 	@MessagePattern(AzkabanUserTopics.ID)
@@ -31,6 +37,7 @@ export class UserController {
 				status: HttpStatus.BAD_REQUEST,
 			});
 		}
+		await this.cache.cacheUserById(id, response);
 		return response;
 	}
 
@@ -67,6 +74,7 @@ export class UserController {
 				status: HttpStatus.BAD_REQUEST,
 			});
 		}
+		await this.cache.removeCacheOnCreate();
 		return response;
 	}
 }

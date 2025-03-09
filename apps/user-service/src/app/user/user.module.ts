@@ -3,6 +3,7 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { AppConfig } from '../../config';
 import { datasourceProvider, userProvider } from '@azkaban/user-infrastructure';
+import { UserCache } from './user.cache';
 
 @Module({
 	controllers: [UserController],
@@ -18,6 +19,7 @@ import { datasourceProvider, userProvider } from '@azkaban/user-infrastructure';
 		),
 		...userProvider,
 		UserService,
+		UserCache,
 	],
 })
 export class UserModule {}

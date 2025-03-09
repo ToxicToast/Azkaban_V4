@@ -7,7 +7,6 @@ import {
 	LoginCommand,
 	RegisterCommand,
 } from './commands';
-import { ProfileQuery } from './queries';
 
 @Injectable()
 export class AuthService {
@@ -32,9 +31,5 @@ export class AuthService {
 		return await this.commandBus.execute(
 			new ForgetPasswordCommand(data.email, data.username),
 		);
-	}
-
-	async profile(token: string): Promise<unknown> {
-		return await this.queryBus.execute(new ProfileQuery(token));
 	}
 }
