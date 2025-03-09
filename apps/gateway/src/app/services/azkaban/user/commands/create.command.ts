@@ -1,4 +1,4 @@
-export class CreateQuery {
+export class CreateCommand {
 	constructor(
 		public readonly username: string,
 		public readonly email: string,

@@ -1,5 +1,5 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { CreateQuery } from './create.query';
+import { ICommandHandler, CommandHandler } from '@nestjs/cqrs';
+import { CreateCommand } from './create.command';
 import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
@@ -9,20 +9,20 @@ import {
 	PasswordHash,
 } from '@azkaban/shared';
 
-@QueryHandler(CreateQuery)
-export class CreateQueryHandler implements IQueryHandler<CreateQuery> {
+@CommandHandler(CreateCommand)
+export class CreateCommandHandler implements ICommandHandler<CreateCommand> {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 		private readonly circuit: CircuitService,
 	) {}
 
-	private createCircuitBreaker(query: CreateQuery) {
+	private createCircuitBreaker(query: CreateCommand) {
 		const data = {
 			...query,
 			password: PasswordHash(query.password),
 		};
 		const topic = AzkabanUserTopics.CREATE;
-		return createCircuitBreaker<CreateQuery>(
+		return createCircuitBreaker<CreateCommand>(
 			data,
 			topic,
 			this.circuit,
@@ -30,7 +30,7 @@ export class CreateQueryHandler implements IQueryHandler<CreateQuery> {
 		);
 	}
 
-	async execute(query: CreateQuery) {
+	async execute(query: CreateCommand) {
 		return await this.createCircuitBreaker(query);
 	}
 }
