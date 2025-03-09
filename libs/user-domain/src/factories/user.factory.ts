@@ -49,7 +49,7 @@ export class UserFactory
 			deleted_at,
 		);
 
-		return new UserAggregate(id, userDomain);
+		return new UserAggregate(userDomain);
 	}
 
 	constitute(domain: UserDomain): UserAnemic {
@@ -73,6 +73,6 @@ export class UserFactory
 			null,
 			null,
 		);
-		return new UserAggregate(id, domain);
+		return new UserAggregate(domain);
 	}
 }

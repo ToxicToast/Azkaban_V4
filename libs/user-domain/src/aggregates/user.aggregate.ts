@@ -2,10 +2,7 @@ import { UserDomain } from '../domains';
 import { UserAnemic } from '../anemics';
 
 export class UserAggregate {
-	constructor(
-		private readonly id: string,
-		private readonly user: UserDomain,
-	) {}
+	constructor(private readonly user: UserDomain) {}
 
 	changeUsername(username: string): void {
 		this.user.changeUsername(username);

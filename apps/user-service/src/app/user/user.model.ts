@@ -5,6 +5,7 @@ export interface UserModel {
 	isActive: boolean;
 	isBanned: boolean;
 	isLoggedIn: boolean;
+	isFlagged: boolean; // Should be deactivated because last login is longer than 3 months
 }
 
 export type UsersResponse = Array<UserModel>;
