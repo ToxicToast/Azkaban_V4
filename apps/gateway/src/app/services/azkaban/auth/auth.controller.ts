@@ -1,9 +1,8 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthRoutes } from '@azkaban/shared';
 import { LoginDAO, RegisterDAO, ForgetPasswordDAO } from './dao';
 import { LoginDTO, RegisterDTO, ForgetPasswordDTO } from './dto';
-import { JwtGuard } from '../../../guards';
 
 /**
  * @deprecated This will be refactored in the future
@@ -30,12 +29,5 @@ export class AuthController {
 		@Body() body: ForgetPasswordDTO,
 	): Promise<ForgetPasswordDAO> {
 		return await this.service.forgetPassword(body);
-	}
-
-	@UseGuards(JwtGuard)
-	@Get(AuthRoutes.PROFILE)
-	async profile(@Req() request): Promise<unknown> {
-		const token = request['token'];
-		return await this.service.profile(token);
 	}
 }
