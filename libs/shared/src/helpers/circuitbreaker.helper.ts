@@ -1,6 +1,6 @@
 import { ClientKafka } from '@nestjs/microservices';
 import { CircuitService } from '../modules';
-import { HttpException, Logger } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
 import { Either } from '../types';
 
 export function createCircuitBreaker<DataType>(

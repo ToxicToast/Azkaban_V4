@@ -7,7 +7,6 @@ import helmet from 'helmet';
 import { TelemetryHelper } from '@azkaban/shared';
 import { AppConfig } from './config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ErrorMiddleware } from './app/middlewares';
 import { HttpExceptionFilter } from './app/filters/httpException.filter';
 import { RpcExceptionFilter } from './app/filters';
 
@@ -34,10 +33,6 @@ function addModules(app: INestApplication): void {
 	app.use(compression({}));
 	app.use(helmet());
 	app.use(cookieParser());
-}
-
-function addMiddleware(app: INestApplication): void {
-	// app.use(ErrorMiddleware);
 }
 
 function addFilters(app: INestApplication): void {
@@ -83,7 +78,6 @@ async function bootstrap() {
 	const app = await createApp();
 	configureApp(app);
 	addModules(app);
-	addMiddleware(app);
 	addFilters(app);
 	if (AppConfig.environment === 'local') {
 		configureSwagger(app);

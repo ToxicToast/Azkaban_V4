@@ -43,10 +43,10 @@ export class AuthService {
 		username: string,
 		password: string,
 	): Promise<void> {
-		//
+		Logger.debug({ email, username, password }, 'Registering user');
 	}
 
 	async reset(email: string): Promise<void> {
-		//
+		Logger.debug({ email }, 'Resetting password');
 	}
 }
