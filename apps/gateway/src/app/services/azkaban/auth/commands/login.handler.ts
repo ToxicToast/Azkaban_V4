@@ -6,6 +6,7 @@ import {
 	AzkabanAuthTopics,
 	CircuitService,
 	createCircuitBreaker,
+	PasswordHash,
 } from '@azkaban/shared';
 
 @CommandHandler(LoginCommand)
@@ -16,9 +17,13 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 	) {}
 
 	private createCircuitBreaker(command: LoginCommand) {
+		const data = {
+			...command,
+			password: PasswordHash(command.password),
+		};
 		const topic = AzkabanAuthTopics.LOGIN;
 		return createCircuitBreaker<LoginCommand>(
-			command,
+			data,
 			topic,
 			this.circuit,
 			this.client,

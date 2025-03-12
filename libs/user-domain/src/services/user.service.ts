@@ -36,6 +36,15 @@ export class UserService {
 		}
 	}
 
+	async getUserByEmail(email: string): Promise<Result<UserAnemic>> {
+		try {
+			const result = await this.repository.findByEmail(email);
+			return Result.ok<UserAnemic>(result);
+		} catch (error) {
+			return Result.fail<UserAnemic>(error, 500);
+		}
+	}
+
 	async createUser(data: UserData): Promise<Result<UserAnemic>> {
 		try {
 			const aggregate = this.factory.createDomain(data);

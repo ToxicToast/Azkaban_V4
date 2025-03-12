@@ -1,9 +1,12 @@
 import { UserDAO } from '@azkaban/user-infrastructure';
-import { UserModel } from './user.model';
+import { AuthModel } from './auth.model';
 import { Nullable } from '@azkaban/shared';
 
-export class UserPresenter {
-	constructor(private readonly user: Nullable<UserDAO>) {}
+export class AuthPresenter {
+	constructor(
+		private readonly user: Nullable<UserDAO>,
+		private readonly groups: Array<string>,
+	) {}
 
 	private calculateFlagged(): boolean {
 		if (!this.user?.loggedin_at) {
@@ -21,18 +24,11 @@ export class UserPresenter {
 		return days > threeMonthDays;
 	}
 
-	public transform(): UserModel {
-		return this.user !== null
-			? {
-					id: this.user?.id,
-					username: this.user?.username,
-					email: this.user?.email,
-					isActive: !!this.user?.activated_at,
-					isBanned: !!this.user?.banned_at,
-					isLoggedIn: !!this.user?.loggedin_at,
-					isFlagged: !!this.calculateFlagged(),
-				}
-			: null;
+	public transform(): AuthModel {
+		return {
+			user: this.user,
+			groups: this.groups,
+		};
 	}
 
 	public checkPassword(password: string): boolean {

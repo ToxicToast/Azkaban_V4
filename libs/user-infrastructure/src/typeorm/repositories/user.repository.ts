@@ -33,6 +33,17 @@ export class UserRepository implements DomainRepository {
 		return null;
 	}
 
+	async findByEmail(email: string): Promise<UserAnemic> {
+		const entity = await this.repository.findOne({
+			withDeleted: true,
+			where: { email },
+		});
+		if (entity) {
+			return this.mapper.toDomain(entity);
+		}
+		return null;
+	}
+
 	async save(data: UserDAO): Promise<UserDAO> {
 		const entity = this.mapper.toEntity(data);
 		const saved = await this.repository.save(entity);

@@ -5,7 +5,7 @@ export class AuthAggregate {
 	constructor(
 		private readonly id: string,
 		private readonly user: UserDomain,
-		private readonly groups: Array<string>,
+		private readonly groups: Array<string>, // TODO: Change to GroupDomain
 	) {}
 
 	changeUsername(username: string): void {

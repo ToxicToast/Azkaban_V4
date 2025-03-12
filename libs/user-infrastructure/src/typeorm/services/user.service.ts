@@ -35,6 +35,19 @@ export class UserService {
 		}
 	}
 
+	async getUserByEmail(email: string): Promise<Nullable<UserDAO>> {
+		const result = await this.domainService.getUserByEmail(email);
+		if (result.isSuccess) {
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
+		}
+	}
+
 	async createUser(data: CreateUserDTO): Promise<UserDAO> {
 		const id = UuidHelper.create().value;
 		const result = await this.domainService.createUser({ ...data, id });

@@ -6,6 +6,7 @@ import {
 	AzkabanAuthTopics,
 	CircuitService,
 	createCircuitBreaker,
+	PasswordHash,
 } from '@azkaban/shared';
 
 @CommandHandler(RegisterCommand)
@@ -18,9 +19,13 @@ export class RegisterCommandHandler
 	) {}
 
 	private createCircuitBreaker(command: RegisterCommand) {
+		const data = {
+			...command,
+			password: PasswordHash(command.password),
+		};
 		const topic = AzkabanAuthTopics.REGISTER;
 		return createCircuitBreaker<RegisterCommand>(
-			command,
+			data,
 			topic,
 			this.circuit,
 			this.client,

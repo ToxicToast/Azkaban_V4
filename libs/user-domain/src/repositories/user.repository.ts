@@ -1,4 +1,11 @@
-import { Repository } from '@azkaban/shared';
+import { Chainable, Repository } from '@azkaban/shared';
 import { UserAnemic } from '../anemics';
 
-export type UserRepository = Repository<UserAnemic>;
+interface AdditionalMethods {
+	findByEmail(email: string): Promise<UserAnemic>;
+}
+
+export type UserRepository = Chainable<
+	Repository<UserAnemic>,
+	AdditionalMethods
+>;

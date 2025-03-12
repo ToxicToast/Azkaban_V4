@@ -14,16 +14,17 @@ export function TypeORMHelper(
 ): Promise<DataSource> {
 	const castType = type as Either<'postgres', 'mariadb'>;
 	const isTest = environment.includes('test');
-	const dataSource = isTest
-		? buildTestProvider(entities)
-		: buildProdProvider(
-				castType,
-				hostname,
-				port,
-				username,
-				password,
-				table,
-				entities,
-			);
-	return dataSource.initialize();
+
+	if (isTest) {
+		return buildTestProvider(entities).initialize();
+	}
+	return buildProdProvider(
+		castType,
+		hostname,
+		port,
+		username,
+		password,
+		table,
+		entities,
+	).initialize();
 }

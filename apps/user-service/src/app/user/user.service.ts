@@ -41,6 +41,15 @@ export class UserService {
 		return null;
 	}
 
+	async userByEmail(email: string): Promise<UserModel> {
+		const user = await this.infrastructureService.getUserByEmail(email);
+		if (user !== null) {
+			const presenter = new UserPresenter(user);
+			return presenter.transform();
+		}
+		return null;
+	}
+
 	async userCreate(
 		username: string,
 		email: string,

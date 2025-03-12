@@ -1,5 +1,5 @@
 import { TypeORMHelper } from '../helpers';
-import { EntitySchema, MixedList } from 'typeorm';
+import { DataSource, EntitySchema, MixedList } from 'typeorm';
 
 export const datasourceProvider = (
 	environment: string,
@@ -10,11 +10,11 @@ export const datasourceProvider = (
 	password: string,
 	table: string,
 	entities: MixedList<string | EntitySchema>,
-) => [
+): Array<{ provide: string; useFactory: () => Promise<DataSource> }> => [
 	{
 		provide: 'DATA_SOURCE',
 		useFactory: () => {
-			return TypeORMHelper(
+			const helper = TypeORMHelper(
 				environment,
 				type,
 				hostname,
@@ -24,6 +24,7 @@ export const datasourceProvider = (
 				table,
 				entities,
 			);
+			return helper;
 		},
 	},
 ];

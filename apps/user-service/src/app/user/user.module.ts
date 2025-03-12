@@ -2,7 +2,11 @@ import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { AppConfig } from '../../config';
-import { datasourceProvider, userProvider } from '@azkaban/user-infrastructure';
+import {
+	datasourceProvider,
+	UserEntity,
+	userProvider,
+} from '@azkaban/user-infrastructure';
 import { UserCache } from './user.cache';
 
 @Module({
@@ -16,6 +20,7 @@ import { UserCache } from './user.cache';
 			AppConfig.database.databaseUsername,
 			AppConfig.database.databasePassword,
 			AppConfig.database.databaseTable,
+			[UserEntity],
 		),
 		...userProvider,
 		UserService,
