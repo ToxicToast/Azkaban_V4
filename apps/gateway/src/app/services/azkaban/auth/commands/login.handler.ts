@@ -35,14 +35,14 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 		});
 	}
 
-	private async createToken(data: LoginDAO): Promise<string> {
+	private createToken(data: LoginDAO): string {
 		Logger.debug('Creating token for user: ' + data.user.username);
 		const payload = {
 			sub: data.user.id,
 			user: data.user,
 			groups: data.groups,
 		};
-		return await this.jwtService.signAsync(payload);
+		return this.jwtService.sign(payload);
 	}
 
 	async execute(command: LoginCommand) {
