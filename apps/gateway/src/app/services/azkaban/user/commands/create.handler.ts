@@ -8,6 +8,7 @@ import {
 	createCircuitBreaker,
 	PasswordHash,
 } from '@azkaban/shared';
+import { AppConfig } from '../../../../../config';
 
 @CommandHandler(CreateCommand)
 export class CreateCommandHandler implements ICommandHandler<CreateCommand> {
@@ -16,10 +17,14 @@ export class CreateCommandHandler implements ICommandHandler<CreateCommand> {
 		private readonly circuit: CircuitService,
 	) {}
 
-	private createCircuitBreaker(query: CreateCommand) {
+	private async createCircuitBreaker(command: CreateCommand) {
+		const hashedPassword = await PasswordHash(
+			command.password,
+			AppConfig.jwt,
+		);
 		const data = {
-			...query,
-			password: PasswordHash(query.password),
+			...command,
+			password: hashedPassword,
 		};
 		const topic = AzkabanUserTopics.CREATE;
 		return createCircuitBreaker<CreateCommand>(
@@ -30,7 +35,7 @@ export class CreateCommandHandler implements ICommandHandler<CreateCommand> {
 		);
 	}
 
-	async execute(query: CreateCommand) {
-		return await this.createCircuitBreaker(query);
+	async execute(command: CreateCommand) {
+		return await this.createCircuitBreaker(command);
 	}
 }

@@ -1,7 +1,14 @@
 import { Nullable } from '@azkaban/shared';
-import { UserDAO } from '@azkaban/user-infrastructure';
 
 export interface AuthModel {
-	user: Nullable<UserDAO>;
-	groups: Array<string>; // TODO: Change to GroupDAO
+	user: Nullable<{
+		id: string;
+		username: string;
+		email: string;
+		isActive: boolean;
+		isBanned: boolean;
+		isLoggedIn: boolean;
+		isFlagged: boolean;
+	}>;
+	isAdmin: boolean;
 }

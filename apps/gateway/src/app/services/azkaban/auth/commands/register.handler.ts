@@ -8,6 +8,7 @@ import {
 	createCircuitBreaker,
 	PasswordHash,
 } from '@azkaban/shared';
+import { AppConfig } from '../../../../../config';
 
 @CommandHandler(RegisterCommand)
 export class RegisterCommandHandler
@@ -18,10 +19,14 @@ export class RegisterCommandHandler
 		private readonly circuit: CircuitService,
 	) {}
 
-	private createCircuitBreaker(command: RegisterCommand) {
+	private async createCircuitBreaker(command: RegisterCommand) {
+		const hashedPassword = await PasswordHash(
+			command.password,
+			AppConfig.jwt,
+		);
 		const data = {
 			...command,
-			password: PasswordHash(command.password),
+			password: hashedPassword,
 		};
 		const topic = AzkabanAuthTopics.REGISTER;
 		return createCircuitBreaker<RegisterCommand>(

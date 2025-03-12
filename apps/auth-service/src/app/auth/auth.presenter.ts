@@ -3,8 +3,6 @@ import { AuthModel } from './auth.model';
 import { Nullable } from '@azkaban/shared';
 
 export class AuthPresenter {
-	private token: Nullable<string> = null;
-
 	constructor(
 		private readonly user: Nullable<UserDAO>,
 		private readonly groups: Array<string>,
@@ -27,9 +25,22 @@ export class AuthPresenter {
 	}
 
 	public transform(): AuthModel {
+		const transformedUser =
+			this.user !== null
+				? {
+						id: this.user?.id,
+						username: this.user?.username,
+						email: this.user?.email,
+						isActive: !!this.user?.activated_at,
+						isBanned: !!this.user?.banned_at,
+						isLoggedIn: !!this.user?.loggedin_at,
+						isFlagged: !!this.calculateFlagged(),
+					}
+				: null;
+
 		return {
-			user: this.user,
-			groups: this.groups,
+			user: transformedUser,
+			isAdmin: this.groups.includes('admin'),
 		};
 	}
 
