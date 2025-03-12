@@ -3,6 +3,7 @@ export enum AzkabanUserTopics {
 	LIST = 'azkaban.user.list',
 	ID = 'azkaban.user.id',
 	CREATE = 'azkaban.user.create',
+	UPDATE = 'azkaban.user.update',
 }
 
 export const AzkabanUserTopicArray = Object.values(AzkabanUserTopics);

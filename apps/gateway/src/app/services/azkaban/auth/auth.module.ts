@@ -6,22 +6,22 @@ import {
 	ForgetPasswordCommandHandler,
 	LoginCommandHandler,
 	RegisterCommandHandler,
+	UpdateLoginCommandHandler,
 	WelcomeCommandHandler,
 } from './commands';
 import { RegisterSaga } from './sagas';
-import { JwtModule } from '../../../jwt/jwt.module';
 
 export const CommandHandlers = [
 	ForgetPasswordCommandHandler,
 	LoginCommandHandler,
 	RegisterCommandHandler,
 	WelcomeCommandHandler,
+	UpdateLoginCommandHandler,
 ];
 export const EventHandlers = [];
 export const QueryHandlers = [];
 
 @Module({
-	imports: [JwtModule],
 	controllers: [AuthController],
 	providers: [
 		...CommandHandlers,
