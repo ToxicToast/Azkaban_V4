@@ -7,6 +7,7 @@ import {
 import { Repository } from 'typeorm';
 import { AuthPresenter } from './auth.presenter';
 import { AuthModel } from './auth.model';
+import { PasswordCompare, PasswordHash, PasswordSalt } from '@azkaban/shared';
 
 @Injectable()
 export class AuthService {
@@ -39,7 +40,10 @@ export class AuthService {
 			}
 
 			const presenter = new AuthPresenter(user, []);
-			const checkPassword = presenter.checkPassword(password);
+			const checkPassword = await PasswordCompare(
+				password,
+				user.password,
+			);
 			if (checkPassword) {
 				return presenter.transform();
 			}
@@ -53,10 +57,13 @@ export class AuthService {
 		username: string,
 		password: string,
 	): Promise<AuthModel> {
+		const salt = await PasswordSalt();
+		const hashedPassword = await PasswordHash(password, salt);
 		const user = await this.userInfrastructureService.createUser({
 			username,
 			email,
-			password,
+			password: hashedPassword,
+			salt,
 		});
 		if (user !== null) {
 			const presenter = new AuthPresenter(user, []);

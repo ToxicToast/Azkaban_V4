@@ -21,6 +21,7 @@ export class UserFactory
 			username,
 			email,
 			password,
+			salt,
 			banned_at,
 			activated_at,
 			loggedin_at,
@@ -41,6 +42,7 @@ export class UserFactory
 			usernameVO.value,
 			emailVO.value,
 			passwordVO.value,
+			salt,
 			bannedAtVO.value,
 			activatedAtVO.value,
 			loggedInVO.value,
@@ -57,7 +59,7 @@ export class UserFactory
 	}
 
 	createDomain(data: UserData): UserAggregate {
-		const { id, username, password, email } = data;
+		const { id, username, password, email, salt } = data;
 		const usernameVO = new UsernameValueObject(username);
 		const emailVO = new EmailValueObject(email);
 		const passwordVO = new PasswordValueObject(password);
@@ -66,6 +68,7 @@ export class UserFactory
 			usernameVO.value,
 			emailVO.value,
 			passwordVO.value,
+			salt,
 			null,
 			null,
 			null,

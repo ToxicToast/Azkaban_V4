@@ -43,8 +43,4 @@ export class AuthPresenter {
 			isAdmin: this.groups.includes('admin'),
 		};
 	}
-
-	public checkPassword(password: string): boolean {
-		return this.user !== null ? this.user.password === password : false;
-	}
 }

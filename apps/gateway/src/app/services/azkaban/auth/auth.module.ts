@@ -9,7 +9,7 @@ import {
 	UpdateLoginCommandHandler,
 	WelcomeCommandHandler,
 } from './commands';
-import { RegisterSaga } from './sagas';
+import { LoginSaga, RegisterSaga } from './sagas';
 
 export const CommandHandlers = [
 	ForgetPasswordCommandHandler,
@@ -20,6 +20,7 @@ export const CommandHandlers = [
 ];
 export const EventHandlers = [];
 export const QueryHandlers = [];
+export const Sagas = [AuthSaga, RegisterSaga, LoginSaga];
 
 @Module({
 	controllers: [AuthController],
@@ -27,9 +28,8 @@ export const QueryHandlers = [];
 		...CommandHandlers,
 		...EventHandlers,
 		...QueryHandlers,
-		AuthSaga,
+		...Sagas,
 		AuthService,
-		RegisterSaga,
 	],
 })
 export class AuthModule {}

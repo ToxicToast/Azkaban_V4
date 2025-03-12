@@ -8,6 +8,7 @@ import {
 	UserService as BaseService,
 } from '@azkaban/user-infrastructure';
 import { Repository } from 'typeorm';
+import { PasswordHash, PasswordSalt } from '@azkaban/shared';
 
 @Injectable()
 export class UserService {
@@ -55,10 +56,13 @@ export class UserService {
 		email: string,
 		password: string,
 	): Promise<UserModel> {
+		const salt = await PasswordSalt();
+		const hashedPassword = await PasswordHash(password, salt);
 		const user = await this.infrastructureService.createUser({
 			username,
 			email,
-			password,
+			password: hashedPassword,
+			salt,
 		});
 		if (user !== null) {
 			const presenter = new UserPresenter(user);

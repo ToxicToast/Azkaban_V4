@@ -21,6 +21,9 @@ export class UserEntity {
 	@Column({ unique: false, nullable: false, type: 'varchar' })
 	password: string;
 
+	@Column({ unique: false, nullable: false, type: 'varchar' })
+	salt: string;
+
 	@Column({ unique: false, nullable: true, default: null, type: 'timestamp' })
 	activated_at: Date | null;
 

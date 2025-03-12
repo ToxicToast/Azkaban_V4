@@ -12,6 +12,7 @@ export class UserMapper implements Mapper<UserDAO, UserEntity> {
 			username,
 			email,
 			password,
+			salt,
 			activated_at,
 			banned_at,
 			loggedin_at,
@@ -24,6 +25,7 @@ export class UserMapper implements Mapper<UserDAO, UserEntity> {
 		entity.username = username;
 		entity.email = email;
 		entity.password = password;
+		entity.salt = salt;
 		entity.activated_at = activated_at;
 		entity.banned_at = banned_at;
 		entity.loggedin_at = loggedin_at;
@@ -39,6 +41,7 @@ export class UserMapper implements Mapper<UserDAO, UserEntity> {
 			username,
 			email,
 			password,
+			salt,
 			activated_at,
 			banned_at,
 			loggedin_at,
@@ -51,6 +54,7 @@ export class UserMapper implements Mapper<UserDAO, UserEntity> {
 			username,
 			email,
 			password,
+			salt,
 			activated_at,
 			banned_at,
 			loggedin_at,

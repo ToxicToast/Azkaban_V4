@@ -16,6 +16,10 @@ export class UserAggregate {
 		this.user.changePassword(password);
 	}
 
+	changeSalt(salt: string): void {
+		this.user.changeSalt(salt);
+	}
+
 	banUser(): void {
 		this.user.banUser();
 	}

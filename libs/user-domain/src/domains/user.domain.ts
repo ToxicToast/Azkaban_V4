@@ -14,6 +14,7 @@ export class UserDomain implements Domain<UserAnemic> {
 		private username: string,
 		private email: string,
 		private password: string,
+		private salt: string,
 		private banned_at: Nullable<Date>,
 		private activated_at: Nullable<Date>,
 		private loggedin_at: Nullable<Date>,
@@ -28,6 +29,7 @@ export class UserDomain implements Domain<UserAnemic> {
 			username: this.username,
 			email: this.email,
 			password: this.password,
+			salt: this.salt,
 			banned_at: this.banned_at,
 			activated_at: this.activated_at,
 			loggedin_at: this.loggedin_at,
@@ -62,6 +64,11 @@ export class UserDomain implements Domain<UserAnemic> {
 			this.updated_at = new Date();
 			this.password = newPasswordVO.value;
 		}
+	}
+
+	changeSalt(salt: string): void {
+		this.updated_at = new Date();
+		this.salt = salt;
 	}
 
 	banUser(): void {

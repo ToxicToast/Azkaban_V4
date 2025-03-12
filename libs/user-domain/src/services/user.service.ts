@@ -59,6 +59,7 @@ export class UserService {
 		username?: Optional<string>,
 		email?: Optional<string>,
 		password?: Optional<string>,
+		salt?: Optional<string>,
 	): Promise<Result<UserAnemic>> {
 		try {
 			const result = await this.getUserById(id);
@@ -72,6 +73,9 @@ export class UserService {
 				}
 				if (password) {
 					aggregate.changePassword(password);
+				}
+				if (salt) {
+					aggregate.changeSalt(salt);
 				}
 				return await this.save(aggregate.toAnemic());
 			}

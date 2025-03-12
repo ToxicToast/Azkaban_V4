@@ -43,6 +43,7 @@ export class DatabaseModule {
 								password: database.databasePassword,
 								database: database.databaseTable,
 								entities: castEntities,
+								synchronize: true,
 							}).initialize();
 						}
 					},

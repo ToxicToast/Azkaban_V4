@@ -93,7 +93,6 @@ bootstrap().catch((err) => {
 		telemetry
 			.shutdown()
 			.then(() => Logger.log('Tracing terminated'))
-			.catch((error) => Logger.error('Error terminating tracing', error))
-			.finally(() => process.exit(0));
+			.catch((error) => Logger.error('Error terminating tracing', error));
 	}
 });
