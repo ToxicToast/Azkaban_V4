@@ -3,6 +3,8 @@ import { AuthModel } from './auth.model';
 import { Nullable } from '@azkaban/shared';
 
 export class AuthPresenter {
+	private token: Nullable<string> = null;
+
 	constructor(
 		private readonly user: Nullable<UserDAO>,
 		private readonly groups: Array<string>,

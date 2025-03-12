@@ -3,5 +3,5 @@ export interface LoginDAO {
 		id: string;
 		username: string;
 	};
-	token: string;
+	groups: Array<string>;
 }

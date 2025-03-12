@@ -34,7 +34,7 @@ export class UserController {
 		if (response === null) {
 			throw new RpcException({
 				message: 'User not found',
-				status: HttpStatus.BAD_REQUEST,
+				status: HttpStatus.NOT_FOUND,
 			});
 		}
 		await this.cache.cacheUserById(id, response);

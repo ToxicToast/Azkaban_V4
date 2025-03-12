@@ -42,8 +42,17 @@ export class AuthService {
 		email: string,
 		username: string,
 		password: string,
-	): Promise<void> {
-		Logger.debug({ email, username, password }, 'Registering user');
+	): Promise<AuthModel> {
+		const user = await this.userInfrastructureService.createUser({
+			username,
+			email,
+			password,
+		});
+		if (user !== null) {
+			const presenter = new AuthPresenter(user, []);
+			return presenter.transform();
+		}
+		return null;
 	}
 
 	async reset(email: string): Promise<void> {

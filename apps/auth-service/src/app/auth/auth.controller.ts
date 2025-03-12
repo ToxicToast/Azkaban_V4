@@ -26,7 +26,14 @@ export class AuthController {
 				status: HttpStatus.BAD_REQUEST,
 			});
 		}
-		return await this.service.login(email, password);
+		const response = await this.service.login(email, password);
+		if (response === null) {
+			throw new RpcException({
+				message: 'User not found',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
+		return response;
 	}
 
 	@MessagePattern(AzkabanAuthTopics.REGISTER)
