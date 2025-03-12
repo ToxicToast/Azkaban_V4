@@ -28,6 +28,16 @@ export class AuthService {
 	async login(email: string, password: string): Promise<AuthModel> {
 		const user = await this.userInfrastructureService.getUserByEmail(email);
 		if (user !== null) {
+			if (user.activated_at === null) {
+				return null;
+			}
+			if (user.banned_at !== null) {
+				return null;
+			}
+			if (user.deleted_at !== null) {
+				return null;
+			}
+
 			const presenter = new AuthPresenter(user, []);
 			const checkPassword = presenter.checkPassword(password);
 			if (checkPassword) {

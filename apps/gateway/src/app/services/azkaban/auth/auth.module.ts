@@ -9,6 +9,7 @@ import {
 	WelcomeCommandHandler,
 } from './commands';
 import { RegisterSaga } from './sagas';
+import { JwtModule } from '../../../jwt/jwt.module';
 
 export const CommandHandlers = [
 	ForgetPasswordCommandHandler,
@@ -20,6 +21,7 @@ export const EventHandlers = [];
 export const QueryHandlers = [];
 
 @Module({
+	imports: [JwtModule],
 	controllers: [AuthController],
 	providers: [
 		...CommandHandlers,
