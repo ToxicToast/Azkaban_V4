@@ -18,7 +18,7 @@ export class UpdateLoginCommandHandler
 	) {}
 
 	private async createCircuitBreaker(command: UpdateLoginCommand) {
-		const topic = AzkabanUserTopics.UPDATE;
+		const topic = AzkabanUserTopics.LOGIN;
 		return createCircuitBreaker<UpdateLoginCommand>(
 			command,
 			topic,

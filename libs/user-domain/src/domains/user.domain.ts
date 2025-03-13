@@ -71,6 +71,11 @@ export class UserDomain implements Domain<UserAnemic> {
 		this.salt = salt;
 	}
 
+	changeLoggedInAt(loggedin_at: Nullable<Date>): void {
+		this.updated_at = new Date();
+		this.loggedin_at = loggedin_at;
+	}
+
 	banUser(): void {
 		const banVO = new BannedAtValueObject(this.banned_at);
 		const newBannedVO = new BannedAtValueObject();

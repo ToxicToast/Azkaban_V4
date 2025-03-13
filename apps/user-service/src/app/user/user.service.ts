@@ -8,7 +8,12 @@ import {
 	UserService as BaseService,
 } from '@azkaban/user-infrastructure';
 import { Repository } from 'typeorm';
-import { PasswordHash, PasswordSalt } from '@azkaban/shared';
+import {
+	Nullable,
+	Optional,
+	PasswordHash,
+	PasswordSalt,
+} from '@azkaban/shared';
 
 @Injectable()
 export class UserService {
@@ -42,15 +47,6 @@ export class UserService {
 		return null;
 	}
 
-	async userByEmail(email: string): Promise<UserModel> {
-		const user = await this.infrastructureService.getUserByEmail(email);
-		if (user !== null) {
-			const presenter = new UserPresenter(user);
-			return presenter.transform();
-		}
-		return null;
-	}
-
 	async userCreate(
 		username: string,
 		email: string,
@@ -64,6 +60,48 @@ export class UserService {
 			password: hashedPassword,
 			salt,
 		});
+		if (user !== null) {
+			const presenter = new UserPresenter(user);
+			return presenter.transform();
+		}
+		return null;
+	}
+
+	async userUpdate(
+		id: string,
+		username?: Optional<string>,
+		email?: Optional<string>,
+		password?: Optional<string>,
+	): Promise<UserModel> {
+		const changeData = {};
+		if (username !== undefined) {
+			changeData['username'] = username;
+		}
+		if (email !== undefined) {
+			changeData['email'] = email;
+		}
+		if (password !== undefined) {
+			const salt = await PasswordSalt();
+			const hashedPassword = await PasswordHash(password, salt);
+			changeData['password'] = hashedPassword;
+			changeData['salt'] = salt;
+		}
+		const user = await this.infrastructureService.updateUser(
+			id,
+			changeData,
+		);
+		if (user !== null) {
+			const presenter = new UserPresenter(user);
+			return presenter.transform();
+		}
+		return null;
+	}
+
+	async userLogin(
+		id: string,
+		loggedInAt: Nullable<Date>,
+	): Promise<UserModel> {
+		const user = await this.infrastructureService.loginUser(id, loggedInAt);
 		if (user !== null) {
 			const presenter = new UserPresenter(user);
 			return presenter.transform();

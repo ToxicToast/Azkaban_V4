@@ -80,6 +80,19 @@ export class UserService {
 		}
 	}
 
+	async loginUser(id: string, loggedin_at: Nullable<Date>): Promise<UserDAO> {
+		const result = await this.domainService.loginUser(id, loggedin_at);
+		if (result.isSuccess) {
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'User not found',
+				raw: result.errorValue,
+			});
+		}
+	}
+
 	async banUser(id: string): Promise<UserDAO> {
 		const result = await this.domainService.banUser(id);
 		if (result.isSuccess) {

@@ -4,6 +4,7 @@ export enum AzkabanUserTopics {
 	ID = 'azkaban.user.id',
 	CREATE = 'azkaban.user.create',
 	UPDATE = 'azkaban.user.update',
+	LOGIN = 'azkaban.user.login',
 }
 
 export const AzkabanUserTopicArray = Object.values(AzkabanUserTopics);

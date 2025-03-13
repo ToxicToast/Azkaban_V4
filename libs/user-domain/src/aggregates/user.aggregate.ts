@@ -1,5 +1,6 @@
 import { UserDomain } from '../domains';
 import { UserAnemic } from '../anemics';
+import { Nullable } from '@azkaban/shared';
 
 export class UserAggregate {
 	constructor(private readonly user: UserDomain) {}
@@ -18,6 +19,10 @@ export class UserAggregate {
 
 	changeSalt(salt: string): void {
 		this.user.changeSalt(salt);
+	}
+
+	changeLoggedInAt(loggedin_at: Nullable<Date>): void {
+		this.user.changeLoggedInAt(loggedin_at);
 	}
 
 	banUser(): void {

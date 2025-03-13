@@ -1,7 +1,7 @@
 import { UserFactory } from '../factories';
 import { UserRepository } from '../repositories';
 import { UserAnemic } from '../anemics';
-import { Optional, Result } from '@azkaban/shared';
+import { Nullable, Optional, Result } from '@azkaban/shared';
 import { UserData } from '../data';
 
 export class UserService {
@@ -40,6 +40,23 @@ export class UserService {
 		try {
 			const result = await this.repository.findByEmail(email);
 			return Result.ok<UserAnemic>(result);
+		} catch (error) {
+			return Result.fail<UserAnemic>(error, 500);
+		}
+	}
+
+	async loginUser(
+		id: string,
+		loggedin_at: Nullable<Date>,
+	): Promise<Result<UserAnemic>> {
+		try {
+			const result = await this.getUserById(id);
+			if (result.isSuccess) {
+				const aggregate = this.factory.reconstitute(result.value);
+				aggregate.changeLoggedInAt(loggedin_at);
+				return await this.save(aggregate.toAnemic());
+			}
+			return Result.fail<UserAnemic>(result.errorValue, 500);
 		} catch (error) {
 			return Result.fail<UserAnemic>(error, 500);
 		}
