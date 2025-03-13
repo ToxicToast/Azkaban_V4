@@ -1,3 +1,3 @@
-export class IdQuery {
+export class IdCommand {
 	constructor(public readonly id: string) {}
 }

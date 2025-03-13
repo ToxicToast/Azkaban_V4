@@ -74,5 +74,6 @@ export class AuthService {
 
 	async reset(email: string): Promise<void> {
 		Logger.debug({ email }, 'Resetting password');
+		return null;
 	}
 }

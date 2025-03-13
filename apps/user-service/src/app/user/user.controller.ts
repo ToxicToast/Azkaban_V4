@@ -17,9 +17,9 @@ export class UserController {
 
 	@MessagePattern(AzkabanUserTopics.LIST)
 	async list(): Promise<UsersResponse> {
-		const userList = await this.service.userList();
-		await this.cache.cacheUserList(userList);
-		return userList;
+		const response = await this.service.userList();
+		await this.cache.cacheUserList(response);
+		return response;
 	}
 
 	@MessagePattern(AzkabanUserTopics.ID)

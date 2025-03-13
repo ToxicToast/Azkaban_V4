@@ -21,11 +21,7 @@ export class LoginSaga {
 			ofType(LoginEvent),
 			map(
 				(event) =>
-					new SSECommand(
-						AzkabanSSETopics.LOGIN,
-						event.id,
-						event.username,
-					),
+					new SSECommand(AzkabanSSETopics.LOGIN, event.username),
 			),
 		);
 	};

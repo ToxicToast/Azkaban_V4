@@ -1,5 +1,5 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { ListQuery } from './list.query';
+import { ICommandHandler, CommandHandler } from '@nestjs/cqrs';
+import { ListCommand } from './list.command';
 import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
@@ -9,8 +9,8 @@ import {
 	createCircuitBreaker,
 } from '@azkaban/shared';
 
-@QueryHandler(ListQuery)
-export class ListQueryHandler implements IQueryHandler<ListQuery> {
+@CommandHandler(ListCommand)
+export class ListCommandHandler implements ICommandHandler<ListCommand> {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 		private readonly circuit: CircuitService,
@@ -19,7 +19,7 @@ export class ListQueryHandler implements IQueryHandler<ListQuery> {
 
 	private async createCircuitBreaker() {
 		const topic = AzkabanUserTopics.LIST;
-		return createCircuitBreaker<ListQuery>(
+		return createCircuitBreaker<ListCommand>(
 			{},
 			topic,
 			this.circuit,

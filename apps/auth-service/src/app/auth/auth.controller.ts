@@ -2,13 +2,17 @@ import { Controller, HttpStatus } from '@nestjs/common';
 import { AuthRoutes, AzkabanAuthTopics } from '@azkaban/shared';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
+import { AuthCache } from './auth.cache';
 
 @Controller({
 	path: AuthRoutes.CONTROLLER,
 	version: '1',
 })
 export class AuthController {
-	constructor(private readonly service: AuthService) {}
+	constructor(
+		private readonly service: AuthService,
+		private readonly cache: AuthCache,
+	) {}
 
 	@MessagePattern(AzkabanAuthTopics.LOGIN)
 	async login(
@@ -33,6 +37,7 @@ export class AuthController {
 				status: HttpStatus.BAD_REQUEST,
 			});
 		}
+		await this.cache.removeCacheOnCreate();
 		return response;
 	}
 
@@ -58,7 +63,15 @@ export class AuthController {
 				status: HttpStatus.BAD_REQUEST,
 			});
 		}
-		return await this.service.register(email, username, password);
+		const response = await this.service.register(email, username, password);
+		if (response === null) {
+			throw new RpcException({
+				message: 'User not created',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
+		await this.cache.removeCacheOnCreate();
+		return response;
 	}
 
 	@MessagePattern(AzkabanAuthTopics.FORGET_PASSWORD)
@@ -69,6 +82,14 @@ export class AuthController {
 				status: HttpStatus.BAD_REQUEST,
 			});
 		}
-		return await this.service.reset(email);
+		const response = await this.service.reset(email);
+		if (response === null) {
+			throw new RpcException({
+				message: 'User not found',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
+		await this.cache.removeCacheOnCreate();
+		return response;
 	}
 }

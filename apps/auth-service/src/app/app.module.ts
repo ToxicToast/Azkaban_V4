@@ -4,6 +4,7 @@ import { MetricsModule } from './metrics/metrics.module';
 import { VersionModule } from './version/version.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
+import { CacheModule } from './cache/cache.module';
 
 @Module({
 	imports: [
@@ -11,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 		MetricsModule,
 		VersionModule,
 		DatabaseModule,
+		CacheModule,
 		AuthModule,
 	],
 })
