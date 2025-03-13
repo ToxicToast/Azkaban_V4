@@ -9,5 +9,7 @@ export interface LoginDAO {
 		isLoggedIn: boolean;
 		isFlagged: boolean;
 	};
-	isAdmin: boolean;
+	permissions: {
+		isAdmin: boolean;
+	};
 }

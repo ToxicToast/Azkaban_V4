@@ -21,12 +21,12 @@ export class AuthController {
 		const payload = {
 			sub: data.user.id,
 			user: data.user,
-			isAdmin: data.isAdmin,
+			permissions: data.permissions,
 		};
 		return {
 			access_token: this.jwtService.sign(payload),
 			user: data.user,
-			isAdmin: data.isAdmin,
+			permissions: data.permissions,
 		};
 	}
 
