@@ -15,7 +15,12 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@azkaban/shared": ["libs/shared/src/index.ts"]
+			"@azkaban/auth-domain": ["libs/auth-domain/src/index.ts"],
+			"@azkaban/shared": ["libs/shared/src/index.ts"],
+			"@azkaban/user-domain": ["libs/user-domain/src/index.ts"],
+			"@azkaban/user-infrastructure": [
+				"libs/user-infrastructure/src/index.ts"
+			]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

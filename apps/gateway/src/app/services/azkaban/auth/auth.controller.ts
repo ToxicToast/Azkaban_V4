@@ -1,20 +1,33 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthRoutes } from '@azkaban/shared';
 import { LoginDAO, RegisterDAO, ForgetPasswordDAO } from './dao';
 import { LoginDTO, RegisterDTO, ForgetPasswordDTO } from './dto';
-import { JwtGuard } from '../../../guards';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller({
 	path: AuthRoutes.CONTROLLER,
 	version: '1',
 })
 export class AuthController {
-	constructor(private readonly service: AuthService) {}
+	constructor(
+		private readonly service: AuthService,
+		private readonly jwtService: JwtService,
+	) {}
 
 	@Post(AuthRoutes.LOGIN)
 	async login(@Body() body: LoginDTO): Promise<LoginDAO> {
-		return await this.service.login(body);
+		const data = await this.service.login(body);
+		const payload = {
+			sub: data.user.id,
+			user: data.user,
+			permissions: data.permissions,
+		};
+		return {
+			access_token: this.jwtService.sign(payload),
+			user: data.user,
+			permissions: data.permissions,
+		};
 	}
 
 	@Post(AuthRoutes.REGISTER)
@@ -27,12 +40,5 @@ export class AuthController {
 		@Body() body: ForgetPasswordDTO,
 	): Promise<ForgetPasswordDAO> {
 		return await this.service.forgetPassword(body);
-	}
-
-	@UseGuards(JwtGuard)
-	@Get(AuthRoutes.PROFILE)
-	async profile(@Req() request): Promise<unknown> {
-		const token = request['token'];
-		return await this.service.profile(token);
 	}
 }

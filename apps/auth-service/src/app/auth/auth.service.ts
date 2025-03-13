@@ -1,60 +1,79 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Authorizer } from '@authorizerdev/authorizer-js';
-import { ProfilePresenter } from '../presenter/profile.presenter';
-import { LoginPresenter } from '../presenter/login.presenter';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import {
+	UserEntity,
+	UserRepository,
+	UserService,
+} from '@azkaban/user-infrastructure';
+import { Repository } from 'typeorm';
+import { AuthPresenter } from './auth.presenter';
+import { AuthModel } from './auth.model';
+import { PasswordCompare, PasswordHash, PasswordSalt } from '@azkaban/shared';
 
 @Injectable()
 export class AuthService {
-	private readonly instance: Authorizer;
+	private readonly userInfrastructureRepository: UserRepository;
+	private readonly userInfrastructureService: UserService;
 
 	constructor(
-		@Inject('AUTHORIZER_URL') private readonly url: string,
-		@Inject('AUTHORIZER_CLIENT_ID') private readonly clientId: string,
+		@Inject('USER_REPOSITORY')
+		private readonly userRepository: Repository<UserEntity>,
 	) {
-		this.instance = new Authorizer({
-			authorizerURL: this.url,
-			clientID: this.clientId,
-			redirectURL: 'https://www.toxictoast.de',
-		});
+		this.userInfrastructureRepository = new UserRepository(
+			this.userRepository,
+		);
+		this.userInfrastructureService = new UserService(
+			this.userInfrastructureRepository,
+		);
 	}
 
-	async login(email: string, password: string): Promise<unknown> {
-		const data = await this.instance.login({
-			email: email,
-			password: password,
-		});
-		const presenter = new LoginPresenter(data);
-		return presenter.transform();
+	async login(email: string, password: string): Promise<AuthModel> {
+		const user = await this.userInfrastructureService.getUserByEmail(email);
+		if (user !== null) {
+			if (user.activated_at === null) {
+				return null;
+			}
+			if (user.banned_at !== null) {
+				return null;
+			}
+			if (user.deleted_at !== null) {
+				return null;
+			}
+
+			const presenter = new AuthPresenter(user, []);
+			const checkPassword = await PasswordCompare(
+				password,
+				user.password,
+			);
+			if (checkPassword) {
+				return presenter.transform();
+			}
+			return null;
+		}
+		return null;
 	}
 
 	async register(
 		email: string,
 		username: string,
 		password: string,
-	): Promise<unknown> {
-		const data = await this.instance.signup({
+	): Promise<AuthModel> {
+		const salt = await PasswordSalt();
+		const hashedPassword = await PasswordHash(password, salt);
+		const user = await this.userInfrastructureService.createUser({
+			username,
 			email,
-			password,
-			confirm_password: password,
-			nickname: username,
-			roles: ['User'],
+			password: hashedPassword,
+			salt,
 		});
-		const presenter = new LoginPresenter(data);
-		return presenter.transform();
+		if (user !== null) {
+			const presenter = new AuthPresenter(user, []);
+			return presenter.transform();
+		}
+		return null;
 	}
 
-	async reset(email: string): Promise<unknown> {
-		const data = await this.instance.forgotPassword({
-			email,
-		});
-		return data;
-	}
-
-	async profile(token: string): Promise<unknown> {
-		const data = await this.instance.getProfile({
-			Authorization: `Bearer ${token}`,
-		});
-		const presenter = new ProfilePresenter(data);
-		return presenter.transform();
+	async reset(email: string): Promise<void> {
+		Logger.debug({ email }, 'Resetting password');
+		return null;
 	}
 }

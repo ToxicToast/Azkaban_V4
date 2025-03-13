@@ -1,9 +1,12 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RegisterCommand } from './register.command';
-import { HttpException, Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { AzkabanAuthTopics, CircuitService } from '@azkaban/shared';
-import { RegisterDAO } from '../dao';
+import {
+	AzkabanAuthTopics,
+	CircuitService,
+	createCircuitBreaker,
+} from '@azkaban/shared';
 
 @CommandHandler(RegisterCommand)
 export class RegisterCommandHandler
@@ -14,27 +17,17 @@ export class RegisterCommandHandler
 		private readonly circuit: CircuitService,
 	) {}
 
-	private createCircuitBreaker(command: RegisterCommand) {
-		const { email, username, password } = command;
+	private async createCircuitBreaker(command: RegisterCommand) {
 		const topic = AzkabanAuthTopics.REGISTER;
-		//
-		const circuit = this.circuit.createCircuitBreaker(topic);
-		circuit.fn(async () => {
-			return await this.client
-				.send(topic, { email, username, password })
-				.toPromise();
-		});
-		return circuit.execute();
+		return createCircuitBreaker<RegisterCommand>(
+			command,
+			topic,
+			this.circuit,
+			this.client,
+		);
 	}
 
 	async execute(command: RegisterCommand) {
-		return await this.createCircuitBreaker(command)
-			.then((res: RegisterDAO) => {
-				return res;
-			})
-			.catch((err) => {
-				Logger.error(err.message, err.stack, 'RegisterCommandHandler');
-				throw new HttpException(err.message, err.status ?? 503);
-			});
+		return await this.createCircuitBreaker(command);
 	}
 }

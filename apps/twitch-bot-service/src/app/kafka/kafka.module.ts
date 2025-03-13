@@ -5,7 +5,6 @@ import {
 	TwitchViewerTopicArray,
 	TwitchMessageTopicArray,
 	TwitchApiTopicArray,
-	TwitchBotTopicArray,
 	TwitchChannelTopicArray,
 	TwitchStreamTopicArray,
 } from '@azkaban/shared';

@@ -3,5 +3,4 @@ export enum AuthRoutes {
 	LOGIN = 'login',
 	REGISTER = 'register',
 	FORGET_PASSWORD = 'reset',
-	PROFILE = 'profile',
 }

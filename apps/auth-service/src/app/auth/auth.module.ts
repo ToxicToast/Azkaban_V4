@@ -1,20 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { AppConfig } from '../../config';
+import { AuthCache } from './auth.cache';
 
 @Module({
 	controllers: [AuthController],
-	providers: [
-		{
-			provide: 'AUTHORIZER_URL',
-			useValue: AppConfig.authorizer.url,
-		},
-		{
-			provide: 'AUTHORIZER_CLIENT_ID',
-			useValue: AppConfig.authorizer.clientId,
-		},
-		AuthService,
-	],
+	providers: [AuthCache, AuthService],
 })
 export class AuthModule {}

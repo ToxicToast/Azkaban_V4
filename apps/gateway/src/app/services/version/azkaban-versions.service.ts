@@ -82,6 +82,8 @@ export class AzkabanVersionsService {
 		const cronjob = await this.cronjobVersion();
 		const email = await this.emailVersion();
 		const webhook = await this.webhookVersion();
+		const user = await this.userVersion();
+		const group = await this.groupVersion();
 		//
 		return {
 			sse,
@@ -89,6 +91,8 @@ export class AzkabanVersionsService {
 			cronjob,
 			email,
 			webhook,
+			user,
+			group,
 		};
 	}
 }

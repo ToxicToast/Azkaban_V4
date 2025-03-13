@@ -1,16 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
-import { IdQuery, ListQuery } from './queries';
+import { CommandBus, EventBus } from '@nestjs/cqrs';
+import { UserDAO } from '@azkaban/user-infrastructure';
+import { CreateCommand, IdCommand, ListCommand } from './commands';
+import { ListEvent } from './events';
 
 @Injectable()
 export class UserService {
-	constructor(private readonly queryBus: QueryBus) {}
+	constructor(
+		private readonly commandBus: CommandBus,
+		private readonly eventBus: EventBus,
+	) {}
 
-	async userList(): Promise<unknown> {
-		return await this.queryBus.execute(new ListQuery());
+	async userList(): Promise<Array<UserDAO>> {
+		return await this.commandBus
+			.execute(new ListCommand())
+			.then((res: Array<UserDAO>) => {
+				this.eventBus.publish(new ListEvent(res));
+				return res;
+			});
 	}
 
-	async userById(id: string): Promise<unknown> {
-		return await this.queryBus.execute(new IdQuery(id));
+	async userById(id: string): Promise<UserDAO> {
+		return await this.commandBus.execute(new IdCommand(id));
+	}
+
+	async createUser(
+		username: string,
+		email: string,
+		password: string,
+	): Promise<UserDAO> {
+		return await this.commandBus.execute(
+			new CreateCommand(username, email, password),
+		);
 	}
 }

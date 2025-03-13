@@ -7,7 +7,7 @@ import { AppConfig } from './config';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
-	'user-service',
+	AppConfig.name,
 	AppConfig.environment,
 );
 
@@ -25,7 +25,7 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 		transport: Transport.KAFKA,
 		options: {
 			client: {
-				clientId: 'user',
+				clientId: AppConfig.name,
 				brokers: [brokerUrl],
 				sasl:
 					environment !== 'local'
@@ -39,7 +39,7 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 				authenticationTimeout: 4000,
 			},
 			consumer: {
-				groupId: 'user-consumer',
+				groupId: AppConfig.name + '-consumer',
 			},
 		},
 	});
@@ -57,12 +57,14 @@ function configureApp(app: INestApplication): void {
 async function startApp(app: INestApplication): Promise<void> {
 	const port = AppConfig.port;
 	await app.startAllMicroservices();
-	await app.listen(port, '0.0.0.0');
+	await app.listen(port);
 	Logger.log(`🚀 Listening on Port: ${port}`);
 }
 
 async function bootstrap() {
-	telemetry.start();
+	if (AppConfig.environment !== 'local') {
+		telemetry.start();
+	}
 	const app = await createApp();
 	configureApp(app);
 	await createMicroservice(app);
@@ -72,9 +74,10 @@ async function bootstrap() {
 }
 bootstrap().catch((err) => {
 	Logger.error(err);
-	telemetry
-		.shutdown()
-		.then(() => Logger.log('Tracing terminated'))
-		.catch((error) => Logger.error('Error terminating tracing', error))
-		.finally(() => process.exit(0));
+	if (AppConfig.environment !== 'local') {
+		telemetry
+			.shutdown()
+			.then(() => Logger.log('Tracing terminated'))
+			.catch((error) => Logger.error('Error terminating tracing', error));
+	}
 });

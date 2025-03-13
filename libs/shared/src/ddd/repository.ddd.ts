@@ -7,5 +7,4 @@ export interface Repository<Domain> {
 		offset?: Optional<number>,
 	): Promise<Array<Domain>>;
 	findById(id: string): Promise<Nullable<Domain>>;
-	delete(id: string): Promise<Domain>;
 }

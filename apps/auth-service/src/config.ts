@@ -1,6 +1,12 @@
 type EnvironmentConfig = {
+	name: string;
 	port: number;
 	environment: string;
+	redis: {
+		redisHost: string;
+		redisPort: number;
+		redisPassword: string;
+	};
 	database: {
 		databaseType: string;
 		databaseHost: string;
@@ -19,17 +25,20 @@ type EnvironmentConfig = {
 		brokerUsername: string;
 		brokerPassword: string;
 	};
-	authorizer: {
-		url: string;
-		clientId: string;
-		clientSecret: string;
-	};
 	telemetry: string;
 };
 
 export const AppConfig: EnvironmentConfig = {
+	name: 'auth-service',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
+	redis: {
+		redisHost: process.env.REDIS_HOST ?? 'localhost',
+		redisPort: process.env.REDIS_PORT
+			? Number(process.env.REDIS_PORT)
+			: 6379,
+		redisPassword: process.env.REDIS_PASSWORD ?? '',
+	},
 	database: {
 		databaseType: process.env.DATABASE_TYPE ?? 'postgres',
 		databaseHost: process.env.DATABASE_HOST ?? '',
@@ -53,13 +62,8 @@ export const AppConfig: EnvironmentConfig = {
 		brokerPort: process.env.BROKER_PORT
 			? Number(process.env.BROKER_PORT)
 			: 9092,
-		brokerUsername: process.env.BROKER_USERNAME ?? 'admin',
-		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
-	},
-	authorizer: {
-		url: process.env.AUTHORIZER_URL ?? 'localhost:8080',
-		clientId: process.env.AUTHORIZER_CLIENT_ID ?? '',
-		clientSecret: process.env.AUTHORIZER_CLIENT_SECRET ?? '',
+		brokerUsername: process.env.BROKER_USERNAME ?? '',
+		brokerPassword: process.env.BROKER_PASSWORD ?? '',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
 };

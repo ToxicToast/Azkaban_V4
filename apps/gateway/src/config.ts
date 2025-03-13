@@ -1,4 +1,5 @@
 type EnvironmentConfig = {
+	name: string;
 	port: number;
 	environment: string;
 	redis: {
@@ -20,9 +21,11 @@ type EnvironmentConfig = {
 		brokerPassword: string;
 	};
 	telemetry: string;
+	jwt: string;
 };
 
 export const AppConfig: EnvironmentConfig = {
+	name: 'gateway',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {
@@ -54,4 +57,7 @@ export const AppConfig: EnvironmentConfig = {
 		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
+	jwt:
+		process.env.JWT_SECRET ??
+		'DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.',
 };

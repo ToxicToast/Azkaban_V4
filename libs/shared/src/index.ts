@@ -6,3 +6,4 @@ export * from './ddd';
 export * from './cache';
 export * from './helpers';
 export * from './events';
+export * from './providers';
