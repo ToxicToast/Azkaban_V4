@@ -12,3 +12,6 @@ export * from './welcome.handler';
 
 export * from './updatelogin.command';
 export * from './updatelogin.handler';
+
+export * from './sse.command';
+export * from './sse.handler';

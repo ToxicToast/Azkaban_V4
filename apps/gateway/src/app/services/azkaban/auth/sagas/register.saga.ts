@@ -7,7 +7,9 @@ import { WelcomeCommand } from '../commands';
 @Injectable()
 export class RegisterSaga {
 	@Saga()
-	welcomeEmail = (events$: Observable<any>): Observable<ICommand> => {
+	welcomeEmail = (
+		events$: Observable<RegisterEvent>,
+	): Observable<ICommand> => {
 		return events$.pipe(
 			ofType(RegisterEvent),
 			map((event) => new WelcomeCommand(event.email, event.username)),

@@ -6,7 +6,6 @@ import {
 	AzkabanAuthTopics,
 	CircuitService,
 	createCircuitBreaker,
-	PasswordHash,
 } from '@azkaban/shared';
 
 @CommandHandler(RegisterCommand)
