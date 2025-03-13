@@ -12,5 +12,7 @@ interface UserModel {
 
 export interface AuthModel {
 	user: Nullable<UserModel>;
-	isAdmin: boolean;
+	permissions: {
+		isAdmin: boolean;
+	};
 }

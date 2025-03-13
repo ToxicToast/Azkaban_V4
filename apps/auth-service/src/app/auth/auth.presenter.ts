@@ -40,7 +40,9 @@ export class AuthPresenter {
 
 		return {
 			user: transformedUser,
-			isAdmin: this.groups.includes('admin'),
+			permissions: {
+				isAdmin: this.groups.includes('admin'),
+			},
 		};
 	}
 }
