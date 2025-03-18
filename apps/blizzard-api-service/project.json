@@ -38,6 +38,13 @@
 			"options": {
 				"passWithNoTests": true
 			}
+		},
+		"docker-build": {
+			"dependsOn": ["build"],
+			"command": "docker build -f apps/blizzard-api-service/Dockerfile . -t toxictoast/warcraft-api:{args.VERSION}"
+		},
+		"docker-push": {
+			"command": "docker push toxictoast/warcraft-api:{args.VERSION}"
 		}
 	}
 }
