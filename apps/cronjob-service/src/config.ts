@@ -1,10 +1,19 @@
 type EnvironmentConfig = {
+	name: string;
 	port: number;
 	environment: string;
 	redis: {
 		redisHost: string;
 		redisPort: number;
 		redisPassword: string;
+	};
+	database: {
+		databaseType: string;
+		databaseHost: string;
+		databasePort: number;
+		databaseUsername: string;
+		databasePassword: string;
+		databaseTable: string;
 	};
 	health: {
 		memoryRSSTreshold: number;
@@ -21,6 +30,7 @@ type EnvironmentConfig = {
 };
 
 export const AppConfig: EnvironmentConfig = {
+	name: 'cronjob-service',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {
@@ -29,6 +39,16 @@ export const AppConfig: EnvironmentConfig = {
 			? Number(process.env.REDIS_PORT)
 			: 6379,
 		redisPassword: process.env.REDIS_PASSWORD ?? '',
+	},
+	database: {
+		databaseType: process.env.DATABASE_TYPE ?? 'postgres',
+		databaseHost: process.env.DATABASE_HOST ?? '',
+		databasePort: process.env.DATABASE_PORT
+			? Number(process.env.DATABASE_PORT)
+			: 5432,
+		databaseUsername: process.env.DATABASE_USERNAME ?? 'root',
+		databasePassword: process.env.DATABASE_PASSWORD ?? 'root',
+		databaseTable: process.env.DATABASE_TABLE ?? 'azkaban',
 	},
 	health: {
 		memoryRSSTreshold: process.env.MEMORY_RSS_TRESHOLD

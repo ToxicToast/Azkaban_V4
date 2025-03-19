@@ -1,4 +1,5 @@
 export enum WarcraftCharacterTopics {
+	LIST = 'warcraft.character.list',
 	VERSION = 'warcraft.character.version',
 }
 
