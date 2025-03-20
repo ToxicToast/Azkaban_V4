@@ -6,3 +6,4 @@ export * from './sse.route';
 export * from './callback.route';
 export * from './user.route';
 export * from './twitch.route';
+export * from './warcraft.route';

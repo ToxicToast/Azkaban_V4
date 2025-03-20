@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { CharacterService } from './character.service';
 import { InjectQueue } from '@nestjs/bullmq';
@@ -12,21 +12,21 @@ export class CharacterCron {
 	) {}
 
 	async runQueue(): Promise<void> {
-		// const characters = await this.service.getAllCharacters();
-		const characters = [];
+		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
-			if (!character.isDeleted) {
+			Logger.debug({ character });
+			/*if (!character.isDeleted) {
 				await this.queue.add('blizzard-character', {
 					id: character.id,
 					region: character.region,
 					realm: character.realm,
 					name: character.name,
 				});
-			}
+			}*/
 		}
 	}
 
-	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
+	@Cron(CronExpression.EVERY_HOUR, {
 		name: 'Update WoW Characters',
 	})
 	async updateCharacters(): Promise<void> {
