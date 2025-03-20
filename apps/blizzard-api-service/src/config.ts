@@ -26,11 +26,14 @@ type EnvironmentConfig = {
 		brokerPassword: string;
 	};
 	telemetry: string;
-	gateway: string;
+	blizzard: {
+		clientId: string;
+		clientSecret: string;
+	};
 };
 
 export const AppConfig: EnvironmentConfig = {
-	name: 'cronjob-service',
+	name: 'blizzard-api-service',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {
@@ -63,9 +66,12 @@ export const AppConfig: EnvironmentConfig = {
 		brokerPort: process.env.BROKER_PORT
 			? Number(process.env.BROKER_PORT)
 			: 9092,
-		brokerUsername: process.env.BROKER_USERNAME ?? 'admin',
-		brokerPassword: process.env.BROKER_PASSWORD ?? 'admin',
+		brokerUsername: process.env.BROKER_USERNAME ?? '',
+		brokerPassword: process.env.BROKER_PASSWORD ?? '',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
-	gateway: process.env.GATEWAY_URL ?? 'http://localhost:3000/api/v1',
+	blizzard: {
+		clientId: process.env.BLIZZARD_CLIENT_ID,
+		clientSecret: process.env.BLIZZARD_CLIENT_SECRET,
+	},
 };

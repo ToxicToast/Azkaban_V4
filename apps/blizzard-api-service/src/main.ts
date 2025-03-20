@@ -62,19 +62,22 @@ async function startApp(app: INestApplication): Promise<void> {
 }
 
 async function bootstrap() {
-	telemetry.start();
+	if (AppConfig.environment !== 'local') {
+		telemetry.start();
+	}
 	const app = await createApp();
 	configureApp(app);
 	await createMicroservice(app);
 	await startApp(app);
-	Logger.log(`🚀 Cronjob-Service is running`);
+	Logger.log(`🚀 User-Service is running`);
 	Logger.log(`🚀 Version: ${AppConfig.environment}`);
 }
 bootstrap().catch((err) => {
 	Logger.error(err);
-	telemetry
-		.shutdown()
-		.then(() => Logger.log('Tracing terminated'))
-		.catch((error) => Logger.error('Error terminating tracing', error))
-		.finally(() => process.exit(0));
+	if (AppConfig.environment !== 'local') {
+		telemetry
+			.shutdown()
+			.then(() => Logger.log('Tracing terminated'))
+			.catch((error) => Logger.error('Error terminating tracing', error));
+	}
 });

@@ -5,6 +5,7 @@ import { VersionModule } from './version/version.module';
 import { CronjobModule } from './cronjob/cronjob.module';
 import { QueueModule } from './queue/queue.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { KafkaModule } from './kafka/kafka.module';
 
 @Module({
 	imports: [
@@ -13,6 +14,7 @@ import { ScheduleModule } from './schedule/schedule.module';
 		VersionModule,
 		QueueModule,
 		ScheduleModule,
+		KafkaModule,
 		CronjobModule,
 	],
 })
