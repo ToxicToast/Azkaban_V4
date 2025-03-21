@@ -3,6 +3,7 @@ import {
 	KafkaModule as BaseModule,
 	WarcraftCharacterTopicArray,
 	WarcraftApiTopicArray,
+	WarcraftGuildTopicArray,
 } from '@azkaban/shared';
 import { AppConfig } from '../../config';
 
@@ -18,7 +19,11 @@ import { AppConfig } from '../../config';
 				brokerUsername: AppConfig.broker.brokerUsername,
 				brokerPassword: AppConfig.broker.brokerPassword,
 			},
-			[...WarcraftCharacterTopicArray, ...WarcraftApiTopicArray],
+			[
+				...WarcraftCharacterTopicArray,
+				...WarcraftApiTopicArray,
+				...WarcraftGuildTopicArray,
+			],
 			AppConfig.environment,
 		),
 	],

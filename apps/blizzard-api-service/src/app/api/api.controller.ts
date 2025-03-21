@@ -35,4 +35,18 @@ export class ApiController {
 			throw new RpcException(error);
 		}
 	}
+
+	@MessagePattern(WarcraftApiTopics.GUILD)
+	async getGuild(
+		@Payload('region') region: Origins,
+		@Payload('realm') realm: string,
+		@Payload('name') name: string,
+	) {
+		try {
+			await this.service.setApiClient(region);
+			return await this.service.getGuild(realm, name);
+		} catch (error) {
+			throw new RpcException(error);
+		}
+	}
 }

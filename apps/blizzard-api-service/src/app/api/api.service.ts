@@ -42,4 +42,11 @@ export class ApiService {
 			name,
 		});
 	}
+
+	async getGuild(realm: string, name: string) {
+		return await this.blizzardInstance.guild({
+			realm,
+			name,
+		});
+	}
 }
