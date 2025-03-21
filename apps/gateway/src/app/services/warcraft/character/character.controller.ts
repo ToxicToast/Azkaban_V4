@@ -9,7 +9,7 @@ import { CharacterService } from './character.service';
 export class CharacterController {
 	constructor(private readonly service: CharacterService) {}
 
-	@Get(WarcraftRoutes.CHARACTERLIST)
+	@Get(WarcraftRoutes.INDEX)
 	async getList(): Promise<Array<unknown>> {
 		return await this.service.characterList().catch((error) => {
 			throw error;
