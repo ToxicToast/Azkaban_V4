@@ -1,5 +1,9 @@
 import { Controller, HttpStatus } from '@nestjs/common';
-import { WarcraftCharacterTopics, WarcraftRoutes } from '@azkaban/shared';
+import {
+	Optional,
+	WarcraftCharacterTopics,
+	WarcraftRoutes,
+} from '@azkaban/shared';
 import { CharacterService } from './character.service';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { CharacterCache } from './character.cache';
@@ -68,6 +72,53 @@ export class CharacterController {
 		if (response === null) {
 			throw new RpcException({
 				message: 'Character not created',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
+		await this.cache.removeCacheOnCreate();
+		return response;
+	}
+
+	@MessagePattern(WarcraftCharacterTopics.UPDATE)
+	async updateCharacter(
+		@Payload('id') id: string,
+		@Payload('region') region?: Optional<string>,
+		@Payload('realm') realm?: Optional<string>,
+		@Payload('name') name?: Optional<string>,
+		@Payload('gender_id') gender_id?: Optional<string>,
+		@Payload('faction_id') faction_id?: Optional<string>,
+		@Payload('race_id') race_id?: Optional<string>,
+		@Payload('class_id') class_id?: Optional<string>,
+		@Payload('spec_id') spec_id?: Optional<string>,
+		@Payload('level') level?: Optional<number>,
+		@Payload('item_level') item_level?: Optional<number>,
+		@Payload('guild_id') guild_id?: Optional<string>,
+		@Payload('mythic') mythic?: Optional<number>,
+	): Promise<CharacterResponse> {
+		if (!id) {
+			throw new RpcException({
+				message: 'Id is required',
+				status: HttpStatus.BAD_REQUEST,
+			});
+		}
+		const response = await this.service.characterUpdate(
+			id,
+			region,
+			realm,
+			name,
+			gender_id,
+			faction_id,
+			race_id,
+			class_id,
+			spec_id,
+			level,
+			item_level,
+			guild_id,
+			mythic,
+		);
+		if (response === null) {
+			throw new RpcException({
+				message: 'Character not updated',
 				status: HttpStatus.BAD_REQUEST,
 			});
 		}

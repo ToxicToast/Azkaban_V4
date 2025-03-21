@@ -48,6 +48,7 @@ export class CharacterService {
 		level?: Optional<number>,
 		item_level?: Optional<number>,
 		guild_id?: Optional<string>,
+		mythic?: Optional<number>,
 	): Promise<CharacterResponse> {
 		const changeData = {};
 		if (region !== undefined) {
@@ -82,6 +83,9 @@ export class CharacterService {
 		}
 		if (guild_id !== undefined) {
 			changeData['guild_id'] = guild_id;
+		}
+		if (mythic !== undefined) {
+			changeData['mythic'] = mythic;
 		}
 		const user = null;
 		if (user !== null) {
