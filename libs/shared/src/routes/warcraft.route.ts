@@ -1,6 +1,6 @@
 export enum WarcraftRoutes {
 	CONTROLLER = 'warcraft',
+	CHARACTER = 'warcraft/character',
 	INDEX = '/',
-	CHARACTER = 'character',
 	CHARACTERBYID = ':id',
 }
