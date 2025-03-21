@@ -69,7 +69,7 @@ async function bootstrap() {
 	configureApp(app);
 	await createMicroservice(app);
 	await startApp(app);
-	Logger.log(`🚀 Blizzard-Api-Service is running`);
+	Logger.log(`🚀 Warcraft-Character-Service is running`);
 	Logger.log(`🚀 Version: ${AppConfig.environment}`);
 }
 bootstrap().catch((err) => {

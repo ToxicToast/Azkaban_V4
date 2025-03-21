@@ -22,20 +22,17 @@ export class UserPresenter {
 	}
 
 	public transform(): UserModel {
-		return this.user !== null
-			? {
-					id: this.user?.id,
-					username: this.user?.username,
-					email: this.user?.email,
-					isActive: !!this.user?.activated_at,
-					isBanned: !!this.user?.banned_at,
-					isLoggedIn: !!this.user?.loggedin_at,
-					isFlagged: !!this.calculateFlagged(),
-				}
-			: null;
-	}
-
-	public checkPassword(password: string): boolean {
-		return this.user !== null ? this.user.password === password : false;
+		if (this.user !== null) {
+			return {
+				id: this.user?.id,
+				username: this.user?.username,
+				email: this.user?.email,
+				isActive: !!this.user?.activated_at,
+				isBanned: !!this.user?.banned_at,
+				isLoggedIn: !!this.user?.loggedin_at,
+				isFlagged: !!this.calculateFlagged(),
+			};
+		}
+		return null;
 	}
 }
