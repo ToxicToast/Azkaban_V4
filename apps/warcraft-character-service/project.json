@@ -41,10 +41,10 @@
 		},
 		"docker-build": {
 			"dependsOn": ["build"],
-			"command": "docker build -f apps/warcraft-character-service/Dockerfile . -t toxictoast/character:{args.VERSION}"
+			"command": "docker build -f apps/warcraft-character-service/Dockerfile . -t toxictoast/warcraft-character:{args.VERSION}"
 		},
 		"docker-push": {
-			"command": "docker push toxictoast/character:{args.VERSION}"
+			"command": "docker push toxictoast/warcraft-character:{args.VERSION}"
 		}
 	}
 }
