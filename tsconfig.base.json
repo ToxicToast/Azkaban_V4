@@ -20,6 +20,9 @@
 			"@azkaban/user-domain": ["libs/user-domain/src/index.ts"],
 			"@azkaban/user-infrastructure": [
 				"libs/user-infrastructure/src/index.ts"
+			],
+			"@azkaban/warcraft-character-domain": [
+				"libs/warcraft-character-domain/src/index.ts"
 			]
 		}
 	},
