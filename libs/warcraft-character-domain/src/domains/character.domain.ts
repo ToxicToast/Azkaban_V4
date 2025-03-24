@@ -17,6 +17,7 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		private item_level: Nullable<number>,
 		private guild_id: Nullable<number>,
 		private rank_id: Nullable<number>,
+		private activated_at: Nullable<Date>,
 		private readonly created_at: Date,
 		private updated_at: Nullable<Date>,
 		private deleted_at: Nullable<Date>,
@@ -37,6 +38,7 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 			item_level: this.item_level,
 			guild_id: this.guild_id,
 			rank_id: this.rank_id,
+			activated_at: this.activated_at,
 			created_at: this.created_at,
 			updated_at: this.updated_at,
 			deleted_at: this.deleted_at,
@@ -122,6 +124,22 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 	changeRank(rank_id: Nullable<number>): void {
 		this.updated_at = new Date();
 		this.rank_id = rank_id;
+	}
+
+	// TODO: Add ValueObjects and a Real Check
+	activateCharacter(): void {
+		if (this.activated_at === null) {
+			this.updated_at = new Date();
+			this.activated_at = new Date();
+		}
+	}
+
+	// TODO: Add ValueObjects and a Real Check
+	deactivateCharacter(): void {
+		if (this.activated_at !== null) {
+			this.updated_at = new Date();
+			this.activated_at = null;
+		}
 	}
 
 	deleteCharacter(): void {

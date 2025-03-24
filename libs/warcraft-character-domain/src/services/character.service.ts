@@ -1,6 +1,7 @@
 import { CharacterAnemic } from '../anemics';
 import { CharacterFactory } from '../factories';
 import { CharacterRepository } from '../repositories';
+import { CharacterData } from '../data';
 import { Result } from '@azkaban/shared';
 
 export class CharacterService {
@@ -38,10 +39,10 @@ export class CharacterService {
 	}
 
 	async getCharactersByRealm(
-		realm_id: number,
+		realm: string,
 	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findByRealm(realm_id);
+			const result = await this.repository.findByRealm(realm);
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
@@ -89,6 +90,17 @@ export class CharacterService {
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
+		}
+	}
+
+	async createCharacter(
+		data: CharacterData,
+	): Promise<Result<CharacterAnemic>> {
+		try {
+			const aggregate = this.factory.createDomain(data);
+			return await this.save(aggregate.toAnemic());
+		} catch (error) {
+			return Result.fail<CharacterAnemic>(error, 500);
 		}
 	}
 }

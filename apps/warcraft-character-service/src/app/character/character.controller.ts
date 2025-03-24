@@ -93,6 +93,7 @@ export class CharacterController {
 		@Payload('level') level?: Optional<number>,
 		@Payload('item_level') item_level?: Optional<number>,
 		@Payload('guild_id') guild_id?: Optional<number>,
+		@Payload('rank_id') rank_id?: Optional<number>,
 		@Payload('mythic') mythic?: Optional<number>,
 	): Promise<CharacterResponse> {
 		if (!id) {
@@ -114,6 +115,7 @@ export class CharacterController {
 			level,
 			item_level,
 			guild_id,
+			rank_id,
 			mythic,
 		);
 		if (response === null) {

@@ -1,12 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CharacterResponse, CharactersResponse } from './character.model';
 import { Optional } from '@azkaban/shared';
 import { CharacterPresenter } from './character.presenter';
+import { Repository } from 'typeorm';
+import {
+	CharacterEntity,
+	CharacterRepository,
+	CharacterService as BaseService,
+} from '@azkaban/warcraft-character-infrastructure';
 
 @Injectable()
 export class CharacterService {
+	private readonly infrastructureRepository: CharacterRepository;
+	private readonly infrastructureService: BaseService;
+
+	constructor(
+		@Inject('CHARACTER_REPOSITORY')
+		private readonly characterRepository: Repository<CharacterEntity>,
+	) {
+		this.infrastructureRepository = new CharacterRepository(
+			this.characterRepository,
+		);
+		this.infrastructureService = new BaseService(
+			this.infrastructureRepository,
+		);
+	}
+
 	async characterList(): Promise<CharactersResponse> {
-		const characters = [];
+		const characters = await this.infrastructureService.getCharacterList();
 		return characters.map((character: unknown) => {
 			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
@@ -14,7 +35,7 @@ export class CharacterService {
 	}
 
 	async characterById(id: string): Promise<CharacterResponse> {
-		const user = null;
+		const user = await this.infrastructureService.getCharacterById(id);
 		if (user !== null) {
 			const presenter = new CharacterPresenter(user);
 			return presenter.transform();
@@ -27,7 +48,11 @@ export class CharacterService {
 		realm: string,
 		name: string,
 	): Promise<CharacterResponse> {
-		const user = null;
+		const user = await this.infrastructureService.createCharacter({
+			region,
+			realm,
+			name,
+		});
 		if (user !== null) {
 			const presenter = new CharacterPresenter(user);
 			return presenter.transform();
@@ -48,6 +73,7 @@ export class CharacterService {
 		level?: Optional<number>,
 		item_level?: Optional<number>,
 		guild_id?: Optional<number>,
+		rank_id?: Optional<number>,
 		mythic?: Optional<number>,
 	): Promise<CharacterResponse> {
 		const changeData = {};
@@ -83,6 +109,9 @@ export class CharacterService {
 		}
 		if (guild_id !== undefined) {
 			changeData['guild_id'] = guild_id;
+		}
+		if (rank_id !== undefined) {
+			changeData['rank_id'] = rank_id;
 		}
 		if (mythic !== undefined) {
 			changeData['mythic'] = mythic;

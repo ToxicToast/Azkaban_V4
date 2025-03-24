@@ -1,1 +1,1 @@
-export {};
+export * from './createCharacter.dto';

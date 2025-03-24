@@ -53,6 +53,14 @@ export class CharacterAggregate {
 		this.character.changeRank(rank_id);
 	}
 
+	activateCharacter(): void {
+		this.character.activateCharacter();
+	}
+
+	deactivateCharacter(): void {
+		this.character.deactivateCharacter();
+	}
+
 	deleteCharacter(): void {
 		this.character.deleteCharacter();
 	}

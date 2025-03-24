@@ -13,4 +13,5 @@ export interface CharacterAnemic extends Anemic {
 	readonly item_level: Nullable<number>;
 	readonly guild_id: Nullable<number>;
 	readonly rank_id: Nullable<number>;
+	readonly activated_at: Nullable<Date>;
 }
