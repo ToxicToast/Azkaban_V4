@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CharacterResponse, CharactersResponse } from './character.model';
 import { Optional } from '@azkaban/shared';
 import { CharacterPresenter } from './character.presenter';
@@ -29,6 +29,7 @@ export class CharacterService {
 
 	async characterList(): Promise<CharactersResponse> {
 		const characters = await this.infrastructureService.getCharacterList();
+		Logger.debug({ characters }, CharacterService.name, 'characterList');
 		return characters.map((character: CharacterDAO) => {
 			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
@@ -36,9 +37,10 @@ export class CharacterService {
 	}
 
 	async characterById(id: string): Promise<CharacterResponse> {
-		const user = await this.infrastructureService.getCharacterById(id);
-		if (user !== null) {
-			const presenter = new CharacterPresenter(user);
+		const character = await this.infrastructureService.getCharacterById(id);
+		Logger.debug({ id, character }, CharacterService.name, 'characterById');
+		if (character !== null) {
+			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
 		}
 		return null;
@@ -49,13 +51,18 @@ export class CharacterService {
 		realm: string,
 		name: string,
 	): Promise<CharacterResponse> {
-		const user = await this.infrastructureService.createCharacter({
+		const character = await this.infrastructureService.createCharacter({
 			region,
 			realm,
 			name,
 		});
-		if (user !== null) {
-			const presenter = new CharacterPresenter(user);
+		Logger.debug(
+			{ region, realm, name, character },
+			CharacterService.name,
+			'characterCreate',
+		);
+		if (character !== null) {
+			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
 		}
 		return null;
