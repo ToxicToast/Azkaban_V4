@@ -23,6 +23,9 @@
 			],
 			"@azkaban/warcraft-character-domain": [
 				"libs/warcraft-character-domain/src/index.ts"
+			],
+			"@azkaban/warcraft-character-infrastructure": [
+				"libs/warcraft-character-infrastructure/src/index.ts"
 			]
 		}
 	},
