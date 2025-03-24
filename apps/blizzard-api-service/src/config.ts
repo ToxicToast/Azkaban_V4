@@ -32,8 +32,13 @@ type EnvironmentConfig = {
 	};
 };
 
+const appName =
+	'blizzard-api-service' + process.env.APP_VERSION === 'local'
+		? '-local'
+		: '';
+
 export const AppConfig: EnvironmentConfig = {
-	name: 'blizzard-api-service',
+	name: appName,
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {

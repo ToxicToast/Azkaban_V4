@@ -29,8 +29,11 @@ type EnvironmentConfig = {
 	gateway: string;
 };
 
+const appName =
+	'cronjob-service' + process.env.APP_VERSION === 'local' ? '-local' : '';
+
 export const AppConfig: EnvironmentConfig = {
-	name: 'cronjob-service',
+	name: appName,
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {

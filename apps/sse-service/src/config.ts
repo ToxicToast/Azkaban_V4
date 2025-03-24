@@ -1,4 +1,5 @@
 type EnvironmentConfig = {
+	name: string;
 	port: number;
 	environment: string;
 	health: {
@@ -14,7 +15,11 @@ type EnvironmentConfig = {
 	telemetry: string;
 };
 
+const appName =
+	'sse-service' + process.env.APP_VERSION === 'local' ? '-local' : '';
+
 export const AppConfig: EnvironmentConfig = {
+	name: appName,
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	health: {

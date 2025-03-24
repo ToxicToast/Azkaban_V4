@@ -27,14 +27,11 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 			client: {
 				clientId: AppConfig.name,
 				brokers: [brokerUrl],
-				sasl:
-					environment !== 'local'
-						? {
-								mechanism: 'plain',
-								username: brokerUsername,
-								password: brokerPassword,
-							}
-						: undefined,
+				sasl: {
+					mechanism: 'plain',
+					username: brokerUsername,
+					password: brokerPassword,
+				},
 				connectionTimeout: 4000,
 				authenticationTimeout: 4000,
 			},
