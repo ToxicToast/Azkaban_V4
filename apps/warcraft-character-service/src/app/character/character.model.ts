@@ -11,7 +11,7 @@ export interface CharacterModel {
 	class_id: Nullable<number>;
 	spec_id: Nullable<number>;
 	level: number;
-	itemLevel: number;
+	item_level: number;
 	guild_id: Nullable<number>;
 	rank_id: Nullable<number>;
 	lastUpdate: Nullable<Date>;
