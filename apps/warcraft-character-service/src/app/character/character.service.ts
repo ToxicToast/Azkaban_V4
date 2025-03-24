@@ -4,6 +4,7 @@ import { Optional } from '@azkaban/shared';
 import { CharacterPresenter } from './character.presenter';
 import { Repository } from 'typeorm';
 import {
+	CharacterDAO,
 	CharacterEntity,
 	CharacterRepository,
 	CharacterService as BaseService,
@@ -28,7 +29,7 @@ export class CharacterService {
 
 	async characterList(): Promise<CharactersResponse> {
 		const characters = await this.infrastructureService.getCharacterList();
-		return characters.map((character: unknown) => {
+		return characters.map((character: CharacterDAO) => {
 			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
 		});
