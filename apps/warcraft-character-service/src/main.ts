@@ -20,16 +20,25 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 	const brokerUsername = AppConfig.broker.brokerUsername;
 	const brokerPassword = AppConfig.broker.brokerPassword;
 	//
-	const options = MicroserviceHelper(
-		Transport.KAFKA,
-		AppConfig.name,
-		brokerUrl,
-		AppConfig.name + '-consumer',
-		true,
-		brokerUsername,
-		brokerPassword,
-	);
-	app.connectMicroservice(options);
+	app.connectMicroservice<MicroserviceOptions>({
+		transport: Transport.KAFKA,
+		options: {
+			client: {
+				clientId: AppConfig.name,
+				brokers: [brokerUrl],
+				sasl: {
+					mechanism: 'plain',
+					username: brokerUsername,
+					password: brokerPassword,
+				},
+				connectionTimeout: 4000,
+				authenticationTimeout: 4000,
+			},
+			consumer: {
+				groupId: AppConfig.name + '-consumer',
+			},
+		},
+	});
 }
 
 function configureApp(app: INestApplication): void {

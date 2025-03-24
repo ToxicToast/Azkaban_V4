@@ -1,4 +1,4 @@
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller, HttpStatus, Logger } from '@nestjs/common';
 import {
 	Optional,
 	WarcraftCharacterTopics,
@@ -18,6 +18,7 @@ export class CharacterController {
 
 	@MessagePattern(WarcraftCharacterTopics.LIST)
 	async getCharacterList() {
+		Logger.debug({}, CharacterController.name, 'getCharacterList');
 		const response = await this.service.characterList();
 		await this.cache.cacheCharacterList(response);
 		return response;
@@ -25,6 +26,7 @@ export class CharacterController {
 
 	@MessagePattern(WarcraftCharacterTopics.ID)
 	async getCharacterById(@Payload('id') id: string) {
+		Logger.debug({ id }, CharacterController.name, 'getCharacterById');
 		if (!id) {
 			throw new RpcException({
 				message: 'Id is required',
@@ -48,6 +50,11 @@ export class CharacterController {
 		@Payload('realm') realm: string,
 		@Payload('name') name: string,
 	): Promise<CharacterResponse> {
+		Logger.debug(
+			{ region, realm, name },
+			CharacterController.name,
+			'createCharacter',
+		);
 		if (!region) {
 			throw new RpcException({
 				message: 'Region is required',
@@ -96,6 +103,26 @@ export class CharacterController {
 		@Payload('rank_id') rank_id?: Optional<number>,
 		@Payload('mythic') mythic?: Optional<number>,
 	): Promise<CharacterResponse> {
+		Logger.debug(
+			{
+				id,
+				region,
+				realm,
+				name,
+				gender_id,
+				faction_id,
+				race_id,
+				class_id,
+				spec_id,
+				level,
+				item_level,
+				guild_id,
+				rank_id,
+				mythic,
+			},
+			CharacterController.name,
+			'updateCharacter',
+		);
 		if (!id) {
 			throw new RpcException({
 				message: 'Id is required',
