@@ -1,6 +1,6 @@
 import { ICommandHandler, CommandHandler } from '@nestjs/cqrs';
 import { ListCommand } from './list.command';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	CacheService,
@@ -37,6 +37,7 @@ export class ListCommandHandler implements ICommandHandler<ListCommand> {
 	}
 
 	async execute() {
+		Logger.debug({}, ListCommandHandler.name);
 		return await this.checkForCache();
 	}
 }

@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ForgetPasswordCommand } from './forgetpassword.command';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	AzkabanAuthTopics,
@@ -28,6 +28,7 @@ export class ForgetPasswordCommandHandler
 	}
 
 	async execute(command: ForgetPasswordCommand) {
+		Logger.debug({ command }, ForgetPasswordCommandHandler.name);
 		return await this.createCircuitBreaker(command);
 	}
 }

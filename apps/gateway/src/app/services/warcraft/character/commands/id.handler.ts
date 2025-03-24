@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { IdCommand } from './id.command';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	AzkabanUserTopics,
@@ -37,6 +37,7 @@ export class IdCommandHandler implements ICommandHandler<IdCommand> {
 	}
 
 	async execute(command: IdCommand) {
+		Logger.debug(command, IdCommandHandler.name);
 		return await this.checkForCache(command);
 	}
 }

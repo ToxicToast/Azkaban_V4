@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Nullable, WarcraftRoutes } from '@azkaban/shared';
 import { CharacterService } from './character.service';
+import { CharacterDAO } from '@azkaban/warcraft-character-infrastructure';
 
 @Controller({
 	path: WarcraftRoutes.CHARACTER,
@@ -10,14 +11,14 @@ export class CharacterController {
 	constructor(private readonly service: CharacterService) {}
 
 	@Get(WarcraftRoutes.INDEX)
-	async getList(): Promise<Array<unknown>> {
+	async getList(): Promise<Array<CharacterDAO>> {
 		return await this.service.characterList().catch((error) => {
 			throw error;
 		});
 	}
 
 	@Get(WarcraftRoutes.CHARACTERBYID)
-	async getById(@Param('id') id: string): Promise<Nullable<unknown>> {
+	async getById(@Param('id') id: string): Promise<Nullable<CharacterDAO>> {
 		return await this.service.characterById(id).catch((error) => {
 			throw error;
 		});
@@ -28,7 +29,7 @@ export class CharacterController {
 		@Body('region') region: string,
 		@Body('realm') realm: string,
 		@Body('name') name: string,
-	): Promise<unknown> {
+	): Promise<CharacterDAO> {
 		return await this.service
 			.createCharacter(region, realm, name)
 			.catch((error) => {

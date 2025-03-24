@@ -1,9 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ListCommandHandler } from './commands';
+import {
+	CreateCommandHandler,
+	IdCommandHandler,
+	ListCommandHandler,
+} from './commands';
 import { CharacterService } from './character.service';
 import { CharacterController } from './character.controller';
 
-export const CommandHandlers = [ListCommandHandler];
+export const CommandHandlers = [
+	ListCommandHandler,
+	IdCommandHandler,
+	CreateCommandHandler,
+];
 export const EventHandlers = [];
 export const QueryHandlers = [];
 

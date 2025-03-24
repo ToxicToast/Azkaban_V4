@@ -5,6 +5,7 @@ import {
 	WarcraftApiTopics,
 	WarcraftCharacterTopics,
 } from '@azkaban/shared';
+import { CharacterDAO } from '@azkaban/warcraft-character-infrastructure';
 
 @Injectable()
 export class CharacterService {
@@ -12,7 +13,7 @@ export class CharacterService {
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 	) {}
 
-	async getAllCharacters(): Promise<Array<unknown>> {
+	async getAllCharacters(): Promise<Array<CharacterDAO>> {
 		try {
 			return await this.client
 				.send(WarcraftCharacterTopics.LIST, {})
