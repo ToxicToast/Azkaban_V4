@@ -24,7 +24,7 @@ export class CharacterPresenter {
 				class_id: this.character.class_id,
 				spec_id: this.character.spec_id,
 				level: this.character.level,
-				itemLevel: this.character.item_level,
+				item_level: this.character.item_level,
 				guild_id: this.character.guild_id,
 				rank_id: this.character.rank_id,
 				lastUpdate: this.character.updated_at,
