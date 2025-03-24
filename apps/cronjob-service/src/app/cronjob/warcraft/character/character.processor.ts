@@ -17,7 +17,7 @@ export class CharacterProcessor extends WorkerHost {
 		name: string;
 	}): Promise<unknown> {
 		try {
-			const { region, realm, name } = data;
+			const { id, region, realm, name } = data;
 			const character = await this.service.getCharacterFromApi(
 				region,
 				realm,
@@ -28,7 +28,24 @@ export class CharacterProcessor extends WorkerHost {
 				realm,
 				name,
 			);
-			return { character, inset };
+			return { id, character, inset };
+		} catch (error) {
+			Logger.error(error);
+			return null;
+		}
+	}
+
+	private async onCharacterUpdate(
+		id: string,
+		data: unknown,
+	): Promise<Nullable<unknown>> {
+		try {
+			if (data) {
+				await this.service.updateCharacter(id, data);
+				await this.service.restoreCharacter(id);
+			} else {
+				await this.service.deleteCharacter(id);
+			}
 		} catch (error) {
 			Logger.error(error);
 			return null;
@@ -47,15 +64,25 @@ export class CharacterProcessor extends WorkerHost {
 
 	@OnWorkerEvent('completed')
 	async onCompleted(
-		job: Job<Nullable<unknown>, Nullable<unknown>, string>,
+		job: Job<
+			Nullable<{ id: string }>,
+			Nullable<{ id: string; character: unknown; inset: unknown }>,
+			string
+		>,
 	): Promise<void> {
 		try {
+			const { id } = job.data;
 			const data = job.returnvalue;
+			if (data.character) {
+				await this.onCharacterUpdate(id, data.character);
+			} else {
+				await this.service.deleteCharacter(id);
+			}
 			Logger.debug(data);
 		} catch (error) {
 			Logger.error(error);
-			Logger.debug(job.data);
-			// const { id } = job.data;
+			const { id } = job.data;
+			await this.service.deleteCharacter(id);
 		}
 	}
 }

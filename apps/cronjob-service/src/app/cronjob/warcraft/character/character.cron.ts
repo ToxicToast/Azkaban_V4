@@ -14,7 +14,7 @@ export class CharacterCron {
 	async runQueue(): Promise<void> {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
-			Logger.debug({ character });
+			Logger.debug({ character }, CharacterCron.name);
 			if (character.deleted_at === null) {
 				await this.queue.add('blizzard-character', {
 					id: character.id,

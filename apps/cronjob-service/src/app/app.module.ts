@@ -9,12 +9,12 @@ import { KafkaModule } from './kafka/kafka.module';
 
 @Module({
 	imports: [
+		KafkaModule,
 		HealthModule,
 		MetricsModule,
 		VersionModule,
 		QueueModule,
 		ScheduleModule,
-		KafkaModule,
 		CronjobModule,
 	],
 })

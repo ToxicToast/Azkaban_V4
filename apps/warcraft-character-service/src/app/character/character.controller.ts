@@ -18,7 +18,7 @@ export class CharacterController {
 
 	@MessagePattern(WarcraftCharacterTopics.LIST)
 	async getCharacterList() {
-		Logger.debug({}, CharacterController.name, 'getCharacterList');
+		Logger.debug({}, CharacterController.name);
 		const response = await this.service.characterList();
 		await this.cache.cacheCharacterList(response);
 		return response;
@@ -26,7 +26,7 @@ export class CharacterController {
 
 	@MessagePattern(WarcraftCharacterTopics.ID)
 	async getCharacterById(@Payload('id') id: string) {
-		Logger.debug({ id }, CharacterController.name, 'getCharacterById');
+		Logger.debug({ id }, CharacterController.name);
 		if (!id) {
 			throw new RpcException({
 				message: 'Id is required',

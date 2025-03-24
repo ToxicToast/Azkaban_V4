@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { GuildService } from './guild.service';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
@@ -14,6 +14,7 @@ export class GuildCron {
 	async runQueue(): Promise<void> {
 		const guilds = await this.service.getAllGuilds();
 		for (const guild of guilds) {
+			Logger.debug(guild, GuildCron.name);
 			/*if (!guild.isDeleted) {
 				await this.queue.add('blizzard-guild', {
 					id: guild.id,

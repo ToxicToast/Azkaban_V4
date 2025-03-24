@@ -3,9 +3,11 @@ import { BullModule } from '@azkaban/shared';
 import { CharacterService } from './character.service';
 import { CharacterCron } from './character.cron';
 import { CharacterProcessor } from './character.processor';
+import { CharacterController } from './character.controller';
 
 @Module({
 	imports: [BullModule.registerQueue('blizzard-character')],
+	controllers: [CharacterController],
 	providers: [CharacterService, CharacterCron, CharacterProcessor],
 })
 export class CharacterModule {}

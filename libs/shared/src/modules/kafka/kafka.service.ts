@@ -17,7 +17,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 	async onModuleInit(): Promise<void> {
 		this.topics.forEach((topic) => {
 			this.client.subscribeToResponseOf(topic);
-			Logger.debug(topic, KafkaService.name, 'onModuleInit');
+			Logger.debug(topic, KafkaService.name);
 		});
 		await this.client.connect();
 	}

@@ -19,7 +19,6 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 	const brokerUrl = `${AppConfig.broker.brokerHost}:${AppConfig.broker.brokerPort}`;
 	const brokerUsername = AppConfig.broker.brokerUsername;
 	const brokerPassword = AppConfig.broker.brokerPassword;
-	const environment = AppConfig.environment;
 	//
 	app.connectMicroservice<MicroserviceOptions>({
 		transport: Transport.KAFKA,

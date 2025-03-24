@@ -53,4 +53,38 @@ export class CharacterService {
 			return null;
 		}
 	}
+
+	async updateCharacter(
+		id: string,
+		character: unknown,
+	): Promise<Nullable<CharacterDAO>> {
+		try {
+			return await this.client
+				.send(WarcraftCharacterTopics.UPDATE, { character, id })
+				.toPromise();
+		} catch (error) {
+			Logger.error(error);
+			return null;
+		}
+	}
+
+	async deleteCharacter(id: string): Promise<void> {
+		try {
+			await this.client
+				.send(WarcraftCharacterTopics.DELETE, { id })
+				.toPromise();
+		} catch (error) {
+			Logger.error(error);
+		}
+	}
+
+	async restoreCharacter(id: string): Promise<void> {
+		try {
+			await this.client
+				.send(WarcraftCharacterTopics.RESTORE, { id })
+				.toPromise();
+		} catch (error) {
+			Logger.error(error);
+		}
+	}
 }
