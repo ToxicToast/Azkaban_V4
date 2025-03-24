@@ -1,6 +1,7 @@
 import {
 	Inject,
 	Injectable,
+	Logger,
 	OnModuleDestroy,
 	OnModuleInit,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 	async onModuleInit(): Promise<void> {
 		this.topics.forEach((topic) => {
 			this.client.subscribeToResponseOf(topic);
+			Logger.debug(topic, KafkaService.name, 'onModuleInit');
 		});
 		await this.client.connect();
 	}

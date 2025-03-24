@@ -1,4 +1,4 @@
-import { MicroserviceHelper, TelemetryHelper } from '@azkaban/shared';
+import { TelemetryHelper } from '@azkaban/shared';
 import { INestApplication, Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
@@ -65,7 +65,7 @@ async function bootstrap() {
 	configureApp(app);
 	await createMicroservice(app);
 	await startApp(app);
-	Logger.log(`🚀 Warcraft-Character-Service is running`);
+	Logger.log(`🚀 ${AppConfig.name} is running`);
 	Logger.log(`🚀 Version: ${AppConfig.environment}`);
 }
 bootstrap().catch((err) => {

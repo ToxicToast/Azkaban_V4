@@ -7,8 +7,7 @@ import helmet from 'helmet';
 import { TelemetryHelper } from '@azkaban/shared';
 import { AppConfig } from './config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './app/filters/httpException.filter';
-import { RpcExceptionFilter } from './app/filters';
+import { HttpExceptionFilter, RpcExceptionFilter } from './app/filters';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,

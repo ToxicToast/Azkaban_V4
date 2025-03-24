@@ -7,7 +7,7 @@ import { AppConfig } from './config';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
-	'twitch-bot-service',
+	AppConfig.name,
 	AppConfig.environment,
 );
 
@@ -19,13 +19,12 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 	const brokerUrl = `${AppConfig.broker.brokerHost}:${AppConfig.broker.brokerPort}`;
 	const brokerUsername = AppConfig.broker.brokerUsername;
 	const brokerPassword = AppConfig.broker.brokerPassword;
-	const environment = AppConfig.environment;
 	//
 	app.connectMicroservice<MicroserviceOptions>({
 		transport: Transport.KAFKA,
 		options: {
 			client: {
-				clientId: 'twitch-bot',
+				clientId: AppConfig.name,
 				brokers: [brokerUrl],
 				sasl: {
 					mechanism: 'plain',
@@ -36,7 +35,7 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 				authenticationTimeout: 4000,
 			},
 			consumer: {
-				groupId: 'twitch-bot-consumer',
+				groupId: AppConfig.name + '-consumer',
 			},
 		},
 	});

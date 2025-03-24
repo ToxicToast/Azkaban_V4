@@ -1,4 +1,5 @@
 type EnvironmentConfig = {
+	name: string;
 	port: number;
 	environment: string;
 	health: {
@@ -23,7 +24,11 @@ type EnvironmentConfig = {
 	telemetry: string;
 };
 
+const appName =
+	'twitch-bot-service' + process.env.APP_VERSION === 'local' ? '-local' : '';
+
 export const AppConfig: EnvironmentConfig = {
+	name: appName,
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	health: {
@@ -49,7 +54,7 @@ export const AppConfig: EnvironmentConfig = {
 		accessToken: process.env.TWITCH_ACCESS_TOKEN ?? '',
 		refreshToken: process.env.TWITCH_REFRESH_TOKEN ?? '',
 		channels: process.env.TWITCH_CHANNELS.split(',') ?? [],
-		logging: process.env.TWITCH_LOGGING === 'true' ? true : false,
+		logging: process.env.TWITCH_LOGGING === 'true',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
 };

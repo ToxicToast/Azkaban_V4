@@ -11,13 +11,6 @@ export function createCircuitBreaker<DataType>(
 ) {
 	const cicuitBreaker = circuit.createCircuitBreaker(topic);
 	cicuitBreaker.fn(async () => {
-		Logger.debug(
-			{
-				topic,
-				data,
-			},
-			createCircuitBreaker.name,
-		);
 		return await client.send(topic, { ...data }).toPromise();
 	});
 	return cicuitBreaker
