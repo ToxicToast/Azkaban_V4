@@ -20,6 +20,7 @@ export class CharacterPresenter {
 				itemLevel: 0,
 				guild: null,
 				rank: null,
+				lastUpdate: null,
 				isActive: false,
 				isDeleted: true,
 				isAscend: false,

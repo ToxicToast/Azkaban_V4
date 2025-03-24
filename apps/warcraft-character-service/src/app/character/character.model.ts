@@ -14,6 +14,7 @@ export interface CharacterModel {
 	itemLevel: number;
 	guild: Nullable<string>;
 	rank: Nullable<string>;
+	lastUpdate: Nullable<Date>;
 	isActive: boolean;
 	isDeleted: boolean;
 	isAscend: boolean;
