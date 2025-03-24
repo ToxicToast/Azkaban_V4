@@ -24,7 +24,6 @@ import { AppConfig } from '../../config';
 				...WarcraftApiTopicArray,
 				...WarcraftGuildTopicArray,
 			],
-			AppConfig.environment,
 		),
 	],
 })

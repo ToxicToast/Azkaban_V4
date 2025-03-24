@@ -30,7 +30,6 @@ import { AppConfig } from '../../config';
 				...TwitchStreamTopicArray,
 				...TwitchViewerTopicArray,
 			],
-			AppConfig.environment,
 		),
 	],
 })

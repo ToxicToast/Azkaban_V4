@@ -78,7 +78,6 @@ import { AppConfig } from '../../config';
 				...DiscordAscendApplyBotTopicArray,
 				...DiscordAscendJoinBotTopicArray,
 			],
-			AppConfig.environment,
 		),
 	],
 })
