@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { Nullable, WarcraftRoutes } from '@azkaban/shared';
 import { CharacterService } from './character.service';
 import { CharacterDAO } from '@azkaban/warcraft-character-infrastructure';
@@ -13,6 +13,7 @@ export class CharacterController {
 	@Get(WarcraftRoutes.INDEX)
 	async getList(): Promise<Array<CharacterDAO>> {
 		return await this.service.characterList().catch((error) => {
+			Logger.error(error, CharacterController.name);
 			throw error;
 		});
 	}
@@ -20,6 +21,7 @@ export class CharacterController {
 	@Get(WarcraftRoutes.CHARACTERBYID)
 	async getById(@Param('id') id: string): Promise<Nullable<CharacterDAO>> {
 		return await this.service.characterById(id).catch((error) => {
+			Logger.error(error, CharacterController.name);
 			throw error;
 		});
 	}
@@ -33,6 +35,7 @@ export class CharacterController {
 		return await this.service
 			.createCharacter(region, realm, name)
 			.catch((error) => {
+				Logger.error(error, CharacterController.name);
 				throw error;
 			});
 	}

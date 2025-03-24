@@ -1,6 +1,6 @@
 import { ClientKafka } from '@nestjs/microservices';
 import { CircuitService } from '../modules';
-import { HttpException } from '@nestjs/common';
+import { HttpException, Logger } from '@nestjs/common';
 import { Either } from '../types';
 
 export function createCircuitBreaker<DataType>(
@@ -11,11 +11,19 @@ export function createCircuitBreaker<DataType>(
 ) {
 	const cicuitBreaker = circuit.createCircuitBreaker(topic);
 	cicuitBreaker.fn(async () => {
+		Logger.debug(
+			{
+				topic,
+				data,
+			},
+			createCircuitBreaker.name,
+		);
 		return await client.send(topic, { ...data }).toPromise();
 	});
 	return cicuitBreaker
 		.execute()
 		.catch((error: { message: string; status: Either<string, number> }) => {
+			Logger.error(error, createCircuitBreaker.name);
 			const status =
 				typeof error.status === 'string' ? 503 : error.status;
 			throw new HttpException(error.message, status);
