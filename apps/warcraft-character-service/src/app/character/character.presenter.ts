@@ -11,8 +11,18 @@ export class CharacterPresenter {
 				region: 'region',
 				realm: 'realm',
 				name: 'name',
+				gender: null,
+				faction: null,
+				race: null,
+				class: null,
+				spec: null,
+				level: 0,
+				itemLevel: 0,
+				guild: null,
+				rank: null,
 				isActive: false,
 				isDeleted: true,
+				isAscend: false,
 			};
 		}
 		return null;

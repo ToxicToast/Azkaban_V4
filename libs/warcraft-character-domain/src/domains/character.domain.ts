@@ -1,5 +1,6 @@
 import { Domain, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
+import { RegionValueObject } from '../valueObjects';
 
 export class CharacterDomain implements Domain<CharacterAnemic> {
 	constructor(
@@ -42,22 +43,31 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		};
 	}
 
-	// TODO: Add ValueObjects and a Real Check
 	changeRegion(region: string): void {
-		this.updated_at = new Date();
-		this.region = region;
+		const regionVO = new RegionValueObject(this.region);
+		const regionNewVO = new RegionValueObject(region);
+		if (!regionVO.equals(regionNewVO)) {
+			this.updated_at = new Date();
+			this.region = region;
+		}
 	}
 
-	// TODO: Add ValueObjects and a Real Check
 	changeRealm(realm: string): void {
-		this.updated_at = new Date();
-		this.realm = realm;
+		const realmVO = new RegionValueObject(this.realm);
+		const realmNewVO = new RegionValueObject(realm);
+		if (!realmVO.equals(realmNewVO)) {
+			this.updated_at = new Date();
+			this.realm = realm;
+		}
 	}
 
-	// TODO: Add ValueObjects and a Real Check
 	changeName(name: string): void {
-		this.updated_at = new Date();
-		this.name = name;
+		const nameVO = new RegionValueObject(this.name);
+		const nameNewVO = new RegionValueObject(name);
+		if (!nameVO.equals(nameNewVO)) {
+			this.updated_at = new Date();
+			this.name = name;
+		}
 	}
 
 	// TODO: Add ValueObjects and a Real Check
