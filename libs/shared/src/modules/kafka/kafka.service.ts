@@ -6,6 +6,7 @@ import {
 	OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { sleep } from '@nestjs/terminus/dist/utils';
 
 @Injectable()
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
@@ -19,6 +20,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 			this.client.subscribeToResponseOf(topic);
 			Logger.debug(topic, KafkaService.name);
 		});
+		await sleep(500);
 		await this.client.connect();
 	}
 
