@@ -5,7 +5,7 @@ import {
 	WarcraftApiTopics,
 	WarcraftCharacterTopics,
 } from '@azkaban/shared';
-import { CharacterDAO } from '@azkaban/warcraft-character-infrastructure';
+import { CharacterModel } from './character.model';
 
 @Injectable()
 export class CharacterService {
@@ -13,7 +13,7 @@ export class CharacterService {
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 	) {}
 
-	async getAllCharacters(): Promise<Array<CharacterDAO>> {
+	async getAllCharacters(): Promise<Array<CharacterModel>> {
 		try {
 			return await this.client
 				.send(WarcraftCharacterTopics.LIST, {})
@@ -57,7 +57,7 @@ export class CharacterService {
 	async updateCharacter(
 		id: string,
 		character: unknown,
-	): Promise<Nullable<CharacterDAO>> {
+	): Promise<Nullable<CharacterModel>> {
 		try {
 			return await this.client
 				.send(WarcraftCharacterTopics.UPDATE, { character, id })

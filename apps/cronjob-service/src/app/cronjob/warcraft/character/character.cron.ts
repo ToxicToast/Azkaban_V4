@@ -15,7 +15,7 @@ export class CharacterCron {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
 			Logger.debug({ character }, CharacterCron.name);
-			if (character.deleted_at === null) {
+			if (!character.isDeleted) {
 				await this.queue.add('blizzard-character', {
 					id: character.id,
 					region: character.region,
