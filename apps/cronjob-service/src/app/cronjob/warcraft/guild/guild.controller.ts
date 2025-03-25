@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { GuildCron } from './guild.cron';
 import { MessagePattern } from '@nestjs/microservices';
-import { AzkabanCronjobTopics } from '@azkaban/shared';
+import { AzkabanCronjobTopics, WarcraftRoutes } from '@azkaban/shared';
 
-@Controller()
+@Controller(WarcraftRoutes.GUILD)
 export class GuildController {
 	constructor(private readonly cronjob: GuildCron) {}
 
