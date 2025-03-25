@@ -28,11 +28,8 @@ type EnvironmentConfig = {
 	telemetry: string;
 };
 
-const appName =
-	'auth-service' + process.env.APP_VERSION === 'local' ? '-local' : '';
-
 export const AppConfig: EnvironmentConfig = {
-	name: appName,
+	name: 'auth-service',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {

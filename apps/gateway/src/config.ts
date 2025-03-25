@@ -24,11 +24,8 @@ type EnvironmentConfig = {
 	jwt: string;
 };
 
-const appName =
-	'dementor' + process.env.APP_VERSION === 'local' ? '-local' : '';
-
 export const AppConfig: EnvironmentConfig = {
-	name: appName,
+	name: 'dementor',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {

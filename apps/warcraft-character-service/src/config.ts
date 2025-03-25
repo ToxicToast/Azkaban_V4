@@ -28,13 +28,8 @@ type EnvironmentConfig = {
 	telemetry: string;
 };
 
-const appName =
-	'warcraft-character-service' + process.env.APP_VERSION === 'local'
-		? '-local'
-		: '';
-
 export const AppConfig: EnvironmentConfig = {
-	name: appName,
+	name: 'warcraft-character-service',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {

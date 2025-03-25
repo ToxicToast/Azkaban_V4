@@ -24,11 +24,8 @@ type EnvironmentConfig = {
 	telemetry: string;
 };
 
-const appName =
-	'twitch-bot-service' + process.env.APP_VERSION === 'local' ? '-local' : '';
-
 export const AppConfig: EnvironmentConfig = {
-	name: appName,
+	name: 'twitch-bot-service',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	health: {
