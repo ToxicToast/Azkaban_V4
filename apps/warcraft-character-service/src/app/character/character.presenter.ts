@@ -25,6 +25,7 @@ export class CharacterPresenter {
 				rank_id: this.character.rank_id,
 				inset: this.character.inset,
 				lastUpdate: this.character.updated_at,
+				lastLogin: this.character.loggedin_at,
 				isActive: !!this.character.activated_at,
 				isDeleted: !!this.character.deleted_at,
 				isAscend: this.character.guild_id === 'Ascend',

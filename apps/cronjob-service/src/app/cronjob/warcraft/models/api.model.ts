@@ -22,6 +22,7 @@ export interface ApiCharacterModel {
 		name: string;
 	};
 	level: number;
+	last_login_timestamp: number;
 	equipped_item_level: number;
 }
 

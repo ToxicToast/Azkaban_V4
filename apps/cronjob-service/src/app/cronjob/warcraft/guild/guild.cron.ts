@@ -18,11 +18,6 @@ export class GuildCron {
 				realm: 'blackmoore',
 				name: 'ascend',
 			},
-			{
-				region: 'eu',
-				realm: 'blackmoore',
-				name: 'senat',
-			},
 		];
 		for (const guild of guilds) {
 			await this.queue.add('blizzard-guild', {

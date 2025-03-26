@@ -7,12 +7,31 @@ import {
 	WarcraftGuildTopics,
 } from '@azkaban/shared';
 import { ApiGuildModel } from '../models';
+import {
+	CharacterDAO,
+	CharacterEntity,
+	CharacterRepository,
+	CharacterService as BaseService,
+} from '@azkaban/warcraft-character-infrastructure';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class GuildService {
+	private readonly infrastructureRepository: CharacterRepository;
+	private readonly infrastructureService: BaseService;
+
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
-	) {}
+		@Inject('CHARACTER_REPOSITORY')
+		private readonly characterRepository: Repository<CharacterEntity>,
+	) {
+		this.infrastructureRepository = new CharacterRepository(
+			this.characterRepository,
+		);
+		this.infrastructureService = new BaseService(
+			this.infrastructureRepository,
+		);
+	}
 
 	async getAllGuilds(): Promise<Array<unknown>> {
 		try {
@@ -44,15 +63,13 @@ export class GuildService {
 		region: string,
 		realm: string,
 		name: string,
-	): Promise<{ id: string }> {
+	): Promise<Nullable<CharacterDAO>> {
 		try {
-			return await this.client
-				.send(WarcraftCharacterTopics.CHECK, {
-					region,
-					realm,
-					name,
-				})
-				.toPromise();
+			return await this.infrastructureService.getCharacterByRegionRealmName(
+				region,
+				realm,
+				name,
+			);
 		} catch (error) {
 			Logger.error(error, 'checkCharacterExists');
 			return null;
@@ -64,12 +81,9 @@ export class GuildService {
 		rank_id: Nullable<number>,
 	): Promise<void> {
 		try {
-			await this.client
-				.emit(WarcraftCharacterTopics.UPDATE, {
-					id,
-					rank_id,
-				})
-				.toPromise();
+			await this.infrastructureService.updateCharacter(id, {
+				rank_id,
+			});
 		} catch (error) {
 			Logger.error(error, 'updateCharacter');
 		}
@@ -82,14 +96,12 @@ export class GuildService {
 		rank_id: Nullable<number>,
 	): Promise<void> {
 		try {
-			await this.client
-				.emit(WarcraftCharacterTopics.CREATE, {
-					region,
-					realm,
-					name,
-					rank_id,
-				})
-				.toPromise();
+			await this.infrastructureService.createCharacter({
+				region,
+				realm,
+				name,
+				rank_id,
+			});
 		} catch (error) {
 			Logger.error(error, 'createCharacter');
 		}

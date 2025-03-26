@@ -17,4 +17,5 @@ export interface CharacterAnemic extends Anemic {
 	readonly rank_id: Nullable<number>;
 	readonly inset: Nullable<string>;
 	readonly activated_at: Nullable<Date>;
+	readonly loggedin_at: Nullable<Date>;
 }

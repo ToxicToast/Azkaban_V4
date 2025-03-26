@@ -35,51 +35,20 @@ export class CharacterService {
 		}
 	}
 
-	async getCharactersByRealm(realm: string): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByRealm(realm);
+	async getCharacterByRegionRealmName(
+		region: string,
+		realm: string,
+		name: string,
+	): Promise<Nullable<CharacterDAO>> {
+		const result = await this.domainService.getCharacterByRegionRealmName(
+			region,
+			realm,
+			name,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
-			return [];
-		}
-	}
-
-	async getCharactersByRace(race_id: string): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByRace(race_id);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			return [];
-		}
-	}
-
-	async getCharactersByClass(class_id: string): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByClass(class_id);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			return [];
-		}
-	}
-
-	async getCharactersByFaction(
-		faction_id: string,
-	): Promise<Array<CharacterDAO>> {
-		const result =
-			await this.domainService.getCharactersByFaction(faction_id);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			return [];
-		}
-	}
-
-	async getCharactersByGuild(guild_id: string): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByGuild(guild_id);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			return [];
+			return null;
 		}
 	}
 
@@ -118,7 +87,21 @@ export class CharacterService {
 			data.display_realm,
 			data.display_name,
 			data.inset,
+			data.loggedin_at,
 		);
+		if (result.isSuccess) {
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'Character not found',
+				raw: result.errorValue,
+			});
+		}
+	}
+
+	async deleteCharacter(id: string): Promise<CharacterDAO> {
+		const result = await this.domainService.deleteCharacter(id);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
@@ -132,6 +115,32 @@ export class CharacterService {
 
 	async restoreCharacter(id: string): Promise<CharacterDAO> {
 		const result = await this.domainService.restoreCharacter(id);
+		if (result.isSuccess) {
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'Character not found',
+				raw: result.errorValue,
+			});
+		}
+	}
+
+	async activateCharacter(id: string): Promise<CharacterDAO> {
+		const result = await this.domainService.activateCharacter(id);
+		if (result.isSuccess) {
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'Character not found',
+				raw: result.errorValue,
+			});
+		}
+	}
+
+	async deactivateCharacter(id: string): Promise<CharacterDAO> {
+		const result = await this.domainService.deactivateCharacter(id);
 		if (result.isSuccess) {
 			return result.value;
 		} else {

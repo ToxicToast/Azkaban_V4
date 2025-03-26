@@ -19,6 +19,7 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		private guild_id: Nullable<string>,
 		private rank_id: Nullable<number>,
 		private inset: Nullable<string>,
+		private loggedin_at: Nullable<Date>,
 		private activated_at: Nullable<Date>,
 		private readonly created_at: Date,
 		private updated_at: Nullable<Date>,
@@ -43,6 +44,7 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 			guild_id: this.guild_id,
 			rank_id: this.rank_id,
 			inset: this.inset,
+			loggedin_at: this.loggedin_at,
 			activated_at: this.activated_at,
 			created_at: this.created_at,
 			updated_at: this.updated_at,
@@ -120,6 +122,11 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 	changeInset(inset: Nullable<string>): void {
 		this.updated_at = new Date();
 		this.inset = inset;
+	}
+
+	changeLoggedIn(loggedin_at: Nullable<Date>): void {
+		this.updated_at = new Date();
+		this.loggedin_at = loggedin_at;
 	}
 
 	// TODO: Add ValueObjects and a Real Check

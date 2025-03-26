@@ -1,20 +1,21 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { CharacterService } from './character.service';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
+import { DatabaseCharactersService } from '../services/character.service';
 
 @Injectable()
 export class CharacterCron {
 	constructor(
-		private readonly service: CharacterService,
 		@InjectQueue('blizzard-character') private readonly queue: Queue,
+		private readonly service: DatabaseCharactersService,
 	) {}
 
 	async runQueue(): Promise<void> {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
-			if (!character.isDeleted) {
+			if (character.deleted_at === null) {
 				await this.queue.add('blizzard-character', {
 					id: character.id,
 					region: character.region,

@@ -14,7 +14,7 @@ export class InsetCron {
 	async runQueue(): Promise<void> {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
-			if (!character.isDeleted) {
+			if (character.deleted_at === null) {
 				await this.queue.add('blizzard-inset', {
 					id: character.id,
 					region: character.region,

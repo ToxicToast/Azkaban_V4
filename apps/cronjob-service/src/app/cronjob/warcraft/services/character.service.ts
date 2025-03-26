@@ -1,7 +1,4 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { Nullable, WarcraftApiTopics } from '@azkaban/shared';
-import { ApiInsetModel, CharacterModel } from '../models';
 import {
 	CharacterDAO,
 	CharacterEntity,
@@ -9,14 +6,15 @@ import {
 	CharacterService as BaseService,
 } from '@azkaban/warcraft-character-infrastructure';
 import { Repository } from 'typeorm';
+import { ApiCharacterModel } from '../models';
+import { Nullable } from '@azkaban/shared';
 
 @Injectable()
-export class InsetService {
+export class DatabaseCharactersService {
 	private readonly infrastructureRepository: CharacterRepository;
 	private readonly infrastructureService: BaseService;
 
 	constructor(
-		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 		@Inject('CHARACTER_REPOSITORY')
 		private readonly characterRepository: Repository<CharacterEntity>,
 	) {
@@ -32,32 +30,37 @@ export class InsetService {
 		return await this.infrastructureService.getCharacterList();
 	}
 
-	async getInsetFromApi(
-		region: string,
-		realm: string,
-		name: string,
-	): Promise<Nullable<ApiInsetModel>> {
-		try {
-			return await this.client
-				.send(WarcraftApiTopics.INSET, { region, realm, name })
-				.toPromise();
-		} catch (error) {
-			Logger.error(error, 'getInsetFromApi');
-			return null;
-		}
-	}
-
 	async updateCharacter(
 		id: string,
-		insetArray: ApiInsetModel,
+		data: ApiCharacterModel,
 	): Promise<Nullable<CharacterDAO>> {
 		try {
-			const inset = insetArray.assets.find(
-				(asset) => asset.key === 'inset',
-			);
-			const insetValue = inset?.value ?? null;
+			const gender_id = data.gender?.name ?? null;
+			const faction_id = data.faction?.name ?? null;
+			const race_id = data.race.name;
+			const class_id = data.character_class.name;
+			const spec_id = data.active_spec?.name ?? null;
+			const level = data.level;
+			const item_level = data.equipped_item_level;
+			const guild_id = data.guild?.name ?? null;
+			const display_realm = data.realm.name;
+			const display_name = data.name;
+			const loggedin_at =
+				data.last_login_timestamp !== null
+					? new Date(data.last_login_timestamp)
+					: null;
 			return await this.infrastructureService.updateCharacter(id, {
-				inset: insetValue,
+				gender_id,
+				faction_id,
+				race_id,
+				class_id,
+				spec_id,
+				level,
+				item_level,
+				guild_id,
+				display_realm,
+				display_name,
+				loggedin_at,
 			});
 		} catch (error) {
 			Logger.error(error, 'updateCharacter');
@@ -65,17 +68,17 @@ export class InsetService {
 		}
 	}
 
-	async deleteCharacter(id: string): Promise<void> {
+	async deleteCharacter(id: string): Promise<Nullable<CharacterDAO>> {
 		try {
-			await this.infrastructureService.deleteCharacter(id);
+			return await this.infrastructureService.deleteCharacter(id);
 		} catch (error) {
 			Logger.error(error, 'deleteCharacter');
 		}
 	}
 
-	async restoreCharacter(id: string): Promise<void> {
+	async activateCharacter(id: string): Promise<Nullable<CharacterDAO>> {
 		try {
-			await this.infrastructureService.restoreCharacter(id);
+			return await this.infrastructureService.activateCharacter(id);
 		} catch (error) {
 			Logger.error(error, 'restoreCharacter');
 		}

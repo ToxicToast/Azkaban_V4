@@ -6,10 +6,12 @@ import { CronjobModule } from './cronjob/cronjob.module';
 import { QueueModule } from './queue/queue.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { KafkaModule } from './kafka/kafka.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
 	imports: [
 		KafkaModule,
+		DatabaseModule,
 		HealthModule,
 		MetricsModule,
 		VersionModule,

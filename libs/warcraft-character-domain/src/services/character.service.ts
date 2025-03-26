@@ -38,58 +38,23 @@ export class CharacterService {
 		}
 	}
 
-	async getCharactersByRealm(
+	async getCharacterByRegionRealmName(
+		region: string,
 		realm: string,
-	): Promise<Result<Array<CharacterAnemic>>> {
+		name: string,
+	): Promise<Result<CharacterAnemic>> {
 		try {
-			const result = await this.repository.findByRealm(realm);
-			return Result.ok<Array<CharacterAnemic>>(result);
+			const result = await this.repository.findByRegionRealmName(
+				region,
+				realm,
+				name,
+			);
+			if (result === null) {
+				return Result.fail<CharacterAnemic>(result, 404);
+			}
+			return Result.ok<CharacterAnemic>(result);
 		} catch (error) {
-			return Result.fail<Array<CharacterAnemic>>(error, 500);
-		}
-	}
-
-	async getCharactersByRace(
-		race_id: string,
-	): Promise<Result<Array<CharacterAnemic>>> {
-		try {
-			const result = await this.repository.findByRace(race_id);
-			return Result.ok<Array<CharacterAnemic>>(result);
-		} catch (error) {
-			return Result.fail<Array<CharacterAnemic>>(error, 500);
-		}
-	}
-
-	async getCharactersByClass(
-		class_id: string,
-	): Promise<Result<Array<CharacterAnemic>>> {
-		try {
-			const result = await this.repository.findByClass(class_id);
-			return Result.ok<Array<CharacterAnemic>>(result);
-		} catch (error) {
-			return Result.fail<Array<CharacterAnemic>>(error, 500);
-		}
-	}
-
-	async getCharactersByFaction(
-		faction_id: string,
-	): Promise<Result<Array<CharacterAnemic>>> {
-		try {
-			const result = await this.repository.findByFaction(faction_id);
-			return Result.ok<Array<CharacterAnemic>>(result);
-		} catch (error) {
-			return Result.fail<Array<CharacterAnemic>>(error, 500);
-		}
-	}
-
-	async getCharactersByGuild(
-		guild_id: string,
-	): Promise<Result<Array<CharacterAnemic>>> {
-		try {
-			const result = await this.repository.findByGuild(guild_id);
-			return Result.ok<Array<CharacterAnemic>>(result);
-		} catch (error) {
-			return Result.fail<Array<CharacterAnemic>>(error, 500);
+			return Result.fail<CharacterAnemic>(error, 500);
 		}
 	}
 
@@ -118,6 +83,7 @@ export class CharacterService {
 		display_realm?: Optional<Nullable<string>>,
 		display_name?: Optional<Nullable<string>>,
 		inset?: Optional<Nullable<string>>,
+		loggedin_at?: Optional<Nullable<Date>>,
 	): Promise<Result<CharacterAnemic>> {
 		try {
 			const result = await this.getCharacterById(id);
@@ -159,6 +125,23 @@ export class CharacterService {
 				if (inset !== undefined) {
 					aggregate.changeInset(inset);
 				}
+				if (loggedin_at !== undefined) {
+					aggregate.changeLoggedIn(loggedin_at);
+				}
+				return await this.save(aggregate.toAnemic());
+			}
+			return Result.fail<CharacterAnemic>(result.errorValue, 404);
+		} catch (error) {
+			return Result.fail<CharacterAnemic>(error, 500);
+		}
+	}
+
+	async deleteCharacter(id: string): Promise<Result<CharacterAnemic>> {
+		try {
+			const result = await this.getCharacterById(id);
+			if (result.isSuccess) {
+				const aggregate = this.factory.reconstitute(result.value);
+				aggregate.deleteCharacter();
 				return await this.save(aggregate.toAnemic());
 			}
 			return Result.fail<CharacterAnemic>(result.errorValue, 404);
@@ -173,6 +156,34 @@ export class CharacterService {
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
 				aggregate.restoreCharacter();
+				return await this.save(aggregate.toAnemic());
+			}
+			return Result.fail<CharacterAnemic>(result.errorValue, 404);
+		} catch (error) {
+			return Result.fail<CharacterAnemic>(error, 500);
+		}
+	}
+
+	async activateCharacter(id: string): Promise<Result<CharacterAnemic>> {
+		try {
+			const result = await this.getCharacterById(id);
+			if (result.isSuccess) {
+				const aggregate = this.factory.reconstitute(result.value);
+				aggregate.activateCharacter();
+				return await this.save(aggregate.toAnemic());
+			}
+			return Result.fail<CharacterAnemic>(result.errorValue, 404);
+		} catch (error) {
+			return Result.fail<CharacterAnemic>(error, 500);
+		}
+	}
+
+	async deactivateCharacter(id: string): Promise<Result<CharacterAnemic>> {
+		try {
+			const result = await this.getCharacterById(id);
+			if (result.isSuccess) {
+				const aggregate = this.factory.reconstitute(result.value);
+				aggregate.deactivateCharacter();
 				return await this.save(aggregate.toAnemic());
 			}
 			return Result.fail<CharacterAnemic>(result.errorValue, 404);

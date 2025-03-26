@@ -108,6 +108,7 @@ export class CharacterController {
 		@Payload('display_realm') display_realm?: Optional<Nullable<string>>,
 		@Payload('display_name') display_name?: Optional<Nullable<string>>,
 		@Payload('inset') inset?: Optional<Nullable<string>>,
+		@Payload('loggedin_at') loggedin_at?: Optional<Nullable<Date>>,
 	): Promise<CharacterResponse> {
 		if (!id) {
 			throw new RpcException({
@@ -133,6 +134,7 @@ export class CharacterController {
 			display_realm,
 			display_name,
 			inset,
+			loggedin_at,
 		);
 		if (response === null) {
 			throw new RpcException({

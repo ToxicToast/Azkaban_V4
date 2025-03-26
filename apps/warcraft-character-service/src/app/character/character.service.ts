@@ -81,6 +81,7 @@ export class CharacterService {
 		display_realm?: Optional<Nullable<string>>,
 		display_name?: Optional<Nullable<string>>,
 		inset?: Optional<Nullable<string>>,
+		loggedin_at?: Optional<Nullable<Date>>,
 	): Promise<CharacterResponse> {
 		const changeData = {};
 		if (region !== undefined) {
@@ -131,6 +132,9 @@ export class CharacterService {
 		if (inset !== undefined) {
 			changeData['inset'] = inset;
 		}
+		if (loggedin_at !== undefined) {
+			changeData['loggedin_at'] = loggedin_at;
+		}
 		const character = await this.infrastructureService.updateCharacter(
 			id,
 			changeData,
@@ -143,7 +147,7 @@ export class CharacterService {
 	}
 
 	async deleteCharacter(id: string): Promise<CharacterResponse> {
-		const character = null;
+		const character = await this.infrastructureService.deleteCharacter(id);
 		if (character !== null) {
 			const presenter = new CharacterPresenter(character);
 			return presenter.transform();

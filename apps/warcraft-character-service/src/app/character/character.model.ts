@@ -18,6 +18,7 @@ export interface CharacterModel {
 	rank_id: Nullable<number>;
 	inset: Nullable<string>;
 	lastUpdate: Nullable<Date>;
+	lastLogin: Nullable<Date>;
 	isActive: boolean;
 	isDeleted: boolean;
 	isAscend: boolean;

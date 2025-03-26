@@ -4,10 +4,14 @@ import { Logger } from '@nestjs/common';
 import { Nullable } from '@azkaban/shared';
 import { Job } from 'bullmq';
 import { ApiCharacterModel } from '../models';
+import { DatabaseCharactersService } from '../services/character.service';
 
 @Processor('blizzard-character')
 export class CharacterProcessor extends WorkerHost {
-	constructor(private readonly service: CharacterService) {
+	constructor(
+		private readonly service: CharacterService,
+		private readonly databaseService: DatabaseCharactersService,
+	) {
 		super();
 	}
 
@@ -32,10 +36,10 @@ export class CharacterProcessor extends WorkerHost {
 	): Promise<Nullable<ApiCharacterModel>> {
 		try {
 			if (data) {
-				await this.service.updateCharacter(id, data);
-				await this.service.restoreCharacter(id);
+				await this.databaseService.updateCharacter(id, data);
+				await this.databaseService.activateCharacter(id);
 			} else {
-				await this.service.deleteCharacter(id);
+				await this.databaseService.deleteCharacter(id);
 			}
 		} catch (error) {
 			Logger.error(error, 'onCharacterUpdate');
@@ -62,13 +66,14 @@ export class CharacterProcessor extends WorkerHost {
 			const data = job.returnvalue;
 			if (data) {
 				await this.onCharacterUpdate(id, data);
+				await this.databaseService.activateCharacter(id);
 			} else {
-				await this.service.deleteCharacter(id);
+				await this.databaseService.deleteCharacter(id);
 			}
 		} catch (error) {
 			Logger.error(error, 'onCompleted');
 			const { id } = job.data;
-			await this.service.deleteCharacter(id);
+			await this.databaseService.deleteCharacter(id);
 		}
 	}
 }

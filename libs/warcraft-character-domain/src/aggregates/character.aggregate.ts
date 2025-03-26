@@ -53,6 +53,10 @@ export class CharacterAggregate {
 		this.character.changeInset(inset);
 	}
 
+	changeLoggedIn(loggedin_at: Nullable<Date>): void {
+		this.character.changeLoggedIn(loggedin_at);
+	}
+
 	activateCharacter(): void {
 		this.character.activateCharacter();
 	}

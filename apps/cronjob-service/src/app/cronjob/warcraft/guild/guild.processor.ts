@@ -4,6 +4,7 @@ import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { Nullable } from '@azkaban/shared';
 import { ApiGuildModel } from '../models';
+import { CharacterDAO } from '@azkaban/warcraft-character-infrastructure';
 
 @Processor('blizzard-guild')
 export class GuildProcessor extends WorkerHost {
@@ -47,13 +48,14 @@ export class GuildProcessor extends WorkerHost {
 		try {
 			const { id, region } = job.data;
 			const data = job.returnvalue;
+
 			data?.members?.forEach((member) => {
 				const realm = member.character.realm.slug;
 				const name = member.character.name.toLowerCase();
 				const rank = member.rank;
 				this.service
 					.checkCharacterExists(region, realm, name)
-					.then((character: Nullable<{ id: string }>) => {
+					.then((character: Nullable<CharacterDAO>) => {
 						if (character !== null) {
 							this.service.updateCharacter(character.id, rank);
 						} else {

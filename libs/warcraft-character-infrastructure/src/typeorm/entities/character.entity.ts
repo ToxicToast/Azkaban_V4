@@ -62,6 +62,9 @@ export class CharacterEntity {
 	inset: string;
 
 	@Column({ unique: false, nullable: true, default: null, type: 'timestamp' })
+	loggedin_at: Date | null;
+
+	@Column({ unique: false, nullable: true, default: null, type: 'timestamp' })
 	activated_at: Date | null;
 
 	@CreateDateColumn({ type: 'timestamp' })

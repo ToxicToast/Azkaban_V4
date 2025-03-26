@@ -17,4 +17,5 @@ export interface UpdateCharacterDTO {
 	rank_id?: Optional<number>;
 	mythic?: Optional<number>;
 	inset?: Optional<Nullable<string>>;
+	loggedin_at?: Optional<Nullable<Date>>;
 }

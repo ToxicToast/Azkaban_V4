@@ -17,6 +17,7 @@ export interface CharacterDAO {
 	guild_id: Nullable<string>;
 	rank_id: Nullable<number>;
 	inset: Nullable<string>;
+	loggedin_at: Nullable<Date>;
 	activated_at: Nullable<Date>;
 	created_at: Date;
 	updated_at: Nullable<Date>;
