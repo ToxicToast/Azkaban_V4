@@ -17,7 +17,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 		const returnMessage =
 			message.message === undefined ? message : message.message;
 		//
-		Logger.debug(
+		Logger.error(
 			{
 				status,
 				message,

@@ -20,7 +20,7 @@ export class GuildService {
 				.send(WarcraftGuildTopics.LIST, {})
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'getAllGuilds');
 			return [];
 		}
 	}
@@ -35,7 +35,7 @@ export class GuildService {
 				.send(WarcraftApiTopics.GUILD, { region, realm, name })
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'getGuildFromApi');
 			return null;
 		}
 	}
@@ -54,7 +54,7 @@ export class GuildService {
 				})
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'checkCharacterExists');
 			return null;
 		}
 	}
@@ -71,7 +71,7 @@ export class GuildService {
 				})
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'updateCharacter');
 		}
 	}
 
@@ -91,7 +91,7 @@ export class GuildService {
 				})
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'createCharacter');
 		}
 	}
 }

@@ -129,4 +129,17 @@ export class CharacterService {
 			});
 		}
 	}
+
+	async restoreCharacter(id: string): Promise<CharacterDAO> {
+		const result = await this.domainService.restoreCharacter(id);
+		if (result.isSuccess) {
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'Character not found',
+				raw: result.errorValue,
+			});
+		}
+	}
 }

@@ -19,7 +19,7 @@ export class CharacterService {
 				.send(WarcraftCharacterTopics.LIST, {})
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'getAllCharacters');
 			return [];
 		}
 	}
@@ -34,7 +34,7 @@ export class CharacterService {
 				.send(WarcraftApiTopics.CHARACTER, { region, realm, name })
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'getCharacterFromApi');
 			return null;
 		}
 	}
@@ -49,7 +49,7 @@ export class CharacterService {
 				.send(WarcraftApiTopics.INSET, { region, realm, name })
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'getInsetFromApi');
 			return null;
 		}
 	}
@@ -86,7 +86,7 @@ export class CharacterService {
 				})
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'updateCharacter');
 			return null;
 		}
 	}
@@ -97,7 +97,7 @@ export class CharacterService {
 				.send(WarcraftCharacterTopics.DELETE, { id })
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'deleteCharacter');
 		}
 	}
 
@@ -107,7 +107,7 @@ export class CharacterService {
 				.send(WarcraftCharacterTopics.RESTORE, { id })
 				.toPromise();
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'restoreCharacter');
 		}
 	}
 }

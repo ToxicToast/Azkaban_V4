@@ -37,7 +37,7 @@ export class IdCommandHandler implements ICommandHandler<IdCommand> {
 	}
 
 	async execute(command: IdCommand) {
-		Logger.debug(command, IdCommandHandler.name);
+		Logger.debug({ command }, IdCommandHandler.name);
 		return await this.checkForCache(command);
 	}
 }

@@ -65,7 +65,6 @@ export class CharacterProcessor extends WorkerHost {
 			} else {
 				await this.service.deleteCharacter(id);
 			}
-			Logger.debug(data, 'onCompleted');
 		} catch (error) {
 			Logger.error(error, 'onCompleted');
 			const { id } = job.data;

@@ -131,31 +131,30 @@ export class CharacterService {
 		if (inset !== undefined) {
 			changeData['inset'] = inset;
 		}
-		Logger.debug(changeData, 'CharacterService.characterUpdate');
-		const user = await this.infrastructureService.updateCharacter(
+		const character = await this.infrastructureService.updateCharacter(
 			id,
 			changeData,
 		);
-		if (user !== null) {
-			const presenter = new CharacterPresenter(user);
+		if (character !== null) {
+			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
 		}
 		return null;
 	}
 
 	async deleteCharacter(id: string): Promise<CharacterResponse> {
-		const user = null;
-		if (user !== null) {
-			const presenter = new CharacterPresenter(user);
+		const character = null;
+		if (character !== null) {
+			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
 		}
 		return null;
 	}
 
 	async restoreCharacter(id: string): Promise<CharacterResponse> {
-		const user = null;
-		if (user !== null) {
-			const presenter = new CharacterPresenter(user);
+		const character = await this.infrastructureService.restoreCharacter(id);
+		if (character !== null) {
+			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
 		}
 		return null;

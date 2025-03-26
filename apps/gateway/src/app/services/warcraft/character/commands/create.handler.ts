@@ -26,7 +26,7 @@ export class CreateCommandHandler implements ICommandHandler<CreateCommand> {
 	}
 
 	async execute(command: CreateCommand) {
-		Logger.debug(command, CreateCommandHandler.name);
+		Logger.debug({ command }, CreateCommandHandler.name);
 		return await this.createCircuitBreaker(command);
 	}
 }

@@ -161,4 +161,19 @@ export class CharacterController {
 				item.name === name,
 		);
 	}
+
+	@MessagePattern(WarcraftCharacterTopics.RESTORE)
+	async restoreCharacter(
+		@Payload('id') id: string,
+	): Promise<CharacterResponse> {
+		const response = await this.service.restoreCharacter(id);
+		if (response === null) {
+			throw new RpcException({
+				message: 'Character not found',
+				status: HttpStatus.NOT_FOUND,
+			});
+		}
+		await this.cache.removeCacheOnCreate();
+		return response;
+	}
 }

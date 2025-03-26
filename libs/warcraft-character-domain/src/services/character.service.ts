@@ -166,4 +166,18 @@ export class CharacterService {
 			return Result.fail<CharacterAnemic>(error, 500);
 		}
 	}
+
+	async restoreCharacter(id: string): Promise<Result<CharacterAnemic>> {
+		try {
+			const result = await this.getCharacterById(id);
+			if (result.isSuccess) {
+				const aggregate = this.factory.reconstitute(result.value);
+				aggregate.restoreCharacter();
+				return await this.save(aggregate.toAnemic());
+			}
+			return Result.fail<CharacterAnemic>(result.errorValue, 404);
+		} catch (error) {
+			return Result.fail<CharacterAnemic>(error, 500);
+		}
+	}
 }

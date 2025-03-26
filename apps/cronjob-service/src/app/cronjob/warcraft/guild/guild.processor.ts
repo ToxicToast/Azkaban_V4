@@ -21,7 +21,7 @@ export class GuildProcessor extends WorkerHost {
 			const { region, realm, name } = data;
 			return await this.service.getGuildFromApi(region, realm, name);
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'onGetGuildFromApi');
 			return null;
 		}
 	}
