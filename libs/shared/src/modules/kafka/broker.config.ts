@@ -1,8 +1,11 @@
+import { Optional } from '../../types';
+
 export interface BrokerConfig {
 	clientId: string;
 	groupId: string;
 	brokerHost: string;
 	brokerPort: number;
-	brokerUsername: string;
-	brokerPassword: string;
+	withSasl: boolean;
+	brokerUsername?: Optional<string>;
+	brokerPassword?: Optional<string>;
 }

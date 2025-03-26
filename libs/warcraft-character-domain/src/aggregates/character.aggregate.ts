@@ -5,35 +5,31 @@ import { Nullable } from '@azkaban/shared';
 export class CharacterAggregate {
 	constructor(private readonly character: CharacterDomain) {}
 
-	changeRegion(region: string): void {
-		this.character.changeRegion(region);
+	changeDisplayRealm(display_realm: Nullable<string>): void {
+		this.character.changeDisplayRealm(display_realm);
 	}
 
-	changeRealm(realm: string): void {
-		this.character.changeRealm(realm);
+	changeDisplayName(display_name: Nullable<string>): void {
+		this.character.changeDisplayName(display_name);
 	}
 
-	changeName(name: string): void {
-		this.character.changeName(name);
-	}
-
-	changeGender(gender_id: Nullable<number>): void {
+	changeGender(gender_id: Nullable<string>): void {
 		this.character.changeGender(gender_id);
 	}
 
-	changeFaction(faction_id: Nullable<number>): void {
+	changeFaction(faction_id: Nullable<string>): void {
 		this.character.changeFaction(faction_id);
 	}
 
-	changeRace(race_id: Nullable<number>): void {
+	changeRace(race_id: Nullable<string>): void {
 		this.character.changeRace(race_id);
 	}
 
-	changeClass(class_id: Nullable<number>): void {
+	changeClass(class_id: Nullable<string>): void {
 		this.character.changeClass(class_id);
 	}
 
-	changeSpec(spec_id: Nullable<number>): void {
+	changeSpec(spec_id: Nullable<string>): void {
 		this.character.changeSpec(spec_id);
 	}
 
@@ -45,12 +41,16 @@ export class CharacterAggregate {
 		this.character.changeItemLevel(item_level);
 	}
 
-	changeGuild(guild_id: Nullable<number>): void {
+	changeGuild(guild_id: Nullable<string>): void {
 		this.character.changeGuild(guild_id);
 	}
 
 	changeRank(rank_id: Nullable<number>): void {
 		this.character.changeRank(rank_id);
+	}
+
+	changeInset(inset: Nullable<string>): void {
+		this.character.changeInset(inset);
 	}
 
 	activateCharacter(): void {

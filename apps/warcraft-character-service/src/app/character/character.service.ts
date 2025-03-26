@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CharacterResponse, CharactersResponse } from './character.model';
-import { Optional } from '@azkaban/shared';
+import { Nullable, Optional } from '@azkaban/shared';
 import { CharacterPresenter } from './character.presenter';
 import { Repository } from 'typeorm';
 import {
@@ -29,7 +29,6 @@ export class CharacterService {
 
 	async characterList(): Promise<CharactersResponse> {
 		const characters = await this.infrastructureService.getCharacterList();
-		Logger.debug({ characters }, CharacterService.name);
 		return characters.map((character: CharacterDAO) => {
 			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
@@ -38,7 +37,6 @@ export class CharacterService {
 
 	async characterById(id: string): Promise<CharacterResponse> {
 		const character = await this.infrastructureService.getCharacterById(id);
-		Logger.debug({ id, character }, CharacterService.name);
 		if (character !== null) {
 			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
@@ -50,17 +48,14 @@ export class CharacterService {
 		region: string,
 		realm: string,
 		name: string,
+		rank_id?: Optional<number>,
 	): Promise<CharacterResponse> {
 		const character = await this.infrastructureService.createCharacter({
 			region,
 			realm,
 			name,
+			rank_id,
 		});
-		Logger.debug(
-			{ region, realm, name, character },
-			CharacterService.name,
-			'characterCreate',
-		);
 		if (character !== null) {
 			const presenter = new CharacterPresenter(character);
 			return presenter.transform();
@@ -73,16 +68,19 @@ export class CharacterService {
 		region?: Optional<string>,
 		realm?: Optional<string>,
 		name?: Optional<string>,
-		gender_id?: Optional<number>,
-		faction_id?: Optional<number>,
-		race_id?: Optional<number>,
-		class_id?: Optional<number>,
-		spec_id?: Optional<number>,
+		gender_id?: Optional<string>,
+		faction_id?: Optional<string>,
+		race_id?: Optional<string>,
+		class_id?: Optional<string>,
+		spec_id?: Optional<string>,
 		level?: Optional<number>,
 		item_level?: Optional<number>,
-		guild_id?: Optional<number>,
+		guild_id?: Optional<string>,
 		rank_id?: Optional<number>,
 		mythic?: Optional<number>,
+		display_realm?: Optional<Nullable<string>>,
+		display_name?: Optional<Nullable<string>>,
+		inset?: Optional<Nullable<string>>,
 	): Promise<CharacterResponse> {
 		const changeData = {};
 		if (region !== undefined) {
@@ -124,7 +122,20 @@ export class CharacterService {
 		if (mythic !== undefined) {
 			changeData['mythic'] = mythic;
 		}
-		const user = null;
+		if (display_realm !== undefined) {
+			changeData['display_realm'] = display_realm;
+		}
+		if (display_name !== undefined) {
+			changeData['display_name'] = display_name;
+		}
+		if (inset !== undefined) {
+			changeData['inset'] = inset;
+		}
+		Logger.debug(changeData, 'CharacterService.characterUpdate');
+		const user = await this.infrastructureService.updateCharacter(
+			id,
+			changeData,
+		);
 		if (user !== null) {
 			const presenter = new CharacterPresenter(user);
 			return presenter.transform();

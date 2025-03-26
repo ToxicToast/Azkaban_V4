@@ -5,7 +5,7 @@ import {
 	WarcraftApiTopics,
 	WarcraftCharacterTopics,
 } from '@azkaban/shared';
-import { CharacterModel } from './character.model';
+import { ApiCharacterModel, CharacterModel } from '../models';
 
 @Injectable()
 export class CharacterService {
@@ -28,7 +28,7 @@ export class CharacterService {
 		region: string,
 		realm: string,
 		name: string,
-	): Promise<Nullable<unknown>> {
+	): Promise<Nullable<ApiCharacterModel>> {
 		try {
 			return await this.client
 				.send(WarcraftApiTopics.CHARACTER, { region, realm, name })
@@ -56,11 +56,34 @@ export class CharacterService {
 
 	async updateCharacter(
 		id: string,
-		character: unknown,
+		character: ApiCharacterModel,
 	): Promise<Nullable<CharacterModel>> {
 		try {
+			const gender_id = character.gender?.name ?? null;
+			const faction_id = character.faction?.name ?? null;
+			const race_id = character.race.name;
+			const class_id = character.character_class.name;
+			const spec_id = character.active_spec?.name ?? null;
+			const level = character.level;
+			const item_level = character.equipped_item_level;
+			const guild_id = character.guild?.name ?? null;
+			const display_realm = character.realm.name;
+			const display_name = character.name;
+
 			return await this.client
-				.send(WarcraftCharacterTopics.UPDATE, { character, id })
+				.send(WarcraftCharacterTopics.UPDATE, {
+					id,
+					gender_id,
+					faction_id,
+					race_id,
+					class_id,
+					spec_id,
+					level,
+					item_level,
+					guild_id,
+					display_realm,
+					display_name,
+				})
 				.toPromise();
 		} catch (error) {
 			Logger.error(error);

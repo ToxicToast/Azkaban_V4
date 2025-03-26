@@ -1,17 +1,16 @@
-import { Transport } from '@nestjs/microservices';
+import { KafkaOptions, Transport } from '@nestjs/microservices';
 import { Optional } from '../types';
 
 export function MicroserviceHelper(
-	transport: Transport,
 	clientId: string,
 	brokerUrl: string,
 	groupId: string,
 	withSasl: boolean,
 	username?: Optional<string>,
 	password?: Optional<string>,
-) {
+): KafkaOptions {
 	return {
-		transport: transport,
+		transport: Transport.KAFKA,
 		options: {
 			client: {
 				clientId: clientId,

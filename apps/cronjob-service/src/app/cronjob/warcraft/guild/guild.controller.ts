@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { GuildCron } from './guild.cron';
 import { MessagePattern } from '@nestjs/microservices';
 import { AzkabanCronjobTopics, WarcraftRoutes } from '@azkaban/shared';
@@ -10,5 +10,10 @@ export class GuildController {
 	@MessagePattern(AzkabanCronjobTopics.WARCRAFT_GUILD)
 	async handleGuildCronjob(): Promise<void> {
 		await this.cronjob.runQueue();
+	}
+
+	@Get()
+	async getGuildCronjob(): Promise<void> {
+		return await this.cronjob.runQueue();
 	}
 }

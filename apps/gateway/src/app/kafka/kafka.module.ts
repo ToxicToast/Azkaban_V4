@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import {
+	KafkaModule as BaseModule,
 	AzkabanAuthTopicArray,
 	AzkabanCronjobTopicArray,
 	AzkabanEmailTopicArray,
@@ -22,7 +23,6 @@ import {
 	FoodFolioSizeTopicArray,
 	FoodFolioTypeTopicArray,
 	FoodFolioWarehouseTopicArray,
-	KafkaModule as BaseModule,
 	TwitchApiTopicArray,
 	TwitchBotTopicArray,
 	TwitchChannelTopicArray,
@@ -49,6 +49,7 @@ import { AppConfig } from '../../config';
 				brokerPort: AppConfig.broker.brokerPort,
 				brokerUsername: AppConfig.broker.brokerUsername,
 				brokerPassword: AppConfig.broker.brokerPassword,
+				withSasl: AppConfig.environment !== 'local',
 			},
 			[
 				// Azkaban Services

@@ -24,11 +24,13 @@ export class KafkaModule {
 							client: {
 								clientId: config.clientId,
 								brokers: [brokerUrl],
-								sasl: {
-									mechanism: 'plain',
-									username: config.brokerUsername,
-									password: config.brokerPassword,
-								},
+								sasl: config.withSasl
+									? {
+											mechanism: 'plain',
+											username: config.brokerUsername,
+											password: config.brokerPassword,
+										}
+									: undefined,
 								connectionTimeout: 4000,
 								authenticationTimeout: 4000,
 							},

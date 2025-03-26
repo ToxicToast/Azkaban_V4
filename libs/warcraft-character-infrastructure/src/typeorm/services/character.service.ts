@@ -4,7 +4,7 @@ import { CharacterDAO } from '../../dao/character.dao';
 import { Nullable, UuidHelper } from '@azkaban/shared';
 import { RpcException } from '@nestjs/microservices';
 import { HttpStatus } from '@nestjs/common';
-import { CreateCharacterDTO } from '../../dto';
+import { CreateCharacterDTO, UpdateCharacterDTO } from '../../dto';
 
 export class CharacterService {
 	private readonly domainService: DomainService;
@@ -44,7 +44,7 @@ export class CharacterService {
 		}
 	}
 
-	async getCharactersByRace(race_id: number): Promise<Array<CharacterDAO>> {
+	async getCharactersByRace(race_id: string): Promise<Array<CharacterDAO>> {
 		const result = await this.domainService.getCharactersByRace(race_id);
 		if (result.isSuccess) {
 			return result.value;
@@ -53,7 +53,7 @@ export class CharacterService {
 		}
 	}
 
-	async getCharactersByClass(class_id: number): Promise<Array<CharacterDAO>> {
+	async getCharactersByClass(class_id: string): Promise<Array<CharacterDAO>> {
 		const result = await this.domainService.getCharactersByClass(class_id);
 		if (result.isSuccess) {
 			return result.value;
@@ -63,7 +63,7 @@ export class CharacterService {
 	}
 
 	async getCharactersByFaction(
-		faction_id: number,
+		faction_id: string,
 	): Promise<Array<CharacterDAO>> {
 		const result =
 			await this.domainService.getCharactersByFaction(faction_id);
@@ -74,7 +74,7 @@ export class CharacterService {
 		}
 	}
 
-	async getCharactersByGuild(guild_id: number): Promise<Array<CharacterDAO>> {
+	async getCharactersByGuild(guild_id: string): Promise<Array<CharacterDAO>> {
 		const result = await this.domainService.getCharactersByGuild(guild_id);
 		if (result.isSuccess) {
 			return result.value;
@@ -95,6 +95,36 @@ export class CharacterService {
 			throw new RpcException({
 				status: HttpStatus.BAD_REQUEST,
 				message: 'Could not create character',
+				raw: result.errorValue,
+			});
+		}
+	}
+
+	async updateCharacter(
+		id: string,
+		data: UpdateCharacterDTO,
+	): Promise<CharacterDAO> {
+		const result = await this.domainService.updateCharacter(
+			id,
+			data.gender_id,
+			data.faction_id,
+			data.race_id,
+			data.class_id,
+			data.spec_id,
+			data.level,
+			data.item_level,
+			data.guild_id,
+			data.rank_id,
+			data.display_realm,
+			data.display_name,
+			data.inset,
+		);
+		if (result.isSuccess) {
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'Character not found',
 				raw: result.errorValue,
 			});
 		}

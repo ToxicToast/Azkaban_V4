@@ -11,7 +11,9 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			id,
 			region,
 			realm,
+			display_realm,
 			name,
+			display_name,
 			gender_id,
 			faction_id,
 			race_id,
@@ -21,6 +23,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			item_level,
 			guild_id,
 			rank_id,
+			inset,
 			activated_at,
 			created_at,
 			updated_at,
@@ -30,7 +33,9 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 		entity.id = id;
 		entity.region = region;
 		entity.realm = realm;
+		entity.display_realm = display_realm;
 		entity.name = name;
+		entity.display_name = display_name;
 		entity.gender_id = gender_id;
 		entity.faction_id = faction_id;
 		entity.race_id = race_id;
@@ -40,6 +45,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 		entity.item_level = item_level;
 		entity.guild_id = guild_id;
 		entity.rank_id = rank_id;
+		entity.inset = inset;
 		entity.activated_at = activated_at;
 		entity.created_at = created_at;
 		entity.updated_at = updated_at;
@@ -52,7 +58,9 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			id,
 			region,
 			realm,
+			display_realm,
 			name,
+			display_name,
 			gender_id,
 			faction_id,
 			race_id,
@@ -62,6 +70,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			item_level,
 			guild_id,
 			rank_id,
+			inset,
 			activated_at,
 			created_at,
 			updated_at,
@@ -71,7 +80,9 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			id,
 			region,
 			realm,
+			display_realm,
 			name,
+			display_name,
 			gender_id,
 			faction_id,
 			race_id,
@@ -81,6 +92,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			item_level,
 			guild_id,
 			rank_id,
+			inset,
 			activated_at,
 			created_at,
 			updated_at,

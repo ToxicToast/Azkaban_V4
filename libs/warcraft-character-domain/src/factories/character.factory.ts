@@ -22,7 +22,9 @@ export class CharacterFactory
 			id,
 			region,
 			realm,
+			display_realm,
 			name,
+			display_name,
 			gender_id,
 			faction_id,
 			race_id,
@@ -32,6 +34,7 @@ export class CharacterFactory
 			item_level,
 			guild_id,
 			rank_id,
+			inset,
 			activated_at,
 			created_at,
 			updated_at,
@@ -40,13 +43,17 @@ export class CharacterFactory
 
 		const regionVO = new RegionValueObject(region);
 		const realmVO = new RealmValueObject(realm);
+		const displayRealmVO = new RealmValueObject(display_realm);
 		const nameVO = new NameValueObject(name);
+		const displayNameVO = new NameValueObject(display_name);
 
 		const characterDomain = new CharacterDomain(
 			id,
 			regionVO.value,
 			realmVO.value,
+			displayRealmVO.value,
 			nameVO.value,
+			displayNameVO.value,
 			gender_id,
 			faction_id,
 			race_id,
@@ -56,6 +63,7 @@ export class CharacterFactory
 			item_level,
 			guild_id,
 			rank_id,
+			inset,
 			activated_at,
 			created_at,
 			updated_at,
@@ -69,7 +77,7 @@ export class CharacterFactory
 	}
 
 	createDomain(data: CharacterData): CharacterAggregate {
-		const { id, region, realm, name } = data;
+		const { id, region, realm, name, rank_id } = data;
 		const regionVO = new RegionValueObject(region);
 		const realmVO = new RealmValueObject(realm);
 		const nameVO = new NameValueObject(name);
@@ -77,6 +85,7 @@ export class CharacterFactory
 			id,
 			regionVO.value,
 			realmVO.value,
+			null,
 			nameVO.value,
 			null,
 			null,
@@ -86,6 +95,8 @@ export class CharacterFactory
 			null,
 			null,
 			null,
+			null,
+			rank_id,
 			null,
 			null,
 			new Date(),

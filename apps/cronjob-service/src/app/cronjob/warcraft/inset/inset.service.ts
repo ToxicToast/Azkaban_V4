@@ -4,20 +4,19 @@ import {
 	Nullable,
 	WarcraftApiTopics,
 	WarcraftCharacterTopics,
-	WarcraftGuildTopics,
 } from '@azkaban/shared';
-import { ApiGuildModel } from '../models';
+import { ApiInsetModel, CharacterModel } from '../models';
 
 @Injectable()
-export class GuildService {
+export class InsetService {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 	) {}
 
-	async getAllGuilds(): Promise<Array<unknown>> {
+	async getAllCharacters(): Promise<Array<CharacterModel>> {
 		try {
 			return await this.client
-				.send(WarcraftGuildTopics.LIST, {})
+				.send(WarcraftCharacterTopics.LIST, {})
 				.toPromise();
 		} catch (error) {
 			Logger.error(error);
@@ -25,33 +24,14 @@ export class GuildService {
 		}
 	}
 
-	async getGuildFromApi(
+	async getInsetFromApi(
 		region: string,
 		realm: string,
 		name: string,
-	): Promise<Nullable<ApiGuildModel>> {
+	): Promise<Nullable<ApiInsetModel>> {
 		try {
 			return await this.client
-				.send(WarcraftApiTopics.GUILD, { region, realm, name })
-				.toPromise();
-		} catch (error) {
-			Logger.error(error);
-			return null;
-		}
-	}
-
-	async checkCharacterExists(
-		region: string,
-		realm: string,
-		name: string,
-	): Promise<{ id: string }> {
-		try {
-			return await this.client
-				.send(WarcraftCharacterTopics.CHECK, {
-					region,
-					realm,
-					name,
-				})
+				.send(WarcraftApiTopics.INSET, { region, realm, name })
 				.toPromise();
 		} catch (error) {
 			Logger.error(error);
@@ -61,34 +41,39 @@ export class GuildService {
 
 	async updateCharacter(
 		id: string,
-		rank_id: Nullable<number>,
-	): Promise<void> {
+		insetArray: ApiInsetModel,
+	): Promise<Nullable<CharacterModel>> {
+		try {
+			const inset = insetArray.assets.find(
+				(asset) => asset.key === 'inset',
+			);
+
+			return await this.client
+				.send(WarcraftCharacterTopics.UPDATE, {
+					id,
+					inset: inset?.value ?? null,
+				})
+				.toPromise();
+		} catch (error) {
+			Logger.error(error);
+			return null;
+		}
+	}
+
+	async deleteCharacter(id: string): Promise<void> {
 		try {
 			await this.client
-				.emit(WarcraftCharacterTopics.UPDATE, {
-					id,
-					rank_id,
-				})
+				.send(WarcraftCharacterTopics.DELETE, { id })
 				.toPromise();
 		} catch (error) {
 			Logger.error(error);
 		}
 	}
 
-	async createCharacter(
-		region: string,
-		realm: string,
-		name: string,
-		rank_id: Nullable<number>,
-	): Promise<void> {
+	async restoreCharacter(id: string): Promise<void> {
 		try {
 			await this.client
-				.emit(WarcraftCharacterTopics.CREATE, {
-					region,
-					realm,
-					name,
-					rank_id,
-				})
+				.send(WarcraftCharacterTopics.RESTORE, { id })
 				.toPromise();
 		} catch (error) {
 			Logger.error(error);

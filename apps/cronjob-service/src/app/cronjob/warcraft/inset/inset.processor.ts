@@ -1,35 +1,35 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
-import { CharacterService } from './character.service';
+import { InsetService } from './inset.service';
 import { Logger } from '@nestjs/common';
 import { Nullable } from '@azkaban/shared';
 import { Job } from 'bullmq';
-import { ApiCharacterModel } from '../models';
+import { ApiInsetModel } from '../models';
 
-@Processor('blizzard-character')
-export class CharacterProcessor extends WorkerHost {
-	constructor(private readonly service: CharacterService) {
+@Processor('blizzard-inset')
+export class InsetProcessor extends WorkerHost {
+	constructor(private readonly service: InsetService) {
 		super();
 	}
 
-	private async onGetCharacterFromApi(data: {
+	private async onGetInsetFromApi(data: {
 		id: string;
 		region: string;
 		realm: string;
 		name: string;
-	}): Promise<Nullable<ApiCharacterModel>> {
+	}): Promise<Nullable<ApiInsetModel>> {
 		try {
 			const { region, realm, name } = data;
-			return await this.service.getCharacterFromApi(region, realm, name);
+			return await this.service.getInsetFromApi(region, realm, name);
 		} catch (error) {
-			Logger.error(error, 'onGetCharacterFromApi');
+			Logger.error(error, 'onGetInsetFromApi');
 			return null;
 		}
 	}
 
-	private async onCharacterUpdate(
+	private async onInsetUpdate(
 		id: string,
-		data: ApiCharacterModel,
-	): Promise<Nullable<ApiCharacterModel>> {
+		data: ApiInsetModel,
+	): Promise<Nullable<ApiInsetModel>> {
 		try {
 			if (data) {
 				await this.service.updateCharacter(id, data);
@@ -38,7 +38,7 @@ export class CharacterProcessor extends WorkerHost {
 				await this.service.deleteCharacter(id);
 			}
 		} catch (error) {
-			Logger.error(error, 'onCharacterUpdate');
+			Logger.error(error, 'onInsetUpdate');
 			return null;
 		}
 	}
@@ -46,26 +46,25 @@ export class CharacterProcessor extends WorkerHost {
 	async process(
 		job: Job<
 			{ id: string; region: string; realm: string; name: string },
-			Nullable<ApiCharacterModel>,
+			Nullable<ApiInsetModel>,
 			string
 		>,
-	): Promise<Nullable<ApiCharacterModel>> {
-		return await this.onGetCharacterFromApi(job.data);
+	): Promise<Nullable<ApiInsetModel>> {
+		return await this.onGetInsetFromApi(job.data);
 	}
 
 	@OnWorkerEvent('completed')
 	async onCompleted(
-		job: Job<Nullable<{ id: string }>, Nullable<ApiCharacterModel>, string>,
+		job: Job<Nullable<{ id: string }>, Nullable<ApiInsetModel>, string>,
 	): Promise<void> {
 		try {
 			const { id } = job.data;
 			const data = job.returnvalue;
 			if (data) {
-				await this.onCharacterUpdate(id, data);
+				await this.onInsetUpdate(id, data);
 			} else {
 				await this.service.deleteCharacter(id);
 			}
-			Logger.debug(data, 'onCompleted');
 		} catch (error) {
 			Logger.error(error, 'onCompleted');
 			const { id } = job.data;

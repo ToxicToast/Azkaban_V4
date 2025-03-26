@@ -1,22 +1,24 @@
 import { Domain, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
-import { RegionValueObject } from '../valueObjects';
 
 export class CharacterDomain implements Domain<CharacterAnemic> {
 	constructor(
 		private readonly id: string,
-		private region: string,
-		private realm: string,
-		private name: string,
-		private gender_id: Nullable<number>,
-		private faction_id: Nullable<number>,
-		private race_id: Nullable<number>,
-		private class_id: Nullable<number>,
-		private spec_id: Nullable<number>,
+		private readonly region: string,
+		private readonly realm: string,
+		private display_realm: Nullable<string>,
+		private readonly name: string,
+		private display_name: Nullable<string>,
+		private gender_id: Nullable<string>,
+		private faction_id: Nullable<string>,
+		private race_id: Nullable<string>,
+		private class_id: Nullable<string>,
+		private spec_id: Nullable<string>,
 		private level: Nullable<number>,
 		private item_level: Nullable<number>,
-		private guild_id: Nullable<number>,
+		private guild_id: Nullable<string>,
 		private rank_id: Nullable<number>,
+		private inset: Nullable<string>,
 		private activated_at: Nullable<Date>,
 		private readonly created_at: Date,
 		private updated_at: Nullable<Date>,
@@ -28,7 +30,9 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 			id: this.id,
 			region: this.region,
 			realm: this.realm,
+			display_realm: this.display_realm,
 			name: this.name,
+			display_name: this.display_name,
 			gender_id: this.gender_id,
 			faction_id: this.faction_id,
 			race_id: this.race_id,
@@ -38,6 +42,7 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 			item_level: this.item_level,
 			guild_id: this.guild_id,
 			rank_id: this.rank_id,
+			inset: this.inset,
 			activated_at: this.activated_at,
 			created_at: this.created_at,
 			updated_at: this.updated_at,
@@ -45,59 +50,44 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		};
 	}
 
-	changeRegion(region: string): void {
-		const regionVO = new RegionValueObject(this.region);
-		const regionNewVO = new RegionValueObject(region);
-		if (!regionVO.equals(regionNewVO)) {
-			this.updated_at = new Date();
-			this.region = region;
-		}
-	}
-
-	changeRealm(realm: string): void {
-		const realmVO = new RegionValueObject(this.realm);
-		const realmNewVO = new RegionValueObject(realm);
-		if (!realmVO.equals(realmNewVO)) {
-			this.updated_at = new Date();
-			this.realm = realm;
-		}
-	}
-
-	changeName(name: string): void {
-		const nameVO = new RegionValueObject(this.name);
-		const nameNewVO = new RegionValueObject(name);
-		if (!nameVO.equals(nameNewVO)) {
-			this.updated_at = new Date();
-			this.name = name;
-		}
+	// TODO: Add ValueObjects and a Real Check
+	changeDisplayRealm(display_realm: Nullable<string>): void {
+		this.updated_at = new Date();
+		this.display_realm = display_realm;
 	}
 
 	// TODO: Add ValueObjects and a Real Check
-	changeGender(gender_id: Nullable<number>): void {
+	changeDisplayName(display_name: Nullable<string>): void {
+		this.updated_at = new Date();
+		this.display_name = display_name;
+	}
+
+	// TODO: Add ValueObjects and a Real Check
+	changeGender(gender_id: Nullable<string>): void {
 		this.updated_at = new Date();
 		this.gender_id = gender_id;
 	}
 
 	// TODO: Add ValueObjects and a Real Check
-	changeFaction(faction_id: Nullable<number>): void {
+	changeFaction(faction_id: Nullable<string>): void {
 		this.updated_at = new Date();
 		this.faction_id = faction_id;
 	}
 
 	// TODO: Add ValueObjects and a Real Check
-	changeRace(race_id: Nullable<number>): void {
+	changeRace(race_id: Nullable<string>): void {
 		this.updated_at = new Date();
 		this.race_id = race_id;
 	}
 
 	// TODO: Add ValueObjects and a Real Check
-	changeClass(class_id: Nullable<number>): void {
+	changeClass(class_id: Nullable<string>): void {
 		this.updated_at = new Date();
 		this.class_id = class_id;
 	}
 
 	// TODO: Add ValueObjects and a Real Check
-	changeSpec(spec_id: Nullable<number>): void {
+	changeSpec(spec_id: Nullable<string>): void {
 		this.updated_at = new Date();
 		this.spec_id = spec_id;
 	}
@@ -115,7 +105,7 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 	}
 
 	// TODO: Add ValueObjects and a Real Check
-	changeGuild(guild_id: Nullable<number>): void {
+	changeGuild(guild_id: Nullable<string>): void {
 		this.updated_at = new Date();
 		this.guild_id = guild_id;
 	}
@@ -124,6 +114,12 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 	changeRank(rank_id: Nullable<number>): void {
 		this.updated_at = new Date();
 		this.rank_id = rank_id;
+	}
+
+	// TODO: Add ValueObjects and a Real Check
+	changeInset(inset: Nullable<string>): void {
+		this.updated_at = new Date();
+		this.inset = inset;
 	}
 
 	// TODO: Add ValueObjects and a Real Check

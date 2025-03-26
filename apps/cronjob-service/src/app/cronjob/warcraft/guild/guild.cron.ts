@@ -12,18 +12,38 @@ export class GuildCron {
 	) {}
 
 	async runQueue(): Promise<void> {
-		const guilds = await this.service.getAllGuilds();
+		const guilds = [
+			{
+				region: 'eu',
+				realm: 'blackmoore',
+				name: 'ascend',
+			},
+			{
+				region: 'eu',
+				realm: 'blackmoore',
+				name: 'senat',
+			},
+		];
+		for (const guild of guilds) {
+			await this.queue.add('blizzard-guild', {
+				region: guild.region,
+				realm: guild.realm,
+				name: guild.name,
+			});
+		}
+
+		/* const guilds = await this.service.getAllGuilds();
 		for (const guild of guilds) {
 			Logger.debug(guild, GuildCron.name);
-			/*if (!guild.isDeleted) {
+			if (!guild.isDeleted) {
 				await this.queue.add('blizzard-guild', {
 					id: guild.id,
 					region: guild.region,
 					realm: guild.realm,
 					name: guild.name,
 				});
-			}*/
-		}
+			}
+		}*/
 	}
 
 	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {

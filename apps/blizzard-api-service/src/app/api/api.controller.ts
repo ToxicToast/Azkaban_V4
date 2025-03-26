@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { ApiService } from './api.service';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { WarcraftApiTopics } from '@azkaban/shared';
@@ -18,6 +18,7 @@ export class ApiController {
 			await this.service.setApiClient(region);
 			return await this.service.getCharacter(realm, name);
 		} catch (error) {
+			Logger.error(error, 'getCharacter');
 			throw new RpcException(error);
 		}
 	}
@@ -32,6 +33,7 @@ export class ApiController {
 			await this.service.setApiClient(region);
 			return await this.service.getCharacterInsetPath(realm, name);
 		} catch (error) {
+			Logger.error(error, 'getInset');
 			throw new RpcException(error);
 		}
 	}
@@ -46,6 +48,7 @@ export class ApiController {
 			await this.service.setApiClient(region);
 			return await this.service.getGuild(realm, name);
 		} catch (error) {
+			Logger.error(error, 'getGuild');
 			throw new RpcException(error);
 		}
 	}

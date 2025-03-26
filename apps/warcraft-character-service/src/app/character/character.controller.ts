@@ -1,5 +1,6 @@
 import { Controller, HttpStatus, Logger } from '@nestjs/common';
 import {
+	Nullable,
 	Optional,
 	WarcraftCharacterTopics,
 	WarcraftRoutes,
@@ -49,6 +50,7 @@ export class CharacterController {
 		@Payload('region') region: string,
 		@Payload('realm') realm: string,
 		@Payload('name') name: string,
+		@Payload('rank_id') rank_id?: Optional<number>,
 	): Promise<CharacterResponse> {
 		Logger.debug(
 			{ region, realm, name },
@@ -75,6 +77,7 @@ export class CharacterController {
 			region,
 			realm,
 			name,
+			rank_id,
 		);
 		if (response === null) {
 			throw new RpcException({
@@ -92,37 +95,20 @@ export class CharacterController {
 		@Payload('region') region?: Optional<string>,
 		@Payload('realm') realm?: Optional<string>,
 		@Payload('name') name?: Optional<string>,
-		@Payload('gender_id') gender_id?: Optional<number>,
-		@Payload('faction_id') faction_id?: Optional<number>,
-		@Payload('race_id') race_id?: Optional<number>,
-		@Payload('class_id') class_id?: Optional<number>,
-		@Payload('spec_id') spec_id?: Optional<number>,
+		@Payload('gender_id') gender_id?: Optional<string>,
+		@Payload('faction_id') faction_id?: Optional<string>,
+		@Payload('race_id') race_id?: Optional<string>,
+		@Payload('class_id') class_id?: Optional<string>,
+		@Payload('spec_id') spec_id?: Optional<string>,
 		@Payload('level') level?: Optional<number>,
 		@Payload('item_level') item_level?: Optional<number>,
-		@Payload('guild_id') guild_id?: Optional<number>,
+		@Payload('guild_id') guild_id?: Optional<string>,
 		@Payload('rank_id') rank_id?: Optional<number>,
 		@Payload('mythic') mythic?: Optional<number>,
+		@Payload('display_realm') display_realm?: Optional<Nullable<string>>,
+		@Payload('display_name') display_name?: Optional<Nullable<string>>,
+		@Payload('inset') inset?: Optional<Nullable<string>>,
 	): Promise<CharacterResponse> {
-		Logger.debug(
-			{
-				id,
-				region,
-				realm,
-				name,
-				gender_id,
-				faction_id,
-				race_id,
-				class_id,
-				spec_id,
-				level,
-				item_level,
-				guild_id,
-				rank_id,
-				mythic,
-			},
-			CharacterController.name,
-			'updateCharacter',
-		);
 		if (!id) {
 			throw new RpcException({
 				message: 'Id is required',
@@ -144,6 +130,9 @@ export class CharacterController {
 			guild_id,
 			rank_id,
 			mythic,
+			display_realm,
+			display_name,
+			inset,
 		);
 		if (response === null) {
 			throw new RpcException({
@@ -153,5 +142,23 @@ export class CharacterController {
 		}
 		await this.cache.removeCacheOnCreate();
 		return response;
+	}
+
+	@MessagePattern(WarcraftCharacterTopics.CHECK)
+	async checkCharacterExists(
+		@Payload('region') region: string,
+		@Payload('realm') realm: string,
+		@Payload('name') name: string,
+	): Promise<Nullable<CharacterResponse>> {
+		const response = await this.getCharacterList();
+		if (response.length === 0) {
+			return null;
+		}
+		return response.find(
+			(item) =>
+				item.region === region &&
+				item.realm === realm &&
+				item.name === name,
+		);
 	}
 }

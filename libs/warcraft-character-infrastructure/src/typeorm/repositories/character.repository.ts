@@ -50,7 +50,7 @@ export class CharacterRepository implements DomainRepository {
 		return entities.map((entity) => this.mapper.toDomain(entity));
 	}
 
-	async findByRace(race_id: number): Promise<Array<CharacterAnemic>> {
+	async findByRace(race_id: string): Promise<Array<CharacterAnemic>> {
 		const entities = await this.repository.find({
 			withDeleted: true,
 			where: { race_id },
@@ -58,7 +58,7 @@ export class CharacterRepository implements DomainRepository {
 		return entities.map((entity) => this.mapper.toDomain(entity));
 	}
 
-	async findByClass(class_id: number): Promise<Array<CharacterAnemic>> {
+	async findByClass(class_id: string): Promise<Array<CharacterAnemic>> {
 		const entities = await this.repository.find({
 			withDeleted: true,
 			where: { class_id },
@@ -66,7 +66,7 @@ export class CharacterRepository implements DomainRepository {
 		return entities.map((entity) => this.mapper.toDomain(entity));
 	}
 
-	async findByFaction(faction_id: number): Promise<Array<CharacterAnemic>> {
+	async findByFaction(faction_id: string): Promise<Array<CharacterAnemic>> {
 		const entities = await this.repository.find({
 			withDeleted: true,
 			where: { faction_id },
@@ -74,7 +74,7 @@ export class CharacterRepository implements DomainRepository {
 		return entities.map((entity) => this.mapper.toDomain(entity));
 	}
 
-	async findByGuild(guild_id: number): Promise<Array<CharacterAnemic>> {
+	async findByGuild(guild_id: string): Promise<Array<CharacterAnemic>> {
 		const entities = await this.repository.find({
 			withDeleted: true,
 			where: { guild_id },

@@ -18,6 +18,7 @@ import { AppConfig } from '../../config';
 				brokerPort: AppConfig.broker.brokerPort,
 				brokerUsername: AppConfig.broker.brokerUsername,
 				brokerPassword: AppConfig.broker.brokerPassword,
+				withSasl: AppConfig.environment !== 'local',
 			},
 			[
 				...WarcraftCharacterTopicArray,

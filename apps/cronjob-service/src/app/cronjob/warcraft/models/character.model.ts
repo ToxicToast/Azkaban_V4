@@ -18,4 +18,5 @@ export interface CharacterModel {
 	isActive: boolean;
 	isDeleted: boolean;
 	isAscend: boolean;
+	isWithoutGuild: boolean;
 }

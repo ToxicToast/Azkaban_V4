@@ -3,6 +3,7 @@ import { GuildService } from './guild.service';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { Nullable } from '@azkaban/shared';
+import { ApiGuildModel } from '../models';
 
 @Processor('blizzard-guild')
 export class GuildProcessor extends WorkerHost {
@@ -15,7 +16,7 @@ export class GuildProcessor extends WorkerHost {
 		region: string;
 		realm: string;
 		name: string;
-	}): Promise<unknown> {
+	}): Promise<Nullable<ApiGuildModel>> {
 		try {
 			const { region, realm, name } = data;
 			return await this.service.getGuildFromApi(region, realm, name);
@@ -28,24 +29,48 @@ export class GuildProcessor extends WorkerHost {
 	async process(
 		job: Job<
 			{ id: string; region: string; realm: string; name: string },
-			unknown,
+			Nullable<ApiGuildModel>,
 			string
 		>,
-	): Promise<Nullable<unknown>> {
+	): Promise<Nullable<ApiGuildModel>> {
 		return await this.onGetGuildFromApi(job.data);
 	}
 
 	@OnWorkerEvent('completed')
 	async onCompleted(
-		job: Job<Nullable<unknown>, Nullable<unknown>, string>,
+		job: Job<
+			Nullable<{ id: string; region: string }>,
+			Nullable<ApiGuildModel>,
+			string
+		>,
 	): Promise<void> {
 		try {
+			const { id, region } = job.data;
 			const data = job.returnvalue;
-			Logger.debug(data);
+			data?.members?.forEach((member) => {
+				const realm = member.character.realm.slug;
+				const name = member.character.name.toLowerCase();
+				const rank = member.rank;
+				this.service
+					.checkCharacterExists(region, realm, name)
+					.then((character: Nullable<{ id: string }>) => {
+						if (character !== null) {
+							this.service.updateCharacter(character.id, rank);
+						} else {
+							this.service.createCharacter(
+								region,
+								realm,
+								name,
+								rank,
+							);
+						}
+					});
+			});
 		} catch (error) {
-			Logger.error(error);
-			Logger.debug(job.data);
-			// const { id } = job.data;
+			Logger.error(error, 'onCompleted');
+			const { id } = job.data;
+			Logger.error(id, 'Deleting guild');
+			// await this.service.deleteGuild(id);
 		}
 	}
 }

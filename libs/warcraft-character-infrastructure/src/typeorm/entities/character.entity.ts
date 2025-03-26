@@ -3,6 +3,7 @@ import {
 	CreateDateColumn,
 	DeleteDateColumn,
 	Entity,
+	Index,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
@@ -10,6 +11,7 @@ import {
 @Entity({
 	name: 'characters',
 })
+@Index(['region', 'realm', 'name'], { unique: true })
 export class CharacterEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
@@ -20,23 +22,29 @@ export class CharacterEntity {
 	@Column({ unique: false, nullable: false, type: 'varchar' })
 	realm: string;
 
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	display_realm: string;
+
 	@Column({ unique: false, nullable: false, type: 'varchar' })
 	name: string;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: null })
-	gender_id: number;
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	display_name: string;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: null })
-	faction_id: number;
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	gender_id: string;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: null })
-	race_id: number;
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	faction_id: string;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: null })
-	class_id: number;
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	race_id: string;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: null })
-	spec_id: number;
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	class_id: string;
+
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	spec_id: string;
 
 	@Column({ unique: false, nullable: true, type: 'int', default: 0 })
 	level: number;
@@ -44,11 +52,14 @@ export class CharacterEntity {
 	@Column({ unique: false, nullable: true, type: 'int', default: 0 })
 	item_level: number;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: null })
-	guild_id: number;
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	guild_id: string;
 
 	@Column({ unique: false, nullable: true, type: 'int', default: null })
 	rank_id: number;
+
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	inset: string;
 
 	@Column({ unique: false, nullable: true, default: null, type: 'timestamp' })
 	activated_at: Date | null;
