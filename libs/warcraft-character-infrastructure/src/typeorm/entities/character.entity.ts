@@ -46,10 +46,10 @@ export class CharacterEntity {
 	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
 	spec_id: string;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: 0 })
+	@Column({ unique: false, nullable: false, type: 'int', default: 0 })
 	level: number;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: 0 })
+	@Column({ unique: false, nullable: false, type: 'int', default: 0 })
 	item_level: number;
 
 	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
@@ -61,7 +61,7 @@ export class CharacterEntity {
 	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
 	inset: string;
 
-	@Column({ unique: false, nullable: true, type: 'int', default: null })
+	@Column({ unique: false, nullable: false, type: 'int', default: 0 })
 	mythic: number;
 
 	@Column({ unique: false, nullable: true, default: null, type: 'timestamp' })
