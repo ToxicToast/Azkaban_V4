@@ -61,6 +61,9 @@ export class CharacterEntity {
 	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
 	inset: string;
 
+	@Column({ unique: false, nullable: true, type: 'int', default: null })
+	mythic: number;
+
 	@Column({ unique: false, nullable: true, default: null, type: 'timestamp' })
 	loggedin_at: Date | null;
 

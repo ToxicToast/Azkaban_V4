@@ -24,6 +24,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			guild_id,
 			rank_id,
 			inset,
+			mythic,
 			loggedin_at,
 			activated_at,
 			created_at,
@@ -47,6 +48,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 		entity.guild_id = guild_id;
 		entity.rank_id = rank_id;
 		entity.inset = inset;
+		entity.mythic = mythic;
 		entity.loggedin_at = loggedin_at;
 		entity.activated_at = activated_at;
 		entity.created_at = created_at;
@@ -73,6 +75,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			guild_id,
 			rank_id,
 			inset,
+			mythic,
 			loggedin_at,
 			activated_at,
 			created_at,
@@ -96,6 +99,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			guild_id,
 			rank_id,
 			inset,
+			mythic,
 			loggedin_at,
 			activated_at,
 			created_at,

@@ -19,6 +19,7 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		private guild_id: Nullable<string>,
 		private rank_id: Nullable<number>,
 		private inset: Nullable<string>,
+		private mythic: number,
 		private loggedin_at: Nullable<Date>,
 		private activated_at: Nullable<Date>,
 		private readonly created_at: Date,
@@ -44,6 +45,7 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 			guild_id: this.guild_id,
 			rank_id: this.rank_id,
 			inset: this.inset,
+			mythic: this.mythic,
 			loggedin_at: this.loggedin_at,
 			activated_at: this.activated_at,
 			created_at: this.created_at,
@@ -124,9 +126,16 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		this.inset = inset;
 	}
 
+	// TODO: Add ValueObjects and a Real Check
 	changeLoggedIn(loggedin_at: Nullable<Date>): void {
 		this.updated_at = new Date();
 		this.loggedin_at = loggedin_at;
+	}
+
+	// TODO: Add ValueObjects and a Real Check
+	changeMythic(mythic: number): void {
+		this.updated_at = new Date();
+		this.mythic = mythic;
 	}
 
 	// TODO: Add ValueObjects and a Real Check

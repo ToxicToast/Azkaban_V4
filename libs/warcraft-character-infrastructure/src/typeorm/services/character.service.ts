@@ -88,6 +88,7 @@ export class CharacterService {
 			data.display_name,
 			data.inset,
 			data.loggedin_at,
+			data.mythic,
 		);
 		if (result.isSuccess) {
 			return result.value;

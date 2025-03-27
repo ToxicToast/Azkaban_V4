@@ -57,6 +57,10 @@ export class CharacterAggregate {
 		this.character.changeLoggedIn(loggedin_at);
 	}
 
+	changeMythic(mythic: number): void {
+		this.character.changeMythic(mythic);
+	}
+
 	activateCharacter(): void {
 		this.character.activateCharacter();
 	}

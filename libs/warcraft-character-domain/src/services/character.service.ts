@@ -84,6 +84,7 @@ export class CharacterService {
 		display_name?: Optional<Nullable<string>>,
 		inset?: Optional<Nullable<string>>,
 		loggedin_at?: Optional<Nullable<Date>>,
+		mythic?: Optional<number>,
 	): Promise<Result<CharacterAnemic>> {
 		try {
 			const result = await this.getCharacterById(id);
@@ -127,6 +128,9 @@ export class CharacterService {
 				}
 				if (loggedin_at !== undefined) {
 					aggregate.changeLoggedIn(loggedin_at);
+				}
+				if (mythic !== undefined) {
+					aggregate.changeMythic(mythic);
 				}
 				return await this.save(aggregate.toAnemic());
 			}
