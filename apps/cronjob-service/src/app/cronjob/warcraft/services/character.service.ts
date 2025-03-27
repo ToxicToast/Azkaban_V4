@@ -89,9 +89,9 @@ export class DatabaseCharactersService {
 		data: ApiMythicModel,
 	): Promise<Nullable<CharacterDAO>> {
 		try {
-			const rating = Number(data?.current_mythic_rating?.rating ?? 0);
+			const rating = Number(data?.current_mythic_rating?.rating ?? 0.0);
 			return await this.infrastructureService.updateCharacter(id, {
-				mythic: rating,
+				mythic: Math.ceil(rating),
 			});
 		} catch (error) {
 			Logger.error(error, 'updateCharacterMythicRating');
