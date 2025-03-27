@@ -59,7 +59,7 @@ export class ApiService {
 		if (data.status !== 200) {
 			throw new RpcException({
 				status: HttpStatus.NOT_FOUND,
-				message: 'Character not found',
+				message: 'Inset not found',
 				raw: { realm, name },
 			});
 		}
@@ -93,7 +93,7 @@ export class ApiService {
 		if (data.status !== 200) {
 			throw new RpcException({
 				status: HttpStatus.NOT_FOUND,
-				message: 'Character not found',
+				message: 'Rating not found',
 				raw: { realm, name },
 			});
 		}
