@@ -5,17 +5,17 @@ import { Queue } from 'bullmq';
 import { DatabaseCharactersService } from '../services/character.service';
 
 @Injectable()
-export class InsetCron {
+export class MythicCron {
 	constructor(
 		private readonly service: DatabaseCharactersService,
-		@InjectQueue('blizzard-inset') private readonly queue: Queue,
+		@InjectQueue('blizzard-mythic') private readonly queue: Queue,
 	) {}
 
 	async runQueue(): Promise<void> {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
 			if (character.deleted_at === null) {
-				await this.queue.add('blizzard-inset', {
+				await this.queue.add('blizzard-mythic', {
 					id: character.id,
 					region: character.region,
 					realm: character.realm,
@@ -26,9 +26,9 @@ export class InsetCron {
 	}
 
 	@Cron(CronExpression.EVERY_HOUR, {
-		name: 'Update WoW Insets',
+		name: 'Update WoW Characters Rating',
 	})
-	async updateInsets(): Promise<void> {
+	async updateCharacters(): Promise<void> {
 		await this.runQueue();
 	}
 }

@@ -6,7 +6,7 @@ import {
 	CharacterService as BaseService,
 } from '@azkaban/warcraft-character-infrastructure';
 import { Repository } from 'typeorm';
-import { ApiCharacterModel } from '../models';
+import { ApiCharacterModel, ApiInsetModel, ApiMythicModel } from '../models';
 import { Nullable } from '@azkaban/shared';
 
 @Injectable()
@@ -64,6 +64,37 @@ export class DatabaseCharactersService {
 			});
 		} catch (error) {
 			Logger.error(error, 'updateCharacter');
+			return null;
+		}
+	}
+
+	async updateCharacterInset(
+		id: string,
+		data: ApiInsetModel,
+	): Promise<Nullable<CharacterDAO>> {
+		try {
+			const inset = data.assets.find((asset) => asset.key === 'inset');
+			const insetValue = inset?.value ?? null;
+			return await this.infrastructureService.updateCharacter(id, {
+				inset: insetValue,
+			});
+		} catch (error) {
+			Logger.error(error, 'updateCharacterInset');
+			return null;
+		}
+	}
+
+	async updateCharacterMythicRating(
+		id: string,
+		data: ApiMythicModel,
+	): Promise<Nullable<CharacterDAO>> {
+		try {
+			const rating = Number(data?.current_mythic_rating?.rating ?? 0);
+			return await this.infrastructureService.updateCharacter(id, {
+				mythic: rating,
+			});
+		} catch (error) {
+			Logger.error(error, 'updateCharacterMythicRating');
 			return null;
 		}
 	}

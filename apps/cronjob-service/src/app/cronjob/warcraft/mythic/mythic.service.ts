@@ -1,25 +1,25 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { Nullable, WarcraftApiTopics } from '@azkaban/shared';
-import { ApiInsetModel } from '../models';
+import { ApiMythicModel } from '../models';
 
 @Injectable()
-export class InsetService {
+export class MythicService {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 	) {}
 
-	async getInsetFromApi(
+	async getMythicFromApi(
 		region: string,
 		realm: string,
 		name: string,
-	): Promise<Nullable<ApiInsetModel>> {
+	): Promise<Nullable<ApiMythicModel>> {
 		try {
 			return await this.client
-				.send(WarcraftApiTopics.INSET, { region, realm, name })
+				.send(WarcraftApiTopics.MYTHIC, { region, realm, name })
 				.toPromise();
 		} catch (error) {
-			Logger.error(error, 'getInsetFromApi');
+			Logger.error(error, 'getMythicFromApi');
 			return null;
 		}
 	}

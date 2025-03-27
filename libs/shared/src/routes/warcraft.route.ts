@@ -3,6 +3,7 @@ export enum WarcraftRoutes {
 	CHARACTER = 'warcraft/character',
 	GUILD = 'warcraft/guild',
 	INSET = 'warcraft/inset',
+	MYTHIC = 'warcraft/mythic',
 	INDEX = '/',
 	CHARACTERBYID = ':id',
 }

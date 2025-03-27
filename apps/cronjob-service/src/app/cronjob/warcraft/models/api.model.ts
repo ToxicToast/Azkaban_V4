@@ -46,3 +46,9 @@ interface ApiGuildMember {
 export interface ApiGuildModel {
 	members: Array<ApiGuildMember>;
 }
+
+export interface ApiMythicModel {
+	current_mythic_rating: {
+		rating: string;
+	};
+}

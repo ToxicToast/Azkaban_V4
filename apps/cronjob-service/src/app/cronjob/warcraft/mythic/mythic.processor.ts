@@ -1,45 +1,48 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
-import { InsetService } from './inset.service';
+import { MythicService } from './mythic.service';
 import { Logger } from '@nestjs/common';
 import { Nullable } from '@azkaban/shared';
 import { Job } from 'bullmq';
-import { ApiInsetModel } from '../models';
+import { ApiMythicModel } from '../models';
 import { DatabaseCharactersService } from '../services/character.service';
 
-@Processor('blizzard-inset')
-export class InsetProcessor extends WorkerHost {
+@Processor('blizzard-mythic')
+export class MythicProcessor extends WorkerHost {
 	constructor(
-		private readonly service: InsetService,
+		private readonly service: MythicService,
 		private readonly databaseService: DatabaseCharactersService,
 	) {
 		super();
 	}
 
-	private async onGetInsetFromApi(data: {
+	private async onGetMythicFromApi(data: {
 		id: string;
 		region: string;
 		realm: string;
 		name: string;
-	}): Promise<Nullable<ApiInsetModel>> {
+	}): Promise<Nullable<ApiMythicModel>> {
 		try {
 			const { region, realm, name } = data;
-			return await this.service.getInsetFromApi(region, realm, name);
+			return await this.service.getMythicFromApi(region, realm, name);
 		} catch (error) {
-			Logger.error(error, 'onGetInsetFromApi');
+			Logger.error(error, 'onGetMythicFromApi');
 			return null;
 		}
 	}
 
-	private async onInsetUpdate(
+	private async onCharacterUpdate(
 		id: string,
-		data: ApiInsetModel,
-	): Promise<Nullable<ApiInsetModel>> {
+		data: ApiMythicModel,
+	): Promise<void> {
 		try {
 			if (data) {
-				await this.databaseService.updateCharacterInset(id, data);
+				await this.databaseService.updateCharacterMythicRating(
+					id,
+					data,
+				);
 			}
 		} catch (error) {
-			Logger.error(error, 'onInsetUpdate');
+			Logger.error(error, 'onCharacterUpdate');
 			return null;
 		}
 	}
@@ -47,22 +50,22 @@ export class InsetProcessor extends WorkerHost {
 	async process(
 		job: Job<
 			{ id: string; region: string; realm: string; name: string },
-			Nullable<ApiInsetModel>,
+			Nullable<ApiMythicModel>,
 			string
 		>,
-	): Promise<Nullable<ApiInsetModel>> {
-		return await this.onGetInsetFromApi(job.data);
+	): Promise<Nullable<ApiMythicModel>> {
+		return await this.onGetMythicFromApi(job.data);
 	}
 
 	@OnWorkerEvent('completed')
 	async onCompleted(
-		job: Job<Nullable<{ id: string }>, Nullable<ApiInsetModel>, string>,
+		job: Job<Nullable<{ id: string }>, Nullable<ApiMythicModel>, string>,
 	): Promise<void> {
 		try {
 			const { id } = job.data;
 			const data = job.returnvalue;
 			if (data) {
-				await this.onInsetUpdate(id, data);
+				await this.onCharacterUpdate(id, data);
 			}
 		} catch (error) {
 			Logger.error(error, 'onCompleted');

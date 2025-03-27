@@ -52,4 +52,19 @@ export class ApiController {
 			throw new RpcException(error);
 		}
 	}
+
+	@MessagePattern(WarcraftApiTopics.MYTHIC)
+	async getMythicRating(
+		@Payload('region') region: Origins,
+		@Payload('realm') realm: string,
+		@Payload('name') name: string,
+	) {
+		try {
+			await this.service.setApiClient(region);
+			return await this.service.getMythicRating(realm, name);
+		} catch (error) {
+			Logger.error(error, 'getMythicRating');
+			throw new RpcException(error);
+		}
+	}
 }

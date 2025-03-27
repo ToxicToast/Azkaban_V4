@@ -59,7 +59,7 @@ export class ApiService {
 		if (data.status !== 200) {
 			throw new RpcException({
 				status: HttpStatus.NOT_FOUND,
-				message: 'Inset not found',
+				message: 'Character not found',
 				raw: { realm, name },
 			});
 		}
@@ -76,6 +76,24 @@ export class ApiService {
 			throw new RpcException({
 				status: HttpStatus.NOT_FOUND,
 				message: 'Guild not found',
+				raw: { realm, name },
+			});
+		}
+		return data?.data ?? null;
+	}
+
+	async getMythicRating(
+		realm: string,
+		name: string,
+	): Promise<Nullable<unknown>> {
+		const data = await this.blizzardInstance.characterMythicKeystone({
+			realm,
+			name,
+		});
+		if (data.status !== 200) {
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'Character not found',
 				raw: { realm, name },
 			});
 		}
