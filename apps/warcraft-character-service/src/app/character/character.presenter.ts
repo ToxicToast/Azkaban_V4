@@ -24,12 +24,13 @@ export class CharacterPresenter {
 				guild_id: this.character.guild_id,
 				rank_id: this.character.rank_id,
 				inset: this.character.inset,
-				lastUpdate: this.character.updated_at,
-				lastLogin: this.character.loggedin_at,
-				isActive: !!this.character.activated_at,
-				isDeleted: !!this.character.deleted_at,
-				isAscend: this.character.guild_id === 'Ascend',
-				isWithoutGuild: this.character.guild_id === null,
+				mythic_rating: this.character.mythic,
+				last_update: this.character.updated_at,
+				last_login: this.character.loggedin_at,
+				is_active: !!this.character.activated_at,
+				is_deleted: !!this.character.deleted_at,
+				is_ascend: this.character.guild_id === 'Ascend',
+				has_guild: this.character.guild_id !== null,
 			};
 		}
 		return null;
