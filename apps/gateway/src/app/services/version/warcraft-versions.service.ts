@@ -4,6 +4,7 @@ import {
 	WarcraftApiTopics,
 	WarcraftAuditTopics,
 	WarcraftCharacterTopics,
+	WarcraftGuildTopics,
 	WarcraftRaiderTopics,
 } from '@azkaban/shared';
 import { QueryBus } from '@nestjs/cqrs';
@@ -31,6 +32,15 @@ export class WarcraftVersionsService {
 		);
 	}
 
+	private async getGuildVersion(): Promise<string> {
+		return await this.queryBus.execute(
+			new VersionQuery(
+				WarcraftGuildTopics.VERSION,
+				VersionCache.WARCRAFTGUILD,
+			),
+		);
+	}
+
 	private async getRaiderVersion(): Promise<string> {
 		return await this.queryBus.execute(
 			new VersionQuery(
@@ -54,12 +64,14 @@ export class WarcraftVersionsService {
 		const api = await this.getApiVersion();
 		const raider = await this.getRaiderVersion();
 		const audit = await this.getAuditVersion();
+		const guild = await this.getGuildVersion();
 		//
 		return {
 			character,
 			api,
 			raider,
 			audit,
+			guild,
 		};
 	}
 }

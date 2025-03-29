@@ -15,12 +15,13 @@ import { AppConfig } from '../../config';
 		BaseModule.forRoot(
 			true,
 			{
-				clientId: 'twitch-bot',
-				groupId: 'twitch-bot-consumer',
+				clientId: AppConfig.name,
+				groupId: AppConfig.name + '-consumer',
 				brokerHost: AppConfig.broker.brokerHost,
 				brokerPort: AppConfig.broker.brokerPort,
 				brokerUsername: AppConfig.broker.brokerUsername,
 				brokerPassword: AppConfig.broker.brokerPassword,
+				withSasl: AppConfig.environment !== 'local',
 			},
 			[
 				...AzkabanSSETopicArray,
@@ -30,7 +31,6 @@ import { AppConfig } from '../../config';
 				...TwitchStreamTopicArray,
 				...TwitchViewerTopicArray,
 			],
-			AppConfig.environment,
 		),
 	],
 })

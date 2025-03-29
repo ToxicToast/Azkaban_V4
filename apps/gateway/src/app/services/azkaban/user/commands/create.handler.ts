@@ -1,12 +1,11 @@
 import { ICommandHandler, CommandHandler } from '@nestjs/cqrs';
 import { CreateCommand } from './create.command';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	AzkabanUserTopics,
 	CircuitService,
 	createCircuitBreaker,
-	PasswordHash,
 } from '@azkaban/shared';
 
 @CommandHandler(CreateCommand)
@@ -27,6 +26,7 @@ export class CreateCommandHandler implements ICommandHandler<CreateCommand> {
 	}
 
 	async execute(command: CreateCommand) {
+		Logger.debug({ command }, CreateCommandHandler.name);
 		return await this.createCircuitBreaker(command);
 	}
 }

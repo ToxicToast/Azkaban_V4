@@ -34,6 +34,7 @@ export enum VersionCache {
 	//
 	WARCRAFTCHARACTER = 'warcraft:character',
 	WARCRAFTAPI = 'warcraft:api',
+	WARCRAFTGUILD = 'warcraft:guild',
 	WARCRAFTRAIDER = 'warcraft:raider',
 	WARCRAFTAUDIT = 'warcraft:audit',
 	//

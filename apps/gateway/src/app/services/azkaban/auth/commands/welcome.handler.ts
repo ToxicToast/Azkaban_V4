@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	AzkabanEmailTopics,
@@ -26,6 +26,7 @@ export class WelcomeCommandHandler implements ICommandHandler<WelcomeCommand> {
 	}
 
 	async execute(command: WelcomeCommand) {
+		Logger.debug({ command }, WelcomeCommandHandler.name);
 		return await this.createCircuitBreaker(command);
 	}
 }

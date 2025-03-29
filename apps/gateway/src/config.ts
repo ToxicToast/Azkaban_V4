@@ -25,7 +25,7 @@ type EnvironmentConfig = {
 };
 
 export const AppConfig: EnvironmentConfig = {
-	name: 'gateway',
+	name: 'dementor',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {

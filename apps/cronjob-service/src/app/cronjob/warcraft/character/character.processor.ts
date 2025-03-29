@@ -3,10 +3,15 @@ import { CharacterService } from './character.service';
 import { Logger } from '@nestjs/common';
 import { Nullable } from '@azkaban/shared';
 import { Job } from 'bullmq';
+import { ApiCharacterModel } from '../models';
+import { DatabaseCharactersService } from '../services/character.service';
 
 @Processor('blizzard-character')
 export class CharacterProcessor extends WorkerHost {
-	constructor(private readonly service: CharacterService) {
+	constructor(
+		private readonly service: CharacterService,
+		private readonly databaseService: DatabaseCharactersService,
+	) {
 		super();
 	}
 
@@ -15,22 +20,29 @@ export class CharacterProcessor extends WorkerHost {
 		region: string;
 		realm: string;
 		name: string;
-	}): Promise<unknown> {
+	}): Promise<Nullable<ApiCharacterModel>> {
 		try {
 			const { region, realm, name } = data;
-			const character = await this.service.getCharacterFromApi(
-				region,
-				realm,
-				name,
-			);
-			const inset = await this.service.getInsetFromApi(
-				region,
-				realm,
-				name,
-			);
-			return { character, inset };
+			return await this.service.getCharacterFromApi(region, realm, name);
 		} catch (error) {
-			Logger.error(error);
+			Logger.error(error, 'onGetCharacterFromApi');
+			return null;
+		}
+	}
+
+	private async onCharacterUpdate(
+		id: string,
+		data: ApiCharacterModel,
+	): Promise<Nullable<ApiCharacterModel>> {
+		try {
+			if (data) {
+				await this.databaseService.updateCharacter(id, data);
+				await this.databaseService.activateCharacter(id);
+			} else {
+				await this.databaseService.deleteCharacter(id);
+			}
+		} catch (error) {
+			Logger.error(error, 'onCharacterUpdate');
 			return null;
 		}
 	}
@@ -38,24 +50,25 @@ export class CharacterProcessor extends WorkerHost {
 	async process(
 		job: Job<
 			{ id: string; region: string; realm: string; name: string },
-			Nullable<unknown>,
+			Nullable<ApiCharacterModel>,
 			string
 		>,
-	): Promise<Nullable<unknown>> {
+	): Promise<Nullable<ApiCharacterModel>> {
 		return await this.onGetCharacterFromApi(job.data);
 	}
 
 	@OnWorkerEvent('completed')
 	async onCompleted(
-		job: Job<Nullable<unknown>, Nullable<unknown>, string>,
+		job: Job<Nullable<{ id: string }>, Nullable<ApiCharacterModel>, string>,
 	): Promise<void> {
 		try {
+			const { id } = job.data;
 			const data = job.returnvalue;
-			Logger.debug(data);
+			await this.onCharacterUpdate(id, data);
 		} catch (error) {
-			Logger.error(error);
-			Logger.debug(job.data);
-			// const { id } = job.data;
+			Logger.error(error, 'onCompleted');
+			const { id } = job.data;
+			await this.databaseService.deleteCharacter(id);
 		}
 	}
 }

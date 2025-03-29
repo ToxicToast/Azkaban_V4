@@ -1,0 +1,50 @@
+{
+	"name": "warcraft-character-service",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/warcraft-character-service/src",
+	"projectType": "application",
+	"tags": ["scope:application"],
+	"targets": {
+		"build": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "webpack-cli build",
+				"args": ["node-env=production"]
+			},
+			"configurations": {
+				"development": {
+					"args": ["node-env=development"]
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"dependsOn": ["build"],
+			"options": {
+				"buildTarget": "warcraft-character-service:build",
+				"runBuildTargetDependencies": false
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "warcraft-character-service:build:development"
+				},
+				"production": {
+					"buildTarget": "warcraft-character-service:build:production"
+				}
+			}
+		},
+		"test": {
+			"options": {
+				"passWithNoTests": true
+			}
+		},
+		"docker-build": {
+			"dependsOn": ["build"],
+			"command": "docker build -f apps/warcraft-character-service/Dockerfile . -t toxictoast/warcraft-character:{args.VERSION}"
+		},
+		"docker-push": {
+			"command": "docker push toxictoast/warcraft-character:{args.VERSION}"
+		}
+	}
+}

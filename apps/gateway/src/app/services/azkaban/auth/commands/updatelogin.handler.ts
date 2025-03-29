@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	AzkabanUserTopics,
@@ -28,6 +28,7 @@ export class UpdateLoginCommandHandler
 	}
 
 	async execute(command: UpdateLoginCommand) {
+		Logger.debug({ command }, UpdateLoginCommandHandler.name);
 		return await this.createCircuitBreaker(command);
 	}
 }

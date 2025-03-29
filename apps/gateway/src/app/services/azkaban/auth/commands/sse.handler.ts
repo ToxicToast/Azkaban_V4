@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SSECommand } from './sse.command';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { CircuitService, createCircuitBreaker } from '@azkaban/shared';
 
@@ -21,6 +21,7 @@ export class SSECommandHandler implements ICommandHandler<SSECommand> {
 	}
 
 	async execute(command: SSECommand) {
+		Logger.debug({ command }, SSECommandHandler.name);
 		return await this.createCircuitBreaker(command);
 	}
 }

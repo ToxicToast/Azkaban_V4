@@ -7,8 +7,7 @@ import helmet from 'helmet';
 import { TelemetryHelper } from '@azkaban/shared';
 import { AppConfig } from './config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './app/filters/httpException.filter';
-import { RpcExceptionFilter } from './app/filters';
+import { HttpExceptionFilter, RpcExceptionFilter } from './app/filters';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
@@ -59,6 +58,9 @@ function configureCors(app: INestApplication): void {
 			'http://localhost:4200',
 			'https://version.toxictoast.de',
 			'https://www.toxictoast.de',
+			'https://toxictoast.de',
+			'https://www.ascend-guild.de',
+			'https://ascend-guild.de',
 		],
 		maxAge: 3600,
 		optionsSuccessStatus: 200,

@@ -96,7 +96,7 @@ export class UserService {
 				}
 				return await this.save(aggregate.toAnemic());
 			}
-			return Result.fail<UserAnemic>(result.errorValue, 500);
+			return Result.fail<UserAnemic>(result.errorValue, 404);
 		} catch (error) {
 			return Result.fail<UserAnemic>(error, 500);
 		}

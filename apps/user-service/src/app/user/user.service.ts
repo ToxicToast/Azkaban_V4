@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UserPresenter } from './user.presenter';
-import { UserModel } from './user.model';
+import { UserResponse, UsersResponse } from './user.model';
 import {
 	UserDAO,
 	UserEntity,
@@ -30,7 +30,7 @@ export class UserService {
 		);
 	}
 
-	async userList(): Promise<Array<UserModel>> {
+	async userList(): Promise<UsersResponse> {
 		const users = await this.infrastructureService.getUserList();
 		return users.map((user: UserDAO) => {
 			const presenter = new UserPresenter(user);
@@ -38,7 +38,7 @@ export class UserService {
 		});
 	}
 
-	async userById(id: string): Promise<UserModel> {
+	async userById(id: string): Promise<UserResponse> {
 		const user = await this.infrastructureService.getUserById(id);
 		if (user !== null) {
 			const presenter = new UserPresenter(user);
@@ -51,7 +51,7 @@ export class UserService {
 		username: string,
 		email: string,
 		password: string,
-	): Promise<UserModel> {
+	): Promise<UserResponse> {
 		const salt = await PasswordSalt();
 		const hashedPassword = await PasswordHash(password, salt);
 		const user = await this.infrastructureService.createUser({
@@ -72,7 +72,7 @@ export class UserService {
 		username?: Optional<string>,
 		email?: Optional<string>,
 		password?: Optional<string>,
-	): Promise<UserModel> {
+	): Promise<UserResponse> {
 		const changeData = {};
 		if (username !== undefined) {
 			changeData['username'] = username;
@@ -100,7 +100,7 @@ export class UserService {
 	async userLogin(
 		id: string,
 		loggedInAt: Nullable<Date>,
-	): Promise<UserModel> {
+	): Promise<UserResponse> {
 		const user = await this.infrastructureService.loginUser(id, loggedInAt);
 		if (user !== null) {
 			const presenter = new UserPresenter(user);
