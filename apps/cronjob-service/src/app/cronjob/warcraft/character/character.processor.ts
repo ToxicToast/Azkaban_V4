@@ -64,12 +64,7 @@ export class CharacterProcessor extends WorkerHost {
 		try {
 			const { id } = job.data;
 			const data = job.returnvalue;
-			if (data) {
-				await this.onCharacterUpdate(id, data);
-				await this.databaseService.activateCharacter(id);
-			} else {
-				await this.databaseService.deleteCharacter(id);
-			}
+			await this.onCharacterUpdate(id, data);
 		} catch (error) {
 			Logger.error(error, 'onCompleted');
 			const { id } = job.data;
