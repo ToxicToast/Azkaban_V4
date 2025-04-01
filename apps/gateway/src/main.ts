@@ -4,7 +4,7 @@ import { AppModule } from './app/app.module';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
-import { TelemetryHelper } from '@azkaban/shared';
+import { LoggerService, TelemetryHelper } from '@azkaban/shared';
 import { AppConfig } from './config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter, RpcExceptionFilter } from './app/filters';
@@ -16,7 +16,14 @@ const telemetry = TelemetryHelper(
 );
 
 async function createApp(): Promise<INestApplication> {
-	return await NestFactory.create<INestApplication>(AppModule);
+	return await NestFactory.create<INestApplication>(AppModule, {
+		bufferLogs: true,
+	});
+}
+
+function createLogger(app: INestApplication): void {
+	const logger = new LoggerService(AppConfig.name);
+	app.useLogger(logger);
 }
 
 function configureApp(app: INestApplication): void {
@@ -42,7 +49,7 @@ function addFilters(app: INestApplication): void {
 function configureSwagger(app: INestApplication): void {
 	const config = new DocumentBuilder()
 		.setTitle('Dementor')
-		.setVersion('v0.6.0')
+		.setVersion('v0.9.0')
 		.addBearerAuth()
 		.addOAuth2()
 		.build();
@@ -78,6 +85,7 @@ async function bootstrap() {
 		telemetry.start();
 	}
 	const app = await createApp();
+	createLogger(app);
 	configureApp(app);
 	addModules(app);
 	addFilters(app);

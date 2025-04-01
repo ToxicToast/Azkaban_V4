@@ -1,6 +1,6 @@
 {
 	"name": "@azkaban",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"license": "MIT",
 	"scripts": {
 		"nx": "nx",
@@ -115,9 +115,11 @@
 		"cookie-parser": "^1.4.7",
 		"helmet": "^8.0.0",
 		"mollitia": "^0.1.1",
+		"nestjs-otel": "^6.2.0",
 		"opentelemetry-instrumentation-kafkajs": "^0.41.0",
 		"pg": "^8.13.3",
-		"uuid": "^11.1.0"
+		"uuid": "^11.1.0",
+		"winston": "^3.17.0"
 	},
 	"workspaces": [
 		"apps/*",

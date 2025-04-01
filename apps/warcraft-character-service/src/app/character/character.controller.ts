@@ -146,24 +146,6 @@ export class CharacterController {
 		return response;
 	}
 
-	@MessagePattern(WarcraftCharacterTopics.CHECK)
-	async checkCharacterExists(
-		@Payload('region') region: string,
-		@Payload('realm') realm: string,
-		@Payload('name') name: string,
-	): Promise<Nullable<CharacterResponse>> {
-		const response = await this.getCharacterList();
-		if (response.length === 0) {
-			return null;
-		}
-		return response.find(
-			(item) =>
-				item.region === region &&
-				item.realm === realm &&
-				item.name === name,
-		);
-	}
-
 	@MessagePattern(WarcraftCharacterTopics.RESTORE)
 	async restoreCharacter(
 		@Payload('id') id: string,

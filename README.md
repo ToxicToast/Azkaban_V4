@@ -27,8 +27,8 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 
     - Email Service
     - Webhook Service
-        - Zapier
         - API Alerts
+        - N8N
 
 - **FoodFolio Services**
 
@@ -46,7 +46,6 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 - **Twitch Services**
 
     - Api Service
-    - Bot Service
     - Viewer Service
     - Messages Service
     - Streams Service
@@ -54,9 +53,6 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 
 - **Warcraft Services**
 
-    - Character Service
-    - Api Service
-    - Raider IO Service
     - WowAudit Service
 
 - **Co-Working Services**
@@ -67,7 +63,6 @@ Azkaban is a complete Rewrite of my Microservices at Home.
     - Admin UI
     - Foodfolio UI
     - CoWorking UI (Task List Overlay)
-    - Blog UI
 
 ## In Development
 
@@ -76,16 +71,27 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 
 ## Deployed Services
 
+- **Gateway**
 - [API Gateway](https://api.toxictoast.de/)
-- [Authentication Service](https://auth.toxictoast.de/)
+
+- **Azkaban Services**
+- [Authentication Service](https://api.toxictoast.de/)
 - [Cronjob Service](https://api.toxictoast.de/)
 - [SSE Service](https://sse.toxictoast.de/)
+- [User Service](https://api.toxictoast.de/)
+
+- **Warcraft Services**
+- [Character Service](https://api.toxictoast.de/)
+- [API Service](https://api.toxictoast.de/)
+
+- **UI**
 - [Version UI](https://version.toxictoast.de/)
 - [Blog UI](https://www.toxictoast.de/)
+- [Ascend Guild UI](https://www.ascend-guild.de/)
 
 ## Needs Refactoring
 
-- [User Service](https://api.toxictoast.de/)
+- [Auth Service](https://api.toxictoast.de/)
 
 ## Infrastructure
 
@@ -110,7 +116,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 ## Alerting
 
 > **Info:**
-> Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific user logged in. (Event Driven Architecture)
+> Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific event occured. (Event Driven Architecture)
 
 - [API Alerts](https://apialerts.com/)
 

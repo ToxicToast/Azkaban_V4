@@ -7,6 +7,7 @@ import {
 	CacheService,
 	CircuitService,
 	createCircuitBreaker,
+	WarcraftCharacterTopics,
 } from '@azkaban/shared';
 
 @CommandHandler(IdCommand)
@@ -18,7 +19,7 @@ export class IdCommandHandler implements ICommandHandler<IdCommand> {
 	) {}
 
 	private createCircuitBreaker(command: IdCommand) {
-		const topic = AzkabanUserTopics.ID;
+		const topic = WarcraftCharacterTopics.ID;
 		return createCircuitBreaker<IdCommand>(
 			command,
 			topic,

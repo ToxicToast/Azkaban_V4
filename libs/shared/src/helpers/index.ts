@@ -6,3 +6,4 @@ export * from './response.helper';
 export * from './circuitbreaker.helper';
 export * from './password.helper';
 export * from './microservice.helper';
+export * from './logging.helper';

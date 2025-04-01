@@ -9,6 +9,7 @@ import { AppConfig } from '../../config';
 			AppConfig.health,
 			AppConfig.broker,
 			AppConfig.redis,
+			AppConfig.database,
 		),
 	],
 })

@@ -7,3 +7,5 @@ export * from './database';
 export * from './bull';
 export * from './schedule';
 export * from './throttle';
+export * from './logger';
+export * from './version';
