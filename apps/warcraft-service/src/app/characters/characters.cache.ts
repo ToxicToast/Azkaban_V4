@@ -50,6 +50,7 @@ export class CharactersCache {
 	}
 
 	async removeCache(): Promise<void> {
+		Logger.log('Clear Characters Cache', {});
 		await this.service.deleteKey('warcraft:characters:*');
 	}
 }
