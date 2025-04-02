@@ -1,15 +1,20 @@
 import { AggregateRoot, Domain, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
 import {
+	ChangeAvatarEvent,
 	ChangeClassEvent,
 	ChangeDisplayNameEvent,
 	ChangeDisplayRealmEvent,
 	ChangeFactionEvent,
 	ChangeGenderEvent,
 	ChangeGuildEvent,
+	ChangeInsetEvent,
 	ChangeItemLevelEvent,
 	ChangeLevelEvent,
+	ChangeLoggedInEvent,
+	ChangeMythicEvent,
 	ChangeRaceEvent,
+	ChangeRaidEvent,
 	ChangeRankEvent,
 	ChangeSpecEvent,
 } from '../events';
@@ -173,6 +178,7 @@ export class CharacterDomain
 		if (inset !== this.inset) {
 			this.updated_at = new Date();
 			this.inset = inset;
+			this.addDomainEvent(new ChangeInsetEvent(this.id, inset));
 		}
 	}
 
@@ -180,6 +186,7 @@ export class CharacterDomain
 		if (avatar !== this.avatar) {
 			this.updated_at = new Date();
 			this.avatar = avatar;
+			this.addDomainEvent(new ChangeAvatarEvent(this.id, avatar));
 		}
 	}
 
@@ -187,6 +194,7 @@ export class CharacterDomain
 		if (mythic !== this.mythic) {
 			this.updated_at = new Date();
 			this.mythic = mythic;
+			this.addDomainEvent(new ChangeMythicEvent(this.id, mythic));
 		}
 	}
 
@@ -194,6 +202,7 @@ export class CharacterDomain
 		if (raid !== this.raid) {
 			this.updated_at = new Date();
 			this.raid = raid;
+			this.addDomainEvent(new ChangeRaidEvent(this.id, raid));
 		}
 	}
 
@@ -201,6 +210,7 @@ export class CharacterDomain
 		if (loggedin_at !== this.loggedin_at) {
 			this.updated_at = new Date();
 			this.loggedin_at = loggedin_at;
+			this.addDomainEvent(new ChangeLoggedInEvent(this.id, loggedin_at));
 		}
 	}
 

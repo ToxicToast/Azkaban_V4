@@ -9,3 +9,8 @@ export * from './changeLevel.event';
 export * from './changeItemLevel.event';
 export * from './changeGuild.event';
 export * from './changeRank.event';
+export * from './changeInset.event';
+export * from './changeAvatar.event';
+export * from './changeMythic.event';
+export * from './changeRaid.event';
+export * from './changeLoggedin.event';
