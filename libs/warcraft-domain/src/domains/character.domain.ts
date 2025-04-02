@@ -1,7 +1,11 @@
-import { Domain, Nullable } from '@azkaban/shared';
+import { AggregateRoot, Domain, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
+import { ChangeDisplayNameEvent, ChangeDisplayRealmEvent } from '../events';
 
-export class CharacterDomain implements Domain<CharacterAnemic> {
+export class CharacterDomain
+	extends AggregateRoot
+	implements Domain<CharacterAnemic>
+{
 	constructor(
 		private readonly id: number,
 		private readonly character_id: string,
@@ -28,7 +32,9 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		private readonly created_at: Date,
 		private updated_at: Nullable<Date>,
 		private deleted_at: Nullable<Date>,
-	) {}
+	) {
+		super();
+	}
 
 	toAnemic(): CharacterAnemic {
 		return {
@@ -64,6 +70,9 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		if (display_realm !== this.display_realm) {
 			this.updated_at = new Date();
 			this.display_realm = display_realm;
+			this.addDomainEvent(
+				new ChangeDisplayRealmEvent(this.id, display_realm),
+			);
 		}
 	}
 
@@ -71,6 +80,9 @@ export class CharacterDomain implements Domain<CharacterAnemic> {
 		if (display_name !== this.display_name) {
 			this.updated_at = new Date();
 			this.display_name = display_name;
+			this.addDomainEvent(
+				new ChangeDisplayNameEvent(this.id, display_name),
+			);
 		}
 	}
 
