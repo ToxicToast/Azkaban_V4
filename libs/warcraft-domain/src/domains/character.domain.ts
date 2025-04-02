@@ -1,9 +1,17 @@
 import { AggregateRoot, Domain, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
 import {
+	ChangeClassEvent,
 	ChangeDisplayNameEvent,
 	ChangeDisplayRealmEvent,
+	ChangeFactionEvent,
 	ChangeGenderEvent,
+	ChangeGuildEvent,
+	ChangeItemLevelEvent,
+	ChangeLevelEvent,
+	ChangeRaceEvent,
+	ChangeRankEvent,
+	ChangeSpecEvent,
 } from '../events';
 
 export class CharacterDomain
@@ -102,6 +110,7 @@ export class CharacterDomain
 		if (faction !== this.faction) {
 			this.updated_at = new Date();
 			this.faction = faction;
+			this.addDomainEvent(new ChangeFactionEvent(this.id, faction));
 		}
 	}
 
@@ -109,6 +118,7 @@ export class CharacterDomain
 		if (race !== this.race) {
 			this.updated_at = new Date();
 			this.race = race;
+			this.addDomainEvent(new ChangeRaceEvent(this.id, race));
 		}
 	}
 
@@ -116,6 +126,7 @@ export class CharacterDomain
 		if (character_class !== this.character_class) {
 			this.updated_at = new Date();
 			this.character_class = character_class;
+			this.addDomainEvent(new ChangeClassEvent(this.id, character_class));
 		}
 	}
 
@@ -123,12 +134,14 @@ export class CharacterDomain
 		if (spec !== this.spec) {
 			this.updated_at = new Date();
 			this.spec = spec;
+			this.addDomainEvent(new ChangeSpecEvent(this.id, spec));
 		}
 	}
 	changeLevel(level: number): void {
 		if (level !== this.level) {
 			this.updated_at = new Date();
 			this.level = level;
+			this.addDomainEvent(new ChangeLevelEvent(this.id, level));
 		}
 	}
 
@@ -136,6 +149,7 @@ export class CharacterDomain
 		if (item_level !== this.item_level) {
 			this.updated_at = new Date();
 			this.item_level = item_level;
+			this.addDomainEvent(new ChangeItemLevelEvent(this.id, item_level));
 		}
 	}
 
@@ -143,6 +157,7 @@ export class CharacterDomain
 		if (guild !== this.guild) {
 			this.updated_at = new Date();
 			this.guild = guild;
+			this.addDomainEvent(new ChangeGuildEvent(this.id, guild));
 		}
 	}
 
@@ -150,6 +165,7 @@ export class CharacterDomain
 		if (rank !== this.rank) {
 			this.updated_at = new Date();
 			this.rank = rank;
+			this.addDomainEvent(new ChangeRankEvent(this.id, rank));
 		}
 	}
 
