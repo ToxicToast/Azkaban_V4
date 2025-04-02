@@ -3,7 +3,7 @@ import { CharacterAnemic } from '../anemics';
 
 export class CharacterDomain implements Domain<CharacterAnemic> {
 	constructor(
-		private readonly id: string,
+		private readonly id: number,
 		private readonly region: string,
 		private readonly realm: string,
 		private display_realm: Nullable<string>,

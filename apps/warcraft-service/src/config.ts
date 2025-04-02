@@ -26,10 +26,14 @@ type EnvironmentConfig = {
 		brokerPassword: string;
 	};
 	telemetry: string;
+	blizzard: {
+		clientId: string;
+		clientSecret: string;
+	};
 };
 
 export const AppConfig: EnvironmentConfig = {
-	name: 'warcraft-service',
+	name: process.env.APP_NAME ?? 'warcraft-service-dev',
 	port: process.env.PORT ? Number(process.env.PORT) : 3000,
 	environment: process.env.APP_VERSION ?? 'local',
 	redis: {
@@ -66,4 +70,8 @@ export const AppConfig: EnvironmentConfig = {
 		brokerPassword: process.env.BROKER_PASSWORD ?? '',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
+	blizzard: {
+		clientId: process.env.BLIZZARD_CLIENT_ID,
+		clientSecret: process.env.BLIZZARD_CLIENT_SECRET,
+	},
 };

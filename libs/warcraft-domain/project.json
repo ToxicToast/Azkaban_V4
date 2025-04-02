@@ -1,0 +1,20 @@
+{
+	"name": "warcraft-domain",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/warcraft-domain/src",
+	"projectType": "library",
+	"tags": ["scope:domain"],
+	"targets": {
+		"build": {
+			"executor": "@nx/js:tsc",
+			"outputs": ["{options.outputPath}"],
+			"options": {
+				"outputPath": "dist/libs/warcraft-domain",
+				"tsConfig": "libs/warcraft-domain/tsconfig.lib.json",
+				"packageJson": "libs/warcraft-domain/package.json",
+				"main": "libs/warcraft-domain/src/index.ts",
+				"assets": ["libs/warcraft-domain/*.md"]
+			}
+		}
+	}
+}

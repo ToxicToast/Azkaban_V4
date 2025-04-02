@@ -34,7 +34,6 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 	const brokerUsername = AppConfig.broker.brokerUsername;
 	const brokerPassword = AppConfig.broker.brokerPassword;
 	const environment = AppConfig.environment !== 'local';
-	//
 	const options = MicroserviceHelper(
 		AppConfig.name,
 		brokerUrl,
@@ -43,7 +42,6 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 		brokerUsername,
 		brokerPassword,
 	);
-	//
 	app.connectMicroservice<MicroserviceOptions>(options);
 }
 
@@ -64,9 +62,7 @@ async function startApp(app: INestApplication): Promise<void> {
 }
 
 async function bootstrap() {
-	if (AppConfig.environment !== 'local') {
-		telemetry.start();
-	}
+	telemetry.start();
 	const app = await createApp();
 	createLogger(app);
 	configureApp(app);
@@ -77,10 +73,8 @@ async function bootstrap() {
 }
 bootstrap().catch((err) => {
 	Logger.error(err);
-	if (AppConfig.environment !== 'local') {
-		telemetry
-			.shutdown()
-			.then(() => Logger.log('Tracing terminated'))
-			.catch((error) => Logger.error('Error terminating tracing', error));
-	}
+	telemetry
+		.shutdown()
+		.then(() => Logger.log('Tracing terminated'))
+		.catch((error) => Logger.error('Error terminating tracing', error));
 });
