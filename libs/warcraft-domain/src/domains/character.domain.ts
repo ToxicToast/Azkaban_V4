@@ -1,6 +1,10 @@
 import { AggregateRoot, Domain, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
-import { ChangeDisplayNameEvent, ChangeDisplayRealmEvent } from '../events';
+import {
+	ChangeDisplayNameEvent,
+	ChangeDisplayRealmEvent,
+	ChangeGenderEvent,
+} from '../events';
 
 export class CharacterDomain
 	extends AggregateRoot
@@ -90,6 +94,7 @@ export class CharacterDomain
 		if (gender !== this.gender) {
 			this.updated_at = new Date();
 			this.gender = gender;
+			this.addDomainEvent(new ChangeGenderEvent(this.id, gender));
 		}
 	}
 
