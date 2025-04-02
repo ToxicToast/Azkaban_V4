@@ -5,7 +5,7 @@ import { CharactersCache } from './characters.cache';
 
 @Module({
 	controllers: [CharactersController],
-	providers: [CharactersService],
-	exports: [CharactersService, CharactersCache],
+	providers: [CharactersCache, CharactersService],
+	exports: [CharactersService],
 })
 export class CharactersModule {}
