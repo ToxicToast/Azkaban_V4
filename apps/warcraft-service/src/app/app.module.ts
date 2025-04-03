@@ -13,6 +13,7 @@ import {
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
 import { VersionController } from './version.controller';
+import { CharacterEntity } from '@azkaban/warcraft-infrastructure';
 
 @Module({
 	imports: [
@@ -22,7 +23,9 @@ import { VersionController } from './version.controller';
 			true,
 			AppConfig.environment,
 			AppConfig.database,
-			{},
+			{
+				CharacterEntity,
+			},
 		),
 		HealthModule.forRoot(
 			false,
