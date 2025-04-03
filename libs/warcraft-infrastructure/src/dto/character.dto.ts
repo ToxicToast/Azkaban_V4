@@ -1,43 +1,13 @@
 import { Nullable, Optional } from '@azkaban/shared';
 
-export interface CharacterList {
-	limit?: Optional<number>;
-	offset?: Optional<number>;
-}
-
-export interface CharacterByIdDTO {
-	id: number;
-}
-
-export interface CharacterByCharacterIdDTO {
-	character_id: string;
-}
-
-export interface CharacterByGuildDTO {
-	guild: Nullable<string>;
-}
-
-export interface CharacterByClassDTO {
-	character_class: Nullable<string>;
-}
-
-export interface CharacterByRaceDTO {
-	race: Nullable<string>;
-}
-
-export interface CharacterByFactionDTO {
-	faction: Nullable<string>;
-}
-
-export interface CharacterCreateDTO {
+export interface CreateCharacterDTO {
 	region: string;
 	realm: string;
 	name: string;
-	rank?: Optional<Nullable<number>>;
+	rank?: Optional<number>;
 }
 
-export interface CharacterUpdateDTO {
-	id: number;
+export interface UpdateCharacterDTO {
 	display_realm?: Optional<Nullable<string>>;
 	display_name?: Optional<Nullable<string>>;
 	gender?: Optional<Nullable<string>>;
@@ -48,7 +18,7 @@ export interface CharacterUpdateDTO {
 	level?: Optional<number>;
 	item_level?: Optional<number>;
 	guild?: Optional<Nullable<string>>;
-	rank?: Optional<Nullable<number>>;
+	rank?: Optional<number>;
 	inset?: Optional<Nullable<string>>;
 	avatar?: Optional<Nullable<string>>;
 	mythic?: Optional<number>;

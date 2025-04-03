@@ -1,40 +1,134 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Span } from 'nestjs-otel';
 import {
 	CharacterByCharacterIdDTO,
+	CharacterByClassDTO,
+	CharacterByFactionDTO,
 	CharacterByGuildDTO,
 	CharacterByIdDTO,
+	CharacterByRaceDTO,
 	CharacterCreateDTO,
+	CharacterList,
 	CharacterUpdateDTO,
 } from '../dtos';
 import { CharactersCache } from './characters.cache';
+import {
+	CharacterDAO,
+	CharacterEntity,
+	CharacterRepository,
+	CharacterService as BaseService,
+} from '@azkaban/warcraft-infrastructure';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CharactersService {
-	constructor(private readonly cache: CharactersCache) {}
+	private readonly infrastructureRepository: CharacterRepository;
+	private readonly infrastructureService: BaseService;
+
+	constructor(
+		private readonly cache: CharactersCache,
+		@Inject('CHARACTER_REPOSITORY')
+		private readonly characterRepository: Repository<CharacterEntity>,
+	) {
+		this.infrastructureRepository = new CharacterRepository(
+			this.characterRepository,
+		);
+		this.infrastructureService = new BaseService(
+			this.infrastructureRepository,
+		);
+	}
 
 	@Span('characterList')
-	async characterList() {
-		Logger.log('CharacterList');
-		await this.cache.cacheCharacterList([]);
+	async characterList(data: CharacterList): Promise<Array<CharacterDAO>> {
+		Logger.log('CharacterList', data);
+		const characters = await this.infrastructureService.getCharacterList(
+			data.limit,
+			data.offset,
+		);
+		Logger.log('characters', characters);
+		await this.cache.cacheCharacterList(characters);
+		return characters;
 	}
 
 	@Span('characterById')
 	async characterById(data: CharacterByIdDTO) {
 		Logger.log('CharacterById', data);
-		await this.cache.cacheCharacterById(data.id, null);
+		const character = await this.infrastructureService.getCharacterById(
+			data.id,
+		);
+		Logger.log('character', character);
+		if (character !== null) {
+			await this.cache.cacheCharacterById(data.id, character);
+			return character;
+		}
+		return null;
 	}
 
 	@Span('characterByCharacterId')
 	async characterByCharacterId(data: CharacterByCharacterIdDTO) {
 		Logger.log('CharacterByCharacterId', data);
-		await this.cache.cacheCharacterByCharacterId(data.character_id, null);
+		const character =
+			await this.infrastructureService.getCharacterByCharacterId(
+				data.character_id,
+			);
+		Logger.log('character', character);
+		if (character !== null) {
+			await this.cache.cacheCharacterByCharacterId(
+				data.character_id,
+				character,
+			);
+			return character;
+		}
+		return null;
 	}
 
 	@Span('characterByGuild')
 	async characterByGuild(data: CharacterByGuildDTO) {
 		Logger.log('characterByGuild', data);
-		await this.cache.cacheCharactersByGuild(data.guild, []);
+		const characters = await this.infrastructureService.getCharacterByGuild(
+			data.guild,
+		);
+		Logger.log('characters', characters);
+		await this.cache.cacheCharactersByGuild(data.guild, characters);
+		return characters;
+	}
+
+	@Span('characterByClass')
+	async characterByClass(data: CharacterByClassDTO) {
+		Logger.log('characterByClass', data);
+		const characters =
+			await this.infrastructureService.getCharactersByClass(
+				data.character_class,
+			);
+		Logger.log('characters', characters);
+		await this.cache.cacheCharactersByClass(
+			data.character_class,
+			characters,
+		);
+		return characters;
+	}
+
+	@Span('characterByRace')
+	async characterByRace(data: CharacterByRaceDTO) {
+		Logger.log('characterByRace', data);
+		const characters = await this.infrastructureService.getCharactersByRace(
+			data.race,
+		);
+		Logger.log('characters', characters);
+		await this.cache.cacheCharactersByRace(data.race, characters);
+		return characters;
+	}
+
+	@Span('characterByFaction')
+	async characterByFaction(data: CharacterByFactionDTO) {
+		Logger.log('characterByFaction', data);
+		const characters =
+			await this.infrastructureService.getCharactersByFaction(
+				data.faction,
+			);
+		Logger.log('characters', characters);
+		await this.cache.cacheCharactersByRace(data.faction, characters);
+		return characters;
 	}
 
 	@Span('characterCreate')

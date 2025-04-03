@@ -8,6 +8,7 @@ import {
 	CharacterByGuildDTO,
 	CharacterByIdDTO,
 	CharacterCreateDTO,
+	CharacterList,
 	CharacterUpdateDTO,
 } from '../dtos';
 
@@ -17,9 +18,9 @@ export class CharactersController {
 
 	@Span(WarcraftCharacterTopics.LIST + '.service')
 	@MessagePattern(WarcraftCharacterTopics.LIST)
-	async getCharacterList() {
-		Logger.log('Fetch Character List', {});
-		return this.service.characterList();
+	async getCharacterList(@Payload() payload: CharacterList) {
+		Logger.log('Fetch Character List', payload);
+		return this.service.characterList(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.ID + '.service')

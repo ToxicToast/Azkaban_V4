@@ -49,6 +49,52 @@ export class CharactersCache {
 		);
 	}
 
+	@Span('cacheCharactersByClass')
+	async cacheCharactersByClass(
+		character_class: string,
+		characters: CharactersResponse,
+	): Promise<void> {
+		Logger.log('Cache Characters By Class', {
+			class: character_class,
+			characters,
+		});
+		await this.service.setKey(
+			'warcraft:characters:class:' + character_class,
+			characters,
+		);
+	}
+
+	@Span('cacheCharactersByRace')
+	async cacheCharactersByRace(
+		race: string,
+		characters: CharactersResponse,
+	): Promise<void> {
+		Logger.log('Cache Characters By Race', {
+			race,
+			characters,
+		});
+		await this.service.setKey(
+			'warcraft:characters:race:' + race,
+			characters,
+		);
+	}
+
+	@Span('cacheCharactersByFaction')
+	async cacheCharactersByFaction(
+		faction: string,
+		characters: CharactersResponse,
+	): Promise<void> {
+		Logger.log('Cache Characters By Faction', {
+			faction,
+			characters,
+		});
+		await this.service.setKey(
+			'warcraft:characters:faction:' + faction,
+			characters,
+		);
+	}
+
+	@Span('removeCache')
 	async removeCache(): Promise<void> {
 		Logger.log('Clear Characters Cache', {});
 		await this.service.deleteKey('warcraft:characters:*');

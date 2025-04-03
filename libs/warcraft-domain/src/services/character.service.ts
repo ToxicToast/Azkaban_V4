@@ -2,7 +2,7 @@ import { CharacterFactory } from '../factories';
 import { CharacterRepository } from '../repositories';
 import { CharacterAnemic } from '../anemics';
 import { CharacterData, UpdataCharacterData } from '../data';
-import { Nullable, Result } from '@azkaban/shared';
+import { Nullable, Optional, Result } from '@azkaban/shared';
 
 export class CharacterService {
 	private readonly factory: CharacterFactory = new CharacterFactory();
@@ -20,9 +20,12 @@ export class CharacterService {
 		}
 	}
 
-	async getCharacters(): Promise<Result<Array<CharacterAnemic>>> {
+	async getCharacters(
+		limit?: Optional<number>,
+		offset?: Optional<number>,
+	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findList();
+			const result = await this.repository.findList(limit, offset);
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
@@ -125,7 +128,7 @@ export class CharacterService {
 
 	async updateCharacter(
 		data: UpdataCharacterData,
-	): Promise<Result<CharacterData>> {
+	): Promise<Result<CharacterAnemic>> {
 		try {
 			const result = await this.getCharacterById(data.id);
 			if (result.isSuccess) {
@@ -199,10 +202,10 @@ export class CharacterService {
 				const character = aggregate.toAnemic().character;
 				return await this.save(character);
 			} else {
-				return Result.fail<CharacterData>(result.errorValue, 404);
+				return Result.fail<CharacterAnemic>(result.errorValue, 404);
 			}
 		} catch (error) {
-			return Result.fail<CharacterData>(error, 500);
+			return Result.fail<CharacterAnemic>(error, 500);
 		}
 	}
 
