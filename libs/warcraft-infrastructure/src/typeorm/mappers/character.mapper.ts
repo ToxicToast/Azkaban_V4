@@ -24,6 +24,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			item_level,
 			guild,
 			rank,
+			old_guild,
 			inset,
 			avatar,
 			mythic,
@@ -51,6 +52,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 		entity.item_level = item_level;
 		entity.guild = guild;
 		entity.rank = rank;
+		entity.old_guild = old_guild;
 		entity.inset = inset;
 		entity.avatar = avatar;
 		entity.mythic = mythic;
@@ -81,6 +83,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			item_level,
 			guild,
 			rank,
+			old_guild,
 			inset,
 			avatar,
 			mythic,
@@ -108,6 +111,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 			item_level,
 			guild,
 			rank,
+			old_guild,
 			inset,
 			avatar,
 			mythic,

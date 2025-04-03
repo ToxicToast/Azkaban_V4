@@ -4,6 +4,7 @@ import { ApiModule } from './api/api.module';
 import { CronjobModule } from './cronjob/cronjob.module';
 import { GuildsModule } from './guilds/guilds.module';
 import {
+	BullModule,
 	CacheModule,
 	DatabaseModule,
 	HealthModule,
@@ -35,6 +36,7 @@ import { CharacterEntity } from '@azkaban/warcraft-infrastructure';
 		),
 		MetricsModule.forRoot(false, AppConfig.name),
 		VersionModule.forRoot(true, AppConfig.environment),
+		BullModule.forRoot(true, AppConfig.redis, 10),
 		ApiModule,
 		CharactersModule,
 		CronjobModule,

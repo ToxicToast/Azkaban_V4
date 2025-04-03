@@ -4,4 +4,4 @@ import { CharacterModule } from './character/character.module';
 @Module({
 	imports: [CharacterModule],
 })
-export class CronjobModule {}
+export class WarcraftModule {}

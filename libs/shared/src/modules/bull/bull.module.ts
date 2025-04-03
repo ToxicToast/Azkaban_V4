@@ -21,6 +21,7 @@ export class BullModule {
 						};
 						const defaultJobOptions = {
 							delay,
+							removeOnComplete: true,
 						};
 						return {
 							connection,

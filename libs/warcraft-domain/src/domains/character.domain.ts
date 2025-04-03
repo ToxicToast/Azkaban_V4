@@ -40,6 +40,7 @@ export class CharacterDomain
 		private item_level: number,
 		private guild: Nullable<string>,
 		private rank: Nullable<number>,
+		private old_guild: Nullable<string>,
 		private inset: Nullable<string>,
 		private avatar: Nullable<string>,
 		private mythic: number,
@@ -71,6 +72,7 @@ export class CharacterDomain
 			item_level: this.item_level,
 			guild: this.guild,
 			rank: this.rank,
+			old_guild: this.old_guild,
 			inset: this.inset,
 			avatar: this.avatar,
 			mythic: this.mythic,
@@ -161,6 +163,7 @@ export class CharacterDomain
 	changeGuild(guild: Nullable<string>): void {
 		if (guild !== this.guild) {
 			this.updated_at = new Date();
+			this.old_guild = this.guild;
 			this.guild = guild;
 			this.addDomainEvent(new ChangeGuildEvent(this.id, guild));
 		}

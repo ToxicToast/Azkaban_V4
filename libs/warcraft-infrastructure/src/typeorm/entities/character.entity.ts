@@ -63,6 +63,9 @@ export class CharacterEntity {
 	rank: number | null;
 
 	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
+	old_guild: string | null;
+
+	@Column({ unique: false, nullable: true, type: 'varchar', default: null })
 	inset: string | null;
 
 	@Column({ unique: false, nullable: true, type: 'varchar', default: null })

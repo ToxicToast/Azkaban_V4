@@ -17,6 +17,7 @@ export interface CharacterDAO {
 	item_level: number;
 	guild: Nullable<string>;
 	rank: Nullable<number>;
+	old_guild: Nullable<string>;
 	inset: Nullable<string>;
 	avatar: Nullable<string>;
 	mythic: number;
