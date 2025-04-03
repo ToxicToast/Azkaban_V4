@@ -23,75 +23,61 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 
 ## Planned Services
 
-- **Azkaban Services**
+**FoodFolio**
 
-    - Email Service
-    - Webhook Service
-        - API Alerts
-        - N8N
+- Category
+- Company
+- Location
+- Type
+- Size
+- Item
+- Item Variant
+- Item Detail
+- Warehouse
+- Shoppinglist
 
-- **FoodFolio Services**
+**Twitch**
 
-    - Category
-    - Company
-    - Location
-    - Type
-    - Size
-    - Item
-    - Item Variant
-    - Item Detail
-    - Warehouse
-    - Shoppinglist
+- Api Service
+- Bot Service
+- Viewer Service
+- Messages Service
+- Streams Service
+- Channel Service
 
-- **Twitch Services**
+**Warcraft**
 
-    - Api Service
-    - Viewer Service
-    - Messages Service
-    - Streams Service
-    - Channel Service
+- Api Service
+- Guild Service
 
-- **Warcraft Services**
+**Co-Working**
 
-    - WowAudit Service
+- Task Service
 
-- **Co-Working Services**
+**UI**
 
-    - Task Service
-
-- **UI Services**
-    - Admin UI
-    - Foodfolio UI
-    - CoWorking UI (Task List Overlay)
+- Admin UI
+- Foodfolio UI
+- CoWorking UI
 
 ## In Development
 
-- Azkaban Services
-- Twitch Services
+- Warcraft Service
+- Blog UI
+- Ascend Guild UI
 
 ## Deployed Services
 
-- **Gateway**
+**Gateway**
+
 - [API Gateway](https://api.toxictoast.de/)
+- [Warcraft Characters](https://api.toxictoast.de/api/v1/warcraft/character)
 
-- **Azkaban Services**
-- [Authentication Service](https://api.toxictoast.de/)
-- [Cronjob Service](https://api.toxictoast.de/)
-- [SSE Service](https://sse.toxictoast.de/)
-- [User Service](https://api.toxictoast.de/)
+**UI**
 
-- **Warcraft Services**
-- [Character Service](https://api.toxictoast.de/)
-- [API Service](https://api.toxictoast.de/)
-
-- **UI**
 - [Version UI](https://version.toxictoast.de/)
 - [Blog UI](https://www.toxictoast.de/)
 - [Ascend Guild UI](https://www.ascend-guild.de/)
-
-## Needs Refactoring
-
-- [Auth Service](https://api.toxictoast.de/)
 
 ## Infrastructure
 
@@ -99,7 +85,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 - Kubernetes (Orchestration)
 - Traefik (Reverse Proxy)
 - Kafka (Message Broker)
-- MariaDB (Database)
+- Postgres (Database)
 - NestJS (Backend Framework)
 - Redis (Cache)
 - ReactJS (UI)
