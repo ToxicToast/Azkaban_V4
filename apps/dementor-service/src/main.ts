@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { AppConfig } from './config';
 import { AppModule } from './app/app.module';
+import { HttpExceptionFilter, RpcExceptionFilter } from './app/filters';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
@@ -41,8 +42,8 @@ function addModules(app: INestApplication): void {
 }
 
 function addFilters(app: INestApplication): void {
-	// app.useGlobalFilters(new HttpExceptionFilter());
-	// app.useGlobalFilters(new RpcExceptionFilter());
+	app.useGlobalFilters(new HttpExceptionFilter());
+	app.useGlobalFilters(new RpcExceptionFilter());
 }
 
 function configureSwagger(app: INestApplication): void {

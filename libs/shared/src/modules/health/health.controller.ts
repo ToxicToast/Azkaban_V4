@@ -10,13 +10,10 @@ import {
 	TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 import { Transport } from '@nestjs/microservices';
-import { HealthRoutes } from '../../routes';
 import { Nullable } from '../../types';
+import { ControllerHelper } from '../../helpers';
 
-@Controller({
-	path: HealthRoutes.CONTROLLER,
-	version: '1',
-})
+@Controller(ControllerHelper('health'))
 export class HealthController {
 	constructor(
 		@Inject('MEMORY_HEAP_TRESHOLD') private readonly heapTreshold: number,

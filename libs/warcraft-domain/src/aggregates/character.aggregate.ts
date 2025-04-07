@@ -12,6 +12,7 @@ export class CharacterAggregate {
 		return {
 			id: this.id,
 			character: this.character.toAnemic(),
+			events: this.character.toEvents(),
 		};
 	}
 

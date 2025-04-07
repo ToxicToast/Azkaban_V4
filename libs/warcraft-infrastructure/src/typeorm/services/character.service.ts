@@ -23,7 +23,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { limit, offset },
 			});
 		}
 	}
@@ -36,7 +36,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { id },
 			});
 		}
 	}
@@ -52,7 +52,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { character_id },
 			});
 		}
 	}
@@ -67,7 +67,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { guild },
 			});
 		}
 	}
@@ -83,7 +83,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { character_class },
 			});
 		}
 	}
@@ -98,7 +98,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { race },
 			});
 		}
 	}
@@ -113,7 +113,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { faction },
 			});
 		}
 	}
@@ -134,7 +134,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { region, realm, name },
 			});
 		}
 	}
@@ -151,7 +151,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { data, character_id },
 			});
 		}
 	}
@@ -170,7 +170,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { id, data },
 			});
 		}
 	}
@@ -183,7 +183,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { id },
 			});
 		}
 	}
@@ -196,7 +196,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { id },
 			});
 		}
 	}
@@ -209,7 +209,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { id },
 			});
 		}
 	}
@@ -222,7 +222,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: result.value,
+				raw: { id },
 			});
 		}
 	}

@@ -1,4 +1,4 @@
-import { Factory } from '@azkaban/shared';
+import { Factory, UuidHelper } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
 import { CharacterDomain } from '../domains';
 import { CharacterData } from '../data';
@@ -71,8 +71,8 @@ export class CharacterFactory
 			updated_at,
 			deleted_at,
 		);
-
-		return new CharacterAggregate('uuid-helper-here', characterDomain);
+		const uuid = UuidHelper.create().value;
+		return new CharacterAggregate(uuid, characterDomain);
 	}
 
 	constitute(domain: CharacterDomain): CharacterAnemic {
@@ -109,6 +109,7 @@ export class CharacterFactory
 			null,
 			null,
 		);
-		return new CharacterAggregate('uuid-helper-here', domain);
+		const uuid = UuidHelper.create().value;
+		return new CharacterAggregate(uuid, domain);
 	}
 }

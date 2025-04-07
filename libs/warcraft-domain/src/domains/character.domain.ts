@@ -1,4 +1,4 @@
-import { AggregateRoot, Domain, Nullable } from '@azkaban/shared';
+import { AggregateRoot, Domain, DomainEvent, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
 import {
 	ChangeAvatarEvent,
@@ -83,6 +83,10 @@ export class CharacterDomain
 			updated_at: this.updated_at,
 			deleted_at: this.deleted_at,
 		};
+	}
+
+	toEvents(): Array<DomainEvent> {
+		return this.pullDomainEvents();
 	}
 
 	changeDisplayRealm(display_realm: Nullable<string>): void {

@@ -71,6 +71,9 @@
 	},
 	"dependencies": {
 		"@authorizerdev/authorizer-js": "^2.0.3",
+		"@bull-board/api": "^6.8.0",
+		"@bull-board/express": "^6.8.0",
+		"@bull-board/nestjs": "^6.8.0",
 		"@fastify/otel": "^0.4.0",
 		"@nest-lab/throttler-storage-redis": "^1.1.0",
 		"@nestjs/axios": "^3.1.3",

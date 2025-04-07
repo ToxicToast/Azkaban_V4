@@ -1,17 +1,14 @@
 import { Module } from '@nestjs/common';
-import { BullModule, DatabaseModule } from '@azkaban/shared';
-import { CharacterEntity } from '@azkaban/warcraft-infrastructure';
+import { BullModule } from '@azkaban/shared';
+import { CharacterCron } from './character.cron';
+import { CharacterProcessor } from './character.processor';
+import { CronjobService } from '../cronjob.service';
+import { ApiModule } from '../../api/api.module';
+import { CronjobCharacterController } from './character.controller';
 
 @Module({
-	imports: [
-		BullModule.registerQueue('blizzard-character'),
-		DatabaseModule.forFeature(
-			false,
-			'CHARACTER_REPOSITORY',
-			CharacterEntity,
-		),
-	],
-	controllers: [],
-	providers: [],
+	imports: [ApiModule, BullModule.registerQueue('warcraft-character')],
+	controllers: [CronjobCharacterController],
+	providers: [CronjobService, CharacterCron, CharacterProcessor],
 })
 export class CharacterModule {}

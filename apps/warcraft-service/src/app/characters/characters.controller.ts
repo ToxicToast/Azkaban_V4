@@ -1,6 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { WarcraftCharacterTopics } from '@azkaban/shared';
+import { ControllerHelper, WarcraftCharacterTopics } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { CharactersService } from './characters.service';
 import {
@@ -12,7 +12,7 @@ import {
 	CharacterUpdateDTO,
 } from '../dtos';
 
-@Controller()
+@Controller(ControllerHelper('character'))
 export class CharactersController {
 	constructor(private readonly service: CharactersService) {}
 
@@ -72,5 +72,19 @@ export class CharactersController {
 	async restoreCharacter(@Payload() payload: CharacterByIdDTO) {
 		Logger.log('Restore Character', payload);
 		return this.service.characterRestore(payload);
+	}
+
+	@Span(WarcraftCharacterTopics.ACTIVATE + '.service')
+	@MessagePattern(WarcraftCharacterTopics.ACTIVATE)
+	async activateCharacter(@Payload() payload: CharacterByIdDTO) {
+		Logger.log('Activate Character', payload);
+		return this.service.characterActivate(payload);
+	}
+
+	@Span(WarcraftCharacterTopics.DEACTIVATE + '.service')
+	@MessagePattern(WarcraftCharacterTopics.DEACTIVATE)
+	async deactivateCharacter(@Payload() payload: CharacterByIdDTO) {
+		Logger.log('Deactivate Character', payload);
+		return this.service.characterDeactivate(payload);
 	}
 }

@@ -46,7 +46,11 @@ export class CharactersService {
 			data.offset,
 		);
 		Logger.log('characters', characters);
-		await this.cache.cacheCharacterList(characters);
+		await this.cache.cacheCharacterList(
+			characters,
+			data.limit,
+			data.offset,
+		);
 		return characters;
 	}
 
@@ -135,23 +139,41 @@ export class CharactersService {
 	async characterCreate(data: CharacterCreateDTO) {
 		Logger.log('CharacterCreate', data);
 		await this.cache.removeCache();
+		return await this.infrastructureService.createCharacter(data);
 	}
 
 	@Span('characterUpdate')
 	async characterUpdate(data: CharacterUpdateDTO) {
 		Logger.log('CharacterUpdate', data);
 		await this.cache.removeCache();
+		return await this.infrastructureService.updateCharacter(data.id, data);
 	}
 
 	@Span('characterDelete')
 	async characterDelete(data: CharacterByIdDTO) {
 		Logger.log('CharacterDelete', data);
 		await this.cache.removeCache();
+		return await this.infrastructureService.deleteCharacter(data.id);
 	}
 
 	@Span('characterRestore')
 	async characterRestore(data: CharacterByIdDTO) {
 		Logger.log('CharacterRestore', data);
 		await this.cache.removeCache();
+		return await this.infrastructureService.restoreCharacter(data.id);
+	}
+
+	@Span('characterActivate')
+	async characterActivate(data: CharacterByIdDTO) {
+		Logger.log('CharacterActivate', data);
+		await this.cache.removeCache();
+		return await this.infrastructureService.activateCharacter(data.id);
+	}
+
+	@Span('characterDeactivate')
+	async characterDeactivate(data: CharacterByIdDTO) {
+		Logger.log('characterDeactivate', data);
+		await this.cache.removeCache();
+		return await this.infrastructureService.deactivateCharacter(data.id);
 	}
 }

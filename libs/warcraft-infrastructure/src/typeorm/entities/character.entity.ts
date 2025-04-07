@@ -17,7 +17,7 @@ export class CharacterEntity {
 	@PrimaryGeneratedColumn('increment')
 	id: number;
 
-	@Generated('uuid')
+	@Column({ unique: true, nullable: false, type: 'uuid' })
 	character_id: string;
 
 	@Column({ unique: false, nullable: false, type: 'varchar' })

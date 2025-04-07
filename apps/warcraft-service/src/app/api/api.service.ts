@@ -6,6 +6,11 @@ import { WoWClient } from 'blizzard.js/dist/wow';
 import { AccessToken } from 'blizzard.js/dist/core';
 import { RpcException } from '@nestjs/microservices';
 import { Span } from 'nestjs-otel';
+import {
+	CharacterModel,
+	AssetsModel,
+	MythicModel,
+} from '../cronjob/character/character.model';
 
 @Injectable()
 export class ApiService {
@@ -34,12 +39,14 @@ export class ApiService {
 	}
 
 	@Span('getCharacter')
-	async getCharacter(data: unknown): Promise<Nullable<unknown>> {
-		// TODO: Implement Data Body Type & Character Selection
+	async getCharacter(data: {
+		name: string;
+		realm: string;
+	}): Promise<Nullable<CharacterModel>> {
 		Logger.log('Getting character', data);
 		const response = await this.blizzardInstance?.characterProfile({
-			realm: 'blackmoore',
-			name: 'thøraxia',
+			realm: data.realm,
+			name: data.name,
 		});
 		if (response.status !== 200) {
 			Logger.error('Character not found', data);
@@ -53,11 +60,14 @@ export class ApiService {
 	}
 
 	@Span('getCharacterInsetPath')
-	async getCharacterInsetPath(data: unknown): Promise<Nullable<unknown>> {
+	async getCharacterInsetPath(data: {
+		name: string;
+		realm: string;
+	}): Promise<Nullable<AssetsModel>> {
 		// TODO: Implement Data Body Type & Character Selection
 		const response = await this.blizzardInstance?.characterMedia({
-			realm: 'blackmoore',
-			name: 'thøraxia',
+			realm: data.realm,
+			name: data.name,
 		});
 		if (response.status !== 200) {
 			Logger.error('Character not found', data);
@@ -75,11 +85,13 @@ export class ApiService {
 	}
 
 	@Span('getCharacterInsetPath')
-	async getCharacterAvatarPath(data: unknown): Promise<Nullable<unknown>> {
-		// TODO: Implement Data Body Type & Character Selection
+	async getCharacterAvatarPath(data: {
+		name: string;
+		realm: string;
+	}): Promise<Nullable<AssetsModel>> {
 		const response = await this.blizzardInstance?.characterMedia({
-			realm: 'blackmoore',
-			name: 'thøraxia',
+			realm: data.realm,
+			name: data.name,
 		});
 		if (response.status !== 200) {
 			Logger.error('Character not found', data);
@@ -98,7 +110,10 @@ export class ApiService {
 	}
 
 	@Span('getGuildRoster')
-	async getGuildRoster(data: unknown): Promise<Nullable<unknown>> {
+	async getGuildRoster(data: {
+		name: string;
+		realm: string;
+	}): Promise<Nullable<unknown>> {
 		// TODO: Implement Data Body Type & Guild Selection
 		const response = await this.blizzardInstance?.guild({
 			realm: 'blackmoore',
@@ -136,11 +151,13 @@ export class ApiService {
 	}
 
 	@Span('getMythicRating')
-	async getMythicRating(data: unknown): Promise<Nullable<unknown>> {
-		// TODO: Implement Data Body Type & Character Selection
+	async getMythicRating(data: {
+		name: string;
+		realm: string;
+	}): Promise<Nullable<MythicModel>> {
 		const response = await this.blizzardInstance?.characterMythicKeystone({
-			realm: 'blackmoore',
-			name: 'thøraxia',
+			realm: data.realm,
+			name: data.name,
 		});
 		if (response.status !== 200) {
 			Logger.error('Character not found', data);

@@ -1,4 +1,4 @@
-import { Anemic, Nullable } from '@azkaban/shared';
+import { Anemic, DomainEvent, Nullable } from '@azkaban/shared';
 
 export interface CharacterAnemic extends Anemic {
 	readonly character_id: string;
@@ -28,4 +28,5 @@ export interface CharacterAnemic extends Anemic {
 export interface CharacterAggregateAnemic {
 	id: string;
 	character: CharacterAnemic;
+	events: Array<DomainEvent>;
 }

@@ -28,6 +28,11 @@ import { CharacterEntity } from '@azkaban/warcraft-infrastructure';
 				CharacterEntity,
 			},
 		),
+		DatabaseModule.forFeature(
+			true,
+			'CHARACTER_REPOSITORY',
+			CharacterEntity,
+		),
 		HealthModule.forRoot(
 			false,
 			AppConfig.health,

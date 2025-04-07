@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CacheService } from '@azkaban/shared';
+import { CacheService, Optional } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { CharacterResponse, CharactersResponse } from '../responses';
 
@@ -8,9 +8,20 @@ export class CharactersCache {
 	constructor(private readonly service: CacheService) {}
 
 	@Span('cacheCharacterList')
-	async cacheCharacterList(characterList: CharactersResponse): Promise<void> {
-		Logger.log('Cache Character List', characterList);
-		await this.service.setKey('warcraft:characters:list', characterList);
+	async cacheCharacterList(
+		characterList: CharactersResponse,
+		limit?: Optional<number>,
+		offset?: Optional<number>,
+	): Promise<void> {
+		let cacheKey = 'warcraft:characters:list';
+		if (limit !== undefined) {
+			cacheKey += `:limit:${limit}`;
+		}
+		if (offset !== undefined) {
+			cacheKey += `:offset:${offset}`;
+		}
+		Logger.log('Cache Character List', { cacheKey, characterList });
+		await this.service.setKey(cacheKey, characterList);
 	}
 
 	@Span('cacheCharacterById')
@@ -27,14 +38,12 @@ export class CharactersCache {
 		character_id: string,
 		character: CharacterResponse,
 	): Promise<void> {
+		const cacheKey = 'warcraft:characters:characterid:' + character_id;
 		Logger.log('Cache Character By Character Id', {
 			character_id,
 			character,
 		});
-		await this.service.setKey(
-			'warcraft:characters:characterid:' + character_id,
-			character,
-		);
+		await this.service.setKey(cacheKey, character);
 	}
 
 	@Span('cacheCharactersByGuild')
@@ -42,11 +51,9 @@ export class CharactersCache {
 		guild: string,
 		characters: CharactersResponse,
 	): Promise<void> {
+		const cacheKey = 'warcraft:characters:guild:' + guild;
 		Logger.log('Cache Characters By Guild', { guild, characters });
-		await this.service.setKey(
-			'warcraft:characters:guild:' + guild,
-			characters,
-		);
+		await this.service.setKey(cacheKey, characters);
 	}
 
 	@Span('cacheCharactersByClass')
@@ -58,10 +65,8 @@ export class CharactersCache {
 			class: character_class,
 			characters,
 		});
-		await this.service.setKey(
-			'warcraft:characters:class:' + character_class,
-			characters,
-		);
+		const cacheKey = 'warcraft:characters:class:' + character_class;
+		await this.service.setKey(cacheKey, characters);
 	}
 
 	@Span('cacheCharactersByRace')
@@ -73,10 +78,8 @@ export class CharactersCache {
 			race,
 			characters,
 		});
-		await this.service.setKey(
-			'warcraft:characters:race:' + race,
-			characters,
-		);
+		const cacheKey = 'warcraft:characters:race:' + race;
+		await this.service.setKey(cacheKey, characters);
 	}
 
 	@Span('cacheCharactersByFaction')
@@ -88,10 +91,8 @@ export class CharactersCache {
 			faction,
 			characters,
 		});
-		await this.service.setKey(
-			'warcraft:characters:faction:' + faction,
-			characters,
-		);
+		const cacheKey = 'warcraft:characters:faction:' + faction;
+		await this.service.setKey(cacheKey, characters);
 	}
 
 	@Span('removeCache')
