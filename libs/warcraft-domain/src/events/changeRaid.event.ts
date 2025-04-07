@@ -5,7 +5,8 @@ export class ChangeRaidEvent implements DomainEvent {
 	readonly event_name = 'ChangeRaid';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly raid: Nullable<string>,
+		public readonly old_raid: Nullable<string>,
 	) {}
 }

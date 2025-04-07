@@ -5,7 +5,8 @@ export class ChangeAvatarEvent implements DomainEvent {
 	readonly event_name = 'ChangeAvatar';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly avatar: Nullable<string>,
+		public readonly old_avatar: Nullable<string>,
 	) {}
 }

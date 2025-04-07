@@ -6,6 +6,7 @@ import { Span } from 'nestjs-otel';
 import { Job } from 'bullmq';
 import { Origins } from 'blizzard.js/dist/endpoints';
 import { CharacterModel } from './character.model';
+import { Nullable } from '@azkaban/shared';
 
 @Processor('warcraft-character')
 export class CharacterProcessor extends WorkerHost {
@@ -22,10 +23,11 @@ export class CharacterProcessor extends WorkerHost {
 		region: string;
 		realm: string;
 		name: string;
+		guild: Nullable<string>;
 	}) {
 		try {
-			const { region, realm, name } = data;
-			Logger.log('onGetCharacterFromApi', { region, realm, name });
+			const { region, realm, name, guild } = data;
+			Logger.log('onGetCharacterFromApi', { region, realm, name, guild });
 			await this.apiService.setApiClient(region as Origins);
 			return await this.apiService.getCharacter({ realm, name });
 		} catch (error) {
@@ -35,9 +37,13 @@ export class CharacterProcessor extends WorkerHost {
 	}
 
 	@Span('onCharacterUpdate')
-	private async onCharacterUpdate(id: number, data: CharacterModel) {
+	private async onCharacterUpdate(
+		id: number,
+		old_guild: Nullable<string>,
+		data: CharacterModel,
+	) {
 		try {
-			Logger.log('onCharacterUpdate', { id, data });
+			Logger.log('onCharacterUpdate', { id, old_guild, data });
 			const updatePayload = {
 				display_realm: data.realm.name,
 				display_name: data.name,
@@ -53,6 +59,8 @@ export class CharacterProcessor extends WorkerHost {
 					data.last_login_timestamp !== null
 						? new Date(data.last_login_timestamp)
 						: null,
+				old_guild:
+					data.guild.name !== old_guild ? old_guild : undefined,
 			};
 			Logger.log('updatePayload', updatePayload);
 			return await this.service.updateCharacter(id, updatePayload);
@@ -65,7 +73,13 @@ export class CharacterProcessor extends WorkerHost {
 	@Span('process')
 	async process(
 		job: Job<
-			{ id: number; region: string; realm: string; name: string },
+			{
+				id: number;
+				region: string;
+				realm: string;
+				name: string;
+				guild: Nullable<string>;
+			},
 			unknown,
 			string
 		>,
@@ -77,14 +91,24 @@ export class CharacterProcessor extends WorkerHost {
 	@OnWorkerEvent('completed')
 	async onCompleted(
 		job: Job<
-			{ id: number; region: string; realm: string; name: string },
+			{
+				id: number;
+				region: string;
+				realm: string;
+				name: string;
+				guild: Nullable<string>;
+			},
 			CharacterModel,
 			string
 		>,
 	) {
 		try {
 			Logger.log('Job completed', job.id, job.returnvalue);
-			return await this.onCharacterUpdate(job.data.id, job.returnvalue);
+			return await this.onCharacterUpdate(
+				job.data.id,
+				job.data.guild,
+				job.returnvalue,
+			);
 		} catch (error) {
 			Logger.error(error);
 			return await this.service.deleteCharacter(job.data.id);

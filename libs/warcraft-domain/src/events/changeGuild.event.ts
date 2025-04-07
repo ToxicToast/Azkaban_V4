@@ -5,7 +5,8 @@ export class ChangeGuildEvent implements DomainEvent {
 	readonly event_name = 'ChangeGuild';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly guild: Nullable<string>,
+		public readonly old_guild: Nullable<string>,
 	) {}
 }

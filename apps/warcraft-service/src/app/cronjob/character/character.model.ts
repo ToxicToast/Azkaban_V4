@@ -25,9 +25,3 @@ export interface CharacterModel {
 	last_login_timestamp: number;
 	equipped_item_level: number;
 }
-
-export interface MythicModel {
-	current_mythic_rating: {
-		rating: string;
-	};
-}

@@ -5,7 +5,8 @@ export class ChangeGenderEvent implements DomainEvent {
 	readonly event_name = 'ChangeGender';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly gender: Nullable<string>,
+		public readonly old_gender: Nullable<string>,
 	) {}
 }

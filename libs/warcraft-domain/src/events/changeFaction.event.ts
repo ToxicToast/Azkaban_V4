@@ -5,7 +5,8 @@ export class ChangeFactionEvent implements DomainEvent {
 	readonly event_name = 'ChangeFaction';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly faction: Nullable<string>,
+		public readonly old_faction: Nullable<string>,
 	) {}
 }

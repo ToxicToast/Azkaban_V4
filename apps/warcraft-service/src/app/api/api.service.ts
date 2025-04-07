@@ -6,11 +6,9 @@ import { WoWClient } from 'blizzard.js/dist/wow';
 import { AccessToken } from 'blizzard.js/dist/core';
 import { RpcException } from '@nestjs/microservices';
 import { Span } from 'nestjs-otel';
-import {
-	CharacterModel,
-	MythicModel,
-} from '../cronjob/character/character.model';
+import { CharacterModel } from '../cronjob/character/character.model';
 import { AssetsModel } from '../cronjob/assets/assets.model';
+import { MythicModel } from '../cronjob/mythic/mythic.model';
 
 @Injectable()
 export class ApiService {
@@ -57,56 +55,6 @@ export class ApiService {
 			});
 		}
 		return response?.data ?? null;
-	}
-
-	@Span('getCharacterInsetPath')
-	async getCharacterInsetPath(data: {
-		name: string;
-		realm: string;
-	}): Promise<Nullable<AssetsModel>> {
-		// TODO: Implement Data Body Type & Character Selection
-		const response = await this.blizzardInstance?.characterMedia({
-			realm: data.realm,
-			name: data.name,
-		});
-		if (response.status !== 200) {
-			Logger.error('Character not found', data);
-			throw new RpcException({
-				status: HttpStatus.NOT_FOUND,
-				message: 'Character not found',
-				raw: data,
-			});
-		}
-		const inset =
-			response?.data?.assets?.find((item) => item.key === 'inset')
-				?.value ?? null;
-		Logger.debug('Get Inset', inset);
-		return inset;
-	}
-
-	@Span('getCharacterInsetPath')
-	async getCharacterAvatarPath(data: {
-		name: string;
-		realm: string;
-	}): Promise<Nullable<AssetsModel>> {
-		const response = await this.blizzardInstance?.characterMedia({
-			realm: data.realm,
-			name: data.name,
-		});
-		if (response.status !== 200) {
-			Logger.error('Character not found', data);
-			throw new RpcException({
-				status: HttpStatus.NOT_FOUND,
-				message: 'Character not found',
-				raw: data,
-			});
-		}
-
-		const avatar =
-			response?.data?.assets?.find((item) => item.key === 'avatar')
-				?.value ?? null;
-		Logger.debug('Get Avatar', avatar);
-		return avatar;
 	}
 
 	@Span('getCharacterAssets')

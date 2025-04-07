@@ -5,7 +5,8 @@ export class ChangeItemLevelEvent implements DomainEvent {
 	readonly event_name = 'ChangeItemLevel';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly item_level: number,
+		public readonly old_item_level: number,
 	) {}
 }

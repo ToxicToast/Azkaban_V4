@@ -2,13 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { CronjobService } from '../cronjob.service';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { Span } from 'nestjs-otel';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
-export class CharacterCron {
+export class MythicCron {
 	constructor(
-		@InjectQueue('warcraft-character') private readonly queue: Queue,
+		@InjectQueue('warcraft-mythic') private readonly queue: Queue,
 		private readonly service: CronjobService,
 	) {}
 
@@ -16,21 +16,20 @@ export class CharacterCron {
 	async runQueue() {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
-			const { id, region, realm, name, guild } = character;
-			await this.queue.add('warcraft-character', {
+			const { id, region, realm, name } = character;
+			await this.queue.add('warcraft-mythic', {
 				id,
 				region,
 				realm,
 				name,
-				guild,
 			});
 		}
 	}
 
 	@Span('updateCharactersCron')
 	@Cron(CronExpression.EVERY_HOUR)
-	async updateCharactersCron() {
-		Logger.log('Running character cronjob');
+	async updateMythicCron() {
+		Logger.log('Running mythic cronjob');
 		await this.runQueue();
 	}
 }

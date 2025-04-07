@@ -5,7 +5,8 @@ export class ChangeClassEvent implements DomainEvent {
 	readonly event_name = 'ChangeClass';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly character_class: Nullable<string>,
+		public readonly old_character_class: Nullable<string>,
 	) {}
 }

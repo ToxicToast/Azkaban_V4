@@ -5,7 +5,8 @@ export class ChangeLoggedInEvent implements DomainEvent {
 	readonly event_name = 'ChangeLoggedIn';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly loggedin_at: Nullable<Date>,
+		public readonly old_loggedin_at: Nullable<Date>,
 	) {}
 }

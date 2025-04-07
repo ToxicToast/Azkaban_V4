@@ -5,7 +5,8 @@ export class ChangeRaceEvent implements DomainEvent {
 	readonly event_name = 'ChangeRace';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly race: Nullable<string>,
+		public readonly old_race: Nullable<string>,
 	) {}
 }

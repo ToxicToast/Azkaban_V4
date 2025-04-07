@@ -5,7 +5,8 @@ export class ChangeRankEvent implements DomainEvent {
 	readonly event_name = 'ChangeRank';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly rank: Nullable<number>,
+		public readonly old_rank: Nullable<number>,
 	) {}
 }

@@ -5,7 +5,8 @@ export class ChangeInsetEvent implements DomainEvent {
 	readonly event_name = 'ChangeInset';
 
 	constructor(
-		public readonly aggregate_id: number,
+		public readonly aggregate_id: string,
 		public readonly inset: Nullable<string>,
+		public readonly old_inset: Nullable<string>,
 	) {}
 }
