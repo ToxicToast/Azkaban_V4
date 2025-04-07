@@ -69,8 +69,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 		),
 		ApiModule,
 		CharactersModule,
-		CronjobModule,
 		GuildsModule,
+		CronjobModule,
 	],
 	controllers: [VersionController],
 })

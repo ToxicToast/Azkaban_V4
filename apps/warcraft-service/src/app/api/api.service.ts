@@ -8,9 +8,9 @@ import { RpcException } from '@nestjs/microservices';
 import { Span } from 'nestjs-otel';
 import {
 	CharacterModel,
-	AssetsModel,
 	MythicModel,
 } from '../cronjob/character/character.model';
+import { AssetsModel } from '../cronjob/assets/assets.model';
 
 @Injectable()
 export class ApiService {
@@ -107,6 +107,26 @@ export class ApiService {
 				?.value ?? null;
 		Logger.debug('Get Avatar', avatar);
 		return avatar;
+	}
+
+	@Span('getCharacterAssets')
+	async getCharacterAssets(data: {
+		name: string;
+		realm: string;
+	}): Promise<Nullable<AssetsModel>> {
+		const response = await this.blizzardInstance?.characterMedia({
+			realm: data.realm,
+			name: data.name,
+		});
+		if (response.status !== 200) {
+			Logger.error('Character not found', data);
+			throw new RpcException({
+				status: HttpStatus.NOT_FOUND,
+				message: 'Character not found',
+				raw: data,
+			});
+		}
+		return response?.data ?? [];
 	}
 
 	@Span('getGuildRoster')

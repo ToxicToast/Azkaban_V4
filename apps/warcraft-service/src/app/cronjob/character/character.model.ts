@@ -26,13 +26,6 @@ export interface CharacterModel {
 	equipped_item_level: number;
 }
 
-export interface AssetsModel {
-	assets: Array<{
-		key: string;
-		value: string;
-	}>;
-}
-
 export interface MythicModel {
 	current_mythic_rating: {
 		rating: string;
