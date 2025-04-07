@@ -4,11 +4,16 @@ import { CharacterDAO } from '../../dao';
 import { Nullable, Optional, UuidHelper } from '@azkaban/shared';
 import { RpcException } from '@nestjs/microservices';
 import { CreateCharacterDTO, UpdateCharacterDTO } from '../../dto';
+import { Logger } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 export class CharacterService {
 	private readonly domainService: DomainService;
 
-	constructor(private readonly repository: CharacterRepository) {
+	constructor(
+		private readonly repository: CharacterRepository,
+		private readonly eventEmitter: EventEmitter2,
+	) {
 		this.domainService = new DomainService(this.repository);
 	}
 
@@ -146,6 +151,11 @@ export class CharacterService {
 			character_id,
 		});
 		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
 			return result.value;
 		} else {
 			throw new RpcException({
@@ -160,11 +170,50 @@ export class CharacterService {
 		id: number,
 		data: UpdateCharacterDTO,
 	): Promise<CharacterDAO> {
+		const {
+			display_realm,
+			display_name,
+			gender,
+			faction,
+			race,
+			class: character_class,
+			spec,
+			level,
+			item_level,
+			guild,
+			rank,
+			inset,
+			avatar,
+			mythic,
+			raid,
+			loggedin_at,
+		} = data;
+		Logger.log('CharacterUpdate', { id, data });
 		const result = await this.domainService.updateCharacter({
 			id,
-			...data,
+			display_realm,
+			display_name,
+			gender,
+			faction,
+			race,
+			class: character_class,
+			spec,
+			level,
+			item_level,
+			guild,
+			rank,
+			inset,
+			avatar,
+			mythic,
+			raid,
+			loggedin_at,
 		});
 		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
 			return result.value;
 		} else {
 			throw new RpcException({
@@ -178,6 +227,11 @@ export class CharacterService {
 	async deleteCharacter(id: number): Promise<CharacterDAO> {
 		const result = await this.domainService.deleteCharacter(id);
 		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
 			return result.value;
 		} else {
 			throw new RpcException({
@@ -191,6 +245,11 @@ export class CharacterService {
 	async restoreCharacter(id: number): Promise<CharacterDAO> {
 		const result = await this.domainService.restoreCharacter(id);
 		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
 			return result.value;
 		} else {
 			throw new RpcException({
@@ -204,6 +263,11 @@ export class CharacterService {
 	async activateCharacter(id: number): Promise<CharacterDAO> {
 		const result = await this.domainService.activateCharacter(id);
 		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
 			return result.value;
 		} else {
 			throw new RpcException({
@@ -217,6 +281,11 @@ export class CharacterService {
 	async deactivateCharacter(id: number): Promise<CharacterDAO> {
 		const result = await this.domainService.deactivateCharacter(id);
 		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
 			return result.value;
 		} else {
 			throw new RpcException({

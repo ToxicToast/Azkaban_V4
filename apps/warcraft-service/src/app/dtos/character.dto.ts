@@ -38,20 +38,22 @@ export interface CharacterCreateDTO {
 
 export interface CharacterUpdateDTO {
 	id: number;
-	display_realm?: Optional<Nullable<string>>;
-	display_name?: Optional<Nullable<string>>;
-	gender?: Optional<Nullable<string>>;
-	faction?: Optional<Nullable<string>>;
-	race?: Optional<Nullable<string>>;
-	class?: Optional<Nullable<string>>;
-	spec?: Optional<Nullable<string>>;
-	level?: Optional<number>;
-	item_level?: Optional<number>;
-	guild?: Optional<Nullable<string>>;
-	rank?: Optional<Nullable<number>>;
-	inset?: Optional<Nullable<string>>;
-	avatar?: Optional<Nullable<string>>;
-	mythic?: Optional<number>;
-	raid?: Optional<Nullable<string>>;
-	loggedin_at?: Optional<Nullable<Date>>;
+	data?: {
+		display_realm?: Optional<Nullable<string>>;
+		display_name?: Optional<Nullable<string>>;
+		gender?: Optional<Nullable<string>>;
+		faction?: Optional<Nullable<string>>;
+		race?: Optional<Nullable<string>>;
+		class?: Optional<Nullable<string>>;
+		spec?: Optional<Nullable<string>>;
+		level?: Optional<number>;
+		item_level?: Optional<number>;
+		guild?: Optional<Nullable<string>>;
+		rank?: Optional<Nullable<number>>;
+		inset?: Optional<Nullable<string>>;
+		avatar?: Optional<Nullable<string>>;
+		mythic?: Optional<number>;
+		raid?: Optional<Nullable<string>>;
+		loggedin_at?: Optional<Nullable<Date>>;
+	};
 }

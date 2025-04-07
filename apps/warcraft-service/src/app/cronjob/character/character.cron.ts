@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { CronjobService } from '../cronjob.service';
@@ -29,6 +29,7 @@ export class CharacterCron {
 	@Span('updateCharactersCron')
 	@Cron(CronExpression.EVERY_HOUR)
 	async updateCharactersCron() {
+		Logger.log('Running character cronjob');
 		await this.runQueue();
 	}
 }

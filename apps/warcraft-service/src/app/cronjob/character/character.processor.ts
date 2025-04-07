@@ -54,6 +54,7 @@ export class CharacterProcessor extends WorkerHost {
 						? new Date(data.last_login_timestamp)
 						: null,
 			};
+			Logger.log('updatePayload', updatePayload);
 			return await this.service.updateCharacter(id, updatePayload);
 		} catch (error) {
 			Logger.error(error);

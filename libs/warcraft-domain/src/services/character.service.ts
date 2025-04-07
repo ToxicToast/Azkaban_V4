@@ -2,7 +2,7 @@ import { CharacterFactory } from '../factories';
 import { CharacterRepository } from '../repositories';
 import { CharacterAnemic } from '../anemics';
 import { CharacterData, UpdataCharacterData } from '../data';
-import { Nullable, Optional, Result } from '@azkaban/shared';
+import { DomainEvent, Nullable, Optional, Result } from '@azkaban/shared';
 
 export class CharacterService {
 	private readonly factory: CharacterFactory = new CharacterFactory();
@@ -11,10 +11,11 @@ export class CharacterService {
 
 	private async save(
 		anemic: CharacterAnemic,
+		events: Array<DomainEvent>,
 	): Promise<Result<CharacterAnemic>> {
 		try {
 			const result = await this.repository.save(anemic);
-			return Result.ok<CharacterAnemic>(result);
+			return Result.ok<CharacterAnemic>(result, events);
 		} catch (error) {
 			return Result.fail<CharacterAnemic>(error, 500);
 		}
@@ -119,8 +120,10 @@ export class CharacterService {
 	): Promise<Result<CharacterAnemic>> {
 		try {
 			const aggregate = this.factory.createDomain(data);
-			const character = aggregate.toAnemic().character;
-			return await this.save(character);
+			const anemic = aggregate.toAnemic();
+			const character = anemic.character;
+			const events = anemic.events;
+			return await this.save(character, events);
 		} catch (error) {
 			return Result.fail<CharacterAnemic>(error, 500);
 		}
@@ -199,8 +202,10 @@ export class CharacterService {
 				if (loggedin_at !== undefined) {
 					aggregate.changeLoggedIn(loggedin_at);
 				}
-				const character = aggregate.toAnemic().character;
-				return await this.save(character);
+				const anemic = aggregate.toAnemic();
+				const character = anemic.character;
+				const events = anemic.events;
+				return await this.save(character, events);
 			} else {
 				return Result.fail<CharacterAnemic>(result.errorValue, 404);
 			}
@@ -215,8 +220,10 @@ export class CharacterService {
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
 				aggregate.deleteCharacter();
-				const character = aggregate.toAnemic().character;
-				return await this.save(character);
+				const anemic = aggregate.toAnemic();
+				const character = anemic.character;
+				const events = anemic.events;
+				return await this.save(character, events);
 			}
 			return Result.fail<CharacterAnemic>(result.errorValue, 404);
 		} catch (error) {
@@ -230,8 +237,10 @@ export class CharacterService {
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
 				aggregate.restoreCharacter();
-				const character = aggregate.toAnemic().character;
-				return await this.save(character);
+				const anemic = aggregate.toAnemic();
+				const character = anemic.character;
+				const events = anemic.events;
+				return await this.save(character, events);
 			}
 			return Result.fail<CharacterAnemic>(result.errorValue, 404);
 		} catch (error) {
@@ -245,8 +254,10 @@ export class CharacterService {
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
 				aggregate.activateCharacter();
-				const character = aggregate.toAnemic().character;
-				return await this.save(character);
+				const anemic = aggregate.toAnemic();
+				const character = anemic.character;
+				const events = anemic.events;
+				return await this.save(character, events);
 			}
 			return Result.fail<CharacterAnemic>(result.errorValue, 404);
 		} catch (error) {
@@ -260,8 +271,10 @@ export class CharacterService {
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
 				aggregate.deactivateCharacter();
-				const character = aggregate.toAnemic().character;
-				return await this.save(character);
+				const anemic = aggregate.toAnemic();
+				const character = anemic.character;
+				const events = anemic.events;
+				return await this.save(character, events);
 			}
 			return Result.fail<CharacterAnemic>(result.errorValue, 404);
 		} catch (error) {

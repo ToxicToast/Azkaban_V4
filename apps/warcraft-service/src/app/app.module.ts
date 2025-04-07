@@ -4,10 +4,12 @@ import { ApiModule } from './api/api.module';
 import { CronjobModule } from './cronjob/cronjob.module';
 import { GuildsModule } from './guilds/guilds.module';
 import {
+	AzkabanSSETopicArray,
 	BullModule,
 	CacheModule,
 	DatabaseModule,
 	HealthModule,
+	KafkaModule,
 	LoggerModule,
 	MetricsModule,
 	VersionModule,
@@ -15,6 +17,7 @@ import {
 import { AppConfig } from '../config';
 import { VersionController } from './version.controller';
 import { CharacterEntity } from '@azkaban/warcraft-infrastructure';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
 	imports: [
@@ -42,6 +45,28 @@ import { CharacterEntity } from '@azkaban/warcraft-infrastructure';
 		MetricsModule.forRoot(false, AppConfig.name),
 		VersionModule.forRoot(true, AppConfig.environment),
 		BullModule.forRoot(true, AppConfig.redis, 10),
+		EventEmitterModule.forRoot({
+			wildcard: false,
+			delimiter: '.',
+			newListener: false,
+			removeListener: false,
+			maxListeners: 10,
+			verboseMemoryLeak: false,
+			ignoreErrors: false,
+		}),
+		KafkaModule.forRoot(
+			true,
+			{
+				clientId: AppConfig.name,
+				groupId: AppConfig.name + '-group',
+				brokerHost: AppConfig.broker.brokerHost,
+				brokerPort: AppConfig.broker.brokerPort,
+				brokerUsername: AppConfig.broker.brokerUsername,
+				brokerPassword: AppConfig.broker.brokerPassword,
+				withSasl: AppConfig.environment !== 'local',
+			},
+			[...AzkabanSSETopicArray],
+		),
 		ApiModule,
 		CharactersModule,
 		CronjobModule,

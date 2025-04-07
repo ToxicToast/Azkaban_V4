@@ -6,7 +6,7 @@ import {
 	CreateCharacterDTO,
 	UpdateCharacterDTO,
 } from '@azkaban/warcraft-infrastructure';
-import { CreateCommand, ListCommand } from './commands';
+import { CreateCommand, ListCommand, UpdateCommand } from './commands';
 
 @Injectable()
 export class CharacterService {
@@ -44,6 +44,7 @@ export class CharacterService {
 	@Span(WarcraftCharacterTopics.UPDATE + '.dementor')
 	async updateCharacter(id: number, data: UpdateCharacterDTO) {
 		Logger.log('Update Character', { id, data });
+		return await this.commandBus.execute(new UpdateCommand(id, data));
 	}
 
 	@Span(WarcraftCharacterTopics.DELETE + '.dementor')
@@ -54,5 +55,15 @@ export class CharacterService {
 	@Span(WarcraftCharacterTopics.RESTORE + '.dementor')
 	async restoreCharacter(id: number) {
 		Logger.log('Restore Character', { id });
+	}
+
+	@Span(WarcraftCharacterTopics.ACTIVATE + '.dementor')
+	async activateCharacter(id: number) {
+		Logger.log('Activate Character', { id });
+	}
+
+	@Span(WarcraftCharacterTopics.DEACTIVATE + '.dementor')
+	async deactivateCharacter(id: number) {
+		Logger.log('Deactivate Character', { id });
 	}
 }

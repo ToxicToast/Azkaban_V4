@@ -6,6 +6,7 @@ import {
 	UpdateCharacterDTO,
 } from '@azkaban/warcraft-infrastructure';
 import { Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class CronjobService {
@@ -15,11 +16,15 @@ export class CronjobService {
 	constructor(
 		@Inject('CHARACTER_REPOSITORY')
 		private readonly characterEntity: Repository<CharacterEntity>,
+		private readonly eventEmitter: EventEmitter2,
 	) {
 		this.characterRepository = new CharacterRepository(
 			this.characterEntity,
 		);
-		this.characterService = new CharacterService(this.characterRepository);
+		this.characterService = new CharacterService(
+			this.characterRepository,
+			this.eventEmitter,
+		);
 	}
 
 	async getAllCharacters() {

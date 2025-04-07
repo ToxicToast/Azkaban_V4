@@ -19,6 +19,7 @@ import {
 	CharacterService as BaseService,
 } from '@azkaban/warcraft-infrastructure';
 import { Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class CharactersService {
@@ -29,12 +30,14 @@ export class CharactersService {
 		private readonly cache: CharactersCache,
 		@Inject('CHARACTER_REPOSITORY')
 		private readonly characterRepository: Repository<CharacterEntity>,
+		private readonly eventEmitter: EventEmitter2,
 	) {
 		this.infrastructureRepository = new CharacterRepository(
 			this.characterRepository,
 		);
 		this.infrastructureService = new BaseService(
 			this.infrastructureRepository,
+			this.eventEmitter,
 		);
 	}
 
@@ -146,7 +149,10 @@ export class CharactersService {
 	async characterUpdate(data: CharacterUpdateDTO) {
 		Logger.log('CharacterUpdate', data);
 		await this.cache.removeCache();
-		return await this.infrastructureService.updateCharacter(data.id, data);
+		return await this.infrastructureService.updateCharacter(
+			data.id,
+			data.data,
+		);
 	}
 
 	@Span('characterDelete')

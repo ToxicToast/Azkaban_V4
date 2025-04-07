@@ -5,6 +5,7 @@ import {
 	Get,
 	Logger,
 	Param,
+	Patch,
 	Post,
 	Put,
 	Query,
@@ -104,10 +105,30 @@ export class CharacterController {
 	}
 
 	@Span(WarcraftCharacterTopics.RESTORE + '.dementor')
-	@Put('/restore/:id')
+	@Patch('/restore/:id')
 	async restoreCharacter(@Param('id') id: number) {
 		Logger.log('Restore Character', { id });
 		return await this.service.restoreCharacter(id).catch((error) => {
+			Logger.error(error);
+			throw error;
+		});
+	}
+
+	@Span(WarcraftCharacterTopics.ACTIVATE + '.dementor')
+	@Patch('/activate/:id')
+	async activateCharacter(@Param('id') id: number) {
+		Logger.log('Activate Character', { id });
+		return await this.service.activateCharacter(id).catch((error) => {
+			Logger.error(error);
+			throw error;
+		});
+	}
+
+	@Span(WarcraftCharacterTopics.RESTORE + '.dementor')
+	@Patch('/deactivate/:id')
+	async deactivateCharacter(@Param('id') id: number) {
+		Logger.log('Deactivate Character', { id });
+		return await this.service.deactivateCharacter(id).catch((error) => {
 			Logger.error(error);
 			throw error;
 		});
