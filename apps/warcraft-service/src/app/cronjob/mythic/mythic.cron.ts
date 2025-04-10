@@ -24,12 +24,13 @@ export class MythicCron {
 				name,
 			});
 		}
+		return characters;
 	}
 
 	@Span('updateCharactersCron')
 	@Cron(CronExpression.EVERY_HOUR)
 	async updateMythicCron() {
 		Logger.log('Running mythic cronjob');
-		await this.runQueue();
+		return await this.runQueue();
 	}
 }

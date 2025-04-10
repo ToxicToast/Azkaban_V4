@@ -24,12 +24,13 @@ export class AssetsCron {
 				name,
 			});
 		}
+		return characters;
 	}
 
 	@Span('updateAssetsCron')
 	@Cron(CronExpression.EVERY_HOUR)
 	async updateAssetsCron() {
 		Logger.log('Running assets cronjob');
-		await this.runQueue();
+		return await this.runQueue();
 	}
 }

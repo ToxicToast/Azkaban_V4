@@ -25,12 +25,13 @@ export class CharacterCron {
 				guild,
 			});
 		}
+		return characters;
 	}
 
 	@Span('updateCharactersCron')
 	@Cron(CronExpression.EVERY_HOUR)
 	async updateCharactersCron() {
 		Logger.log('Running character cronjob');
-		await this.runQueue();
+		return await this.runQueue();
 	}
 }
