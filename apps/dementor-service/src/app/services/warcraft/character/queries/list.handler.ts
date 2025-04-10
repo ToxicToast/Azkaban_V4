@@ -1,5 +1,5 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ListCommand } from './list.command';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { ListQuery } from './list.query';
 import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
@@ -10,8 +10,8 @@ import {
 	WarcraftCharacterTopics,
 } from '@azkaban/shared';
 
-@CommandHandler(ListCommand)
-export class ListCommandHandler implements ICommandHandler<ListCommand> {
+@QueryHandler(ListQuery)
+export class ListQueryHandler implements IQueryHandler<ListQuery> {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 		private readonly circuit: CircuitService,
@@ -23,7 +23,7 @@ export class ListCommandHandler implements ICommandHandler<ListCommand> {
 		offset?: Optional<number>,
 	) {
 		const topic = WarcraftCharacterTopics.LIST;
-		return createCircuitBreaker<ListCommand>(
+		return createCircuitBreaker<ListQuery>(
 			{
 				limit,
 				offset,
@@ -52,8 +52,8 @@ export class ListCommandHandler implements ICommandHandler<ListCommand> {
 		return await this.createCircuitBreaker(limit, offset);
 	}
 
-	async execute(command: ListCommand) {
-		Logger.log(ListCommandHandler.name, command);
-		return await this.checkForCache(command.limit, command.offset);
+	async execute(query: ListQuery) {
+		Logger.log(ListQueryHandler.name, query);
+		return await this.checkForCache(query.limit, query.offset);
 	}
 }
