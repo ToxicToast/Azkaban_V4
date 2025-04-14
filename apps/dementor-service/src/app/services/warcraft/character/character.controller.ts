@@ -124,7 +124,7 @@ export class CharacterController {
 		});
 	}
 
-	@Span(WarcraftCharacterTopics.RESTORE + '.dementor')
+	@Span(WarcraftCharacterTopics.DEACTIVATE + '.dementor')
 	@Patch('/deactivate/:id')
 	async deactivateCharacter(@Param('id') id: number) {
 		Logger.log('Deactivate Character', { id });
