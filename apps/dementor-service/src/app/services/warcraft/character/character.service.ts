@@ -50,9 +50,7 @@ export class CharacterService {
 	@Span(WarcraftCharacterTopics.CREATE + '.dementor')
 	async createCharacter(data: CreateCharacterDTO) {
 		Logger.log('Create New Character', data);
-		return await this.commandBus.execute(
-			new CreateCommand(data.region, data.realm, data.name),
-		);
+		return await this.commandBus.execute(new CreateCommand(data));
 	}
 
 	@Span(WarcraftCharacterTopics.UPDATE + '.dementor')

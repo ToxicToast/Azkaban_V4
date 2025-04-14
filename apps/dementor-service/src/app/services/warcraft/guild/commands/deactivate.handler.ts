@@ -5,7 +5,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import {
 	CircuitService,
 	createCircuitBreaker,
-	WarcraftCharacterTopics,
+	WarcraftGuildTopics,
 } from '@azkaban/shared';
 
 @CommandHandler(DeactivateCommand)
@@ -18,7 +18,7 @@ export class DeactivateCommandHandler
 	) {}
 
 	private async createCircuitBreaker(command: DeactivateCommand) {
-		const topic = WarcraftCharacterTopics.DEACTIVATE;
+		const topic = WarcraftGuildTopics.DEACTIVATE;
 		return createCircuitBreaker<DeactivateCommand>(
 			command,
 			topic,

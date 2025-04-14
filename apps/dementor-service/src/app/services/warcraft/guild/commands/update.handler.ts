@@ -1,25 +1,23 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { DeactivateCommand } from './deactivate.command';
+import { UpdateCommand } from './update.command';
 import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	CircuitService,
 	createCircuitBreaker,
-	WarcraftCharacterTopics,
+	WarcraftGuildTopics,
 } from '@azkaban/shared';
 
-@CommandHandler(DeactivateCommand)
-export class DeactivateCommandHandler
-	implements ICommandHandler<DeactivateCommand>
-{
+@CommandHandler(UpdateCommand)
+export class UpdateCommandHandler implements ICommandHandler<UpdateCommand> {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 		private readonly circuit: CircuitService,
 	) {}
 
-	private async createCircuitBreaker(command: DeactivateCommand) {
-		const topic = WarcraftCharacterTopics.DEACTIVATE;
-		return createCircuitBreaker<DeactivateCommand>(
+	private async createCircuitBreaker(command: UpdateCommand) {
+		const topic = WarcraftGuildTopics.UPDATE;
+		return createCircuitBreaker<UpdateCommand>(
 			command,
 			topic,
 			this.circuit,
@@ -27,8 +25,8 @@ export class DeactivateCommandHandler
 		);
 	}
 
-	async execute(command: DeactivateCommand) {
-		Logger.log(DeactivateCommandHandler.name, command);
+	async execute(command: UpdateCommand) {
+		Logger.log(UpdateCommandHandler.name, command);
 		return await this.createCircuitBreaker(command);
 	}
 }

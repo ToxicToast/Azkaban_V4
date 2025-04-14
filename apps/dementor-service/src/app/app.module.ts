@@ -7,6 +7,7 @@ import {
 	LoggerModule,
 	MetricsModule,
 	WarcraftCharacterTopicArray,
+	WarcraftGuildTopicArray,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -62,6 +63,8 @@ import { JwtModule } from '@nestjs/jwt';
 				// Twitch Services
 				// Warcraft Services
 				...WarcraftCharacterTopicArray,
+				...WarcraftGuildTopicArray,
+				// Warhammer Services
 				// Versioning
 			],
 		),

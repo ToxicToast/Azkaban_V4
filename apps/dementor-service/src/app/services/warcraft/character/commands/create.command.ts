@@ -1,7 +1,5 @@
+import { CreateCharacterDTO } from '@azkaban/warcraft-infrastructure';
+
 export class CreateCommand {
-	constructor(
-		public readonly region: string,
-		public readonly realm: string,
-		public readonly name: string,
-	) {}
+	constructor(public readonly data: CreateCharacterDTO) {}
 }

@@ -17,7 +17,10 @@ import {
 } from '@azkaban/shared';
 import { GuildService } from './guild.service';
 import { Span } from 'nestjs-otel';
-import { CreateGuildDTO } from '@azkaban/warcraft-infrastructure';
+import {
+	CreateGuildDTO,
+	UpdateGuildDTO,
+} from '@azkaban/warcraft-infrastructure';
 
 @Controller(ControllerHelper('warcraft/guild'))
 export class GuildController {
@@ -68,7 +71,7 @@ export class GuildController {
 
 	@Span(WarcraftGuildTopics.UPDATE + '.dementor')
 	@Put('/:id')
-	async updateGuild(@Param('id') id: number, @Body() body: unknown) {
+	async updateGuild(@Param('id') id: number, @Body() body: UpdateGuildDTO) {
 		Logger.log('Update Guild', { id, body });
 		return await this.service.updateGuild(id, body).catch((error) => {
 			Logger.error(error);

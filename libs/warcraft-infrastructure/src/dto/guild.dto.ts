@@ -1,8 +1,13 @@
-import { Optional } from '@azkaban/shared';
+import { Nullable, Optional } from '@azkaban/shared';
 
 export interface CreateGuildDTO {
 	region: string;
 	realm: string;
 	name: string;
-	rank?: Optional<number>;
+}
+
+export interface UpdateGuildDTO {
+	faction?: Optional<Nullable<string>>;
+	member_count?: Optional<number>;
+	raid?: Optional<Nullable<string>>;
 }
