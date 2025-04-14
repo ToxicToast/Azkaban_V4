@@ -8,7 +8,7 @@ export interface CharacterData {
 	readonly rank?: Optional<number>;
 }
 
-export interface UpdataCharacterData {
+export interface UpdateCharacterData {
 	readonly id: number;
 	readonly display_realm?: Optional<Nullable<string>>;
 	readonly display_name?: Optional<Nullable<string>>;

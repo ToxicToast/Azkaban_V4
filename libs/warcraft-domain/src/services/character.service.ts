@@ -1,7 +1,7 @@
 import { CharacterFactory } from '../factories';
 import { CharacterRepository } from '../repositories';
 import { CharacterAnemic } from '../anemics';
-import { CharacterData, UpdataCharacterData } from '../data';
+import { CharacterData, UpdateCharacterData } from '../data';
 import { DomainEvent, Nullable, Optional, Result } from '@azkaban/shared';
 
 export class CharacterService {
@@ -130,7 +130,7 @@ export class CharacterService {
 	}
 
 	async updateCharacter(
-		data: UpdataCharacterData,
+		data: UpdateCharacterData,
 	): Promise<Result<CharacterAnemic>> {
 		try {
 			const result = await this.getCharacterById(data.id);

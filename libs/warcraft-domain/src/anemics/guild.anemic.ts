@@ -6,6 +6,7 @@ export interface GuildAnemic extends Anemic {
 	readonly realm: string;
 	readonly name: string;
 	readonly faction: Nullable<string>;
+	readonly raid: Nullable<string>;
 	readonly member_count: number;
 	readonly activated_at: Nullable<Date>;
 }

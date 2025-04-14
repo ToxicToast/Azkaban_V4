@@ -1,4 +1,4 @@
-import { DomainEvent, Nullable } from '@azkaban/shared';
+import { DomainEvent } from '@azkaban/shared';
 
 export class ChangeMythicEvent implements DomainEvent {
 	readonly occured_at = new Date();

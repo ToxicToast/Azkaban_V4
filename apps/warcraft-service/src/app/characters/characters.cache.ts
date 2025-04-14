@@ -29,8 +29,9 @@ export class CharactersCache {
 		id: number,
 		character: CharacterResponse,
 	): Promise<void> {
+		const cacheKey = 'warcraft:characters:id:' + id;
 		Logger.log('Cache Character By Id', { id, character });
-		await this.service.setKey('warcraft:characters:id:' + id, character);
+		await this.service.setKey(cacheKey, character);
 	}
 
 	@Span('cacheCharacterByCharacterId')
