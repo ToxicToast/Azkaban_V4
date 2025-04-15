@@ -1,23 +1,18 @@
 import { Module } from '@nestjs/common';
-import { CharactersModule } from './characters/characters.module';
-import { ApiModule } from './api/api.module';
-import { CronjobModule } from './cronjob/cronjob.module';
-import { GuildsModule } from './guilds/guilds.module';
 import {
 	AzkabanSSETopicArray,
 	BullModule,
 	CacheModule,
 	DatabaseModule,
-	HealthModule,
 	KafkaModule,
 	LoggerModule,
 	MetricsModule,
 	VersionModule,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
-import { VersionController } from './version.controller';
-import { CharacterEntity, GuildEntity } from '@azkaban/warcraft-infrastructure';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { UsersModule } from './users/users.module';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
 	imports: [
@@ -27,22 +22,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 			true,
 			AppConfig.environment,
 			AppConfig.database,
-			{
-				CharacterEntity,
-				GuildEntity,
-			},
-		),
-		DatabaseModule.forFeature(
-			true,
-			'CHARACTER_REPOSITORY',
-			CharacterEntity,
-		),
-		DatabaseModule.forFeature(true, 'GUILD_REPOSITORY', GuildEntity),
-		HealthModule.forRoot(
-			false,
-			AppConfig.health,
-			AppConfig.broker,
-			AppConfig.redis,
+			{},
 		),
 		MetricsModule.forRoot(false, AppConfig.name),
 		VersionModule.forRoot(true, AppConfig.environment),
@@ -69,11 +49,9 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 			},
 			[...AzkabanSSETopicArray],
 		),
-		ApiModule,
-		CharactersModule,
-		GuildsModule,
-		CronjobModule,
+		UsersModule,
+		GroupsModule,
 	],
-	controllers: [VersionController],
+	controllers: [],
 })
 export class AppModule {}

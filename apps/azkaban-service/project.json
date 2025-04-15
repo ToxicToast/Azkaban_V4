@@ -1,0 +1,50 @@
+{
+	"name": "azkaban-service",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/azkaban-service/src",
+	"projectType": "application",
+	"tags": ["scope:application"],
+	"targets": {
+		"build": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "webpack-cli build",
+				"args": ["node-env=production"]
+			},
+			"configurations": {
+				"development": {
+					"args": ["node-env=development"]
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"dependsOn": ["build"],
+			"options": {
+				"buildTarget": "azkaban-service:build",
+				"runBuildTargetDependencies": false
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "azkaban-service:build:development"
+				},
+				"production": {
+					"buildTarget": "azkaban-service:build:production"
+				}
+			}
+		},
+		"test": {
+			"options": {
+				"passWithNoTests": true
+			}
+		},
+		"docker-build": {
+			"dependsOn": ["build"],
+			"command": "docker build -f apps/azkaban-service/Dockerfile . -t toxictoast/azkaban:{args.VERSION}"
+		},
+		"docker-push": {
+			"command": "docker push toxictoast/azkaban:{args.VERSION}"
+		}
+	}
+}
