@@ -115,7 +115,7 @@ export class CharacterRepository implements DomainRepository {
 			order: {
 				id: 'DESC',
 			},
-			where: { class: guild },
+			where: { guild },
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -131,7 +131,7 @@ export class CharacterRepository implements DomainRepository {
 			order: {
 				id: 'DESC',
 			},
-			where: { class: character_id },
+			where: { character_id },
 		});
 		if (entity) {
 			return this.mapper.toDomain(entity);

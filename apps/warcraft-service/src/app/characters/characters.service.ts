@@ -58,7 +58,7 @@ export class CharactersService {
 	}
 
 	@Span('characterById')
-	async characterById(data: CharacterByIdDTO) {
+	async characterById(data: CharacterByIdDTO): Promise<CharacterDAO> {
 		Logger.log('CharacterById', data);
 		const character = await this.infrastructureService.getCharacterById(
 			data.id,
@@ -72,7 +72,9 @@ export class CharactersService {
 	}
 
 	@Span('characterByCharacterId')
-	async characterByCharacterId(data: CharacterByCharacterIdDTO) {
+	async characterByCharacterId(
+		data: CharacterByCharacterIdDTO,
+	): Promise<CharacterDAO> {
 		Logger.log('CharacterByCharacterId', data);
 		const character =
 			await this.infrastructureService.getCharacterByCharacterId(
@@ -90,7 +92,9 @@ export class CharactersService {
 	}
 
 	@Span('characterByGuild')
-	async characterByGuild(data: CharacterByGuildDTO) {
+	async characterByGuild(
+		data: CharacterByGuildDTO,
+	): Promise<Array<CharacterDAO>> {
 		Logger.log('characterByGuild', data);
 		const characters = await this.infrastructureService.getCharacterByGuild(
 			data.guild,
@@ -101,7 +105,9 @@ export class CharactersService {
 	}
 
 	@Span('characterByClass')
-	async characterByClass(data: CharacterByClassDTO) {
+	async characterByClass(
+		data: CharacterByClassDTO,
+	): Promise<Array<CharacterDAO>> {
 		Logger.log('characterByClass', data);
 		const characters =
 			await this.infrastructureService.getCharactersByClass(
@@ -116,7 +122,9 @@ export class CharactersService {
 	}
 
 	@Span('characterByRace')
-	async characterByRace(data: CharacterByRaceDTO) {
+	async characterByRace(
+		data: CharacterByRaceDTO,
+	): Promise<Array<CharacterDAO>> {
 		Logger.log('characterByRace', data);
 		const characters = await this.infrastructureService.getCharactersByRace(
 			data.race,
@@ -127,7 +135,9 @@ export class CharactersService {
 	}
 
 	@Span('characterByFaction')
-	async characterByFaction(data: CharacterByFactionDTO) {
+	async characterByFaction(
+		data: CharacterByFactionDTO,
+	): Promise<Array<CharacterDAO>> {
 		Logger.log('characterByFaction', data);
 		const characters =
 			await this.infrastructureService.getCharactersByFaction(
@@ -139,14 +149,14 @@ export class CharactersService {
 	}
 
 	@Span('characterCreate')
-	async characterCreate(data: CharacterCreateDTO) {
+	async characterCreate(data: CharacterCreateDTO): Promise<CharacterDAO> {
 		Logger.log('CharacterCreate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.createCharacter(data);
 	}
 
 	@Span('characterUpdate')
-	async characterUpdate(data: CharacterUpdateDTO) {
+	async characterUpdate(data: CharacterUpdateDTO): Promise<CharacterDAO> {
 		Logger.log('CharacterUpdate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.updateCharacter(
@@ -156,28 +166,28 @@ export class CharactersService {
 	}
 
 	@Span('characterDelete')
-	async characterDelete(data: CharacterByIdDTO) {
+	async characterDelete(data: CharacterByIdDTO): Promise<CharacterDAO> {
 		Logger.log('CharacterDelete', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.deleteCharacter(data.id);
 	}
 
 	@Span('characterRestore')
-	async characterRestore(data: CharacterByIdDTO) {
+	async characterRestore(data: CharacterByIdDTO): Promise<CharacterDAO> {
 		Logger.log('CharacterRestore', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.restoreCharacter(data.id);
 	}
 
 	@Span('characterActivate')
-	async characterActivate(data: CharacterByIdDTO) {
+	async characterActivate(data: CharacterByIdDTO): Promise<CharacterDAO> {
 		Logger.log('CharacterActivate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.activateCharacter(data.id);
 	}
 
 	@Span('characterDeactivate')
-	async characterDeactivate(data: CharacterByIdDTO) {
+	async characterDeactivate(data: CharacterByIdDTO): Promise<CharacterDAO> {
 		Logger.log('characterDeactivate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.deactivateCharacter(data.id);
