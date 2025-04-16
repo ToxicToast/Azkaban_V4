@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ClientKafka } from '@nestjs/microservices';
-import { AzkabanSSETopics } from '@azkaban/shared';
+import { AzkabanSSETopics, AzkabanWebhookTopics } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 
 @Injectable()
@@ -13,6 +13,20 @@ export class CharactersEvents {
 	@Span('SendToSSE')
 	private async sendToSSE(payload: unknown): Promise<void> {
 		await this.client.emit(AzkabanSSETopics.WARCRAFT, payload).toPromise();
+	}
+
+	@Span('SendToApiAlerts')
+	private async sendToApiAlerts(payload: unknown): Promise<void> {
+		await this.client
+			.emit(AzkabanWebhookTopics.APIALERTS, payload)
+			.toPromise();
+	}
+
+	@OnEvent('CreateCharacter')
+	async handleCreateCharacterEvent(payload: unknown) {
+		Logger.log('CreateCharacter event received', payload);
+		await this.sendToSSE(payload);
+		await this.sendToApiAlerts(payload);
 	}
 
 	@OnEvent('ChangeAvatar')

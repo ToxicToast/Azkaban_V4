@@ -5,6 +5,7 @@ import { CronjobModule } from './cronjob/cronjob.module';
 import { GuildsModule } from './guilds/guilds.module';
 import {
 	AzkabanSSETopicArray,
+	AzkabanWebhookTopicArray,
 	BullModule,
 	CacheModule,
 	DatabaseModule,
@@ -67,7 +68,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 				brokerPassword: AppConfig.broker.brokerPassword,
 				withSasl: AppConfig.environment !== 'local',
 			},
-			[...AzkabanSSETopicArray],
+			[...AzkabanSSETopicArray, ...AzkabanWebhookTopicArray],
 		),
 		ApiModule,
 		CharactersModule,
