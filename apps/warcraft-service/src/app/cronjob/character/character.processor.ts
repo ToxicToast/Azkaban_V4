@@ -111,7 +111,6 @@ export class CharacterProcessor extends WorkerHost {
 			);
 		} catch (error) {
 			Logger.error(error);
-			return await this.service.deleteCharacter(job.data.id);
 		}
 	}
 }
