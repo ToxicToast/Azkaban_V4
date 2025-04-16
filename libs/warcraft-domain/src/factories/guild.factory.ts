@@ -60,6 +60,7 @@ export class GuildFactory
 			null,
 			null,
 		);
+		domain.createGuild();
 		const uuid = UuidHelper.create().value;
 		return new GuildAggregate(uuid, domain);
 	}

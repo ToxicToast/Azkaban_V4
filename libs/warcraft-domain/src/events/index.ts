@@ -15,3 +15,5 @@ export * from './changeMythic.event';
 export * from './changeRaid.event';
 export * from './changeLoggedin.event';
 export * from './changeMemberCount.event';
+export * from './createCharacter.event';
+export * from './createGuild.event';

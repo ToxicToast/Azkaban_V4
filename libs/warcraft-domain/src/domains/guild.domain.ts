@@ -4,6 +4,7 @@ import {
 	ChangeFactionEvent,
 	ChangeMemberCountEvent,
 	ChangeRaidEvent,
+	CreateGuildEvent,
 } from '../events';
 
 export class GuildDomain extends AggregateRoot implements Domain<GuildAnemic> {
@@ -43,6 +44,12 @@ export class GuildDomain extends AggregateRoot implements Domain<GuildAnemic> {
 
 	toEvents(): Array<DomainEvent> {
 		return this.pullDomainEvents();
+	}
+
+	createGuild(): void {
+		this.addDomainEvent(
+			new CreateGuildEvent(this.guild_id, this.toAnemic()),
+		);
 	}
 
 	changeFaction(faction: Nullable<string>): void {

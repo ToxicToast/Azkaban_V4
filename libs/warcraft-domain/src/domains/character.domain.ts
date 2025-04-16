@@ -17,6 +17,7 @@ import {
 	ChangeRaidEvent,
 	ChangeRankEvent,
 	ChangeSpecEvent,
+	CreateCharacterEvent,
 } from '../events';
 
 export class CharacterDomain
@@ -87,6 +88,12 @@ export class CharacterDomain
 
 	toEvents(): Array<DomainEvent> {
 		return this.pullDomainEvents();
+	}
+
+	createCharacter(): void {
+		this.addDomainEvent(
+			new CreateCharacterEvent(this.character_id, this.toAnemic()),
+		);
 	}
 
 	changeDisplayRealm(display_realm: Nullable<string>): void {

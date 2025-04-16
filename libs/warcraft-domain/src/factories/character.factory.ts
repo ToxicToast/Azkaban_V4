@@ -109,6 +109,7 @@ export class CharacterFactory
 			null,
 			null,
 		);
+		domain.createCharacter();
 		const uuid = UuidHelper.create().value;
 		return new CharacterAggregate(uuid, domain);
 	}
