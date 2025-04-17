@@ -16,8 +16,16 @@ export class LoggerService implements BaseService {
 			format: winston.format.json(),
 			defaultMeta: {
 				service: this.serviceName,
+				date: new Date(),
 			},
-			transports: [new winston.transports.Console()],
+			transports: [
+				new winston.transports.Console({
+					format: winston.format.combine(
+						winston.format.colorize(),
+						winston.format.simple(),
+					),
+				}),
+			],
 		});
 	}
 
@@ -32,11 +40,11 @@ export class LoggerService implements BaseService {
 			: {};
 	}
 
-	log(message: any, context?: string) {
+	log(message: unknown, context?: string) {
 		this.logger.info({ message, context, ...this.getTraceContext() });
 	}
 
-	error(message: any, trace?: string, context?: string) {
+	error(message: unknown, trace?: string, context?: string) {
 		this.logger.error({
 			message,
 			trace,
@@ -45,15 +53,15 @@ export class LoggerService implements BaseService {
 		});
 	}
 
-	warn(message: any, context?: string) {
+	warn(message: unknown, context?: string) {
 		this.logger.warn({ message, context, ...this.getTraceContext() });
 	}
 
-	debug(message: any, context?: string) {
+	debug(message: unknown, context?: string) {
 		this.logger.debug({ message, context, ...this.getTraceContext() });
 	}
 
-	verbose(message: any, context?: string) {
+	verbose(message: unknown, context?: string) {
 		this.logger.verbose({ message, context, ...this.getTraceContext() });
 	}
 }
