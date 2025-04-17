@@ -16,7 +16,6 @@ export class LoggerService implements BaseService {
 			format: winston.format.json(),
 			defaultMeta: {
 				service: this.serviceName,
-				date: new Date(),
 			},
 			transports: [
 				new winston.transports.Console({
