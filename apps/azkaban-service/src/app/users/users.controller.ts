@@ -67,4 +67,11 @@ export class UsersController {
 		Logger.debug('Deactivate User', payload);
 		return null;
 	}
+
+	@Span(AzkabanUserTopics.ASSIGNGROUP + '.service')
+	@MessagePattern(AzkabanUserTopics.ASSIGNGROUP)
+	async assignGroup(@Payload() payload: unknown) {
+		Logger.debug('Assign Group to User', payload);
+		return null;
+	}
 }
