@@ -17,7 +17,7 @@ export class AssetsCron {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
 			const { id, region, realm, name, deleted_at } = character;
-			if (deleted_at !== null) {
+			if (deleted_at === null) {
 				Logger.log(`Add ${region}-${realm}-${name} to queue`);
 				await this.queue.add('warcraft-assets', {
 					id,

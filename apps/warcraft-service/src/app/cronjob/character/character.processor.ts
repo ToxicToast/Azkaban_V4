@@ -45,23 +45,26 @@ export class CharacterProcessor extends WorkerHost {
 	) {
 		try {
 			Logger.log('onCharacterUpdate', { id, old_guild, data });
+			//
+			const currentGuild = data.guild?.name ?? null;
+			//
 			const updatePayload = {
-				display_realm: data.realm.name,
-				display_name: data.name,
-				gender: data.gender.name,
-				faction: data.faction.name,
-				race: data.race.name,
-				class: data.character_class.name,
-				spec: data.active_spec.name,
+				display_realm: data.realm?.name ?? undefined,
+				display_name: data?.name ?? undefined,
+				gender: data.gender?.name ?? undefined,
+				faction: data.faction?.name ?? undefined,
+				race: data.race?.name ?? undefined,
+				class: data.character_class?.name ?? undefined,
+				spec: data.active_spec?.name ?? undefined,
 				level: data.level,
 				item_level: data.equipped_item_level,
-				guild: data.guild.name,
+				guild: currentGuild,
 				loggedin_at:
 					data.last_login_timestamp !== null
 						? new Date(data.last_login_timestamp)
 						: null,
-				old_guild:
-					data.guild.name !== old_guild ? old_guild : undefined,
+				old_guild: currentGuild !== old_guild ? old_guild : undefined,
+				rank: currentGuild === null ? null : undefined,
 			};
 			Logger.log('updatePayload', updatePayload);
 			return await this.service.updateCharacter(id, updatePayload);
@@ -113,7 +116,7 @@ export class CharacterProcessor extends WorkerHost {
 			);
 		} catch (error) {
 			Logger.error(error);
-			await this.service.deleteCharacter(job.data.id);
+			return await this.service.deleteCharacter(job.data.id);
 		}
 	}
 }
