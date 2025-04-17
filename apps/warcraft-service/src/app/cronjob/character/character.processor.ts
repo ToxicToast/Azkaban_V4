@@ -7,8 +7,9 @@ import { Job } from 'bullmq';
 import { Origins } from 'blizzard.js/dist/endpoints';
 import { CharacterModel } from './character.model';
 import { Nullable } from '@azkaban/shared';
+import { characterQueue } from './character.queue';
 
-@Processor('warcraft-character')
+@Processor(characterQueue)
 export class CharacterProcessor extends WorkerHost {
 	constructor(
 		private readonly apiService: ApiService,
@@ -103,7 +104,8 @@ export class CharacterProcessor extends WorkerHost {
 		>,
 	) {
 		try {
-			Logger.log('Job completed', job.id, job.returnvalue);
+			Logger.log('Job completed', job.id, job.returnvalue, job.data);
+			await this.service.restoreCharacter(job.data.id);
 			return await this.onCharacterUpdate(
 				job.data.id,
 				job.data.guild,
@@ -111,6 +113,7 @@ export class CharacterProcessor extends WorkerHost {
 			);
 		} catch (error) {
 			Logger.error(error);
+			await this.service.deleteCharacter(job.data.id);
 		}
 	}
 }

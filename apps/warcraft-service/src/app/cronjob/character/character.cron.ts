@@ -4,11 +4,12 @@ import { Queue } from 'bullmq';
 import { CronjobService } from '../cronjob.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Span } from 'nestjs-otel';
+import { characterQueue } from './character.queue';
 
 @Injectable()
 export class CharacterCron {
 	constructor(
-		@InjectQueue('warcraft-character') private readonly queue: Queue,
+		@InjectQueue(characterQueue) private readonly queue: Queue,
 		private readonly service: CronjobService,
 	) {}
 
@@ -17,7 +18,7 @@ export class CharacterCron {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
 			const { id, region, realm, name, guild } = character;
-			await this.queue.add('warcraft-character', {
+			await this.queue.add(characterQueue, {
 				id,
 				region,
 				realm,
@@ -29,7 +30,9 @@ export class CharacterCron {
 	}
 
 	@Span('updateCharactersCron')
-	@Cron(CronExpression.EVERY_HOUR)
+	@Cron(CronExpression.EVERY_HOUR, {
+		name: 'Update Warcraft Characters',
+	})
 	async updateCharactersCron() {
 		Logger.log('Running character cronjob');
 		return await this.runQueue();

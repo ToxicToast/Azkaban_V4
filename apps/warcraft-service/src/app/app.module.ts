@@ -13,6 +13,7 @@ import {
 	KafkaModule,
 	LoggerModule,
 	MetricsModule,
+	ScheduleModule,
 	VersionModule,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
@@ -70,6 +71,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 			},
 			[...AzkabanSSETopicArray, ...AzkabanWebhookTopicArray],
 		),
+		ScheduleModule.forRoot(true),
 		ApiModule,
 		CharactersModule,
 		GuildsModule,

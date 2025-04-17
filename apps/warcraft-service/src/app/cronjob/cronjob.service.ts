@@ -39,6 +39,10 @@ export class CronjobService {
 		return await this.characterService.deleteCharacter(id);
 	}
 
+	async restoreCharacter(id: number) {
+		return await this.characterService.restoreCharacter(id);
+	}
+
 	async activateCharacter(id: number) {
 		return await this.characterService.activateCharacter(id);
 	}

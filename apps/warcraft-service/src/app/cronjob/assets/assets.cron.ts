@@ -28,7 +28,9 @@ export class AssetsCron {
 	}
 
 	@Span('updateAssetsCron')
-	@Cron(CronExpression.EVERY_HOUR)
+	@Cron(CronExpression.EVERY_HOUR, {
+		name: 'Update Warcraft Assets',
+	})
 	async updateAssetsCron() {
 		Logger.log('Running assets cronjob');
 		return await this.runQueue();

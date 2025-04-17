@@ -27,8 +27,10 @@ export class MythicCron {
 		return characters;
 	}
 
-	@Span('updateCharactersCron')
-	@Cron(CronExpression.EVERY_HOUR)
+	@Span('updateMythicCron')
+	@Cron(CronExpression.EVERY_HOUR, {
+		name: 'Update Warcraft Mythic+',
+	})
 	async updateMythicCron() {
 		Logger.log('Running mythic cronjob');
 		return await this.runQueue();
