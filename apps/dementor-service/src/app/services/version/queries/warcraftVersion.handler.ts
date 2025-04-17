@@ -1,25 +1,27 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { IdQuery } from './id.query';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { WarcraftVersionQuery } from './warcraftVersion.query';
 import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	CacheService,
 	CircuitService,
 	createCircuitBreaker,
-	WarcraftCharacterTopics,
+	WarcraftTopics,
 } from '@azkaban/shared';
 
-@QueryHandler(IdQuery)
-export class IdQueryHandler implements IQueryHandler<IdQuery> {
+@QueryHandler(WarcraftVersionQuery)
+export class WarcraftVersionHandler
+	implements IQueryHandler<WarcraftVersionQuery>
+{
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 		private readonly circuit: CircuitService,
 		private readonly cache: CacheService,
 	) {}
 
-	private async createCircuitBreaker(query: IdQuery) {
-		const topic = WarcraftCharacterTopics.ID;
-		return createCircuitBreaker<IdQuery>(
+	private async createCircuitBreaker(query: WarcraftVersionQuery) {
+		const topic = WarcraftTopics.VERSION;
+		return createCircuitBreaker<WarcraftVersionQuery>(
 			query,
 			topic,
 			this.circuit,
@@ -27,8 +29,8 @@ export class IdQueryHandler implements IQueryHandler<IdQuery> {
 		);
 	}
 
-	private async checkForCache(query: IdQuery) {
-		const cacheKey = 'warcraft:characters:id:' + query.id;
+	private async checkForCache(query: WarcraftVersionQuery) {
+		const cacheKey = 'warcraft:version';
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);
@@ -36,8 +38,8 @@ export class IdQueryHandler implements IQueryHandler<IdQuery> {
 		return await this.createCircuitBreaker(query);
 	}
 
-	async execute(query: IdQuery) {
-		Logger.log(IdQueryHandler.name, query);
+	async execute(query: WarcraftVersionQuery) {
+		Logger.log(WarcraftVersionHandler.name, query);
 		return await this.checkForCache(query);
 	}
 }

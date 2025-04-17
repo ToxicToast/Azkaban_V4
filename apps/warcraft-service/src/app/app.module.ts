@@ -20,6 +20,7 @@ import { AppConfig } from '../config';
 import { VersionController } from './version.controller';
 import { CharacterEntity, GuildEntity } from '@azkaban/warcraft-infrastructure';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { VersionCache } from './version.cache';
 
 @Module({
 	imports: [
@@ -78,5 +79,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 		CronjobModule,
 	],
 	controllers: [VersionController],
+	providers: [VersionCache],
 })
 export class AppModule {}

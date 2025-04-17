@@ -16,13 +16,16 @@ export class MythicCron {
 	async runQueue() {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
-			const { id, region, realm, name } = character;
-			await this.queue.add('warcraft-mythic', {
-				id,
-				region,
-				realm,
-				name,
-			});
+			const { id, region, realm, name, deleted_at } = character;
+			if (deleted_at !== null) {
+				Logger.log(`Add ${region}-${realm}-${name} to queue`);
+				await this.queue.add('warcraft-mythic', {
+					id,
+					region,
+					realm,
+					name,
+				});
+			}
 		}
 		return characters;
 	}

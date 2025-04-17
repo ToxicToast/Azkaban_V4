@@ -17,14 +17,17 @@ export class CharacterCron {
 	async runQueue() {
 		const characters = await this.service.getAllCharacters();
 		for (const character of characters) {
-			const { id, region, realm, name, guild } = character;
-			await this.queue.add(characterQueue, {
-				id,
-				region,
-				realm,
-				name,
-				guild,
-			});
+			const { id, region, realm, name, guild, deleted_at } = character;
+			if (deleted_at !== null) {
+				Logger.log(`Add ${region}-${realm}-${name} to queue`);
+				await this.queue.add(characterQueue, {
+					id,
+					region,
+					realm,
+					name,
+					guild,
+				});
+			}
 		}
 		return characters;
 	}

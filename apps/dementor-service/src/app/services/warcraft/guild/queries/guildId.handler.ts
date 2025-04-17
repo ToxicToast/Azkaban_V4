@@ -3,6 +3,7 @@ import { GuildIdQuery } from './guildId.query';
 import { Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
+	CacheService,
 	CircuitService,
 	createCircuitBreaker,
 	WarcraftGuildTopics,
@@ -13,6 +14,7 @@ export class GuildIdHandler implements IQueryHandler<GuildIdQuery> {
 	constructor(
 		@Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
 		private readonly circuit: CircuitService,
+		private readonly cache: CacheService,
 	) {}
 
 	private async createCircuitBreaker(query: GuildIdQuery) {
@@ -25,8 +27,17 @@ export class GuildIdHandler implements IQueryHandler<GuildIdQuery> {
 		);
 	}
 
+	private async checkForCache(query: GuildIdQuery) {
+		const cacheKey = 'warcraft:guilds:guildid:' + query.guild_id;
+		const hasCache = await this.cache.inCache(cacheKey);
+		if (hasCache) {
+			return await this.cache.getKey(cacheKey);
+		}
+		return await this.createCircuitBreaker(query);
+	}
+
 	async execute(query: GuildIdQuery) {
 		Logger.log(GuildIdHandler.name, query);
-		return await this.createCircuitBreaker(query);
+		return await this.checkForCache(query);
 	}
 }

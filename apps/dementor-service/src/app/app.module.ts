@@ -6,6 +6,7 @@ import {
 	KafkaModule,
 	LoggerModule,
 	MetricsModule,
+	VersionModule,
 	WarcraftCharacterTopicArray,
 	WarcraftGuildTopicArray,
 	WarcraftTopicArray,
@@ -72,6 +73,7 @@ import { JwtModule } from '@nestjs/jwt';
 		),
 		LoggerModule.forRoot(true, AppConfig.name),
 		MetricsModule.forRoot(true, AppConfig.name),
+		VersionModule.forRoot(true, AppConfig.environment),
 		//
 		ServicesModule,
 	],
