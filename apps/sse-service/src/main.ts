@@ -1,11 +1,16 @@
 import { INestApplication, Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { LoggerService, TelemetryHelper } from '@azkaban/shared';
+import {
+	LoggerService,
+	MicroserviceHelper,
+	TelemetryHelper,
+} from '@azkaban/shared';
 import compression from 'compression';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { AppConfig } from './config';
 import { AppModule } from './app/app.module';
+import { MicroserviceOptions } from '@nestjs/microservices';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
@@ -22,6 +27,22 @@ async function createApp(): Promise<INestApplication> {
 function createLogger(app: INestApplication): void {
 	const logger = new LoggerService(AppConfig.name);
 	app.useLogger(logger);
+}
+
+async function createMicroservice(app: INestApplication): Promise<void> {
+	const brokerUrl = `${AppConfig.broker.brokerHost}:${AppConfig.broker.brokerPort}`;
+	const brokerUsername = AppConfig.broker.brokerUsername;
+	const brokerPassword = AppConfig.broker.brokerPassword;
+	const environment = AppConfig.environment !== 'local';
+	const options = MicroserviceHelper(
+		AppConfig.name,
+		brokerUrl,
+		AppConfig.name + '-consumer',
+		environment,
+		brokerUsername,
+		brokerPassword,
+	);
+	app.connectMicroservice<MicroserviceOptions>(options);
 }
 
 function configureApp(app: INestApplication): void {
@@ -57,6 +78,7 @@ function configureCors(app: INestApplication): void {
 
 async function startApp(app: INestApplication): Promise<void> {
 	const port = AppConfig.port;
+	await app.startAllMicroservices();
 	await app.listen(port);
 	Logger.log(`🚀 Listening on Port: ${port}`);
 }
@@ -68,6 +90,7 @@ async function bootstrap() {
 	configureApp(app);
 	addModules(app);
 	configureCors(app);
+	await createMicroservice(app);
 	await startApp(app);
 	Logger.log(`🚀 ${AppConfig.name} is running`);
 	Logger.log(`🚀 Version: ${AppConfig.environment}`);
