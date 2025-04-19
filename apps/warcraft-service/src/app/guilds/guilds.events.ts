@@ -12,13 +12,15 @@ export class GuildsEvents {
 
 	@Span('SendToSSE')
 	private async sendToSSE(payload: unknown): Promise<void> {
-		await this.client.emit(AzkabanSSETopics.WARCRAFT, payload).toPromise();
+		await this.client
+			.emit(AzkabanSSETopics.WARCRAFT, { payload })
+			.toPromise();
 	}
 
 	@Span('SendToApiAlerts')
 	private async sendToApiAlerts(payload: unknown): Promise<void> {
 		await this.client
-			.emit(AzkabanWebhookTopics.APIALERTS, payload)
+			.emit(AzkabanWebhookTopics.APIALERTS, { payload })
 			.toPromise();
 	}
 
