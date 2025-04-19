@@ -277,7 +277,7 @@ export class CharacterDomain
 	}
 
 	changeLoggedIn(loggedin_at: Nullable<Date>): void {
-		if (loggedin_at !== this.loggedin_at) {
+		if (loggedin_at?.getTime() !== this.loggedin_at?.getTime()) {
 			this.updated_at = new Date();
 			const oldLoggedInAt = this.loggedin_at;
 			this.loggedin_at = loggedin_at;
