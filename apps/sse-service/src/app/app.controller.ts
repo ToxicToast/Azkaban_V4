@@ -14,17 +14,17 @@ export class AppController {
 		return this.service.getObservable();
 	}
 
-	@Span(AzkabanSSETopics.CREATE + '.service')
-	@Post('/')
-	postEvents(@Body() payload: unknown): void {
-		Logger.log('Received POST events', payload);
-		this.service.onSendNextEvent(AzkabanSSETopics.CREATE, payload);
-	}
-
 	@Span(AzkabanSSETopics.WARCRAFT + '.service')
 	@EventPattern(AzkabanSSETopics.WARCRAFT)
 	async onWarcraftEvents(@Payload() payload: unknown): Promise<void> {
 		Logger.log('Fetch Warcraft Events', payload);
 		this.service.onSendNextEvent(AzkabanSSETopics.WARCRAFT, payload);
+	}
+
+	@Span(AzkabanSSETopics.CREATE + '.service')
+	@Post('/')
+	postEvents(@Body() payload: unknown): void {
+		Logger.log('Received POST events', payload);
+		this.service.onSendNextEvent(AzkabanSSETopics.CREATE, payload);
 	}
 }
