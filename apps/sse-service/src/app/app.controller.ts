@@ -1,4 +1,4 @@
-import { Controller, Logger, Sse } from '@nestjs/common';
+import { Body, Controller, Logger, Post, Sse } from '@nestjs/common';
 import { AzkabanSSETopics, ControllerHelper } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { EventPattern, Payload } from '@nestjs/microservices';
@@ -14,10 +14,17 @@ export class AppController {
 		return this.service.getObservable();
 	}
 
+	@Span(AzkabanSSETopics.CREATE + '.service')
+	@Post('/')
+	postEvents(@Body() payload: unknown): void {
+		Logger.log('Received POST events', payload);
+		this.service.onSendNextEvent(AzkabanSSETopics.CREATE, payload);
+	}
+
 	@Span(AzkabanSSETopics.WARCRAFT + '.service')
 	@EventPattern(AzkabanSSETopics.WARCRAFT)
 	async onWarcraftEvents(@Payload() payload: unknown): Promise<void> {
-		Logger.debug('Fetch Warcraft Events', payload);
+		Logger.log('Fetch Warcraft Events', payload);
 		this.service.onSendNextEvent(AzkabanSSETopics.WARCRAFT, payload);
 	}
 }
