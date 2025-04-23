@@ -6,14 +6,14 @@ interface AdditionalMethods {
 		region: string,
 		realm: string,
 		name: string,
-	): Promise<CharacterAnemic>;
+	): Promise<Nullable<CharacterAnemic>>;
 	findByFaction(faction: Nullable<string>): Promise<Array<CharacterAnemic>>;
 	findByRace(race: Nullable<string>): Promise<Array<CharacterAnemic>>;
 	findByClass(
 		character_class: Nullable<string>,
 	): Promise<Array<CharacterAnemic>>;
 	findByGuild(guild: Nullable<string>): Promise<Array<CharacterAnemic>>;
-	findByCharacterId(character_id: string): Promise<CharacterAnemic>;
+	findByCharacterId(character_id: string): Promise<Nullable<CharacterAnemic>>;
 }
 
 export type CharacterRepository = Chainable<
