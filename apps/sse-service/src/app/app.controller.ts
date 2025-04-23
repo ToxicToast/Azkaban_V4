@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class AppController {
 	constructor(private readonly service: AppService) {}
 
+	@Span('sse-service.sse.service')
 	@Sse()
 	onEvents(): Observable<MessageEvent> {
 		return this.service.getObservable();

@@ -5,9 +5,6 @@ import {
 	MicroserviceHelper,
 	TelemetryHelper,
 } from '@azkaban/shared';
-import compression from 'compression';
-import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
 import { AppConfig } from './config';
 import { AppModule } from './app/app.module';
 import { MicroserviceOptions } from '@nestjs/microservices';
@@ -54,12 +51,6 @@ function configureApp(app: INestApplication): void {
 	});
 }
 
-function addModules(app: INestApplication): void {
-	app.use(compression({}));
-	app.use(helmet());
-	app.use(cookieParser());
-}
-
 function configureCors(app: INestApplication): void {
 	app.enableCors({
 		origin: [
@@ -88,7 +79,6 @@ async function bootstrap() {
 	const app = await createApp();
 	createLogger(app);
 	configureApp(app);
-	addModules(app);
 	configureCors(app);
 	await createMicroservice(app);
 	await startApp(app);

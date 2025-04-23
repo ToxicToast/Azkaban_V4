@@ -84,35 +84,35 @@ export class GuildsService {
 
 	@Span('guildUpdate')
 	async guildUpdate(data: GuildUpdateDTO): Promise<GuildDAO> {
-		Logger.debug('GuildUpdate', data);
+		Logger.log('GuildUpdate', data);
 		await this.cache.removeCache();
 		return null;
 	}
 
 	@Span('guildDelete')
 	async guildDelete(data: GuildByIdDTO): Promise<GuildDAO> {
-		Logger.debug('GuildDelete', data);
+		Logger.log('GuildDelete', data);
 		await this.cache.removeCache();
 		return null;
 	}
 
 	@Span('guildRestore')
 	async guildRestore(data: GuildByIdDTO): Promise<GuildDAO> {
-		Logger.debug('GuildRestore', data);
+		Logger.log('GuildRestore', data);
 		await this.cache.removeCache();
 		return null;
 	}
 
 	@Span('guildActivate')
 	async guildActivate(data: GuildByIdDTO): Promise<GuildDAO> {
-		Logger.debug('GuildActivate', data);
+		Logger.log('GuildActivate', data);
 		await this.cache.removeCache();
 		return null;
 	}
 
 	@Span('guildDeactivate')
 	async guildDeactivate(data: GuildByIdDTO): Promise<GuildDAO> {
-		Logger.debug('GuildDeactivate', data);
+		Logger.log('GuildDeactivate', data);
 		await this.cache.removeCache();
 		return null;
 	}

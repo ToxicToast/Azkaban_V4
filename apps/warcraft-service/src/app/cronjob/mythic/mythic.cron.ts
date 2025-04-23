@@ -31,7 +31,7 @@ export class MythicCron {
 	}
 
 	@Span('updateMythicCron')
-	@Cron(CronExpression.EVERY_HOUR, {
+	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
 		name: 'Update Warcraft Mythic+',
 	})
 	async updateMythicCron() {

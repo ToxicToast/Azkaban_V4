@@ -10,9 +10,7 @@ export class AppService {
 		data: DataType,
 	): MessageEvent {
 		return new MessageEvent(event, {
-			data: {
-				data,
-			},
+			data: data,
 		});
 	}
 
