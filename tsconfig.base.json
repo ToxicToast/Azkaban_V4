@@ -16,6 +16,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"@azkaban/azkaban-domain": ["libs/azkaban-domain/src/index.ts"],
+			"@azkaban/azkaban-infrastructure": [
+				"libs/azkaban-infrastructure/src/index.ts"
+			],
 			"@azkaban/shared": ["libs/shared/src/index.ts"],
 			"@azkaban/warcraft-domain": ["libs/warcraft-domain/src/index.ts"],
 			"@azkaban/warcraft-infrastructure": [

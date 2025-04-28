@@ -123,14 +123,9 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findByCharacterId(
-		character_id: Nullable<string>,
-	): Promise<CharacterDAO> {
+	async findByCharacterId(character_id: string): Promise<CharacterDAO> {
 		const entity = await this.repository.findOne({
 			withDeleted: true,
-			order: {
-				id: 'DESC',
-			},
 			where: { character_id },
 		});
 		if (entity) {

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import {
 	AzkabanSSETopicArray,
+	AzkabanWebhookTopicArray,
 	BullModule,
 	CacheModule,
 	DatabaseModule,
@@ -8,12 +9,14 @@ import {
 	KafkaModule,
 	LoggerModule,
 	MetricsModule,
+	ScheduleModule,
 	VersionModule,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UsersModule } from './users/users.module';
 import { GroupsModule } from './groups/groups.module';
+import { UserEntity } from '@azkaban/azkaban-infrastructure';
 
 @Module({
 	imports: [
@@ -23,8 +26,11 @@ import { GroupsModule } from './groups/groups.module';
 			true,
 			AppConfig.environment,
 			AppConfig.database,
-			{},
+			{
+				UserEntity,
+			},
 		),
+		DatabaseModule.forFeature(true, 'USER_REPOSITORY', UserEntity),
 		HealthModule.forRoot(
 			false,
 			AppConfig.health,
@@ -54,8 +60,9 @@ import { GroupsModule } from './groups/groups.module';
 				brokerPassword: AppConfig.broker.brokerPassword,
 				withSasl: AppConfig.environment !== 'local',
 			},
-			[...AzkabanSSETopicArray],
+			[...AzkabanSSETopicArray, ...AzkabanWebhookTopicArray],
 		),
+		ScheduleModule.forRoot(true),
 		UsersModule,
 		GroupsModule,
 	],
