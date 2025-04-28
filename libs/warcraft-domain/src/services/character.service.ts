@@ -33,24 +33,26 @@ export class CharacterService {
 		}
 	}
 
-	async getCharacterById(id: number): Promise<Result<CharacterAnemic>> {
+	async getCharacterById(
+		id: number,
+	): Promise<Result<Nullable<CharacterAnemic>>> {
 		try {
 			const result = await this.repository.findById(id);
-			return Result.ok<CharacterAnemic>(result);
+			return Result.ok<Nullable<CharacterAnemic>>(result);
 		} catch (error) {
-			return Result.fail<CharacterAnemic>(error, 500);
+			return Result.fail<Nullable<CharacterAnemic>>(error, 500);
 		}
 	}
 
 	async getCharacterByCharacterId(
 		character_id: string,
-	): Promise<Result<CharacterAnemic>> {
+	): Promise<Result<Nullable<CharacterAnemic>>> {
 		try {
 			const result =
 				await this.repository.findByCharacterId(character_id);
-			return Result.ok<CharacterAnemic>(result);
+			return Result.ok<Nullable<CharacterAnemic>>(result);
 		} catch (error) {
-			return Result.fail<CharacterAnemic>(error, 500);
+			return Result.fail<Nullable<CharacterAnemic>>(error, 500);
 		}
 	}
 
@@ -102,16 +104,16 @@ export class CharacterService {
 		region: string,
 		realm: string,
 		name: string,
-	): Promise<Result<CharacterAnemic>> {
+	): Promise<Result<Nullable<CharacterAnemic>>> {
 		try {
 			const result = await this.repository.findByRegionRealmName(
 				region,
 				realm,
 				name,
 			);
-			return Result.ok<CharacterAnemic>(result);
+			return Result.ok<Nullable<CharacterAnemic>>(result);
 		} catch (error) {
-			return Result.fail<CharacterAnemic>(error, 500);
+			return Result.fail<Nullable<CharacterAnemic>>(error, 500);
 		}
 	}
 

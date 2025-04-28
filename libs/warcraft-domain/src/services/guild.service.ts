@@ -99,9 +99,8 @@ export class GuildService {
 				const guild = anemic.guild;
 				const events = anemic.events;
 				return await this.save(guild, events);
-			} else {
-				return Result.fail<GuildAnemic>(result.errorValue, 404);
 			}
+			return Result.fail<GuildAnemic>(result.errorValue, 404);
 		} catch (error) {
 			return Result.fail<GuildAnemic>(error, 500);
 		}
