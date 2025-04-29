@@ -13,7 +13,7 @@ export class UsersCache {
 		limit?: Optional<number>,
 		offset?: Optional<number>,
 	): Promise<void> {
-		let cacheKey = 'azkaban:user:list';
+		let cacheKey = 'azkaban:users:list';
 		if (limit !== undefined) {
 			cacheKey += `:limit:${limit}`;
 		}
@@ -26,7 +26,7 @@ export class UsersCache {
 
 	@Span('cacheUserById')
 	async cacheUserById(id: number, character: UserResponse): Promise<void> {
-		const cacheKey = 'azkaban:user:id:' + id;
+		const cacheKey = 'azkaban:users:id:' + id;
 		Logger.log('Cache User By Id', { id, character });
 		await this.service.setKey(cacheKey, character);
 	}
@@ -36,7 +36,7 @@ export class UsersCache {
 		character_id: string,
 		character: UserResponse,
 	): Promise<void> {
-		const cacheKey = 'azkaban:user:characterid:' + character_id;
+		const cacheKey = 'azkaban:users:characterid:' + character_id;
 		Logger.log('Cache User By User Id', {
 			character_id,
 			character,
@@ -47,6 +47,6 @@ export class UsersCache {
 	@Span('removeCache')
 	async removeCache(): Promise<void> {
 		Logger.log('Clear Users Cache', {});
-		await this.service.deleteKey('azkaban:user:*');
+		await this.service.deleteKey('azkaban:users:*');
 	}
 }
