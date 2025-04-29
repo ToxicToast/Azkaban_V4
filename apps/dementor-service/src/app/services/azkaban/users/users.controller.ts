@@ -26,20 +26,44 @@ export class UsersController {
 		@Query('offset') offset?: Optional<number>,
 	) {
 		Logger.log('Get Users', { limit, offset });
-		return await this.service.userList(limit, offset).catch((error) => {
-			Logger.error(error);
-			throw error;
-		});
+		return await this.service
+			.userList(limit, offset)
+			.catch((error) => {
+				Logger.error(error);
+				throw error;
+			})
+			.then((data) => {
+				Logger.log('Get Users', { data });
+				return data.map((user) => {
+					return {
+						...user,
+						password: undefined,
+						salt: undefined,
+					};
+				});
+			});
 	}
 
 	@Span(AzkabanUserTopics.ID + '.dementor')
 	@Get('/:id')
 	async getUserById(@Param('id') id: number) {
 		Logger.log('Get User By Id', { id });
-		return await this.service.userById(id).catch((error) => {
-			Logger.error(error);
-			throw error;
-		});
+		return await this.service
+			.userById(id)
+			.catch((error) => {
+				Logger.error(error);
+				throw error;
+			})
+			.then((data) => {
+				if (data !== null) {
+					return {
+						...data,
+						password: undefined,
+						salt: undefined,
+					};
+				}
+				return null;
+			});
 	}
 
 	@Span(AzkabanUserTopics.USERID + '.dementor')
