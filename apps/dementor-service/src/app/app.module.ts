@@ -7,6 +7,7 @@ import {
 	LoggerModule,
 	MetricsModule,
 	VersionModule,
+	AzkabanUserTopicArray,
 	WarcraftCharacterTopicArray,
 	WarcraftGuildTopicArray,
 	WarcraftTopicArray,
@@ -58,6 +59,7 @@ import { JwtModule } from '@nestjs/jwt';
 			},
 			[
 				// Azkaban Services
+				...AzkabanUserTopicArray,
 				// Blog Services
 				// Coworking Services
 				// Discord Services
