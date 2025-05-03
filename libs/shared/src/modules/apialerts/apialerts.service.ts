@@ -1,17 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import Alerts from 'apialerts-js';
+import alerts from 'apialerts-js';
 import { Optional } from '../../types';
 
 @Injectable()
 export class ApiAlertsService {
-	private readonly instance: typeof Alerts.Client;
+	private readonly instance: typeof alerts;
 
 	constructor(
 		@Inject('API_KEY')
 		private readonly apiKey: string,
 	) {
-		this.instance = new Alerts.Client();
-		this.instance.setApiKey(this.apiKey);
+		this.instance = alerts.setApiKey(this.apiKey);
 	}
 
 	sendEvent(
