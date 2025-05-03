@@ -26,6 +26,7 @@ type EnvironmentConfig = {
 		brokerPassword: string;
 	};
 	telemetry: string;
+	apialerts: string;
 };
 
 export const AppConfig: EnvironmentConfig = {
@@ -66,4 +67,5 @@ export const AppConfig: EnvironmentConfig = {
 		brokerPassword: process.env.BROKER_PASSWORD ?? '',
 	},
 	telemetry: process.env.TELEMETRY_URL ?? 'http://localhost:56572/v1/traces',
+	apialerts: process.env.APIALERTS_KEY ?? 'apialerts',
 };

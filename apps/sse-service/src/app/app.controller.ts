@@ -22,6 +22,13 @@ export class AppController {
 		this.service.onSendNextEvent(AzkabanSSETopics.WARCRAFT, payload);
 	}
 
+	@Span(AzkabanSSETopics.AZKABAN + '.service')
+	@EventPattern(AzkabanSSETopics.AZKABAN)
+	async onAzkabanEvents(@Payload() payload: unknown): Promise<void> {
+		Logger.log('Fetch Azkaban Events', payload);
+		this.service.onSendNextEvent(AzkabanSSETopics.AZKABAN, payload);
+	}
+
 	@Span(AzkabanSSETopics.CREATE + '.service')
 	@Post('/')
 	postEvents(@Body() payload: unknown): void {

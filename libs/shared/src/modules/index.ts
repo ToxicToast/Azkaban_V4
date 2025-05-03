@@ -9,3 +9,4 @@ export * from './schedule';
 export * from './throttle';
 export * from './logger';
 export * from './version';
+export * from './apialerts';

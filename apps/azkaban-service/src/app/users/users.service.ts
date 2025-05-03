@@ -15,7 +15,7 @@ import {
 	UserCreateDTO,
 	UsersListDTO,
 	UserUpdateDTO,
-} from '../dtos';
+} from '../../utils';
 import { Nullable } from '@azkaban/shared';
 
 @Injectable()

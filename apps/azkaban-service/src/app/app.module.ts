@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import {
+	ApialertsModule,
 	AzkabanSSETopicArray,
 	AzkabanWebhookTopicArray,
 	BullModule,
@@ -17,6 +18,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UsersModule } from './users/users.module';
 import { GroupsModule } from './groups/groups.module';
 import { UserEntity } from '@azkaban/azkaban-infrastructure';
+import { AlertsModule } from './alerts/alerts.module';
 
 @Module({
 	imports: [
@@ -62,9 +64,11 @@ import { UserEntity } from '@azkaban/azkaban-infrastructure';
 			},
 			[...AzkabanSSETopicArray, ...AzkabanWebhookTopicArray],
 		),
+		ApialertsModule.forRoot(true, AppConfig.apialerts),
 		ScheduleModule.forRoot(true),
 		UsersModule,
 		GroupsModule,
+		AlertsModule,
 	],
 	controllers: [],
 })

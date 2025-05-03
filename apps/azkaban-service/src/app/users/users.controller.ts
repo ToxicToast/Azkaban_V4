@@ -9,7 +9,7 @@ import {
 	UsersListDTO,
 	UserCreateDTO,
 	UserUpdateDTO,
-} from '../dtos';
+} from '../../utils';
 
 @Controller(ControllerHelper('users'))
 export class UsersController {

@@ -8,8 +8,6 @@ export enum AzkabanUserTopics {
 	RESTORE = 'azkaban.user.restore',
 	ACTIVATE = 'azkaban.user.activate',
 	DEACTIVATE = 'azkaban.user.deactivate',
-
-	ASSIGNGROUP = 'azkaban.user.assign.group',
 }
 
 export const AzkabanUserTopicArray = Object.values(AzkabanUserTopics);
