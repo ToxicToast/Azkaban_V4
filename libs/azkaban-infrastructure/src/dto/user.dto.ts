@@ -7,6 +7,8 @@ export interface CreateUserDTO {
 	salt: string;
 }
 
+export type CreateUserWithoutSaltDTO = Omit<CreateUserDTO, 'salt'>;
+
 export interface UpdateUserDTO {
 	username?: string;
 	email?: string;

@@ -2,8 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
 import { AzkabanUserTopics, Optional } from '@azkaban/shared';
-import { CreateUserDTO, UpdateUserDTO } from '@azkaban/azkaban-infrastructure';
+import {
+	CreateUserWithoutSaltDTO,
+	UpdateUserDTO,
+} from '@azkaban/azkaban-infrastructure';
 import { IdQuery, ListQuery } from './queries';
+import { CreateCommand } from './commands';
 
 @Injectable()
 export class UsersService {
@@ -31,9 +35,9 @@ export class UsersService {
 	}
 
 	@Span(AzkabanUserTopics.CREATE + '.dementor')
-	async createUser(data: CreateUserDTO) {
+	async createUser(data: CreateUserWithoutSaltDTO) {
 		Logger.log('Create New User', data);
-		// return await this.commandBus.execute(new CreateCommand(data));
+		return await this.commandBus.execute(new CreateCommand(data));
 	}
 
 	@Span(AzkabanUserTopics.UPDATE + '.dementor')

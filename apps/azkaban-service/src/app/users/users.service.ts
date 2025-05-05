@@ -16,7 +16,7 @@ import {
 	UsersListDTO,
 	UserUpdateDTO,
 } from '../../utils';
-import { Nullable } from '@azkaban/shared';
+import { Nullable, PasswordHash, PasswordSalt } from '@azkaban/shared';
 
 @Injectable()
 export class UsersService {
@@ -75,10 +75,16 @@ export class UsersService {
 	}
 
 	@Span('userCreate')
-	async userCreate(data: UserCreateDTO): Promise<UserDAO> {
+	async userCreate(data: Omit<UserCreateDTO, 'salt'>): Promise<UserDAO> {
 		Logger.log('UserCreate', data);
 		await this.cache.removeCache();
-		return await this.infrastructureService.createUser(data);
+		const salt = await PasswordSalt();
+		const hashedPassword = await PasswordHash(data.password, salt);
+		return await this.infrastructureService.createUser({
+			...data,
+			salt,
+			password: hashedPassword,
+		});
 	}
 
 	@Span('userUpdate')
