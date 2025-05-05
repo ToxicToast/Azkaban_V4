@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CacheService, Optional } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
-import { CharacterResponse, CharactersResponse } from '../responses';
+import { CharacterResponse, CharactersResponse } from '../../utils';
 
 @Injectable()
 export class CharactersCache {

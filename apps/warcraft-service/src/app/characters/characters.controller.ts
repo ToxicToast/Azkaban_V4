@@ -10,7 +10,7 @@ import {
 	CharacterCreateDTO,
 	CharacterList,
 	CharacterUpdateDTO,
-} from '../dtos';
+} from '../../utils';
 
 @Controller(ControllerHelper('character'))
 export class CharactersController {

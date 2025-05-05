@@ -7,7 +7,7 @@ import {
 	GuildCreateDTO,
 	GuildList,
 	GuildUpdateDTO,
-} from '../dtos';
+} from '../../utils';
 import {
 	GuildDAO,
 	GuildEntity,

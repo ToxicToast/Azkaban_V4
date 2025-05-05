@@ -8,7 +8,7 @@ import {
 	GuildByGuildIdDTO,
 	GuildByIdDTO,
 	GuildList,
-} from '../dtos';
+} from '../../utils';
 import { GuildsService } from './guilds.service';
 
 @Controller(ControllerHelper('guild'))

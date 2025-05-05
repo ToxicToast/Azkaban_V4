@@ -19,6 +19,8 @@ import { UsersModule } from './users/users.module';
 import { GroupsModule } from './groups/groups.module';
 import { UserEntity } from '@azkaban/azkaban-infrastructure';
 import { AlertsModule } from './alerts/alerts.module';
+import { VersionController } from './version.controller';
+import { VersionCache } from './version.cache';
 
 @Module({
 	imports: [
@@ -70,6 +72,7 @@ import { AlertsModule } from './alerts/alerts.module';
 		GroupsModule,
 		AlertsModule,
 	],
-	controllers: [],
+	controllers: [VersionController],
+	providers: [VersionCache],
 })
 export class AppModule {}

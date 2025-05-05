@@ -10,7 +10,7 @@ import {
 	CharacterCreateDTO,
 	CharacterList,
 	CharacterUpdateDTO,
-} from '../dtos';
+} from '../../utils';
 import { CharactersCache } from './characters.cache';
 import {
 	CharacterDAO,

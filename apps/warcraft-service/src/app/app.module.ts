@@ -17,8 +17,8 @@ import {
 	VersionModule,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
-import { VersionController } from './version.controller';
 import { CharacterEntity, GuildEntity } from '@azkaban/warcraft-infrastructure';
+import { VersionController } from './version.controller';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { VersionCache } from './version.cache';
 
