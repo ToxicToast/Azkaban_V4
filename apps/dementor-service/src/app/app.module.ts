@@ -11,6 +11,7 @@ import {
 	WarcraftCharacterTopicArray,
 	WarcraftGuildTopicArray,
 	WarcraftTopicArray,
+	AzkabanTopicArray,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -71,6 +72,7 @@ import { JwtModule } from '@nestjs/jwt';
 				// Warhammer Services
 				// Versioning
 				...WarcraftTopicArray,
+				...AzkabanTopicArray,
 			],
 		),
 		LoggerModule.forRoot(true, AppConfig.name),
