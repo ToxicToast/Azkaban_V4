@@ -32,3 +32,8 @@ export interface UserUpdateDTO {
 		loggedin_at?: Optional<Nullable<Date>>;
 	};
 }
+
+export interface UserLoginDTO {
+	username: string;
+	password: string;
+}

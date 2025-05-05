@@ -21,6 +21,7 @@ import { UserEntity } from '@azkaban/azkaban-infrastructure';
 import { AlertsModule } from './alerts/alerts.module';
 import { VersionController } from './version.controller';
 import { VersionCache } from './version.cache';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [
@@ -71,6 +72,7 @@ import { VersionCache } from './version.cache';
 		UsersModule,
 		GroupsModule,
 		AlertsModule,
+		AuthModule,
 	],
 	controllers: [VersionController],
 	providers: [VersionCache],

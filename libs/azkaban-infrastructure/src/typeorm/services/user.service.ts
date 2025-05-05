@@ -2,6 +2,7 @@ import { UserService as DomainService } from '@azkaban/azkaban-domain';
 import { UserRepository } from '../repositories';
 import {
 	Optional,
+	PasswordCompare,
 	PasswordHash,
 	PasswordSalt,
 	UuidHelper,
@@ -60,6 +61,34 @@ export class UserService {
 				status: result.errorCode,
 				message: result.errorValue,
 				raw: { user_id },
+			});
+		}
+	}
+
+	async getUserByUsernamePassword(
+		username: string,
+		password: string,
+	): Promise<UserDAO> {
+		const result = await this.domainService.getUserByUsername(username);
+		if (result.isSuccess) {
+			const user = result.value;
+			const isValidPassword = await PasswordCompare(
+				password,
+				user.password,
+			);
+			if (isValidPassword) {
+				return user;
+			}
+			throw new RpcException({
+				status: 401,
+				message: 'Invalid password',
+				raw: { username, password },
+			});
+		} else {
+			throw new RpcException({
+				status: result.errorCode,
+				message: result.errorValue,
+				raw: { username, password },
 			});
 		}
 	}

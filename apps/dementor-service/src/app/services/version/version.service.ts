@@ -61,6 +61,7 @@ export class VersionService {
 				alerts: azkabanVersion,
 				groups: 'n/a',
 				users: azkabanVersion,
+				auth: 'n/a',
 			},
 			sse: 'n/a',
 			warcraft: {
