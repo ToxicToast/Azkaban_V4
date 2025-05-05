@@ -78,7 +78,7 @@ export class UsersService {
 	async userCreate(data: Omit<UserCreateDTO, 'salt'>): Promise<UserDAO> {
 		Logger.log('UserCreate', { data });
 		await this.cache.removeCache();
-		return await this.infrastructureService.createUser(data);
+		return await this.infrastructureService.createUser(data.data);
 	}
 
 	@Span('userUpdate')

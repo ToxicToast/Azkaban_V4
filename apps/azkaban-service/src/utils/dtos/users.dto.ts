@@ -14,10 +14,12 @@ export interface UserByUserIdDTO {
 }
 
 export interface UserCreateDTO {
-	username: string;
-	email: string;
-	password: string;
-	salt: string;
+	data: {
+		username: string;
+		email: string;
+		password: string;
+		salt: string;
+	};
 }
 
 export interface UserUpdateDTO {
