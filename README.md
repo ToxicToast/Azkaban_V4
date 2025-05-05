@@ -107,7 +107,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 ## Alerting
 
 > **Info:**
-> Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific event occured. (Event Driven Architecture)
+> Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific event occurred. (Event Driven Architecture)
 
 - [API Alerts](https://apialerts.com/)
 
