@@ -5,6 +5,7 @@ import {
 	onSuccessError,
 	onValueError,
 } from './errors';
+import { DomainEvent } from './domainEvent.ddd';
 
 export class Result<ValueType> {
 	private _isSuccess: boolean;
@@ -12,12 +13,14 @@ export class Result<ValueType> {
 	private _error?: Optional<Either<ValueType, string>>;
 	private _errorCode?: Optional<number>;
 	private _value?: Optional<ValueType>;
+	private _events: Array<DomainEvent>;
 
 	constructor(
 		isSuccess: boolean,
 		error?: Optional<Either<ValueType, string>>,
 		errorCode?: Optional<number>,
 		value?: Optional<ValueType>,
+		events?: Optional<Array<DomainEvent>>,
 	) {
 		if (isSuccess && error) {
 			throw new onSuccessError();
@@ -30,6 +33,7 @@ export class Result<ValueType> {
 		this._error = error;
 		this._value = value;
 		this._errorCode = errorCode ?? 500;
+		this._events = events ?? [];
 		Object.freeze(this);
 	}
 
@@ -54,6 +58,10 @@ export class Result<ValueType> {
 		return this._errorCode;
 	}
 
+	get events(): Array<DomainEvent> {
+		return this._events;
+	}
+
 	get isSuccess(): boolean {
 		return this._isSuccess;
 	}
@@ -64,14 +72,21 @@ export class Result<ValueType> {
 
 	public static ok<ResultType>(
 		value?: Optional<ResultType>,
+		events?: Optional<Array<DomainEvent>>,
 	): Result<ResultType> {
-		return new Result<ResultType>(true, undefined, undefined, value);
+		return new Result<ResultType>(
+			true,
+			undefined,
+			undefined,
+			value,
+			events,
+		);
 	}
 
 	public static fail<ResultType>(
 		error: Either<ResultType, string>,
 		code: number,
 	): Result<ResultType> {
-		return new Result<ResultType>(false, error, code, undefined);
+		return new Result<ResultType>(false, error, code, undefined, undefined);
 	}
 }

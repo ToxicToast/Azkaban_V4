@@ -1,11 +1,8 @@
 import { Controller, Get, HttpException, Res } from '@nestjs/common';
 import { PrometheusController } from '@willsoto/nestjs-prometheus';
-import { MetricsRoutes } from '../../routes';
+import { ControllerHelper } from '../../helpers';
 
-@Controller({
-	path: MetricsRoutes.CONTROLLER,
-	version: '1',
-})
+@Controller(ControllerHelper('metrics'))
 export class MetricsController extends PrometheusController {
 	@Get()
 	index(@Res({ passthrough: true }) response: Response) {

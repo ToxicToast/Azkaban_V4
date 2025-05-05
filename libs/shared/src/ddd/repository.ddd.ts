@@ -6,5 +6,5 @@ export interface Repository<Domain> {
 		limit?: Optional<number>,
 		offset?: Optional<number>,
 	): Promise<Array<Domain>>;
-	findById(id: string): Promise<Nullable<Domain>>;
+	findById(id: number): Promise<Nullable<Domain>>;
 }

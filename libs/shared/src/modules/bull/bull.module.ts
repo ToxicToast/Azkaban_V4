@@ -1,6 +1,9 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { BullModule as BaseModule } from '@nestjs/bullmq';
 import { RedisConfig } from './redis.config';
+import { BullBoardModule } from '@bull-board/nestjs';
+import { ExpressAdapter } from '@bull-board/express';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
 @Module({})
 export class BullModule {
@@ -21,12 +24,17 @@ export class BullModule {
 						};
 						const defaultJobOptions = {
 							delay,
+							removeOnComplete: true,
 						};
 						return {
 							connection,
 							defaultJobOptions,
 						};
 					},
+				}),
+				BullBoardModule.forRoot({
+					route: '/queues',
+					adapter: ExpressAdapter,
 				}),
 			],
 			exports: [BaseModule],
@@ -40,6 +48,10 @@ export class BullModule {
 			imports: [
 				BaseModule.registerQueue({
 					name,
+				}),
+				BullBoardModule.forFeature({
+					name: name,
+					adapter: BullMQAdapter,
 				}),
 			],
 			exports: [BaseModule],

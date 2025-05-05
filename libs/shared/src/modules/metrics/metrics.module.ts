@@ -1,7 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { MetricsController } from './metrics.controller';
-import { MetricsRoutes } from '../../routes';
 
 @Module({})
 export class MetricsModule {
@@ -16,7 +15,7 @@ export class MetricsModule {
 					defaultLabels: {
 						app: label,
 					},
-					path: MetricsRoutes.CONTROLLER,
+					path: 'metrics',
 					controller: MetricsController,
 				}),
 			],

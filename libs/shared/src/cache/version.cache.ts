@@ -32,6 +32,7 @@ export enum VersionCache {
 	TWITCHFOLLOWER = 'twitch:follower',
 	TWITCHFOLLOWS = 'twitch:follows',
 	//
+	WARCRAFT = 'warcraft',
 	WARCRAFTCHARACTER = 'warcraft:character',
 	WARCRAFTAPI = 'warcraft:api',
 	WARCRAFTGUILD = 'warcraft:guild',

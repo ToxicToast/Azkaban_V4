@@ -1,18 +1,29 @@
-import { MicroserviceHelper, TelemetryHelper } from '@azkaban/shared';
 import { INestApplication, Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import {
+	LoggerService,
+	MicroserviceHelper,
+	TelemetryHelper,
+} from '@azkaban/shared';
 import { AppConfig } from './config';
+import { AppModule } from './app/app.module';
+import { MicroserviceOptions } from '@nestjs/microservices';
 
 const telemetry = TelemetryHelper(
 	AppConfig.telemetry,
-	'sse-service',
+	AppConfig.name,
 	AppConfig.environment,
 );
 
 async function createApp(): Promise<INestApplication> {
-	return await NestFactory.create<INestApplication>(AppModule);
+	return await NestFactory.create<INestApplication>(AppModule, {
+		bufferLogs: true,
+	});
+}
+
+function createLogger(app: INestApplication): void {
+	const logger = new LoggerService(AppConfig.name);
+	app.useLogger(logger);
 }
 
 async function createMicroservice(app: INestApplication): Promise<void> {
@@ -20,7 +31,6 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 	const brokerUsername = AppConfig.broker.brokerUsername;
 	const brokerPassword = AppConfig.broker.brokerPassword;
 	const environment = AppConfig.environment !== 'local';
-	//
 	const options = MicroserviceHelper(
 		AppConfig.name,
 		brokerUrl,
@@ -29,7 +39,6 @@ async function createMicroservice(app: INestApplication): Promise<void> {
 		brokerUsername,
 		brokerPassword,
 	);
-	//
 	app.connectMicroservice<MicroserviceOptions>(options);
 }
 
@@ -68,11 +77,12 @@ async function startApp(app: INestApplication): Promise<void> {
 async function bootstrap() {
 	telemetry.start();
 	const app = await createApp();
+	createLogger(app);
 	configureApp(app);
-	await createMicroservice(app);
 	configureCors(app);
+	await createMicroservice(app);
 	await startApp(app);
-	Logger.log(`🚀 SSE-Service is running`);
+	Logger.log(`🚀 ${AppConfig.name} is running`);
 	Logger.log(`🚀 Version: ${AppConfig.environment}`);
 }
 bootstrap().catch((err) => {
@@ -80,6 +90,5 @@ bootstrap().catch((err) => {
 	telemetry
 		.shutdown()
 		.then(() => Logger.log('Tracing terminated'))
-		.catch((error) => Logger.error('Error terminating tracing', error))
-		.finally(() => process.exit(0));
+		.catch((error) => Logger.error('Error terminating tracing', error));
 });

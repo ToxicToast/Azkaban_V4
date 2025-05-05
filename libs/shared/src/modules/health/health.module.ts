@@ -5,6 +5,7 @@ import { RedisConfig } from './redis.config';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './health.controller';
 import { Optional } from '../../types';
+import { DatabaseConfig } from './database.config';
 
 @Module({})
 export class HealthModule {
@@ -13,6 +14,7 @@ export class HealthModule {
 		config: HealthConfig,
 		broker?: Optional<BrokerConfig>,
 		redis?: Optional<RedisConfig>,
+		database?: Optional<DatabaseConfig>,
 	): DynamicModule {
 		return {
 			module: HealthModule,
@@ -50,6 +52,31 @@ export class HealthModule {
 				{
 					provide: 'REDIS_PASSWORD',
 					useValue: redis?.redisPassword ?? null,
+				},
+
+				{
+					provide: 'DATABASE_TYPE',
+					useValue: database?.databaseType ?? null,
+				},
+				{
+					provide: 'DATABASE_HOST',
+					useValue: database?.databaseHost ?? null,
+				},
+				{
+					provide: 'DATABASE_PORT',
+					useValue: database?.databasePort ?? null,
+				},
+				{
+					provide: 'DATABASE_USERNAME',
+					useValue: database?.databaseUsername ?? null,
+				},
+				{
+					provide: 'DATABASE_PASSWORD',
+					useValue: database?.databasePassword ?? null,
+				},
+				{
+					provide: 'DATABASE_TABLE',
+					useValue: database?.databaseTable ?? null,
 				},
 			],
 			global,

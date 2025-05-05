@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { Optional } from '../../types';
 
@@ -10,6 +10,7 @@ export class CacheService {
 	) {}
 
 	async getKey<Type>(key: string): Promise<Optional<Type>> {
+		Logger.log('GetKey', key);
 		return await this.cacheManager.get<Optional<Type>>(key);
 	}
 
@@ -18,18 +19,22 @@ export class CacheService {
 		value: Type,
 		ttl?: Optional<number>,
 	): Promise<void> {
+		Logger.log('SetKey', { key, value, ttl });
 		await this.cacheManager.set(key, value, ttl ?? this.ttl);
 	}
 
 	async deleteKey(key: string): Promise<void> {
+		Logger.log('DeleteKey', key);
 		await this.cacheManager.del(key);
 	}
 
 	async reset(): Promise<void> {
+		Logger.log('Reset', {});
 		await this.cacheManager.reset();
 	}
 
 	async inCache(key: string): Promise<boolean> {
+		Logger.log('InCache', key);
 		const data = await this.getKey(key);
 		return data !== undefined;
 	}

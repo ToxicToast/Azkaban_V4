@@ -1,8 +1,8 @@
 export enum AzkabanSSETopics {
 	VERSION = 'azkaban.sse.version',
-	LOGIN = 'azkaban.sse.login',
-	REGISTER = 'azkaban.sse.register',
-	TWITCHBOT = 'azkaban.sse.twitchbot',
+	CREATE = 'azkaban.sse.create',
+	WARCRAFT = 'azkaban.sse.warcraft',
+	AZKABAN = 'azkaban.sse.azkaban',
 }
 
 export const AzkabanSSETopicArray = Object.values(AzkabanSSETopics);

@@ -23,69 +23,66 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 
 ## Planned Services
 
-- **Azkaban Services**
+**FoodFolio**
 
-    - Email Service
-    - Webhook Service
-        - Zapier
-        - API Alerts
+- Category
+- Company
+- Location
+- Type
+- Size
+- Item
+- Item Variant
+- Item Detail
+- Warehouse
+- Shoppinglist
 
-- **FoodFolio Services**
+**Twitch**
 
-    - Category
-    - Company
-    - Location
-    - Type
-    - Size
-    - Item
-    - Item Variant
-    - Item Detail
-    - Warehouse
-    - Shoppinglist
+- Api Service
+- Bot Service
+- Viewer Service
+- Messages Service
+- Streams Service
+- Channel Service
 
-- **Twitch Services**
+**Warcraft**
 
-    - Api Service
-    - Bot Service
-    - Viewer Service
-    - Messages Service
-    - Streams Service
-    - Channel Service
+- Api Service
+- Guild Service
 
-- **Warcraft Services**
+**Co-Working**
 
-    - Character Service
-    - Api Service
-    - Raider IO Service
-    - WowAudit Service
+- Task Service
 
-- **Co-Working Services**
+**UI**
 
-    - Task Service
-
-- **UI Services**
-    - Admin UI
-    - Foodfolio UI
-    - CoWorking UI (Task List Overlay)
-    - Blog UI
+- Admin UI
+- Foodfolio UI
+- CoWorking UI
 
 ## In Development
 
-- Azkaban Services
-- Twitch Services
+- Warcraft Service
+- Blog UI
+- Ascend Guild UI
 
 ## Deployed Services
 
+**Gateway**
+
 - [API Gateway](https://api.toxictoast.de/)
-- [Authentication Service](https://auth.toxictoast.de/)
-- [Cronjob Service](https://api.toxictoast.de/)
-- [SSE Service](https://sse.toxictoast.de/)
-- [Version UI](https://version.toxictoast.de/)
+- Azkaban Alerts
+- [Azkaban Users](https://api.toxictoast.de/api/v1/azkaban/users)
+- [Azkaban SSE](https://sse.toxictoast.de/api/v1/sse)
+- Warcraft Api
+- [Warcraft Characters](https://api.toxictoast.de/api/v1/warcraft/character)
+- [Warcraft Guild](https://api.toxictoast.de/api/v1/warcraft/guild)
+- Warcraft Cronjobs
+
+**UI**
+
 - [Blog UI](https://www.toxictoast.de/)
-
-## Needs Refactoring
-
-- [User Service](https://api.toxictoast.de/)
+- [Ascend Guild UI](https://www.ascend-guild.de/)
 
 ## Infrastructure
 
@@ -93,7 +90,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 - Kubernetes (Orchestration)
 - Traefik (Reverse Proxy)
 - Kafka (Message Broker)
-- MariaDB (Database)
+- Postgres (Database)
 - NestJS (Backend Framework)
 - Redis (Cache)
 - ReactJS (UI)
@@ -110,7 +107,7 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 ## Alerting
 
 > **Info:**
-> Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific user logged in. (Event Driven Architecture)
+> Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific event occurred. (Event Driven Architecture)
 
 - [API Alerts](https://apialerts.com/)
 

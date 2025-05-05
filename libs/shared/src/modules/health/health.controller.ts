@@ -7,26 +7,39 @@ import {
 	HealthIndicatorResult,
 	MemoryHealthIndicator,
 	MicroserviceHealthIndicator,
+	TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 import { Transport } from '@nestjs/microservices';
-import { HealthRoutes } from '../../routes';
+import { Nullable } from '../../types';
+import { ControllerHelper } from '../../helpers';
 
-@Controller({
-	path: HealthRoutes.CONTROLLER,
-	version: '1',
-})
+@Controller(ControllerHelper('health'))
 export class HealthController {
 	constructor(
 		@Inject('MEMORY_HEAP_TRESHOLD') private readonly heapTreshold: number,
 		@Inject('MEMORY_RSS_TRESHOLD') private readonly rssTreshold: number,
-		@Inject('BROKER_HOST') private readonly brokerHost: string | null,
-		@Inject('BROKER_PORT') private readonly brokerPort: number | null,
-		@Inject('REDIS_HOST') private readonly redisHost: string | null,
-		@Inject('REDIS_PORT') private readonly redisPort: number | null,
-		@Inject('REDIS_PASSWORD') private readonly redisPassword: string | null,
+		@Inject('BROKER_HOST') private readonly brokerHost: Nullable<string>,
+		@Inject('BROKER_PORT') private readonly brokerPort: Nullable<number>,
+		@Inject('REDIS_HOST') private readonly redisHost: Nullable<string>,
+		@Inject('REDIS_PORT') private readonly redisPort: Nullable<number>,
+		@Inject('REDIS_PASSWORD')
+		private readonly redisPassword: Nullable<string>,
+		@Inject('DATABASE_TYPE')
+		private readonly databaseType: Nullable<string>,
+		@Inject('DATABASE_HOST')
+		private readonly databaseHost: Nullable<string>,
+		@Inject('DATABASE_PORT')
+		private readonly databasePort: Nullable<number>,
+		@Inject('DATABASE_USERNAME')
+		private readonly databaseUsername: Nullable<string>,
+		@Inject('DATABASE_PASSWORD')
+		private readonly databasePassword: Nullable<string>,
+		@Inject('DATABASE_TABLE')
+		private readonly databaseTable: Nullable<string>,
 		private readonly service: HealthCheckService,
 		private readonly memory: MemoryHealthIndicator,
 		private readonly microservices: MicroserviceHealthIndicator,
+		private readonly database: TypeOrmHealthIndicator,
 	) {}
 
 	private checkHeap(): () => Promise<HealthIndicatorResult> {
@@ -61,6 +74,20 @@ export class HealthController {
 			});
 	}
 
+	private checkDatabase(): () => Promise<HealthIndicatorResult> {
+		return () =>
+			this.database.pingCheck('database', {
+				connection: {
+					type: this.databaseType,
+					host: this.databaseHost,
+					port: this.databasePort,
+					username: this.databaseUsername,
+					password: this.databasePassword,
+					database: this.databaseTable,
+				},
+			});
+	}
+
 	@Get()
 	@HealthCheck()
 	check(): Promise<HealthCheckResult> {
@@ -77,6 +104,16 @@ export class HealthController {
 				this.redisPassword !== null
 			) {
 				checkArray.push(this.checkRedis());
+			}
+			if (
+				this.databaseType !== null &&
+				this.databaseHost !== null &&
+				this.databasePort !== null &&
+				this.databaseUsername !== null &&
+				this.databasePassword !== null &&
+				this.databaseTable !== null
+			) {
+				checkArray.push(this.checkDatabase());
 			}
 			return this.service.check(checkArray);
 		} catch (error) {
