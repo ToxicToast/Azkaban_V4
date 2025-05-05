@@ -28,7 +28,6 @@ export class CharacterProcessor extends WorkerHost {
 	}) {
 		try {
 			const { region, realm, name, guild } = data;
-			Logger.log('onGetCharacterFromApi', { region, realm, name, guild });
 			await this.apiService.setApiClient(region as Origins);
 			return await this.apiService.getCharacter({ realm, name });
 		} catch (error) {
@@ -44,10 +43,7 @@ export class CharacterProcessor extends WorkerHost {
 		data: CharacterModel,
 	) {
 		try {
-			Logger.log('onCharacterUpdate', { id, old_guild, data });
-			//
 			const currentGuild = data.guild?.name ?? null;
-			//
 			const updatePayload = {
 				display_realm: data.realm?.name ?? undefined,
 				display_name: data?.name ?? undefined,
@@ -66,7 +62,6 @@ export class CharacterProcessor extends WorkerHost {
 				old_guild: currentGuild !== old_guild ? old_guild : undefined,
 				rank: currentGuild === null ? null : undefined,
 			};
-			Logger.log('updatePayload', updatePayload);
 			return await this.service.updateCharacter(id, updatePayload);
 		} catch (error) {
 			Logger.error(error);
