@@ -78,13 +78,6 @@ export class UserService {
 			salt,
 			password,
 		});
-		Logger.log('createUser', {
-			...data,
-			user_id,
-			salt,
-			password,
-		});
-		Logger.log('result', { result });
 		if (result.isSuccess) {
 			const events = result.events;
 			Logger.log('User Events', events);

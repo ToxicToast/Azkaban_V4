@@ -71,11 +71,16 @@ Azkaban is a complete Rewrite of my Microservices at Home.
 **Gateway**
 
 - [API Gateway](https://api.toxictoast.de/)
+- Azkaban Alerts
+- [Azkaban Users](https://api.toxictoast.de/api/v1/azkaban/users)
+- [Azkaban SSE](https://sse.toxictoast.de/api/v1/sse)
+- Warcraft Api
 - [Warcraft Characters](https://api.toxictoast.de/api/v1/warcraft/character)
+- [Warcraft Guild](https://api.toxictoast.de/api/v1/warcraft/guild)
+- Warcraft Cronjobs
 
 **UI**
 
-- [Version UI](https://version.toxictoast.de/)
 - [Blog UI](https://www.toxictoast.de/)
 - [Ascend Guild UI](https://www.ascend-guild.de/)
 

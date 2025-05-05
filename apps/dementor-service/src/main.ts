@@ -87,7 +87,9 @@ async function bootstrap() {
 	configureApp(app);
 	addModules(app);
 	addFilters(app);
-	configureSwagger(app);
+	if (AppConfig.environment === 'local') {
+		configureSwagger(app);
+	}
 	configureCors(app);
 	await startApp(app);
 	Logger.log(`🚀 ${AppConfig.name} is running`);
