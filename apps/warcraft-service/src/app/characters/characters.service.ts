@@ -43,7 +43,6 @@ export class CharactersService {
 
 	@Span('characterList')
 	async characterList(data: CharacterList): Promise<Array<CharacterDAO>> {
-		Logger.log('CharacterList', data);
 		const characters = await this.infrastructureService.getCharacterList(
 			data.limit,
 			data.offset,

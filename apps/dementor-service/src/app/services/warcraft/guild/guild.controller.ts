@@ -102,7 +102,6 @@ export class GuildController {
 	@UseGuards(JwtAuthGuard)
 	@Patch('/activate/:id')
 	async activateGuild(@Param('id') id: number) {
-		Logger.log('Activate Character', { id });
 		return await this.service.activateGuild(id).catch((error) => {
 			Logger.error(error);
 			throw error;
@@ -113,7 +112,6 @@ export class GuildController {
 	@UseGuards(JwtAuthGuard)
 	@Patch('/deactivate/:id')
 	async deactivateGuild(@Param('id') id: number) {
-		Logger.log('Deactivate Character', { id });
 		return await this.service.deactivateGuild(id).catch((error) => {
 			Logger.error(error);
 			throw error;

@@ -34,7 +34,6 @@ export class CharacterController {
 		@Query('limit') limit?: Optional<number>,
 		@Query('offset') offset?: Optional<number>,
 	) {
-		Logger.log('Get Characters', { limit, offset });
 		return await this.service
 			.characterList(limit, offset)
 			.catch((error) => {
@@ -46,7 +45,6 @@ export class CharacterController {
 	@Span(WarcraftCharacterTopics.ID + '.dementor')
 	@Get('/:id')
 	async getCharacterById(@Param('id') id: number) {
-		Logger.log('Get Character By Id', { id });
 		return await this.service.characterById(id).catch((error) => {
 			Logger.error(error);
 			throw error;
@@ -56,7 +54,6 @@ export class CharacterController {
 	@Span(WarcraftCharacterTopics.CHARACTERID + '.dementor')
 	@Get('/uuid/:id')
 	async getCharacterByCharacterId(@Param('id') id: string) {
-		Logger.log('Get Character By Character Id', { id });
 		return await this.service.characterByCharacterId(id).catch((error) => {
 			Logger.error(error);
 			throw error;
@@ -66,7 +63,6 @@ export class CharacterController {
 	@Span(WarcraftCharacterTopics.GUILD + '.dementor')
 	@Get('/guild/:name')
 	async getCharacterByGuildId(@Param('name') name: string) {
-		Logger.log('Get Character By Guild', { name });
 		return await this.service.characterByGuild(name).catch((error) => {
 			Logger.error(error);
 			throw error;
@@ -77,7 +73,6 @@ export class CharacterController {
 	@UseGuards(JwtAuthGuard)
 	@Post('/')
 	async createCharacter(@Body() body: CreateCharacterDTO) {
-		Logger.log('Create New Character', { body });
 		return await this.service.createCharacter(body).catch((error) => {
 			Logger.error(error);
 			throw error;
@@ -91,7 +86,6 @@ export class CharacterController {
 		@Param('id') id: number,
 		@Body() body: UpdateCharacterDTO,
 	) {
-		Logger.log('Update Character', { id, body });
 		return await this.service.updateCharacter(id, body).catch((error) => {
 			Logger.error(error);
 			throw error;

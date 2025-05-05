@@ -19,14 +19,12 @@ export class GuildsCache {
 		if (offset !== undefined) {
 			cacheKey += `:offset:${offset}`;
 		}
-		Logger.log('Cache Guild List', { cacheKey, guildList });
 		await this.service.setKey(cacheKey, guildList);
 	}
 
 	@Span('cacheGuildById')
 	async cacheCharacterById(id: number, guild: unknown): Promise<void> {
 		const cacheKey = 'warcraft:guilds:id:' + id;
-		Logger.log('Cache Guild By Id', { id, guild });
 		await this.service.setKey(cacheKey, guild);
 	}
 
@@ -36,13 +34,11 @@ export class GuildsCache {
 		guild: unknown,
 	): Promise<void> {
 		const cacheKey = 'warcraft:guilds:guildid:' + guild_id;
-		Logger.log('Cache Guild By Guild Id', { guild_id, guild });
 		await this.service.setKey(cacheKey, guild);
 	}
 
 	@Span('removeCache')
 	async removeCache(): Promise<void> {
-		Logger.log('Clear Guilds Cache', {});
 		await this.service.deleteKey('warcraft:guilds:*');
 	}
 }
