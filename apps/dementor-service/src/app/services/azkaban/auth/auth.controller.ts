@@ -13,4 +13,13 @@ export class AuthController {
 		Logger.log('Login User', { body });
 		return await this.service.login(body);
 	}
+
+	@Span(AzkabanAuthTopics.REGISTER + '.dementor')
+	@Post('/register')
+	async register(
+		@Body() body: { username: string; password: string; email: string },
+	) {
+		Logger.log('Register New User', { body });
+		return await this.service.register(body);
+	}
 }

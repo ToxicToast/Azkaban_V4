@@ -18,6 +18,7 @@ import { AppConfig } from '../config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ServicesModule } from './services/services.module';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
 	imports: [
@@ -41,6 +42,7 @@ import { JwtModule } from '@nestjs/jwt';
 			AppConfig.broker,
 			AppConfig.redis,
 		),
+		PassportModule,
 		JwtModule.register({
 			global: true,
 			secret: AppConfig.jwt,

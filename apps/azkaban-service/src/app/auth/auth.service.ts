@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import {
 	UserDAO,
+	CreateUserWithoutSaltDTO,
 	UserEntity,
 	UserRepository,
 	UserService as BaseService,
@@ -8,7 +9,6 @@ import {
 import { Repository } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Span } from 'nestjs-otel';
-import { UserLoginDTO } from '../../utils';
 
 @Injectable()
 export class AuthService {
@@ -33,9 +33,12 @@ export class AuthService {
 		password: string;
 	}): Promise<UserDAO> {
 		Logger.log('AuthLogin', data);
-		return await this.infrastructureService.getUserByUsernamePassword(
-			data.username,
-			data.password,
-		);
+		return await this.infrastructureService.loginUser(data);
+	}
+
+	@Span('authRegister')
+	async authRegister(data: CreateUserWithoutSaltDTO): Promise<UserDAO> {
+		Logger.log('AuthRegister', { data });
+		return await this.infrastructureService.createUser(data);
 	}
 }

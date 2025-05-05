@@ -9,6 +9,7 @@ import {
 	Post,
 	Put,
 	Query,
+	UseGuards,
 } from '@nestjs/common';
 import {
 	ControllerHelper,
@@ -21,6 +22,7 @@ import {
 	CreateGuildDTO,
 	UpdateGuildDTO,
 } from '@azkaban/warcraft-infrastructure';
+import { JwtAuthGuard } from '../../../guards';
 
 @Controller(ControllerHelper('warcraft/guild'))
 export class GuildController {
@@ -60,6 +62,7 @@ export class GuildController {
 	}
 
 	@Span(WarcraftGuildTopics.CREATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Post('/')
 	async createGuild(@Body() body: CreateGuildDTO) {
 		Logger.log('Create New Guild', { body });
@@ -70,6 +73,7 @@ export class GuildController {
 	}
 
 	@Span(WarcraftGuildTopics.UPDATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Put('/:id')
 	async updateGuild(@Param('id') id: number, @Body() body: UpdateGuildDTO) {
 		Logger.log('Update Guild', { id, body });
@@ -80,6 +84,7 @@ export class GuildController {
 	}
 
 	@Span(WarcraftGuildTopics.DELETE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Delete('/:id')
 	async deleteGuild(@Param('id') id: number) {
 		Logger.log('Delete Character', { id });
@@ -90,6 +95,7 @@ export class GuildController {
 	}
 
 	@Span(WarcraftGuildTopics.RESTORE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/restore/:id')
 	async restoreGuild(@Param('id') id: number) {
 		Logger.log('Restore Character', { id });
@@ -100,6 +106,7 @@ export class GuildController {
 	}
 
 	@Span(WarcraftGuildTopics.ACTIVATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/activate/:id')
 	async activateGuild(@Param('id') id: number) {
 		Logger.log('Activate Character', { id });
@@ -110,6 +117,7 @@ export class GuildController {
 	}
 
 	@Span(WarcraftGuildTopics.DEACTIVATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/deactivate/:id')
 	async deactivateGuild(@Param('id') id: number) {
 		Logger.log('Deactivate Character', { id });

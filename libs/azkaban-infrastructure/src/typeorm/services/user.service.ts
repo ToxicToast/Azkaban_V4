@@ -65,34 +65,6 @@ export class UserService {
 		}
 	}
 
-	async getUserByUsernamePassword(
-		username: string,
-		password: string,
-	): Promise<UserDAO> {
-		const result = await this.domainService.getUserByUsername(username);
-		if (result.isSuccess) {
-			const user = result.value;
-			const isValidPassword = await PasswordCompare(
-				password,
-				user.password,
-			);
-			if (isValidPassword) {
-				return user;
-			}
-			throw new RpcException({
-				status: 401,
-				message: 'Invalid password',
-				raw: { username, password },
-			});
-		} else {
-			throw new RpcException({
-				status: result.errorCode,
-				message: result.errorValue,
-				raw: { username, password },
-			});
-		}
-	}
-
 	async createUser(data: CreateUserWithoutSaltDTO): Promise<UserDAO> {
 		const user_id = UuidHelper.create().value;
 		const salt = await PasswordSalt();
@@ -214,6 +186,51 @@ export class UserService {
 				status: result.errorCode,
 				message: result.errorValue,
 				raw: { id },
+			});
+		}
+	}
+
+	async loginUser(data: {
+		username: string;
+		password: string;
+	}): Promise<UserDAO> {
+		const result = await this.domainService.getUserByUsername(
+			data.username,
+		);
+		if (result.isSuccess) {
+			const user = result.value;
+			const isValidPassword = await PasswordCompare(
+				data.password,
+				user.password,
+			);
+			if (
+				isValidPassword &&
+				user.activated_at !== null &&
+				user.deleted_at === null
+			) {
+				const result = await this.domainService.updateUser({
+					id: user.id,
+					loggedin_at: new Date(),
+				});
+				if (result.isSuccess) {
+					const events = result.events;
+					Logger.log('User Events', events);
+					for (const event of events) {
+						this.eventEmitter.emit(event.event_name, event);
+					}
+					return result.value;
+				}
+			}
+			throw new RpcException({
+				status: 401,
+				message: 'Invalid credentials',
+				raw: { ...data },
+			});
+		} else {
+			throw new RpcException({
+				status: result.errorCode,
+				message: result.errorValue,
+				raw: { ...data },
 			});
 		}
 	}

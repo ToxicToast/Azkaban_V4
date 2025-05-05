@@ -9,6 +9,7 @@ import {
 	Post,
 	Put,
 	Query,
+	UseGuards,
 } from '@nestjs/common';
 import {
 	ControllerHelper,
@@ -21,6 +22,7 @@ import {
 	CreateCharacterDTO,
 	UpdateCharacterDTO,
 } from '@azkaban/warcraft-infrastructure';
+import { JwtAuthGuard } from '../../../guards';
 
 @Controller(ControllerHelper('warcraft/character'))
 export class CharacterController {
@@ -72,6 +74,7 @@ export class CharacterController {
 	}
 
 	@Span(WarcraftCharacterTopics.CREATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Post('/')
 	async createCharacter(@Body() body: CreateCharacterDTO) {
 		Logger.log('Create New Character', { body });
@@ -82,6 +85,7 @@ export class CharacterController {
 	}
 
 	@Span(WarcraftCharacterTopics.UPDATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Put('/:id')
 	async updateCharacter(
 		@Param('id') id: number,
@@ -95,6 +99,7 @@ export class CharacterController {
 	}
 
 	@Span(WarcraftCharacterTopics.DELETE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Delete('/:id')
 	async deleteCharacter(@Param('id') id: number) {
 		Logger.log('Delete Character', { id });
@@ -105,6 +110,7 @@ export class CharacterController {
 	}
 
 	@Span(WarcraftCharacterTopics.RESTORE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/restore/:id')
 	async restoreCharacter(@Param('id') id: number) {
 		Logger.log('Restore Character', { id });
@@ -115,6 +121,7 @@ export class CharacterController {
 	}
 
 	@Span(WarcraftCharacterTopics.ACTIVATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/activate/:id')
 	async activateCharacter(@Param('id') id: number) {
 		Logger.log('Activate Character', { id });
@@ -125,6 +132,7 @@ export class CharacterController {
 	}
 
 	@Span(WarcraftCharacterTopics.DEACTIVATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/deactivate/:id')
 	async deactivateCharacter(@Param('id') id: number) {
 		Logger.log('Deactivate Character', { id });

@@ -9,6 +9,7 @@ import {
 	Post,
 	Put,
 	Query,
+	UseGuards,
 } from '@nestjs/common';
 import { AzkabanUserTopics, ControllerHelper, Optional } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
@@ -16,7 +17,10 @@ import { UsersService } from './users.service';
 import {
 	CreateUserWithoutSaltDTO,
 	UpdateUserDTO,
+	UserDAO,
 } from '@azkaban/azkaban-infrastructure';
+import { JwtAuthGuard } from '../../../guards';
+import { UsersPresenter } from './users.presenter';
 
 @Controller(ControllerHelper('azkaban/users'))
 export class UsersController {
@@ -37,12 +41,9 @@ export class UsersController {
 			})
 			.then((data) => {
 				Logger.log('Get Users', { data });
-				return data.map((user) => {
-					return {
-						...user,
-						password: undefined,
-						salt: undefined,
-					};
+				return data.map((user: UserDAO) => {
+					const presenter = new UsersPresenter(user);
+					return presenter.transform();
 				});
 			});
 	}
@@ -59,11 +60,8 @@ export class UsersController {
 			})
 			.then((data) => {
 				if (data !== null) {
-					return {
-						...data,
-						password: undefined,
-						salt: undefined,
-					};
+					const presenter = new UsersPresenter(data);
+					return presenter.transform();
 				}
 				return null;
 			});
@@ -81,17 +79,15 @@ export class UsersController {
 			})
 			.then((data) => {
 				if (data !== null) {
-					return {
-						...data,
-						password: undefined,
-						salt: undefined,
-					};
+					const presenter = new UsersPresenter(data);
+					return presenter.transform();
 				}
 				return null;
 			});
 	}
 
 	@Span(AzkabanUserTopics.CREATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Post('/')
 	async createUser(@Body() body: CreateUserWithoutSaltDTO) {
 		Logger.log('Create New User', { body });
@@ -102,6 +98,7 @@ export class UsersController {
 	}
 
 	@Span(AzkabanUserTopics.UPDATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Put('/:id')
 	async updateUser(@Param('id') id: number, @Body() body: UpdateUserDTO) {
 		Logger.log('Update User', { id, body });
@@ -112,6 +109,7 @@ export class UsersController {
 	}
 
 	@Span(AzkabanUserTopics.DELETE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Delete('/:id')
 	async deleteUser(@Param('id') id: number) {
 		Logger.log('Delete User', { id });
@@ -122,6 +120,7 @@ export class UsersController {
 	}
 
 	@Span(AzkabanUserTopics.RESTORE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/restore/:id')
 	async restoreUser(@Param('id') id: number) {
 		Logger.log('Restore User', { id });
@@ -132,6 +131,7 @@ export class UsersController {
 	}
 
 	@Span(AzkabanUserTopics.ACTIVATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/activate/:id')
 	async activateUser(@Param('id') id: number) {
 		Logger.log('Activate User', { id });
@@ -142,6 +142,7 @@ export class UsersController {
 	}
 
 	@Span(AzkabanUserTopics.DEACTIVATE + '.dementor')
+	@UseGuards(JwtAuthGuard)
 	@Patch('/deactivate/:id')
 	async deactivateUser(@Param('id') id: number) {
 		Logger.log('Deactivate User', { id });
