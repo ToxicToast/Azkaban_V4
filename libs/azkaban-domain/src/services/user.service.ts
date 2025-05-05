@@ -53,8 +53,36 @@ export class UserService {
 		}
 	}
 
+	async getUserByUsername(
+		username: string,
+	): Promise<Result<Nullable<UserAnemic>>> {
+		try {
+			const result = await this.repsitory.findByUsername(username);
+			return Result.ok<Nullable<UserAnemic>>(result);
+		} catch (error) {
+			return Result.fail<Nullable<UserAnemic>>(error, 500);
+		}
+	}
+
+	async getUserByEmail(email: string): Promise<Result<Nullable<UserAnemic>>> {
+		try {
+			const result = await this.repsitory.findByEmail(email);
+			return Result.ok<Nullable<UserAnemic>>(result);
+		} catch (error) {
+			return Result.fail<Nullable<UserAnemic>>(error, 500);
+		}
+	}
+
 	async createUser(data: UserData): Promise<Result<UserAnemic>> {
 		try {
+			const userByUsername = await this.getUserByUsername(data.username);
+			const userByEmail = await this.getUserByEmail(data.email);
+			if (userByUsername.isSuccess || userByEmail.isSuccess) {
+				return Result.fail<UserAnemic>(
+					'User already exists with this username or email',
+					400,
+				);
+			}
 			const aggregate = this.factory.createDomain(data);
 			const anemic = aggregate.toAnemic();
 			const user = anemic.user;

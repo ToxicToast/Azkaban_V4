@@ -8,11 +8,7 @@ import {
 } from '@azkaban/shared';
 import { UserDAO } from '../../dao';
 import { RpcException } from '@nestjs/microservices';
-import {
-	CreateUserDTO,
-	CreateUserWithoutSaltDTO,
-	UpdateUserDTO,
-} from '../../dto';
+import { CreateUserWithoutSaltDTO, UpdateUserDTO } from '../../dto';
 import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
