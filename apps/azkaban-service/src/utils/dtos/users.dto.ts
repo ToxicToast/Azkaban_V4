@@ -34,6 +34,8 @@ export interface UserUpdateDTO {
 }
 
 export interface UserLoginDTO {
-	username: string;
-	password: string;
+	data: {
+		username: string;
+		password: string;
+	};
 }

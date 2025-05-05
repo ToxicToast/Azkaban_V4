@@ -11,6 +11,8 @@ export class AuthService {
 	@Span(AzkabanAuthTopics.LOGIN + '.dementor')
 	async login(data: { username: string; password: string }) {
 		Logger.log('Login User', { data });
-		return await this.commandBus.execute(new LoginCommand(data));
+		const user = await this.commandBus.execute(new LoginCommand(data));
+		Logger.log('User Logged In', { user });
+		return user;
 	}
 }

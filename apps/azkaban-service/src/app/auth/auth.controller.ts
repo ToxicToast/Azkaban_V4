@@ -13,6 +13,6 @@ export class AuthController {
 	@MessagePattern(AzkabanAuthTopics.LOGIN)
 	async login(@Payload() payload: UserLoginDTO) {
 		Logger.log('Login User', payload);
-		return this.service.authLogin(payload);
+		return this.service.authLogin(payload.data);
 	}
 }

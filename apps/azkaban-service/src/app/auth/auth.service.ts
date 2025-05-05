@@ -28,7 +28,10 @@ export class AuthService {
 	}
 
 	@Span('authLogin')
-	async authLogin(data: UserLoginDTO): Promise<UserDAO> {
+	async authLogin(data: {
+		username: string;
+		password: string;
+	}): Promise<UserDAO> {
 		Logger.log('AuthLogin', data);
 		return await this.infrastructureService.getUserByUsernamePassword(
 			data.username,
