@@ -36,7 +36,7 @@ export class UsersService {
 
 	@Span(AzkabanUserTopics.CREATE + '.dementor')
 	async createUser(data: CreateUserWithoutSaltDTO) {
-		Logger.log('Create New User', data);
+		Logger.log('Create New User', { data });
 		return await this.commandBus.execute(new CreateCommand(data));
 	}
 

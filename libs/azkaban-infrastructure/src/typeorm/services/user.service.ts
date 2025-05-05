@@ -71,13 +71,20 @@ export class UserService {
 	async createUser(data: CreateUserWithoutSaltDTO): Promise<UserDAO> {
 		const user_id = UuidHelper.create().value;
 		const salt = await PasswordSalt();
-		const hashedPassword = await PasswordHash(data.password, salt);
+		const password = await PasswordHash(data.password, salt);
 		const result = await this.domainService.createUser({
 			...data,
 			user_id,
 			salt,
-			password: hashedPassword,
+			password,
 		});
+		Logger.log('createUser', {
+			...data,
+			user_id,
+			salt,
+			password,
+		});
+		Logger.log('result', { result });
 		if (result.isSuccess) {
 			const events = result.events;
 			Logger.log('User Events', events);

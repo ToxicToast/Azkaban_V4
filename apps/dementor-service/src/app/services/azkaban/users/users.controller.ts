@@ -83,7 +83,7 @@ export class UsersController {
 	@Span(AzkabanUserTopics.CREATE + '.dementor')
 	@Post('/')
 	async createUser(@Body() body: CreateUserWithoutSaltDTO) {
-		Logger.log('Create New User', { ...body, password: '********' });
+		Logger.log('Create New User', { body });
 		return await this.service.createUser(body).catch((error) => {
 			Logger.error(error);
 			throw error;

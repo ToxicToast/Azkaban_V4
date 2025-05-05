@@ -76,10 +76,7 @@ export class UsersService {
 
 	@Span('userCreate')
 	async userCreate(data: Omit<UserCreateDTO, 'salt'>): Promise<UserDAO> {
-		Logger.log('UserCreate', {
-			...data,
-			password: '********',
-		});
+		Logger.log('UserCreate', { data });
 		await this.cache.removeCache();
 		return await this.infrastructureService.createUser(data);
 	}
