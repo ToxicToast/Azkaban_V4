@@ -29,13 +29,22 @@ export class VersionController {
 		return {
 			dementor: dementorVersion,
 			azkaban: {
-				groups: azkabanVersion,
+				alerts: azkabanVersion,
+				groups: 'n/a',
 				users: azkabanVersion,
 			},
+			sse: 'n/a',
 			warcraft: {
 				api: warcraftVersion,
 				characters: warcraftVersion,
 				guilds: warcraftVersion,
+				cronjobs: {
+					assets: warcraftVersion,
+					character: warcraftVersion,
+					guild: 'n/a',
+					mythic: warcraftVersion,
+					raid: 'n/a',
+				},
 			},
 		};
 	}
