@@ -36,7 +36,10 @@ export class UserService {
 	async getUserById(id: number): Promise<Result<Nullable<UserAnemic>>> {
 		try {
 			const result = await this.repsitory.findById(id);
-			return Result.ok<Nullable<UserAnemic>>(result);
+			if (result !== null) {
+				return Result.ok<Nullable<UserAnemic>>(result);
+			}
+			return Result.fail<Nullable<UserAnemic>>('User not found', 404);
 		} catch (error) {
 			return Result.fail<Nullable<UserAnemic>>(error, 500);
 		}
@@ -47,7 +50,10 @@ export class UserService {
 	): Promise<Result<Nullable<UserAnemic>>> {
 		try {
 			const result = await this.repsitory.findByUserId(user_id);
-			return Result.ok<Nullable<UserAnemic>>(result);
+			if (result !== null) {
+				return Result.ok<Nullable<UserAnemic>>(result);
+			}
+			return Result.fail<Nullable<UserAnemic>>('User not found', 404);
 		} catch (error) {
 			return Result.fail<Nullable<UserAnemic>>(error, 500);
 		}
@@ -58,7 +64,10 @@ export class UserService {
 	): Promise<Result<Nullable<UserAnemic>>> {
 		try {
 			const result = await this.repsitory.findByUsername(username);
-			return Result.ok<Nullable<UserAnemic>>(result);
+			if (result !== null) {
+				return Result.ok<Nullable<UserAnemic>>(result);
+			}
+			return Result.fail<Nullable<UserAnemic>>('User not found', 404);
 		} catch (error) {
 			return Result.fail<Nullable<UserAnemic>>(error, 500);
 		}
@@ -67,7 +76,10 @@ export class UserService {
 	async getUserByEmail(email: string): Promise<Result<Nullable<UserAnemic>>> {
 		try {
 			const result = await this.repsitory.findByEmail(email);
-			return Result.ok<Nullable<UserAnemic>>(result);
+			if (result !== null) {
+				return Result.ok<Nullable<UserAnemic>>(result);
+			}
+			return Result.fail<Nullable<UserAnemic>>('User not found', 404);
 		} catch (error) {
 			return Result.fail<Nullable<UserAnemic>>(error, 500);
 		}

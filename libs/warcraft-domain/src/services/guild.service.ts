@@ -36,7 +36,10 @@ export class GuildService {
 	async getGuildById(id: number): Promise<Result<GuildAnemic>> {
 		try {
 			const result = await this.repository.findById(id);
-			return Result.ok<GuildAnemic>(result);
+			if (result !== null) {
+				return Result.ok<GuildAnemic>(result);
+			}
+			return Result.fail<GuildAnemic>('Guild not found', 404);
 		} catch (error) {
 			return Result.fail<GuildAnemic>(error, 500);
 		}
@@ -45,7 +48,10 @@ export class GuildService {
 	async getGuildByGuildId(guild_id: string): Promise<Result<GuildAnemic>> {
 		try {
 			const result = await this.repository.findByGuildId(guild_id);
-			return Result.ok<GuildAnemic>(result);
+			if (result !== null) {
+				return Result.ok<GuildAnemic>(result);
+			}
+			return Result.fail<GuildAnemic>('Guild not found', 404);
 		} catch (error) {
 			return Result.fail<GuildAnemic>(error, 500);
 		}
@@ -62,7 +68,10 @@ export class GuildService {
 				realm,
 				name,
 			);
-			return Result.ok<GuildAnemic>(result);
+			if (result !== null) {
+				return Result.ok<GuildAnemic>(result);
+			}
+			return Result.fail<GuildAnemic>('Guild not found', 404);
 		} catch (error) {
 			return Result.fail<GuildAnemic>(error, 500);
 		}

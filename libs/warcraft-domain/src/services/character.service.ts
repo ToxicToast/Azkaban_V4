@@ -38,7 +38,13 @@ export class CharacterService {
 	): Promise<Result<Nullable<CharacterAnemic>>> {
 		try {
 			const result = await this.repository.findById(id);
-			return Result.ok<Nullable<CharacterAnemic>>(result);
+			if (result !== null) {
+				return Result.ok<Nullable<CharacterAnemic>>(result);
+			}
+			return Result.fail<Nullable<CharacterAnemic>>(
+				'Character not found',
+				404,
+			);
 		} catch (error) {
 			return Result.fail<Nullable<CharacterAnemic>>(error, 500);
 		}
@@ -50,7 +56,13 @@ export class CharacterService {
 		try {
 			const result =
 				await this.repository.findByCharacterId(character_id);
-			return Result.ok<Nullable<CharacterAnemic>>(result);
+			if (result !== null) {
+				return Result.ok<Nullable<CharacterAnemic>>(result);
+			}
+			return Result.fail<Nullable<CharacterAnemic>>(
+				'Character not found',
+				404,
+			);
 		} catch (error) {
 			return Result.fail<Nullable<CharacterAnemic>>(error, 500);
 		}
@@ -111,7 +123,13 @@ export class CharacterService {
 				realm,
 				name,
 			);
-			return Result.ok<Nullable<CharacterAnemic>>(result);
+			if (result !== null) {
+				return Result.ok<Nullable<CharacterAnemic>>(result);
+			}
+			return Result.fail<Nullable<CharacterAnemic>>(
+				'Character not found',
+				404,
+			);
 		} catch (error) {
 			return Result.fail<Nullable<CharacterAnemic>>(error, 500);
 		}
