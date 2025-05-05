@@ -6,7 +6,7 @@ import {
 	CreateUserWithoutSaltDTO,
 	UpdateUserDTO,
 } from '@azkaban/azkaban-infrastructure';
-import { IdQuery, ListQuery } from './queries';
+import { IdQuery, ListQuery, UserIdQuery } from './queries';
 import { CreateCommand } from './commands';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class UsersService {
 	@Span(AzkabanUserTopics.USERID + '.dementor')
 	async userByUserId(user_id: string) {
 		Logger.log('Fetch User By User Id', { user_id });
-		// return await this.queryBus.execute(new UserIdQuery(user_id));
+		return await this.queryBus.execute(new UserIdQuery(user_id));
 	}
 
 	@Span(AzkabanUserTopics.CREATE + '.dementor')
