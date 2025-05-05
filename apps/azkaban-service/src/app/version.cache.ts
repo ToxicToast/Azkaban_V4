@@ -8,7 +8,7 @@ export class VersionCache {
 
 	@Span('cacheVersion')
 	async cacheVersion(version: string): Promise<void> {
-		const cacheKey = 'azkaban:version';
+		const cacheKey = 'version:azkaban';
 		Logger.log(`Cache version:`, { cacheKey, version });
 		await this.service.setKey(cacheKey, version);
 	}

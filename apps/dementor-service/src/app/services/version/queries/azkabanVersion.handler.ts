@@ -30,7 +30,7 @@ export class AzkabanVersionHandler
 	}
 
 	private async checkForCache(query: AzkabanVersionQuery) {
-		const cacheKey = 'azkaban:version';
+		const cacheKey = 'version:azkaban';
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);

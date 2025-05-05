@@ -30,7 +30,7 @@ export class WarcraftVersionHandler
 	}
 
 	private async checkForCache(query: WarcraftVersionQuery) {
-		const cacheKey = 'warcraft:version';
+		const cacheKey = 'version:warcraft';
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);

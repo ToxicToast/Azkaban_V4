@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
-import { WarcraftTopics } from '@azkaban/shared';
+import { WarcraftTopics, AzkabanTopics } from '@azkaban/shared';
 import {
 	AzkabanVersionQuery,
 	DementorVersionQuery,
@@ -18,15 +18,64 @@ export class VersionService {
 		return await this.queryBus.execute(new WarcraftVersionQuery());
 	}
 
-	@Span(WarcraftTopics.VERSION)
+	@Span(AzkabanTopics.VERSION)
 	async getAzkabanServiceVersion() {
 		Logger.log('Fetch Azkaban Service Version');
 		return await this.queryBus.execute(new AzkabanVersionQuery());
 	}
 
-	@Span(WarcraftTopics.VERSION)
+	@Span('dementor.version')
 	async getDementorServiceVersion() {
 		Logger.log('Fetch Dementor Service Version');
 		return await this.queryBus.execute(new DementorVersionQuery());
+	}
+
+	private async checkForCache() {
+		const cacheKey = 'version:system';
+		const hasCache = await this.cache.inCache(cacheKey);
+		if (hasCache) {
+			return await this.cache.getKey(cacheKey);
+		}
+		//
+		const azkabanVersion = await this.getAzkabanServiceVersion().catch(
+			() => {
+				return 'n/a';
+			},
+		);
+		const dementorVersion = await this.getDementorServiceVersion().catch(
+			() => {
+				return 'n/a';
+			},
+		);
+		const warcraftVersion = await this.getWarcraftServiceVersion().catch(
+			() => {
+				return 'n/a';
+			},
+		);
+		return {
+			dementor: dementorVersion,
+			azkaban: {
+				alerts: azkabanVersion,
+				groups: 'n/a',
+				users: azkabanVersion,
+			},
+			sse: 'n/a',
+			warcraft: {
+				api: warcraftVersion,
+				characters: warcraftVersion,
+				guilds: warcraftVersion,
+				cronjobs: {
+					assets: warcraftVersion,
+					character: warcraftVersion,
+					guild: 'n/a',
+					mythic: warcraftVersion,
+					raid: 'n/a',
+				},
+			},
+		};
+	}
+
+	async getVersions() {
+		return await this.checkForCache();
 	}
 }

@@ -6,6 +6,7 @@ import {
 	WarcraftVersionHandler,
 } from './queries';
 import { VersionController } from './version.controller';
+import { VersionCache } from './version.cache';
 
 @Module({
 	controllers: [VersionController],
@@ -14,6 +15,7 @@ import { VersionController } from './version.controller';
 		DementorVersionHandler,
 		WarcraftVersionHandler,
 		AzkabanVersionHandler,
+		VersionCache,
 	],
 })
 export class VersionModule {}

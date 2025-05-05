@@ -10,42 +10,6 @@ export class VersionController {
 	@Span('dementor.version')
 	@Get('/')
 	async getVersions() {
-		const azkabanVersion = await this.service
-			.getAzkabanServiceVersion()
-			.catch(() => {
-				return 'n/a';
-			});
-		const dementorVersion = await this.service
-			.getDementorServiceVersion()
-			.catch(() => {
-				return 'n/a';
-			});
-		const warcraftVersion = await this.service
-			.getWarcraftServiceVersion()
-			.catch(() => {
-				return 'n/a';
-			});
-
-		return {
-			dementor: dementorVersion,
-			azkaban: {
-				alerts: azkabanVersion,
-				groups: 'n/a',
-				users: azkabanVersion,
-			},
-			sse: 'n/a',
-			warcraft: {
-				api: warcraftVersion,
-				characters: warcraftVersion,
-				guilds: warcraftVersion,
-				cronjobs: {
-					assets: warcraftVersion,
-					character: warcraftVersion,
-					guild: 'n/a',
-					mythic: warcraftVersion,
-					raid: 'n/a',
-				},
-			},
-		};
+		return await this.service.getVersions();
 	}
 }
