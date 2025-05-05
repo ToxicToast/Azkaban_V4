@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
-import { WarcraftTopics, AzkabanTopics } from '@azkaban/shared';
+import { WarcraftTopics, AzkabanTopics, CacheService } from '@azkaban/shared';
 import {
 	AzkabanVersionQuery,
 	DementorVersionQuery,
@@ -10,7 +10,10 @@ import {
 
 @Injectable()
 export class VersionService {
-	constructor(private readonly queryBus: QueryBus) {}
+	constructor(
+		private readonly queryBus: QueryBus,
+		private readonly cache: CacheService,
+	) {}
 
 	@Span(WarcraftTopics.VERSION)
 	async getWarcraftServiceVersion() {
@@ -52,7 +55,7 @@ export class VersionService {
 				return 'n/a';
 			},
 		);
-		return {
+		const versions = {
 			dementor: dementorVersion,
 			azkaban: {
 				alerts: azkabanVersion,
@@ -73,6 +76,8 @@ export class VersionService {
 				},
 			},
 		};
+		await this.cache.setKey(cacheKey, versions);
+		return versions;
 	}
 
 	async getVersions() {
