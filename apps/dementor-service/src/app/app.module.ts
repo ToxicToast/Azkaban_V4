@@ -12,6 +12,7 @@ import {
 	WarcraftGuildTopicArray,
 	WarcraftTopicArray,
 	AzkabanTopicArray,
+	AzkabanAuthTopicArray,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -61,6 +62,7 @@ import { JwtModule } from '@nestjs/jwt';
 			[
 				// Azkaban Services
 				...AzkabanUserTopicArray,
+				...AzkabanAuthTopicArray,
 				// Blog Services
 				// Coworking Services
 				// Discord Services
