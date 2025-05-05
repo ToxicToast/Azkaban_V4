@@ -13,7 +13,11 @@ import {
 import { AzkabanUserTopics, ControllerHelper, Optional } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { UsersService } from './users.service';
-import { CreateUserDTO, UpdateUserDTO } from '@azkaban/azkaban-infrastructure';
+import {
+	CreateUserDTO,
+	CreateUserWithoutSaltDTO,
+	UpdateUserDTO,
+} from '@azkaban/azkaban-infrastructure';
 
 @Controller(ControllerHelper('azkaban/users'))
 export class UsersController {
@@ -78,8 +82,8 @@ export class UsersController {
 
 	@Span(AzkabanUserTopics.CREATE + '.dementor')
 	@Post('/')
-	async createUser(@Body() body: CreateUserDTO) {
-		Logger.log('Create New User', { body });
+	async createUser(@Body() body: CreateUserWithoutSaltDTO) {
+		Logger.log('Create New User', { ...body, password: '********' });
 		return await this.service.createUser(body).catch((error) => {
 			Logger.error(error);
 			throw error;

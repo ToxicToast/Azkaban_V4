@@ -39,7 +39,10 @@ export class UsersController {
 	@Span(AzkabanUserTopics.CREATE + '.service')
 	@MessagePattern(AzkabanUserTopics.CREATE)
 	async createUser(@Payload() payload: Omit<UserCreateDTO, 'salt'>) {
-		Logger.log('Create New User', payload);
+		Logger.log('Create New User', {
+			...payload,
+			password: '********',
+		});
 		return this.service.userCreate(payload);
 	}
 

@@ -1,9 +1,18 @@
 import { UserService as DomainService } from '@azkaban/azkaban-domain';
 import { UserRepository } from '../repositories';
-import { Optional, UuidHelper } from '@azkaban/shared';
+import {
+	Optional,
+	PasswordHash,
+	PasswordSalt,
+	UuidHelper,
+} from '@azkaban/shared';
 import { UserDAO } from '../../dao';
 import { RpcException } from '@nestjs/microservices';
-import { CreateUserDTO, UpdateUserDTO } from '../../dto';
+import {
+	CreateUserDTO,
+	CreateUserWithoutSaltDTO,
+	UpdateUserDTO,
+} from '../../dto';
 import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
@@ -59,11 +68,15 @@ export class UserService {
 		}
 	}
 
-	async createUser(data: CreateUserDTO): Promise<UserDAO> {
+	async createUser(data: CreateUserWithoutSaltDTO): Promise<UserDAO> {
 		const user_id = UuidHelper.create().value;
+		const salt = await PasswordSalt();
+		const hashedPassword = await PasswordHash(data.password, salt);
 		const result = await this.domainService.createUser({
 			...data,
 			user_id,
+			salt,
+			password: hashedPassword,
 		});
 		if (result.isSuccess) {
 			const events = result.events;
