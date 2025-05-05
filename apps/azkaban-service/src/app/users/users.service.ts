@@ -16,7 +16,7 @@ import {
 	UsersListDTO,
 	UserUpdateDTO,
 } from '../../utils';
-import { Nullable, PasswordHash, PasswordSalt } from '@azkaban/shared';
+import { Nullable } from '@azkaban/shared';
 
 @Injectable()
 export class UsersService {

@@ -14,7 +14,6 @@ import { AzkabanUserTopics, ControllerHelper, Optional } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { UsersService } from './users.service';
 import {
-	CreateUserDTO,
 	CreateUserWithoutSaltDTO,
 	UpdateUserDTO,
 } from '@azkaban/azkaban-infrastructure';
@@ -74,10 +73,22 @@ export class UsersController {
 	@Get('/uuid/:id')
 	async getUserByUserId(@Param('id') id: string) {
 		Logger.log('Get User By User Id', { id });
-		return await this.service.userByUserId(id).catch((error) => {
-			Logger.error(error);
-			throw error;
-		});
+		return await this.service
+			.userByUserId(id)
+			.catch((error) => {
+				Logger.error(error);
+				throw error;
+			})
+			.then((data) => {
+				if (data !== null) {
+					return {
+						...data,
+						password: undefined,
+						salt: undefined,
+					};
+				}
+				return null;
+			});
 	}
 
 	@Span(AzkabanUserTopics.CREATE + '.dementor')
