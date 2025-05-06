@@ -21,6 +21,7 @@ export class AuthService {
 		const presenter = new AuthPresenter(user);
 		return {
 			access_token: this.jwt.sign(presenter.transform()),
+			user: presenter.transform(),
 		};
 	}
 
