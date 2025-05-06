@@ -1,0 +1,50 @@
+{
+	"name": "warhammer-service",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/warhammer-service/src",
+	"projectType": "application",
+	"tags": ["scope:application"],
+	"targets": {
+		"build": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "webpack-cli build",
+				"args": ["node-env=production"]
+			},
+			"configurations": {
+				"development": {
+					"args": ["node-env=development"]
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"dependsOn": ["build"],
+			"options": {
+				"buildTarget": "warhammer-service:build",
+				"runBuildTargetDependencies": false
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "warhammer-service:build:development"
+				},
+				"production": {
+					"buildTarget": "warhammer-service:build:production"
+				}
+			}
+		},
+		"test": {
+			"options": {
+				"passWithNoTests": true
+			}
+		},
+		"docker-build": {
+			"dependsOn": ["build"],
+			"command": "docker build -f apps/warhammer-service/Dockerfile . -t toxictoast/warhammer:{args.VERSION}"
+		},
+		"docker-push": {
+			"command": "docker push toxictoast/warhammer:{args.VERSION}"
+		}
+	}
+}
