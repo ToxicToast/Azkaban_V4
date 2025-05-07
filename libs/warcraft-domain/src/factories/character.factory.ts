@@ -3,6 +3,7 @@ import { CharacterAnemic } from '../anemics';
 import { CharacterDomain } from '../domains';
 import { CharacterData } from '../data';
 import { CharacterAggregate } from '../aggregates';
+import { DisplayName, DisplayRealm } from '../valueObjects';
 
 export class CharacterFactory
 	implements
@@ -43,14 +44,17 @@ export class CharacterFactory
 			deleted_at,
 		} = anemic;
 
+		const displayRealmValueObject = new DisplayRealm(display_realm);
+		const displayNameValueObject = new DisplayName(display_name);
+
 		const characterDomain = new CharacterDomain(
 			id,
 			character_id,
 			region,
 			realm,
 			name,
-			display_realm,
-			display_name,
+			displayRealmValueObject,
+			displayNameValueObject,
 			gender,
 			faction,
 			race,
@@ -81,14 +85,18 @@ export class CharacterFactory
 
 	createDomain(data: CharacterData): CharacterAggregate {
 		const { character_id, region, realm, name, rank } = data;
+
+		const displayRealmValueObject = new DisplayRealm(realm);
+		const displayNameValueObject = new DisplayName(name);
+
 		const domain = new CharacterDomain(
 			0,
 			character_id,
 			region,
 			realm,
 			name,
-			realm,
-			name,
+			displayRealmValueObject,
+			displayNameValueObject,
 			null,
 			null,
 			null,
