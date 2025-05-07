@@ -15,10 +15,7 @@
 		],
 		"sharedGlobals": []
 	},
-	"workspaceLayout": {
-		"appsDir": "apps",
-		"libsDir": "libs"
-	},
+	"workspaceLayout": { "appsDir": "apps", "libsDir": "libs" },
 	"old_nxCloudId": "672cec5ff66c74057ce60a3a",
 	"neverConnectToCloud": true,
 	"plugins": [
@@ -30,17 +27,10 @@
 				"previewTargetName": "preview"
 			}
 		},
-		{
-			"plugin": "@nx/eslint/plugin",
-			"options": {
-				"targetName": "lint"
-			}
-		},
+		{ "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
 		{
 			"plugin": "@nx/jest/plugin",
-			"options": {
-				"targetName": "test"
-			},
+			"options": { "targetName": "test" },
 			"exclude": []
 		}
 	],
@@ -55,5 +45,6 @@
 			"dependsOn": ["^build"],
 			"inputs": ["production", "^production"]
 		}
-	}
+	},
+	"nxCloudId": "681b89144fa4f1105231c12e"
 }
