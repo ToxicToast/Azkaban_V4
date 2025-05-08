@@ -43,6 +43,7 @@ export class CharacterDomain
 			wounds: {
 				current: this.wounds.getCurrentWounds(),
 				total: this.wounds.getTotalWounds(),
+				critical: this.wounds.getCriticalWounds(),
 			},
 			corruption: {
 				current: this.corruption.getCurrentCorruption(),
@@ -73,12 +74,20 @@ export class CharacterDomain
 		if (!this.wounds.equals(wound)) {
 			this.updated_at = new Date();
 			const oldWounds = this.wounds.getCurrentWounds();
+			const oldCritical = this.wounds.getCriticalWounds();
 			this.wounds.addWounds(wound);
 			this.addDomainEvent(
 				new AddWoundEvent(this.character_id, wound, oldWounds),
 			);
 			if (this.wounds.isCriticalWound()) {
-				this.addDomainEvent(new CriticalWoundEvent(this.character_id));
+				this.wounds.inflictCriticalWound();
+				this.addDomainEvent(
+					new CriticalWoundEvent(
+						this.character_id,
+						oldCritical,
+						this.wounds.getCriticalWounds(),
+					),
+				);
 			}
 		}
 	}
