@@ -14,6 +14,10 @@ export class Fate {
 		}
 	}
 
+	equals(fate: number): boolean {
+		return this.current === fate;
+	}
+
 	addFate(fate: number): Fate {
 		const currentFate = this.current + fate;
 		if (currentFate > this.total) {

@@ -1,7 +1,15 @@
 import { AggregateRoot, Domain, DomainEvent, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
-import { ChangeNameEvent } from '../events';
-import { Fate, Wound } from '../valueObjects';
+import { Corruption, Fate, Wound } from '../valueObjects';
+import {
+	AddCorruptionEvent,
+	AddFateEvent,
+	AddWoundEvent,
+	CriticalWoundEvent,
+	HealWoundEvent,
+	UseFateEvent,
+	CleanseCorruptionEvent,
+} from '../events';
 
 export class CharacterDomain
 	extends AggregateRoot
@@ -10,10 +18,11 @@ export class CharacterDomain
 	constructor(
 		private readonly id: number,
 		private readonly character_id: string,
-		private name: string,
-		private role: string,
+		private readonly name: string,
+		private readonly role: string,
 		private fate: Fate,
 		private wounds: Wound,
+		private corruption: Corruption,
 		private readonly created_at: Date,
 		private updated_at: Nullable<Date>,
 		private deleted_at: Nullable<Date>,
@@ -35,6 +44,10 @@ export class CharacterDomain
 				current: this.wounds.getCurrentWounds(),
 				total: this.wounds.getTotalWounds(),
 			},
+			corruption: {
+				current: this.corruption.getCurrentCorruption(),
+				total: this.corruption.getTotalCorruption(),
+			},
 			created_at: this.created_at,
 			updated_at: this.updated_at,
 			deleted_at: this.deleted_at,
@@ -45,39 +58,81 @@ export class CharacterDomain
 		return this.pullDomainEvents();
 	}
 
-	changeName(name: string): void {
-		if (name !== this.name) {
+	healWound(wound: number) {
+		if (!this.wounds.equals(wound)) {
 			this.updated_at = new Date();
-			const oldName = this.name;
-			this.name = name;
+			const oldWounds = this.wounds.getCurrentWounds();
+			this.wounds.healWounds(wound);
 			this.addDomainEvent(
-				new ChangeNameEvent(this.character_id, name, oldName),
+				new HealWoundEvent(this.character_id, wound, oldWounds),
 			);
 		}
 	}
 
-	changeRole(role: string): void {
-		if (role !== this.role) {
+	addWound(wound: number) {
+		if (!this.wounds.equals(wound)) {
 			this.updated_at = new Date();
-			const oldRole = this.role;
-			this.role = role;
+			const oldWounds = this.wounds.getCurrentWounds();
+			this.wounds.addWounds(wound);
+			this.addDomainEvent(
+				new AddWoundEvent(this.character_id, wound, oldWounds),
+			);
+			if (this.wounds.isCriticalWound()) {
+				this.addDomainEvent(new CriticalWoundEvent(this.character_id));
+			}
 		}
 	}
 
-	healWound(wound: number): Wound {
-		return this.wounds.healWounds(wound);
+	addFate(fate: number) {
+		if (!this.fate.equals(fate)) {
+			this.updated_at = new Date();
+			const oldFate = this.fate.getCurrentFate();
+			this.fate.addFate(fate);
+			this.addDomainEvent(
+				new AddFateEvent(this.character_id, fate, oldFate),
+			);
+		}
 	}
 
-	addWound(wound: number): Wound {
-		return this.wounds.addWounds(wound);
+	useFate(fate: number) {
+		if (!this.fate.equals(fate)) {
+			this.updated_at = new Date();
+			const oldFate = this.fate.getCurrentFate();
+			this.fate.useFate(fate);
+			this.addDomainEvent(
+				new UseFateEvent(this.character_id, fate, oldFate),
+			);
+		}
 	}
 
-	addFate(fate: number): Fate {
-		return this.fate.addFate(fate);
+	addCorruption(corruption: number) {
+		if (!this.corruption.equals(corruption)) {
+			this.updated_at = new Date();
+			const oldCorruption = this.corruption.getCurrentCorruption();
+			this.corruption.addCorruption(corruption);
+			this.addDomainEvent(
+				new AddCorruptionEvent(
+					this.character_id,
+					corruption,
+					oldCorruption,
+				),
+			);
+		}
 	}
 
-	useFate(fate: number): Fate {
-		return this.fate.useFate(fate);
+	cleanseCorruption(corruption: number) {
+		if (!this.corruption.equals(corruption)) {
+			this.updated_at = new Date();
+			const oldCorruption = this.corruption.getCurrentCorruption();
+			this.corruption.cleanseCorruption(corruption);
+			this.addDomainEvent(
+				new CleanseCorruptionEvent(
+					this.character_id,
+					corruption,
+					oldCorruption,
+				),
+			);
+		}
 	}
 
 	deleteCharacter(): void {

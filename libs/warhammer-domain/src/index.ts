@@ -8,4 +8,3 @@ export * from './validations';
 export * from './valueObjects';
 export * from './domains';
 export * from './events';
-export * from './enums';

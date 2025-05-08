@@ -12,4 +12,8 @@ export interface CharacterAnemic extends Anemic {
 		current: number;
 		total: number;
 	};
+	readonly corruption: {
+		current: number;
+		total: number;
+	};
 }

@@ -14,6 +14,10 @@ export class Wound {
 		}
 	}
 
+	equals(wound: number): boolean {
+		return this.current === wound;
+	}
+
 	healWounds(wounds: number): Wound {
 		const currentWounds = this.current - wounds;
 		if (currentWounds < 0) {

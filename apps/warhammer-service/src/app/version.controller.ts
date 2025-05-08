@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { VersionService, AzkabanTopics } from '@azkaban/shared';
+import { VersionService, WarhammerTopics } from '@azkaban/shared';
 import { MessagePattern } from '@nestjs/microservices';
 import { Span } from 'nestjs-otel';
 import { VersionCache } from './version.cache';
@@ -11,8 +11,8 @@ export class VersionController {
 		private readonly cache: VersionCache,
 	) {}
 
-	@Span(AzkabanTopics.VERSION)
-	@MessagePattern(AzkabanTopics.VERSION)
+	@Span(WarhammerTopics.VERSION)
+	@MessagePattern(WarhammerTopics.VERSION)
 	async getVersion(): Promise<string> {
 		const version = this.versionService.appVersion();
 		await this.cache.cacheVersion(version);

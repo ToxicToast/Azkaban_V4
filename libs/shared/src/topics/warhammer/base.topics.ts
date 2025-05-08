@@ -1,5 +1,5 @@
-export enum AzkabanTopics {
-	VERSION = 'azkaban.version',
+export enum WarhammerTopics {
+	VERSION = 'warhammer.version',
 }
 
-export const AzkabanTopicArray = Object.values(AzkabanTopics);
+export const WarhammerTopicArray = Object.values(WarhammerTopics);
