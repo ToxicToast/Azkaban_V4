@@ -1,0 +1,14 @@
+{
+	"name": "warhammer-infrastructure",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/warhammer-infrastructure/src",
+	"projectType": "library",
+	"tags": ["scope:infrastructure"],
+	"targets": {
+		"test": {
+			"options": {
+				"passWithNoTests": true
+			}
+		}
+	}
+}
