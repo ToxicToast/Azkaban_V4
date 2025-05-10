@@ -9,6 +9,7 @@ import {
 	HealWoundEvent,
 	UseFateEvent,
 	CleanseCorruptionEvent,
+	CreateCharacterEvent,
 } from '../events';
 
 export class CharacterDomain
@@ -23,6 +24,7 @@ export class CharacterDomain
 		private fate: Fate,
 		private wounds: Wound,
 		private corruption: Corruption,
+		private activated_at: Nullable<Date>,
 		private readonly created_at: Date,
 		private updated_at: Nullable<Date>,
 		private deleted_at: Nullable<Date>,
@@ -49,6 +51,7 @@ export class CharacterDomain
 				current: this.corruption.getCurrentCorruption(),
 				total: this.corruption.getTotalCorruption(),
 			},
+			activated_at: this.activated_at,
 			created_at: this.created_at,
 			updated_at: this.updated_at,
 			deleted_at: this.deleted_at,
@@ -57,6 +60,12 @@ export class CharacterDomain
 
 	toEvents(): Array<DomainEvent> {
 		return this.pullDomainEvents();
+	}
+
+	createCharacter(): void {
+		this.addDomainEvent(
+			new CreateCharacterEvent(this.character_id, this.toAnemic()),
+		);
 	}
 
 	healWound(wound: number) {
@@ -141,6 +150,20 @@ export class CharacterDomain
 					oldCorruption,
 				),
 			);
+		}
+	}
+
+	activateCharacter(): void {
+		if (this.activated_at === null) {
+			this.updated_at = new Date();
+			this.activated_at = new Date();
+		}
+	}
+
+	deactivateCharacter(): void {
+		if (this.activated_at !== null) {
+			this.updated_at = new Date();
+			this.activated_at = null;
 		}
 	}
 

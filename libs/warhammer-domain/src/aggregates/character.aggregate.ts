@@ -39,6 +39,14 @@ export class CharacterAggregate {
 		}
 	}
 
+	activateCharacter(): void {
+		this.character.activateCharacter();
+	}
+
+	deactivateCharacter(): void {
+		this.character.deactivateCharacter();
+	}
+
 	deleteCharacter(): void {
 		this.character.deleteCharacter();
 	}
