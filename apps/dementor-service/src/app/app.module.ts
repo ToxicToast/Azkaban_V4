@@ -87,15 +87,15 @@ import { PassportModule } from '@nestjs/passport';
 		VersionModule.forRoot(true, AppConfig.environment),
 		ThrottleModule.forRoot(true, 'short', 5000, 10, {
 			...AppConfig.redis,
-			redisDb: 0,
+			redisDb: 1,
 		}),
 		ThrottleModule.forRoot(true, 'medium', 10000, 20, {
 			...AppConfig.redis,
-			redisDb: 0,
+			redisDb: 1,
 		}),
 		ThrottleModule.forRoot(true, 'long', 60000, 100, {
 			...AppConfig.redis,
-			redisDb: 0,
+			redisDb: 1,
 		}),
 
 		//
