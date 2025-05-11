@@ -10,6 +10,7 @@ import {
 	AlertsResponses,
 	CreateUserAlert,
 	CreateWarcraftCharacterAlert,
+	UpdateWarcraftCharacterGuildAlert,
 } from '../../utils';
 
 @Controller(ControllerHelper('alerts'))
@@ -26,6 +27,16 @@ export class AlertsController {
 				break;
 			case 'CreateUser':
 				this.createUserAlert(payload as CreateUserAlert);
+				break;
+			case 'CreateWarcraftCharacter':
+				this.createWarcraftCharacterAlert(
+					payload as CreateWarcraftCharacterAlert,
+				);
+				break;
+			case 'ChangeGuild':
+				this.updateWarcraftCharacterGuild(
+					payload as UpdateWarcraftCharacterGuildAlert,
+				);
 				break;
 		}
 	}
@@ -48,5 +59,23 @@ export class AlertsController {
 			'warcraft',
 			['Azkaban', 'Api', 'Warcraft', 'Character'],
 		);
+	}
+
+	private updateWarcraftCharacterGuild(
+		payload: UpdateWarcraftCharacterGuildAlert,
+	): void {
+		Logger.log('Update Character Guild Alert', payload);
+		const type = payload.guild === null ? 'left' : 'changed';
+		const message =
+			type === 'left'
+				? `Character "${payload.character_id}" left guild "${payload.old_guild}"`
+				: `Character "${payload.character_id}" changed guild to ${payload.guild} from "${payload.old_guild}"`;
+
+		this.service.sendEvent(message, 'warcraft', [
+			'Azkaban',
+			'Api',
+			'Warhammer',
+			'Character',
+		]);
 	}
 }

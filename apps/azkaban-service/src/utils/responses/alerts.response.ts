@@ -1,4 +1,4 @@
-import { Chainable, DomainEvent } from '@azkaban/shared';
+import { Chainable, DomainEvent, Nullable } from '@azkaban/shared';
 import { UserResponse } from './users.response';
 import { WarcraftResponse } from './warcraft.response';
 
@@ -13,4 +13,13 @@ export type CreateWarcraftCharacterAlert = AlertsResponse<{
 	character: WarcraftResponse;
 }>;
 
-export type AlertsResponses = CreateUserAlert | CreateWarcraftCharacterAlert;
+export type UpdateWarcraftCharacterGuildAlert = AlertsResponse<{
+	character_id: string;
+	guild: Nullable<string>;
+	old_guild: Nullable<string>;
+}>;
+
+export type AlertsResponses =
+	| CreateUserAlert
+	| CreateWarcraftCharacterAlert
+	| UpdateWarcraftCharacterGuildAlert;
