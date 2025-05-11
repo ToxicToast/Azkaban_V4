@@ -1,11 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
-import { WarcraftTopics, AzkabanTopics, CacheService } from '@azkaban/shared';
+import {
+	WarcraftTopics,
+	AzkabanTopics,
+	CacheService,
+	WarhammerTopics,
+} from '@azkaban/shared';
 import {
 	AzkabanVersionQuery,
 	DementorVersionQuery,
 	WarcraftVersionQuery,
+	WarhammerVersionQuery,
 } from './queries';
 
 @Injectable()
@@ -14,6 +20,12 @@ export class VersionService {
 		private readonly queryBus: QueryBus,
 		private readonly cache: CacheService,
 	) {}
+
+	@Span(WarhammerTopics.VERSION)
+	async getWarhammerServiceVersion() {
+		Logger.log('Fetch Warhammer Service Version');
+		return await this.queryBus.execute(new WarhammerVersionQuery());
+	}
 
 	@Span(WarcraftTopics.VERSION)
 	async getWarcraftServiceVersion() {
@@ -55,13 +67,18 @@ export class VersionService {
 				return 'n/a';
 			},
 		);
+		const warhammerVersion = await this.getWarhammerServiceVersion().catch(
+			() => {
+				return 'n/a';
+			},
+		);
 		const versions = {
 			dementor: dementorVersion,
 			azkaban: {
 				alerts: azkabanVersion,
 				groups: 'n/a',
 				users: azkabanVersion,
-				auth: 'n/a',
+				auth: azkabanVersion,
 			},
 			sse: 'n/a',
 			warcraft: {
@@ -75,6 +92,15 @@ export class VersionService {
 					mythic: warcraftVersion,
 					raid: 'n/a',
 				},
+			},
+			warhammer: {
+				characters: warhammerVersion,
+				origins: 'n/a',
+				fractions: 'n/a',
+				roles: 'n/a',
+				equipmenmt: 'n/a',
+				skills: 'n/a',
+				talents: 'n/a',
 			},
 		};
 		await this.cache.setKey(cacheKey, versions);

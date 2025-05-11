@@ -24,7 +24,7 @@ export class CharactersEvents {
 			.toPromise();
 	}
 
-	@OnEvent('CreateCharacter')
+	@OnEvent('CreateWarcraftCharacter')
 	async handleCreateCharacterEvent(payload: unknown) {
 		Logger.log('CreateCharacter event received', payload);
 		await this.sendToSSE(payload);
