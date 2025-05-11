@@ -12,7 +12,9 @@ import {
 import { Transport } from '@nestjs/microservices';
 import { Nullable } from '../../types';
 import { ControllerHelper } from '../../helpers';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller(ControllerHelper('health'))
 export class HealthController {
 	constructor(
