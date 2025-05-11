@@ -1,9 +1,7 @@
 import { Controller, Get, HttpException, Res } from '@nestjs/common';
 import { PrometheusController } from '@willsoto/nestjs-prometheus';
 import { ControllerHelper } from '../../helpers';
-import { SkipThrottle } from '@nestjs/throttler';
 
-@SkipThrottle()
 @Controller(ControllerHelper('metrics'))
 export class MetricsController extends PrometheusController {
 	@Get()

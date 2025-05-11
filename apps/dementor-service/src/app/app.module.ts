@@ -13,7 +13,6 @@ import {
 	WarcraftTopicArray,
 	AzkabanTopicArray,
 	AzkabanAuthTopicArray,
-	ThrottleModule,
 	WarhammerTopicArray,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
@@ -85,19 +84,6 @@ import { PassportModule } from '@nestjs/passport';
 		LoggerModule.forRoot(true, AppConfig.name),
 		MetricsModule.forRoot(true, AppConfig.name),
 		VersionModule.forRoot(true, AppConfig.environment),
-		ThrottleModule.forRoot(true, 'short', 5000, 10, {
-			...AppConfig.redis,
-			redisDb: 0,
-		}),
-		ThrottleModule.forRoot(true, 'medium', 10000, 20, {
-			...AppConfig.redis,
-			redisDb: 0,
-		}),
-		ThrottleModule.forRoot(true, 'long', 60000, 100, {
-			...AppConfig.redis,
-			redisDb: 0,
-		}),
-
 		//
 		ServicesModule,
 	],
