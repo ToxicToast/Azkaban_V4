@@ -39,9 +39,9 @@ export class ThrottleModule {
 						const request = context.switchToHttp().getRequest();
 						const user = request.user;
 						if (user) {
-							return user.id;
+							return 'throttler:user:' + user.id;
 						}
-						return request.ip;
+						return 'throttler:ip:' + request.ip;
 					},
 				}),
 			],
