@@ -13,9 +13,10 @@ export class CharacterRepository implements DomainRepository {
 	async findList(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: boolean,
 	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
@@ -28,9 +29,9 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findById(id: number): Promise<CharacterDAO> {
+	async findById(id: number, withDeleted?: boolean): Promise<CharacterDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { id },
 		});
 		if (entity) {
@@ -52,9 +53,10 @@ export class CharacterRepository implements DomainRepository {
 		region: string,
 		realm: string,
 		name: string,
+		withDeleted?: boolean,
 	): Promise<CharacterDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { region, realm, name },
 		});
 		if (entity) {
@@ -65,9 +67,10 @@ export class CharacterRepository implements DomainRepository {
 
 	async findByFaction(
 		faction: Nullable<string>,
+		withDeleted?: boolean,
 	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
@@ -79,9 +82,12 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findByRace(race: Nullable<string>): Promise<Array<CharacterDAO>> {
+	async findByRace(
+		race: Nullable<string>,
+		withDeleted?: boolean,
+	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
@@ -95,9 +101,10 @@ export class CharacterRepository implements DomainRepository {
 
 	async findByClass(
 		character_class: Nullable<string>,
+		withDeleted?: boolean,
 	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
@@ -109,9 +116,12 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findByGuild(guild: Nullable<string>): Promise<Array<CharacterDAO>> {
+	async findByGuild(
+		guild: Nullable<string>,
+		withDeleted?: boolean,
+	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
@@ -123,9 +133,12 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findByCharacterId(character_id: string): Promise<CharacterDAO> {
+	async findByCharacterId(
+		character_id: string,
+		withDeleted?: boolean,
+	): Promise<CharacterDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { character_id },
 		});
 		if (entity) {

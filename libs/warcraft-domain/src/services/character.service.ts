@@ -24,9 +24,14 @@ export class CharacterService {
 	async getCharacters(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findList(limit, offset);
+			const result = await this.repository.findList(
+				limit,
+				offset,
+				withDeleted,
+			);
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
@@ -35,9 +40,10 @@ export class CharacterService {
 
 	async getCharacterById(
 		id: number,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Nullable<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findById(id);
+			const result = await this.repository.findById(id, withDeleted);
 			if (result !== null) {
 				return Result.ok<Nullable<CharacterAnemic>>(result);
 			}
@@ -52,10 +58,13 @@ export class CharacterService {
 
 	async getCharacterByCharacterId(
 		character_id: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Nullable<CharacterAnemic>>> {
 		try {
-			const result =
-				await this.repository.findByCharacterId(character_id);
+			const result = await this.repository.findByCharacterId(
+				character_id,
+				withDeleted,
+			);
 			if (result !== null) {
 				return Result.ok<Nullable<CharacterAnemic>>(result);
 			}
@@ -70,9 +79,13 @@ export class CharacterService {
 
 	async getCharactersByGuild(
 		guild: Nullable<string>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findByGuild(guild);
+			const result = await this.repository.findByGuild(
+				guild,
+				withDeleted,
+			);
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
@@ -81,9 +94,13 @@ export class CharacterService {
 
 	async getCharactersByClass(
 		character_class: Nullable<string>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findByClass(character_class);
+			const result = await this.repository.findByClass(
+				character_class,
+				withDeleted,
+			);
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
@@ -92,9 +109,10 @@ export class CharacterService {
 
 	async getCharactersByRace(
 		race: Nullable<string>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findByRace(race);
+			const result = await this.repository.findByRace(race, withDeleted);
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
@@ -103,9 +121,13 @@ export class CharacterService {
 
 	async getCharactersByFaction(
 		faction: Nullable<string>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findByFaction(faction);
+			const result = await this.repository.findByFaction(
+				faction,
+				withDeleted,
+			);
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
@@ -116,12 +138,14 @@ export class CharacterService {
 		region: string,
 		realm: string,
 		name: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Nullable<CharacterAnemic>>> {
 		try {
 			const result = await this.repository.findByRegionRealmName(
 				region,
 				realm,
 				name,
+				withDeleted,
 			);
 			if (result !== null) {
 				return Result.ok<Nullable<CharacterAnemic>>(result);

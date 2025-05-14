@@ -20,8 +20,13 @@ export class GuildService {
 	async getGuildList(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<GuildDAO>> {
-		const result = await this.domainService.getGuilds(limit, offset);
+		const result = await this.domainService.getGuilds(
+			limit,
+			offset,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
@@ -33,8 +38,11 @@ export class GuildService {
 		}
 	}
 
-	async getGuildById(id: number): Promise<GuildDAO> {
-		const result = await this.domainService.getGuildById(id);
+	async getGuildById(
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<GuildDAO> {
+		const result = await this.domainService.getGuildById(id, withDeleted);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
@@ -46,8 +54,14 @@ export class GuildService {
 		}
 	}
 
-	async getGuildByGuildId(guild_id: string): Promise<GuildDAO> {
-		const result = await this.domainService.getGuildByGuildId(guild_id);
+	async getGuildByGuildId(
+		guild_id: string,
+		withDeleted?: Optional<boolean>,
+	): Promise<GuildDAO> {
+		const result = await this.domainService.getGuildByGuildId(
+			guild_id,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
@@ -63,11 +77,13 @@ export class GuildService {
 		region: string,
 		realm: string,
 		name: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<GuildDAO> {
 		const result = await this.domainService.getGuildByRegionRealmName(
 			region,
 			realm,
 			name,
+			withDeleted,
 		);
 		if (result.isSuccess) {
 			return result.value;

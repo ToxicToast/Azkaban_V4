@@ -1,7 +1,7 @@
 import { CharacterAnemic } from '../anemics';
 import { CharacterFactory } from '../factories';
 import { CharacterRepository } from '../repositories';
-import { DomainEvent, Result } from '@azkaban/shared';
+import { DomainEvent, Optional, Result } from '@azkaban/shared';
 import { CharacterData, UpdateCharacterData } from '../data';
 
 export class CharacterService {
@@ -24,18 +24,26 @@ export class CharacterService {
 	async getCharacters(
 		limit?: number,
 		offset?: number,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
-			const result = await this.repository.findList(limit, offset);
+			const result = await this.repository.findList(
+				limit,
+				offset,
+				withDeleted,
+			);
 			return Result.ok<Array<CharacterAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<CharacterAnemic>>(error, 500);
 		}
 	}
 
-	async getCharacterById(id: number): Promise<Result<CharacterAnemic>> {
+	async getCharacterById(
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<Result<CharacterAnemic>> {
 		try {
-			const result = await this.repository.findById(id);
+			const result = await this.repository.findById(id, withDeleted);
 			if (result !== null) {
 				return Result.ok<CharacterAnemic>(result);
 			}
@@ -47,10 +55,13 @@ export class CharacterService {
 
 	async getCharacterByCharacterId(
 		character_id: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<CharacterAnemic>> {
 		try {
-			const result =
-				await this.repository.findByCharacterId(character_id);
+			const result = await this.repository.findByCharacterId(
+				character_id,
+				withDeleted,
+			);
 			if (result !== null) {
 				return Result.ok<CharacterAnemic>(result);
 			}

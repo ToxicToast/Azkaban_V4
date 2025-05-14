@@ -21,12 +21,14 @@ export class ListQueryHandler implements IQueryHandler<ListQuery> {
 	private async createCircuitBreaker(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	) {
 		const topic = AzkabanUserTopics.LIST;
 		return createCircuitBreaker<ListQuery>(
 			{
 				limit,
 				offset,
+				withDeleted,
 			},
 			topic,
 			this.circuit,
@@ -37,6 +39,7 @@ export class ListQueryHandler implements IQueryHandler<ListQuery> {
 	private async checkForCache(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	) {
 		let cacheKey = 'azkaban:users:list';
 		if (limit !== undefined) {
@@ -49,11 +52,15 @@ export class ListQueryHandler implements IQueryHandler<ListQuery> {
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);
 		}
-		return await this.createCircuitBreaker(limit, offset);
+		return await this.createCircuitBreaker(limit, offset, withDeleted);
 	}
 
 	async execute(query: ListQuery) {
 		Logger.log(ListQueryHandler.name, query);
-		return await this.checkForCache(query.limit, query.offset);
+		return await this.checkForCache(
+			query.limit,
+			query.offset,
+			query.withDeleted,
+		);
 	}
 }

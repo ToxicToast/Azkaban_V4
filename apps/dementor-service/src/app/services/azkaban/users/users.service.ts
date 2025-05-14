@@ -17,21 +17,29 @@ export class UsersService {
 	) {}
 
 	@Span(AzkabanUserTopics.LIST + '.dementor')
-	async userList(limit?: Optional<number>, offset?: Optional<number>) {
-		Logger.log('Fetch User List', { limit, offset });
-		return await this.queryBus.execute(new ListQuery(limit, offset));
+	async userList(
+		limit?: Optional<number>,
+		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
+	) {
+		Logger.log('Fetch User List', { limit, offset, withDeleted });
+		return await this.queryBus.execute(
+			new ListQuery(limit, offset, withDeleted),
+		);
 	}
 
 	@Span(AzkabanUserTopics.ID + '.dementor')
-	async userById(id: number) {
-		Logger.log('Fetch User By Id', { id });
-		return await this.queryBus.execute(new IdQuery(id));
+	async userById(id: number, withDeleted?: Optional<boolean>) {
+		Logger.log('Fetch User By Id', { id, withDeleted });
+		return await this.queryBus.execute(new IdQuery(id, withDeleted));
 	}
 
 	@Span(AzkabanUserTopics.USERID + '.dementor')
-	async userByUserId(user_id: string) {
-		Logger.log('Fetch User By User Id', { user_id });
-		return await this.queryBus.execute(new UserIdQuery(user_id));
+	async userByUserId(user_id: string, withDeleted?: Optional<boolean>) {
+		Logger.log('Fetch User By User Id', { user_id, withDeleted });
+		return await this.queryBus.execute(
+			new UserIdQuery(user_id, withDeleted),
+		);
 	}
 
 	@Span(AzkabanUserTopics.CREATE + '.dementor')

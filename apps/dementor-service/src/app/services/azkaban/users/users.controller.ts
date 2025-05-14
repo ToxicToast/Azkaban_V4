@@ -11,7 +11,12 @@ import {
 	Query,
 	UseGuards,
 } from '@nestjs/common';
-import { AzkabanUserTopics, ControllerHelper, Optional } from '@azkaban/shared';
+import {
+	AzkabanUserTopics,
+	ControllerHelper,
+	Nullable,
+	Optional,
+} from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { UsersService } from './users.service';
 import {
@@ -21,6 +26,7 @@ import {
 } from '@azkaban/azkaban-infrastructure';
 import { JwtAuthGuard } from '../../../guards';
 import { UsersPresenter } from './users.presenter';
+import { User } from '../../../decorators';
 
 @Controller(ControllerHelper('azkaban/users'))
 export class UsersController {
@@ -29,12 +35,13 @@ export class UsersController {
 	@Span(AzkabanUserTopics.LIST + '.dementor')
 	@Get('/')
 	async getUsers(
+		@User() user: Nullable<string>,
 		@Query('limit') limit?: Optional<number>,
 		@Query('offset') offset?: Optional<number>,
 	) {
-		Logger.log('Get Users', { limit, offset });
+		Logger.log('Get Users', { user, limit, offset });
 		return await this.service
-			.userList(limit, offset)
+			.userList(limit, offset, user !== null)
 			.catch((error) => {
 				Logger.error(error);
 				throw error;
@@ -50,10 +57,10 @@ export class UsersController {
 
 	@Span(AzkabanUserTopics.ID + '.dementor')
 	@Get('/:id')
-	async getUserById(@Param('id') id: number) {
-		Logger.log('Get User By Id', { id });
+	async getUserById(@User() user: Nullable<string>, @Param('id') id: number) {
+		Logger.log('Get User By Id', { id, user });
 		return await this.service
-			.userById(id)
+			.userById(id, user !== null)
 			.catch((error) => {
 				Logger.error(error);
 				throw error;
@@ -69,10 +76,13 @@ export class UsersController {
 
 	@Span(AzkabanUserTopics.USERID + '.dementor')
 	@Get('/uuid/:id')
-	async getUserByUserId(@Param('id') id: string) {
-		Logger.log('Get User By User Id', { id });
+	async getUserByUserId(
+		@User() user: Nullable<string>,
+		@Param('id') id: string,
+	) {
+		Logger.log('Get User By User Id', { id, user });
 		return await this.service
-			.userByUserId(id)
+			.userByUserId(id, user !== null)
 			.catch((error) => {
 				Logger.error(error);
 				throw error;

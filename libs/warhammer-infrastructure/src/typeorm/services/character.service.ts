@@ -1,11 +1,11 @@
-import { CharacterService as DomainService } from '@azkaban/warcraft-domain';
+import { CharacterService as DomainService } from '@azkaban/warhammer-domain';
 import { CharacterRepository } from '../repositories';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Optional, UuidHelper } from '@azkaban/shared';
 import { CharacterDAO } from '../../dao';
-import { Nullable, Optional, UuidHelper } from '@azkaban/shared';
 import { RpcException } from '@nestjs/microservices';
 import { CreateCharacterDTO, UpdateCharacterDTO } from '../../dto';
 import { Logger } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 
 export class CharacterService {
 	private readonly domainService: DomainService;
@@ -76,105 +76,6 @@ export class CharacterService {
 		}
 	}
 
-	async getCharacterByGuild(
-		guild: Nullable<string>,
-		withDeleted?: Optional<boolean>,
-	): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByGuild(
-			guild,
-			withDeleted,
-		);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			throw new RpcException({
-				status: result.errorCode,
-				message: result.errorValue,
-				raw: { guild, withDeleted },
-			});
-		}
-	}
-
-	async getCharactersByClass(
-		character_class: Nullable<string>,
-		withDeleted?: Optional<boolean>,
-	): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByClass(
-			character_class,
-			withDeleted,
-		);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			throw new RpcException({
-				status: result.errorCode,
-				message: result.errorValue,
-				raw: { character_class, withDeleted },
-			});
-		}
-	}
-
-	async getCharactersByRace(
-		race: Nullable<string>,
-		withDeleted?: Optional<boolean>,
-	): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByRace(
-			race,
-			withDeleted,
-		);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			throw new RpcException({
-				status: result.errorCode,
-				message: result.errorValue,
-				raw: { race, withDeleted },
-			});
-		}
-	}
-
-	async getCharactersByFaction(
-		faction: Nullable<string>,
-		withDeleted?: Optional<boolean>,
-	): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByFaction(
-			faction,
-			withDeleted,
-		);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			throw new RpcException({
-				status: result.errorCode,
-				message: result.errorValue,
-				raw: { faction, withDeleted },
-			});
-		}
-	}
-
-	async getCharacterByRegionRealmName(
-		region: string,
-		realm: string,
-		name: string,
-		withDeleted?: Optional<boolean>,
-	): Promise<CharacterDAO> {
-		const result = await this.domainService.getCharacterByRegionRealmName(
-			region,
-			realm,
-			name,
-			withDeleted,
-		);
-		if (result.isSuccess) {
-			return result.value;
-		} else {
-			throw new RpcException({
-				status: result.errorCode,
-				message: result.errorValue,
-				raw: { region, realm, name, withDeleted },
-			});
-		}
-	}
-
 	async createCharacter(data: CreateCharacterDTO): Promise<CharacterDAO> {
 		const character_id = UuidHelper.create().value;
 		const result = await this.domainService.createCharacter({
@@ -201,58 +102,12 @@ export class CharacterService {
 		id: number,
 		data: UpdateCharacterDTO,
 	): Promise<CharacterDAO> {
-		const {
-			display_realm,
-			display_name,
-			gender,
-			faction,
-			race,
-			class: character_class,
-			spec,
-			level,
-			item_level,
-			guild,
-			rank,
-			inset,
-			avatar,
-			mythic,
-			raid,
-			loggedin_at,
-		} = data;
 		Logger.log('CharacterUpdate', { id, data });
-		const result = await this.domainService.updateCharacter({
-			id,
-			display_realm,
-			display_name,
-			gender,
-			faction,
-			race,
-			class: character_class,
-			spec,
-			level,
-			item_level,
-			guild,
-			rank,
-			inset,
-			avatar,
-			mythic,
-			raid,
-			loggedin_at,
+		throw new RpcException({
+			status: 501,
+			message: 'Not Implemented',
+			raw: { id, data },
 		});
-		if (result.isSuccess) {
-			const events = result.events;
-			Logger.log('Character Events', events);
-			for (const event of events) {
-				this.eventEmitter.emit(event.event_name, event);
-			}
-			return result.value;
-		} else {
-			throw new RpcException({
-				status: result.errorCode,
-				message: result.errorValue,
-				raw: { id, data },
-			});
-		}
 	}
 
 	async deleteCharacter(id: number): Promise<CharacterDAO> {

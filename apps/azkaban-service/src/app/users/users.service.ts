@@ -42,6 +42,7 @@ export class UsersService {
 		const users = await this.infrastructureService.getUserList(
 			data.limit,
 			data.offset,
+			data.withDeleted,
 		);
 		Logger.log('users', users);
 		await this.cache.cacheUserList(users, data.limit, data.offset);
@@ -51,7 +52,10 @@ export class UsersService {
 	@Span('userById')
 	async userById(data: UserByIdDTO): Promise<Nullable<UserDAO>> {
 		Logger.log('UserById', data);
-		const user = await this.infrastructureService.getUserById(data.id);
+		const user = await this.infrastructureService.getUserById(
+			data.id,
+			data.withDeleted,
+		);
 		Logger.log('user', user);
 		if (user !== null) {
 			await this.cache.cacheUserById(data.id, user);
@@ -65,6 +69,7 @@ export class UsersService {
 		Logger.log('UserByUserId', data);
 		const user = await this.infrastructureService.getUserByUserId(
 			data.user_id,
+			data.withDeleted,
 		);
 		Logger.log('user', user);
 		if (user !== null) {
