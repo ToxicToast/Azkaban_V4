@@ -54,33 +54,33 @@ export class VersionService {
 		//
 		const azkabanVersion = await this.getAzkabanServiceVersion().catch(
 			() => {
-				return 'n/a';
+				return 'Service is currently unavailable';
 			},
 		);
 		const dementorVersion = await this.getDementorServiceVersion().catch(
 			() => {
-				return 'n/a';
+				return 'Service is currently unavailable';
 			},
 		);
 		const warcraftVersion = await this.getWarcraftServiceVersion().catch(
 			() => {
-				return 'n/a';
+				return 'Service is currently unavailable';
 			},
 		);
 		const warhammerVersion = await this.getWarhammerServiceVersion().catch(
 			() => {
-				return 'n/a';
+				return 'Service is currently unavailable';
 			},
 		);
 		const versions = {
 			dementor: dementorVersion,
 			azkaban: {
 				alerts: azkabanVersion,
-				groups: 'n/a',
+				groups: 'Service is currently unavailable',
 				users: azkabanVersion,
 				auth: azkabanVersion,
 			},
-			sse: 'n/a',
+			sse: 'Service is currently unavailable',
 			warcraft: {
 				api: warcraftVersion,
 				characters: warcraftVersion,
@@ -88,19 +88,19 @@ export class VersionService {
 				cronjobs: {
 					assets: warcraftVersion,
 					character: warcraftVersion,
-					guild: 'n/a',
+					guild: 'Service is currently unavailable',
 					mythic: warcraftVersion,
-					raid: 'n/a',
+					raid: 'Service is currently unavailable',
 				},
 			},
 			warhammer: {
 				characters: warhammerVersion,
-				origins: 'n/a',
-				fractions: 'n/a',
-				roles: 'n/a',
-				equipmenmt: 'n/a',
-				skills: 'n/a',
-				talents: 'n/a',
+				origins: 'Service is currently unavailable',
+				fractions: 'Service is currently unavailable',
+				roles: 'Service is currently unavailable',
+				equipmenmt: 'Service is currently unavailable',
+				skills: 'Service is currently unavailable',
+				talents: 'Service is currently unavailable',
 			},
 		};
 		await this.cache.setKey(cacheKey, versions);
