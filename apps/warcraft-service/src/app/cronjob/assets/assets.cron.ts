@@ -31,7 +31,7 @@ export class AssetsCron {
 	}
 
 	@Span('updateAssetsCron')
-	@Cron(CronExpression.EVERY_DAY_AT_1AM, {
+	@Cron('0 30 0 * * *', {
 		name: 'Update Warcraft Assets',
 	})
 	async updateAssetsCron() {
