@@ -12,6 +12,7 @@ export class UsersCache {
 		userList: UsersResponse,
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
 		let cacheKey = 'azkaban:users:list';
 		if (limit !== undefined) {
@@ -20,23 +21,37 @@ export class UsersCache {
 		if (offset !== undefined) {
 			cacheKey += `:offset:${offset}`;
 		}
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		Logger.log('Cache User List', { cacheKey, userList });
 		await this.service.setKey(cacheKey, userList);
 	}
 
 	@Span('cacheUserById')
-	async cacheUserById(id: number, user: UserResponse): Promise<void> {
-		const cacheKey = 'azkaban:users:id:' + id;
+	async cacheUserById(
+		user: UserResponse,
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<void> {
+		let cacheKey = 'azkaban:users:id:' + id;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		Logger.log('Cache User By Id', { id, user });
 		await this.service.setKey(cacheKey, user);
 	}
 
 	@Span('cacheUserByUserId')
 	async cacheUserByUserId(
-		user_id: string,
 		user: UserResponse,
+		user_id: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
-		const cacheKey = 'azkaban:users:userid:' + user_id;
+		let cacheKey = 'azkaban:users:userid:' + user_id;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		Logger.log('Cache User By User Id', {
 			user_id,
 			user,

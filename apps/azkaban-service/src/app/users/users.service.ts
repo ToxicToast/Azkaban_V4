@@ -45,7 +45,12 @@ export class UsersService {
 			data.withDeleted,
 		);
 		Logger.log('users', users);
-		await this.cache.cacheUserList(users, data.limit, data.offset);
+		await this.cache.cacheUserList(
+			users,
+			data.limit,
+			data.offset,
+			data.withDeleted,
+		);
 		return users;
 	}
 
@@ -58,7 +63,7 @@ export class UsersService {
 		);
 		Logger.log('user', user);
 		if (user !== null) {
-			await this.cache.cacheUserById(data.id, user);
+			await this.cache.cacheUserById(user, data.id, data.withDeleted);
 			return user;
 		}
 		return null;
@@ -73,7 +78,11 @@ export class UsersService {
 		);
 		Logger.log('user', user);
 		if (user !== null) {
-			await this.cache.cacheUserByUserId(data.user_id, user);
+			await this.cache.cacheUserByUserId(
+				user,
+				data.user_id,
+				data.withDeleted,
+			);
 			return user;
 		}
 		return null;

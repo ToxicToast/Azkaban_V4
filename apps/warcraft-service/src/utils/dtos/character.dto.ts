@@ -3,30 +3,37 @@ import { Nullable, Optional } from '@azkaban/shared';
 export interface CharacterList {
 	limit?: Optional<number>;
 	offset?: Optional<number>;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterByIdDTO {
 	id: number;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterByCharacterIdDTO {
 	character_id: string;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterByGuildDTO {
 	guild: Nullable<string>;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterByClassDTO {
 	character_class: Nullable<string>;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterByRaceDTO {
 	race: Nullable<string>;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterByFactionDTO {
 	faction: Nullable<string>;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterCreateDTO {
@@ -34,6 +41,7 @@ export interface CharacterCreateDTO {
 	realm: string;
 	name: string;
 	rank?: Optional<Nullable<number>>;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterUpdateDTO {

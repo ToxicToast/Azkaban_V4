@@ -46,12 +46,14 @@ export class CharactersService {
 		const characters = await this.infrastructureService.getCharacterList(
 			data.limit,
 			data.offset,
+			data.withDeleted,
 		);
 		Logger.log('characters', characters);
 		await this.cache.cacheCharacterList(
 			characters,
 			data.limit,
 			data.offset,
+			data.withDeleted,
 		);
 		return characters;
 	}
@@ -61,10 +63,15 @@ export class CharactersService {
 		Logger.log('CharacterById', data);
 		const character = await this.infrastructureService.getCharacterById(
 			data.id,
+			data.withDeleted,
 		);
 		Logger.log('character', character);
 		if (character !== null) {
-			await this.cache.cacheCharacterById(data.id, character);
+			await this.cache.cacheCharacterById(
+				character,
+				data.id,
+				data.withDeleted,
+			);
 			return character;
 		}
 		return null;
@@ -78,12 +85,14 @@ export class CharactersService {
 		const character =
 			await this.infrastructureService.getCharacterByCharacterId(
 				data.character_id,
+				data.withDeleted,
 			);
 		Logger.log('character', character);
 		if (character !== null) {
 			await this.cache.cacheCharacterByCharacterId(
-				data.character_id,
 				character,
+				data.character_id,
+				data.withDeleted,
 			);
 			return character;
 		}
@@ -97,9 +106,14 @@ export class CharactersService {
 		Logger.log('characterByGuild', data);
 		const characters = await this.infrastructureService.getCharacterByGuild(
 			data.guild,
+			data.withDeleted,
 		);
 		Logger.log('characters', characters);
-		await this.cache.cacheCharactersByGuild(data.guild, characters);
+		await this.cache.cacheCharactersByGuild(
+			characters,
+			data.guild,
+			data.withDeleted,
+		);
 		return characters;
 	}
 
@@ -111,11 +125,13 @@ export class CharactersService {
 		const characters =
 			await this.infrastructureService.getCharactersByClass(
 				data.character_class,
+				data.withDeleted,
 			);
 		Logger.log('characters', characters);
 		await this.cache.cacheCharactersByClass(
-			data.character_class,
 			characters,
+			data.character_class,
+			data.withDeleted,
 		);
 		return characters;
 	}
@@ -127,9 +143,14 @@ export class CharactersService {
 		Logger.log('characterByRace', data);
 		const characters = await this.infrastructureService.getCharactersByRace(
 			data.race,
+			data.withDeleted,
 		);
 		Logger.log('characters', characters);
-		await this.cache.cacheCharactersByRace(data.race, characters);
+		await this.cache.cacheCharactersByRace(
+			characters,
+			data.race,
+			data.withDeleted,
+		);
 		return characters;
 	}
 
@@ -141,9 +162,14 @@ export class CharactersService {
 		const characters =
 			await this.infrastructureService.getCharactersByFaction(
 				data.faction,
+				data.withDeleted,
 			);
 		Logger.log('characters', characters);
-		await this.cache.cacheCharactersByRace(data.faction, characters);
+		await this.cache.cacheCharactersByRace(
+			characters,
+			data.faction,
+			data.withDeleted,
+		);
 		return characters;
 	}
 

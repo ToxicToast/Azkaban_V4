@@ -28,7 +28,10 @@ export class IdQueryHandler implements IQueryHandler<IdQuery> {
 	}
 
 	private async checkForCache(query: IdQuery) {
-		const cacheKey = 'warcraft:characters:id:' + query.id;
+		let cacheKey = 'warcraft:characters:id:' + query.id;
+		if (query.withDeleted !== undefined) {
+			cacheKey += ':withDeleted:' + String(query.withDeleted);
+		}
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);

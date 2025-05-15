@@ -24,7 +24,7 @@ import {
 	UpdateUserDTO,
 	UserDAO,
 } from '@azkaban/azkaban-infrastructure';
-import { JwtAuthGuard } from '../../../guards';
+import { JwtAuthGuard, OptionalJwtAuthGuard } from '../../../guards';
 import { UsersPresenter } from './users.presenter';
 import { User } from '../../../decorators';
 
@@ -33,6 +33,7 @@ export class UsersController {
 	constructor(private readonly service: UsersService) {}
 
 	@Span(AzkabanUserTopics.LIST + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/')
 	async getUsers(
 		@User() user: Nullable<string>,
@@ -56,6 +57,7 @@ export class UsersController {
 	}
 
 	@Span(AzkabanUserTopics.ID + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/:id')
 	async getUserById(@User() user: Nullable<string>, @Param('id') id: number) {
 		Logger.log('Get User By Id', { id, user });
@@ -75,6 +77,7 @@ export class UsersController {
 	}
 
 	@Span(AzkabanUserTopics.USERID + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/uuid/:id')
 	async getUserByUserId(
 		@User() user: Nullable<string>,

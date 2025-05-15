@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CacheService, Optional } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { CharacterResponse, CharactersResponse } from '../../utils';
@@ -12,6 +12,7 @@ export class CharactersCache {
 		characterList: CharactersResponse,
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
 		let cacheKey = 'warcraft:characters:list';
 		if (limit !== undefined) {
@@ -20,60 +21,87 @@ export class CharactersCache {
 		if (offset !== undefined) {
 			cacheKey += `:offset:${offset}`;
 		}
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, characterList);
 	}
 
 	@Span('cacheCharacterById')
 	async cacheCharacterById(
-		id: number,
 		character: CharacterResponse,
+		id: number,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
-		const cacheKey = 'warcraft:characters:id:' + id;
+		let cacheKey = 'warcraft:characters:id:' + id;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, character);
 	}
 
 	@Span('cacheCharacterByCharacterId')
 	async cacheCharacterByCharacterId(
-		character_id: string,
 		character: CharacterResponse,
+		character_id: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
-		const cacheKey = 'warcraft:characters:characterid:' + character_id;
+		let cacheKey = 'warcraft:characters:characterid:' + character_id;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, character);
 	}
 
 	@Span('cacheCharactersByGuild')
 	async cacheCharactersByGuild(
-		guild: string,
 		characters: CharactersResponse,
+		guild: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
-		const cacheKey = 'warcraft:characters:guild:' + guild;
+		let cacheKey = 'warcraft:characters:guild:' + guild;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, characters);
 	}
 
 	@Span('cacheCharactersByClass')
 	async cacheCharactersByClass(
-		character_class: string,
 		characters: CharactersResponse,
+		character_class: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
-		const cacheKey = 'warcraft:characters:class:' + character_class;
+		let cacheKey = 'warcraft:characters:class:' + character_class;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, characters);
 	}
 
 	@Span('cacheCharactersByRace')
 	async cacheCharactersByRace(
-		race: string,
 		characters: CharactersResponse,
+		race: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
-		const cacheKey = 'warcraft:characters:race:' + race;
+		let cacheKey = 'warcraft:characters:race:' + race;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, characters);
 	}
 
 	@Span('cacheCharactersByFaction')
 	async cacheCharactersByFaction(
-		faction: string,
 		characters: CharactersResponse,
+		faction: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
-		const cacheKey = 'warcraft:characters:faction:' + faction;
+		let cacheKey = 'warcraft:characters:faction:' + faction;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, characters);
 	}
 

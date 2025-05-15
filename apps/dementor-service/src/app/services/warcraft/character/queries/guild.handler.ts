@@ -28,7 +28,10 @@ export class GuildQueryHandler implements IQueryHandler<GuildQuery> {
 	}
 
 	private async checkForCache(query: GuildQuery) {
-		const cacheKey = 'warcraft:characters:guild:' + query.guild;
+		let cacheKey = 'warcraft:characters:guild:' + query.guild;
+		if (query.withDeleted !== undefined) {
+			cacheKey += ':withDeleted:' + String(query.withDeleted);
+		}
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);

@@ -24,23 +24,37 @@ export class CharacterService {
 	) {}
 
 	@Span(WarcraftCharacterTopics.LIST + '.dementor')
-	async characterList(limit?: Optional<number>, offset?: Optional<number>) {
-		return await this.queryBus.execute(new ListQuery(limit, offset));
+	async characterList(
+		limit?: Optional<number>,
+		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
+	) {
+		return await this.queryBus.execute(
+			new ListQuery(limit, offset, withDeleted),
+		);
 	}
 
 	@Span(WarcraftCharacterTopics.ID + '.dementor')
-	async characterById(id: number) {
-		return await this.queryBus.execute(new IdQuery(id));
+	async characterById(id: number, withDeleted?: Optional<boolean>) {
+		return await this.queryBus.execute(new IdQuery(id, withDeleted));
 	}
 
 	@Span(WarcraftCharacterTopics.CHARACTERID + '.dementor')
-	async characterByCharacterId(character_id: string) {
-		return await this.queryBus.execute(new CharacterIdQuery(character_id));
+	async characterByCharacterId(
+		character_id: string,
+		withDeleted?: Optional<boolean>,
+	) {
+		return await this.queryBus.execute(
+			new CharacterIdQuery(character_id, withDeleted),
+		);
 	}
 
 	@Span(WarcraftCharacterTopics.GUILD + '.dementor')
-	async characterByGuild(guild: Nullable<string>) {
-		return await this.queryBus.execute(new GuildQuery(guild));
+	async characterByGuild(
+		guild: Nullable<string>,
+		withDeleted?: Optional<boolean>,
+	) {
+		return await this.queryBus.execute(new GuildQuery(guild, withDeleted));
 	}
 
 	@Span(WarcraftCharacterTopics.CREATE + '.dementor')

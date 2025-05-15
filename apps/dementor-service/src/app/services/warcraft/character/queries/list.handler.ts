@@ -18,42 +18,36 @@ export class ListQueryHandler implements IQueryHandler<ListQuery> {
 		private readonly cache: CacheService,
 	) {}
 
-	private async createCircuitBreaker(
-		limit?: Optional<number>,
-		offset?: Optional<number>,
-	) {
+	private async createCircuitBreaker(query: ListQuery) {
 		const topic = WarcraftCharacterTopics.LIST;
 		return createCircuitBreaker<ListQuery>(
-			{
-				limit,
-				offset,
-			},
+			query,
 			topic,
 			this.circuit,
 			this.client,
 		);
 	}
 
-	private async checkForCache(
-		limit?: Optional<number>,
-		offset?: Optional<number>,
-	) {
+	private async checkForCache(query: ListQuery) {
 		let cacheKey = 'warcraft:characters:list';
-		if (limit !== undefined) {
-			cacheKey += `:limit:${limit}`;
+		if (query.limit !== undefined) {
+			cacheKey += `:limit:${query.limit}`;
 		}
-		if (offset !== undefined) {
-			cacheKey += `:offset:${offset}`;
+		if (query.offset !== undefined) {
+			cacheKey += `:offset:${query.offset}`;
+		}
+		if (query.withDeleted !== undefined) {
+			cacheKey += ':withDeleted:' + String(query.withDeleted);
 		}
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);
 		}
-		return await this.createCircuitBreaker(limit, offset);
+		return await this.createCircuitBreaker(query);
 	}
 
 	async execute(query: ListQuery) {
 		Logger.log(ListQueryHandler.name, query);
-		return await this.checkForCache(query.limit, query.offset);
+		return await this.checkForCache(query);
 	}
 }

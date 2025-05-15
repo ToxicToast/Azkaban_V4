@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import {
 	ControllerHelper,
+	Nullable,
 	Optional,
 	WarcraftCharacterTopics,
 } from '@azkaban/shared';
@@ -22,20 +23,23 @@ import {
 	CreateCharacterDTO,
 	UpdateCharacterDTO,
 } from '@azkaban/warcraft-infrastructure';
-import { JwtAuthGuard } from '../../../guards';
+import { JwtAuthGuard, OptionalJwtAuthGuard } from '../../../guards';
+import { User } from '../../../decorators';
 
 @Controller(ControllerHelper('warcraft/character'))
 export class CharacterController {
 	constructor(private readonly service: CharacterService) {}
 
 	@Span(WarcraftCharacterTopics.LIST + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/')
 	async getCharacters(
+		@User() user: Nullable<string>,
 		@Query('limit') limit?: Optional<number>,
 		@Query('offset') offset?: Optional<number>,
 	) {
 		return await this.service
-			.characterList(limit, offset)
+			.characterList(limit, offset, user !== null)
 			.catch((error) => {
 				Logger.error(error);
 				throw error;
@@ -43,30 +47,48 @@ export class CharacterController {
 	}
 
 	@Span(WarcraftCharacterTopics.ID + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/:id')
-	async getCharacterById(@Param('id') id: number) {
-		return await this.service.characterById(id).catch((error) => {
-			Logger.error(error);
-			throw error;
-		});
+	async getCharacterById(
+		@User() user: Nullable<string>,
+		@Param('id') id: number,
+	) {
+		return await this.service
+			.characterById(id, user !== null)
+			.catch((error) => {
+				Logger.error(error);
+				throw error;
+			});
 	}
 
 	@Span(WarcraftCharacterTopics.CHARACTERID + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/uuid/:id')
-	async getCharacterByCharacterId(@Param('id') id: string) {
-		return await this.service.characterByCharacterId(id).catch((error) => {
-			Logger.error(error);
-			throw error;
-		});
+	async getCharacterByCharacterId(
+		@User() user: Nullable<string>,
+		@Param('id') id: string,
+	) {
+		return await this.service
+			.characterByCharacterId(id, user !== null)
+			.catch((error) => {
+				Logger.error(error);
+				throw error;
+			});
 	}
 
 	@Span(WarcraftCharacterTopics.GUILD + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/guild/:name')
-	async getCharacterByGuildId(@Param('name') name: string) {
-		return await this.service.characterByGuild(name).catch((error) => {
-			Logger.error(error);
-			throw error;
-		});
+	async getCharacterByGuildId(
+		@User() user: Nullable<string>,
+		@Param('name') name: string,
+	) {
+		return await this.service
+			.characterByGuild(name, user !== null)
+			.catch((error) => {
+				Logger.error(error);
+				throw error;
+			});
 	}
 
 	@Span(WarcraftCharacterTopics.CREATE + '.dementor')
