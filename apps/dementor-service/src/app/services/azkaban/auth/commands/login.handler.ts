@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LoginCommand } from './login.command';
-import { Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	AzkabanAuthTopics,
@@ -26,7 +26,6 @@ export class LoginCommandHandler implements ICommandHandler<LoginCommand> {
 	}
 
 	async execute(command: LoginCommand) {
-		Logger.log(LoginCommandHandler.name, command);
 		return await this.createCircuitBreaker(command);
 	}
 }

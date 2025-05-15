@@ -16,12 +16,12 @@ export class AuthService {
 
 	@Span(AzkabanAuthTopics.LOGIN + '.dementor')
 	async login(data: { username: string; password: string }) {
-		Logger.log('Login User', { data });
 		const user = await this.commandBus.execute(new LoginCommand(data));
 		const presenter = new AuthPresenter(user);
+		const userPresenter = presenter.transform();
 		return {
-			access_token: this.jwt.sign(presenter.transform()),
-			user: presenter.transform(),
+			access_token: this.jwt.sign(userPresenter),
+			user: userPresenter,
 		};
 	}
 

@@ -1,15 +1,7 @@
-import {
-	Body,
-	Controller,
-	Logger,
-	Post,
-	Request,
-	UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AzkabanAuthTopics, ControllerHelper } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from '../../../guards';
 
 @Controller(ControllerHelper('azkaban/auth'))
 export class AuthController {
@@ -17,11 +9,7 @@ export class AuthController {
 
 	@Span(AzkabanAuthTopics.LOGIN + '.dementor')
 	@Post('/login')
-	async login(
-		@Body() body: { username: string; password: string },
-		@Request() req,
-	) {
-		Logger.log('Login User', { body, user: req.user });
+	async login(@Body() body: { username: string; password: string }) {
 		return await this.service.login(body);
 	}
 
@@ -30,7 +18,6 @@ export class AuthController {
 	async register(
 		@Body() body: { username: string; password: string; email: string },
 	) {
-		Logger.log('Register New User', { body });
 		return await this.service.register(body);
 	}
 }
