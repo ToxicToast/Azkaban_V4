@@ -19,7 +19,6 @@ import {
 	ChangeSpecEvent,
 	CreateCharacterEvent,
 } from '../events';
-import { DisplayName, DisplayRealm } from '../valueObjects';
 
 export class CharacterDomain
 	extends AggregateRoot
@@ -31,8 +30,8 @@ export class CharacterDomain
 		private readonly region: string,
 		private readonly realm: string,
 		private readonly name: string,
-		private display_realm: DisplayRealm,
-		private display_name: DisplayName,
+		private display_realm: Nullable<string>,
+		private display_name: Nullable<string>,
 		private gender: Nullable<string>,
 		private faction: Nullable<string>,
 		private race: Nullable<string>,
@@ -63,8 +62,8 @@ export class CharacterDomain
 			region: this.region,
 			realm: this.realm,
 			name: this.name,
-			display_realm: this.display_realm.getDisplayRealm(),
-			display_name: this.display_name.getDisplayName(),
+			display_realm: this.display_realm,
+			display_name: this.display_name,
 			gender: this.gender,
 			faction: this.faction,
 			race: this.race,
@@ -98,10 +97,10 @@ export class CharacterDomain
 	}
 
 	changeDisplayRealm(display_realm: Nullable<string>): void {
-		if (!this.display_realm.equals(display_realm)) {
+		if (this.display_realm !== display_realm) {
 			this.updated_at = new Date();
-			const oldDisplayRealm = this.display_realm.getDisplayRealm();
-			this.display_realm.changeDisplayRealm(display_realm);
+			const oldDisplayRealm = this.display_realm;
+			this.display_realm = display_realm;
 			this.addDomainEvent(
 				new ChangeDisplayRealmEvent(
 					this.character_id,
@@ -113,10 +112,10 @@ export class CharacterDomain
 	}
 
 	changeDisplayName(display_name: Nullable<string>): void {
-		if (!this.display_name.equals(display_name)) {
+		if (this.display_name !== display_name) {
 			this.updated_at = new Date();
-			const oldDisplayName = this.display_name.getDisplayName();
-			this.display_name.changeDisplayName(display_name);
+			const oldDisplayName = this.display_name;
+			this.display_name = display_name;
 			this.addDomainEvent(
 				new ChangeDisplayNameEvent(
 					this.character_id,
