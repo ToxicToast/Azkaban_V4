@@ -16,6 +16,8 @@ import { AppConfig } from '../config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { VersionCache } from './version.cache';
 import { VersionController } from './version.controller';
+import { CharacterEntity } from '@azkaban/warhammer-infrastructure';
+import { CharactersModule } from './characters/characters.module';
 
 @Module({
 	imports: [
@@ -25,7 +27,14 @@ import { VersionController } from './version.controller';
 			true,
 			AppConfig.environment,
 			AppConfig.database,
-			{},
+			{
+				CharacterEntity,
+			},
+		),
+		DatabaseModule.forFeature(
+			true,
+			'CHARACTER_REPOSITORY',
+			CharacterEntity,
 		),
 		HealthModule.forRoot(
 			false,
@@ -59,6 +68,7 @@ import { VersionController } from './version.controller';
 			[...AzkabanSSETopicArray, ...AzkabanWebhookTopicArray],
 		),
 		ScheduleModule.forRoot(true),
+		CharactersModule,
 	],
 	controllers: [VersionController],
 	providers: [VersionCache],
