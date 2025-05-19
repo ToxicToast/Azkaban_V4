@@ -26,44 +26,44 @@ export class AlertsController {
 				Logger.warn('Unknown event name', payload.event_name);
 				break;
 			case 'CreateUser':
-				this.createUserAlert(payload as CreateUserAlert);
+				await this.createUserAlert(payload as CreateUserAlert);
 				break;
 			case 'CreateWarcraftCharacter':
-				this.createWarcraftCharacterAlert(
+				await this.createWarcraftCharacterAlert(
 					payload as CreateWarcraftCharacterAlert,
 				);
 				break;
 			case 'ChangeGuild':
-				this.updateWarcraftCharacterGuild(
+				await this.updateWarcraftCharacterGuild(
 					payload as UpdateWarcraftCharacterGuildAlert,
 				);
 				break;
 		}
 	}
 
-	private createUserAlert(payload: CreateUserAlert): void {
+	private async createUserAlert(payload: CreateUserAlert): Promise<void> {
 		Logger.log('Create new user Alert', payload);
-		this.service.sendEvent(`New User: ${payload.user.username}`, 'api', [
-			'Azkaban',
-			'Api',
-			'User',
-		]);
+		await this.service.sendEvent(
+			`New User: ${payload.user.username}`,
+			'api',
+			['Azkaban', 'Api', 'User'],
+		);
 	}
 
-	private createWarcraftCharacterAlert(
+	private async createWarcraftCharacterAlert(
 		payload: CreateWarcraftCharacterAlert,
-	): void {
+	): Promise<void> {
 		Logger.log('Create new Character Alert', payload);
-		this.service.sendEvent(
+		await this.service.sendEvent(
 			`New Character: ${payload.character.name}`,
 			'warcraft',
 			['Azkaban', 'Api', 'Warcraft', 'Character'],
 		);
 	}
 
-	private updateWarcraftCharacterGuild(
+	private async updateWarcraftCharacterGuild(
 		payload: UpdateWarcraftCharacterGuildAlert,
-	): void {
+	): Promise<void> {
 		Logger.log('Update Character Guild Alert', payload);
 		const type = payload.guild === null ? 'left' : 'changed';
 		const message =
@@ -71,7 +71,7 @@ export class AlertsController {
 				? `Character "${payload.character_id}" left guild "${payload.old_guild}"`
 				: `Character "${payload.character_id}" changed guild to ${payload.guild} from "${payload.old_guild}"`;
 
-		this.service.sendEvent(message, 'warcraft', [
+		await this.service.sendEvent(message, 'warcraft', [
 			'Azkaban',
 			'Api',
 			'Warhammer',
