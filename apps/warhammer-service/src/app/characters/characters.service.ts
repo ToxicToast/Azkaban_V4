@@ -15,6 +15,7 @@ import {
 	CharacterById,
 	CharacterCreate,
 	CharacterList,
+	CharacterUpdate,
 } from '../../utils/dtos';
 
 @Injectable()
@@ -94,5 +95,14 @@ export class CharactersService {
 	async characterCreate(data: CharacterCreate): Promise<CharacterDAO> {
 		await this.cache.removeCache();
 		return await this.infrastructureService.createCharacter(data.data);
+	}
+
+	@Span(WarhammerCharacterTopics.UPDATE + '.service')
+	async characterUpdate(data: CharacterUpdate): Promise<CharacterDAO> {
+		await this.cache.removeCache();
+		return await this.infrastructureService.updateCharacter(
+			data.id,
+			data.data,
+		);
 	}
 }

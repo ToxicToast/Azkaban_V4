@@ -6,11 +6,16 @@ export interface CreateCharacterDTO {
 }
 
 export interface UpdateCharacterDTO {
-	current_fate?: Optional<number>;
-	total_fate?: Optional<number>;
-	current_wounds?: Optional<number>;
-	total_wounds?: Optional<number>;
-	critical_wounds?: Optional<number>;
-	current_corruption?: Optional<number>;
-	total_corruption?: Optional<number>;
+	fate?: Optional<{
+		type: 'fated' | 'use';
+		fate: number;
+	}>;
+	wounds?: Optional<{
+		type: 'heal' | 'inflict';
+		wounds: number;
+	}>;
+	corruption?: Optional<{
+		type: 'corrupt' | 'cleanse';
+		corruption: number;
+	}>;
 }

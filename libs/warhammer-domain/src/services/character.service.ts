@@ -92,33 +92,17 @@ export class CharacterService {
 			const result = await this.getCharacterById(data.id);
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
-				const {
-					current_fate,
-					current_fate_type,
-					current_wounds,
-					current_wounds_type,
-					current_corruption,
-					current_corruption_type,
-				} = data;
-				if (
-					current_fate !== undefined &&
-					current_fate_type !== undefined
-				) {
-					aggregate.changeFate(current_fate, current_fate_type);
+				const { fate, wounds, corruption } = data;
+				if (fate !== undefined) {
+					aggregate.changeFate(fate.fate, fate.type);
 				}
-				if (
-					current_wounds !== undefined &&
-					current_wounds_type !== undefined
-				) {
-					aggregate.changeWounds(current_wounds, current_wounds_type);
+				if (wounds !== undefined) {
+					aggregate.changeWounds(wounds.wounds, wounds.type);
 				}
-				if (
-					current_corruption !== undefined &&
-					current_corruption_type !== undefined
-				) {
+				if (corruption !== undefined) {
 					aggregate.changeCorruption(
-						current_corruption,
-						current_corruption_type,
+						corruption.corruption,
+						corruption.type,
 					);
 				}
 				const anemic = aggregate.toAnemic();

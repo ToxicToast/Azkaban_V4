@@ -8,6 +8,7 @@ import {
 	CharacterById,
 	CharacterCreate,
 	CharacterList,
+	CharacterUpdate,
 } from '../../utils/dtos';
 
 @Controller(ControllerHelper('character'))
@@ -42,7 +43,7 @@ export class CharactersController {
 
 	@Span(WarhammerCharacterTopics.UPDATE + '.service')
 	@MessagePattern(WarhammerCharacterTopics.UPDATE)
-	async updateCharacter(@Payload() payload: unknown) {
+	async updateCharacter(@Payload() payload: CharacterUpdate) {
 		Logger.log({ payload }, 'updateCharacter');
 	}
 

@@ -102,12 +102,28 @@ export class CharacterService {
 		id: number,
 		data: UpdateCharacterDTO,
 	): Promise<CharacterDAO> {
+		const { fate, wounds, corruption } = data;
 		Logger.log('CharacterUpdate', { id, data });
-		throw new RpcException({
-			status: 501,
-			message: 'Not Implemented',
-			raw: { id, data },
+		const result = await this.domainService.updateCharacter({
+			id,
+			fate,
+			wounds,
+			corruption,
 		});
+		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: result.errorCode,
+				message: result.errorValue,
+				raw: { id, data },
+			});
+		}
 	}
 
 	async deleteCharacter(id: number): Promise<CharacterDAO> {

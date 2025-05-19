@@ -21,7 +21,10 @@ import { Span } from 'nestjs-otel';
 import { JwtAuthGuard, OptionalJwtAuthGuard } from '../../../guards';
 import { User } from '../../../decorators';
 import { CharacterService } from './character.service';
-import { CreateCharacterDTO } from '@azkaban/warhammer-infrastructure';
+import {
+	CreateCharacterDTO,
+	UpdateCharacterDTO,
+} from '@azkaban/warhammer-infrastructure';
 
 @Controller(ControllerHelper('warhammer/character'))
 export class CharacterController {
@@ -83,11 +86,11 @@ export class CharacterController {
 	@Span(WarhammerCharacterTopics.UPDATE + '.dementor')
 	@UseGuards(JwtAuthGuard)
 	@Put('/:id')
-	async updateCharacter(@Param('id') id: number, @Body() body: unknown) {
-		Logger.log({
-			id,
-			body,
-		});
+	async updateCharacter(
+		@Param('id') id: number,
+		@Body() body: UpdateCharacterDTO,
+	) {
+		return await this.service.updateCharacter(id, body);
 	}
 
 	@Span(WarhammerCharacterTopics.DELETE + '.dementor')

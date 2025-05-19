@@ -3,8 +3,11 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
 import { Optional, WarhammerCharacterTopics } from '@azkaban/shared';
 import { CharacterIdQuery, IdQuery, ListQuery } from './queries';
-import { CreateCharacterDTO } from '@azkaban/warhammer-infrastructure';
-import { CreateCommand } from './commands';
+import { CreateCommand, UpdateCommand } from './commands';
+import {
+	CreateCharacterDTO,
+	UpdateCharacterDTO,
+} from '@azkaban/warhammer-infrastructure';
 
 @Injectable()
 export class CharacterService {
@@ -42,5 +45,10 @@ export class CharacterService {
 	@Span(WarhammerCharacterTopics.CREATE + '.dementor')
 	async createCharacter(data: CreateCharacterDTO) {
 		return await this.commandBus.execute(new CreateCommand(data));
+	}
+
+	@Span(WarhammerCharacterTopics.UPDATE + '.dementor')
+	async updateCharacter(id: number, data: UpdateCharacterDTO) {
+		return await this.commandBus.execute(new UpdateCommand(id, data));
 	}
 }

@@ -22,3 +22,21 @@ export interface CharacterCreate {
 		role: string;
 	};
 }
+
+export interface CharacterUpdate {
+	id: number;
+	data?: Optional<{
+		fate?: Optional<{
+			type: 'fated' | 'use';
+			fate: number;
+		}>;
+		wounds?: Optional<{
+			type: 'heal' | 'inflict';
+			wounds: number;
+		}>;
+		corruption?: Optional<{
+			type: 'corrupt' | 'cleanse';
+			corruption: number;
+		}>;
+	}>;
+}
