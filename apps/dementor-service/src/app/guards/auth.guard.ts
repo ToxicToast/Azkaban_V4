@@ -18,11 +18,15 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 		const token = request.headers['authorization'];
 		Logger.log('Token', { token });
 		if (token) {
-			const decoded = this.jwtService.verify(token);
-			request['user'] = decoded;
-			Logger.log('Decoded JWT:', decoded);
-			Logger.log('Attached User:', request['user']);
-			return true;
+			try {
+				const decoded = this.jwtService.verify(token);
+				request['user'] = decoded;
+				Logger.log('Decoded JWT:', decoded);
+				Logger.log('Attached User:', request['user']);
+			} catch (error) {
+				Logger.error(error);
+				return false;
+			}
 		}
 		return super.canActivate(context);
 	}
