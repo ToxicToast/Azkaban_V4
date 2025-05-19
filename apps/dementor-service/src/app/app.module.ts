@@ -14,6 +14,7 @@ import {
 	AzkabanTopicArray,
 	AzkabanAuthTopicArray,
 	WarhammerTopicArray,
+	WarhammerCharacterTopicArray,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -75,6 +76,7 @@ import { PassportModule } from '@nestjs/passport';
 				...WarcraftCharacterTopicArray,
 				...WarcraftGuildTopicArray,
 				// Warhammer Services
+				...WarhammerCharacterTopicArray,
 				// Versioning
 				...WarcraftTopicArray,
 				...AzkabanTopicArray,
