@@ -17,9 +17,11 @@ export interface GuildByGuildIdDTO {
 }
 
 export interface GuildCreateDTO {
-	region: string;
-	realm: string;
-	name: string;
+	data: {
+		region: string;
+		realm: string;
+		name: string;
+	};
 }
 
 export interface GuildUpdateDTO {

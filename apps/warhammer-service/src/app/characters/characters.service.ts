@@ -9,13 +9,13 @@ import { Repository } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Span } from 'nestjs-otel';
 import { Nullable, WarhammerCharacterTopics } from '@azkaban/shared';
+import { CharactersCache } from './characters.cache';
 import {
 	CharacterByCharacterId,
 	CharacterById,
 	CharacterCreate,
 	CharacterList,
 } from '../../utils/dtos';
-import { CharactersCache } from './characters.cache';
 
 @Injectable()
 export class CharactersService {
@@ -93,6 +93,6 @@ export class CharactersService {
 	@Span(WarhammerCharacterTopics.CREATE + '.service')
 	async characterCreate(data: CharacterCreate): Promise<CharacterDAO> {
 		await this.cache.removeCache();
-		return await this.infrastructureService.createCharacter(data);
+		return await this.infrastructureService.createCharacter(data.data);
 	}
 }

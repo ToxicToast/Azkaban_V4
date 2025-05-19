@@ -90,7 +90,7 @@ export class GuildsService {
 	@Span('guildCreate')
 	async guildCreate(data: GuildCreateDTO): Promise<GuildDAO> {
 		await this.cache.removeCache();
-		return await this.infrastructureService.createGuild(data);
+		return await this.infrastructureService.createGuild(data.data);
 	}
 
 	@Span('guildUpdate')

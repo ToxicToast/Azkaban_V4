@@ -22,6 +22,7 @@ export class CharacterRepository implements DomainRepository {
 			},
 			take: limit,
 			skip: offset,
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -33,6 +34,7 @@ export class CharacterRepository implements DomainRepository {
 		const entity = await this.repository.findOne({
 			withDeleted: withDeleted ?? false,
 			where: { id },
+			cache: true,
 		});
 		if (entity) {
 			return this.mapper.toDomain(entity);
@@ -58,6 +60,7 @@ export class CharacterRepository implements DomainRepository {
 		const entity = await this.repository.findOne({
 			withDeleted: withDeleted ?? false,
 			where: { region, realm, name },
+			cache: true,
 		});
 		if (entity) {
 			return this.mapper.toDomain(entity);
@@ -75,6 +78,7 @@ export class CharacterRepository implements DomainRepository {
 				id: 'DESC',
 			},
 			where: { faction },
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -92,6 +96,7 @@ export class CharacterRepository implements DomainRepository {
 				id: 'DESC',
 			},
 			where: { race },
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -109,6 +114,7 @@ export class CharacterRepository implements DomainRepository {
 				id: 'DESC',
 			},
 			where: { class: character_class },
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -126,6 +132,7 @@ export class CharacterRepository implements DomainRepository {
 				id: 'DESC',
 			},
 			where: { guild },
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -140,6 +147,7 @@ export class CharacterRepository implements DomainRepository {
 		const entity = await this.repository.findOne({
 			withDeleted: withDeleted ?? false,
 			where: { character_id },
+			cache: true,
 		});
 		if (entity) {
 			return this.mapper.toDomain(entity);

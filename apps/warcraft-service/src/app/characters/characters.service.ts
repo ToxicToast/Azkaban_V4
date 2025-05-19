@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Span } from 'nestjs-otel';
 import {
 	CharacterByCharacterIdDTO,
@@ -49,7 +49,6 @@ export class CharactersService {
 			data.offset,
 			data.withDeleted,
 		);
-		Logger.log('characters', characters);
 		await this.cache.cacheCharacterList(
 			characters,
 			data.limit,
@@ -63,12 +62,10 @@ export class CharactersService {
 	async characterById(
 		data: CharacterByIdDTO,
 	): Promise<Nullable<CharacterDAO>> {
-		Logger.log('CharacterById', data);
 		const character = await this.infrastructureService.getCharacterById(
 			data.id,
 			data.withDeleted,
 		);
-		Logger.log('character', character);
 		if (character !== null) {
 			await this.cache.cacheCharacterById(
 				character,
@@ -84,13 +81,11 @@ export class CharactersService {
 	async characterByCharacterId(
 		data: CharacterByCharacterIdDTO,
 	): Promise<CharacterDAO> {
-		Logger.log('CharacterByCharacterId', data);
 		const character =
 			await this.infrastructureService.getCharacterByCharacterId(
 				data.character_id,
 				data.withDeleted,
 			);
-		Logger.log('character', character);
 		if (character !== null) {
 			await this.cache.cacheCharacterByCharacterId(
 				character,
@@ -106,12 +101,10 @@ export class CharactersService {
 	async characterByGuild(
 		data: CharacterByGuildDTO,
 	): Promise<Array<CharacterDAO>> {
-		Logger.log('characterByGuild', data);
 		const characters = await this.infrastructureService.getCharacterByGuild(
 			data.guild,
 			data.withDeleted,
 		);
-		Logger.log('characters', characters);
 		await this.cache.cacheCharactersByGuild(
 			characters,
 			data.guild,
@@ -124,13 +117,11 @@ export class CharactersService {
 	async characterByClass(
 		data: CharacterByClassDTO,
 	): Promise<Array<CharacterDAO>> {
-		Logger.log('characterByClass', data);
 		const characters =
 			await this.infrastructureService.getCharactersByClass(
 				data.character_class,
 				data.withDeleted,
 			);
-		Logger.log('characters', characters);
 		await this.cache.cacheCharactersByClass(
 			characters,
 			data.character_class,
@@ -143,12 +134,10 @@ export class CharactersService {
 	async characterByRace(
 		data: CharacterByRaceDTO,
 	): Promise<Array<CharacterDAO>> {
-		Logger.log('characterByRace', data);
 		const characters = await this.infrastructureService.getCharactersByRace(
 			data.race,
 			data.withDeleted,
 		);
-		Logger.log('characters', characters);
 		await this.cache.cacheCharactersByRace(
 			characters,
 			data.race,
@@ -161,13 +150,11 @@ export class CharactersService {
 	async characterByFaction(
 		data: CharacterByFactionDTO,
 	): Promise<Array<CharacterDAO>> {
-		Logger.log('characterByFaction', data);
 		const characters =
 			await this.infrastructureService.getCharactersByFaction(
 				data.faction,
 				data.withDeleted,
 			);
-		Logger.log('characters', characters);
 		await this.cache.cacheCharactersByRace(
 			characters,
 			data.faction,
@@ -178,14 +165,12 @@ export class CharactersService {
 
 	@Span(WarcraftCharacterTopics.CREATE + '.service')
 	async characterCreate(data: CharacterCreateDTO): Promise<CharacterDAO> {
-		Logger.log('CharacterCreate', data);
 		await this.cache.removeCache();
-		return await this.infrastructureService.createCharacter(data);
+		return await this.infrastructureService.createCharacter(data.data);
 	}
 
 	@Span(WarcraftCharacterTopics.UPDATE + '.service')
 	async characterUpdate(data: CharacterUpdateDTO): Promise<CharacterDAO> {
-		Logger.log('CharacterUpdate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.updateCharacter(
 			data.id,
@@ -195,28 +180,24 @@ export class CharactersService {
 
 	@Span(WarcraftCharacterTopics.DELETE + '.service')
 	async characterDelete(data: CharacterByIdDTO): Promise<CharacterDAO> {
-		Logger.log('CharacterDelete', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.deleteCharacter(data.id);
 	}
 
 	@Span(WarcraftCharacterTopics.RESTORE + '.service')
 	async characterRestore(data: CharacterByIdDTO): Promise<CharacterDAO> {
-		Logger.log('CharacterRestore', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.restoreCharacter(data.id);
 	}
 
 	@Span(WarcraftCharacterTopics.ACTIVATE + '.service')
 	async characterActivate(data: CharacterByIdDTO): Promise<CharacterDAO> {
-		Logger.log('CharacterActivate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.activateCharacter(data.id);
 	}
 
 	@Span(WarcraftCharacterTopics.DEACTIVATE + '.service')
 	async characterDeactivate(data: CharacterByIdDTO): Promise<CharacterDAO> {
-		Logger.log('characterDeactivate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.deactivateCharacter(data.id);
 	}

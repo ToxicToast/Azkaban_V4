@@ -17,6 +17,8 @@ export interface CharacterByCharacterId {
 }
 
 export interface CharacterCreate {
-	name: string;
-	role: string;
+	data: {
+		name: string;
+		role: string;
+	};
 }

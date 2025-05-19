@@ -37,10 +37,12 @@ export interface CharacterByFactionDTO {
 }
 
 export interface CharacterCreateDTO {
-	region: string;
-	realm: string;
-	name: string;
-	rank?: Optional<Nullable<number>>;
+	data: {
+		region: string;
+		realm: string;
+		name: string;
+		rank?: Optional<Nullable<number>>;
+	};
 }
 
 export interface CharacterUpdateDTO {
