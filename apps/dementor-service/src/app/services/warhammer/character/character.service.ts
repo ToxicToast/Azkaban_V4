@@ -1,7 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
 import { Optional, WarhammerCharacterTopics } from '@azkaban/shared';
+import { CharacterIdQuery, IdQuery, ListQuery } from './queries';
 
 @Injectable()
 export class CharacterService {
@@ -16,19 +17,14 @@ export class CharacterService {
 		offset?: Optional<number>,
 		withDeleted?: Optional<boolean>,
 	) {
-		Logger.log({
-			limit,
-			offset,
-			withDeleted,
-		});
+		return await this.queryBus.execute(
+			new ListQuery(limit, offset, withDeleted),
+		);
 	}
 
 	@Span(WarhammerCharacterTopics.ID + '.dementor')
 	async characterById(id: number, withDeleted?: Optional<boolean>) {
-		Logger.log({
-			id,
-			withDeleted,
-		});
+		return await this.queryBus.execute(new IdQuery(id, withDeleted));
 	}
 
 	@Span(WarhammerCharacterTopics.CHARACTERID + '.dementor')
@@ -36,9 +32,8 @@ export class CharacterService {
 		character_id: string,
 		withDeleted?: Optional<boolean>,
 	) {
-		Logger.log({
-			character_id,
-			withDeleted,
-		});
+		return await this.queryBus.execute(
+			new CharacterIdQuery(character_id, withDeleted),
+		);
 	}
 }
