@@ -41,7 +41,6 @@ export interface CharacterCreateDTO {
 	realm: string;
 	name: string;
 	rank?: Optional<Nullable<number>>;
-	withDeleted?: Optional<boolean>;
 }
 
 export interface CharacterUpdateDTO {

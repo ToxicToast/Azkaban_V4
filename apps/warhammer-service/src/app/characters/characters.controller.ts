@@ -6,6 +6,7 @@ import { CharactersService } from './characters.service';
 import {
 	CharacterByCharacterId,
 	CharacterById,
+	CharacterCreate,
 	CharacterList,
 } from '../../utils/dtos';
 
@@ -35,8 +36,8 @@ export class CharactersController {
 
 	@Span(WarhammerCharacterTopics.CREATE + '.service')
 	@MessagePattern(WarhammerCharacterTopics.CREATE)
-	async createCharacter(@Payload() payload: unknown) {
-		Logger.log({ payload }, 'createCharacter');
+	async createCharacter(@Payload() payload: CharacterCreate) {
+		return await this.service.characterCreate(payload);
 	}
 
 	@Span(WarhammerCharacterTopics.UPDATE + '.service')

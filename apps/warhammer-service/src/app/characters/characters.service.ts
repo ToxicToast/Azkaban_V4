@@ -12,6 +12,7 @@ import { Nullable, WarhammerCharacterTopics } from '@azkaban/shared';
 import {
 	CharacterByCharacterId,
 	CharacterById,
+	CharacterCreate,
 	CharacterList,
 } from '../../utils/dtos';
 import { CharactersCache } from './characters.cache';
@@ -87,5 +88,11 @@ export class CharactersService {
 			return character;
 		}
 		return null;
+	}
+
+	@Span(WarhammerCharacterTopics.CREATE + '.service')
+	async characterCreate(data: CharacterCreate): Promise<CharacterDAO> {
+		await this.cache.removeCache();
+		return await this.infrastructureService.createCharacter(data);
 	}
 }

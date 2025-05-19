@@ -6,6 +6,7 @@ import {
 	IdQueryHandler,
 	ListQueryHandler,
 } from './queries';
+import { CreateCommandHandler } from './commands';
 
 @Module({
 	controllers: [CharacterController],
@@ -14,6 +15,7 @@ import {
 		ListQueryHandler,
 		IdQueryHandler,
 		CharacterIdHandler,
+		CreateCommandHandler,
 	],
 })
 export class CharacterModule {}

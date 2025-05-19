@@ -15,3 +15,8 @@ export interface CharacterByCharacterId {
 	character_id: string;
 	withDeleted?: Optional<boolean>;
 }
+
+export interface CharacterCreate {
+	name: string;
+	role: string;
+}
