@@ -44,30 +44,30 @@ export class CharactersController {
 	@Span(WarhammerCharacterTopics.UPDATE + '.service')
 	@MessagePattern(WarhammerCharacterTopics.UPDATE)
 	async updateCharacter(@Payload() payload: CharacterUpdate) {
-		Logger.log({ payload }, 'updateCharacter');
+		return await this.service.characterUpdate(payload);
 	}
 
 	@Span(WarhammerCharacterTopics.DELETE + '.service')
 	@MessagePattern(WarhammerCharacterTopics.DELETE)
-	async deleteCharacter(@Payload() payload: unknown) {
-		Logger.log({ payload }, 'deleteCharacter');
+	async deleteCharacter(@Payload() payload: CharacterById) {
+		return await this.service.characterDelete(payload);
 	}
 
 	@Span(WarhammerCharacterTopics.RESTORE + '.service')
 	@MessagePattern(WarhammerCharacterTopics.RESTORE)
-	async restoreCharacter(@Payload() payload: unknown) {
-		Logger.log({ payload }, 'restoreCharacter');
+	async restoreCharacter(@Payload() payload: CharacterById) {
+		return await this.service.characterRestore(payload);
 	}
 
 	@Span(WarhammerCharacterTopics.ACTIVATE + '.service')
 	@MessagePattern(WarhammerCharacterTopics.ACTIVATE)
-	async activateCharacter(@Payload() payload: unknown) {
-		Logger.log({ payload }, 'activateCharacter');
+	async activateCharacter(@Payload() payload: CharacterById) {
+		return await this.service.characterActivate(payload);
 	}
 
 	@Span(WarhammerCharacterTopics.DEACTIVATE + '.service')
 	@MessagePattern(WarhammerCharacterTopics.DEACTIVATE)
-	async deactivateCharacter(@Payload() payload: unknown) {
-		Logger.log({ payload }, 'deactivateCharacter');
+	async deactivateCharacter(@Payload() payload: CharacterById) {
+		return await this.service.characterDeactivate(payload);
 	}
 }

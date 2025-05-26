@@ -3,6 +3,8 @@ import { Optional } from '@azkaban/shared';
 export interface CreateCharacterDTO {
 	name: string;
 	role: string;
+	fate: number;
+	wounds: number;
 }
 
 export interface UpdateCharacterDTO {

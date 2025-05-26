@@ -105,4 +105,28 @@ export class CharactersService {
 			data.data,
 		);
 	}
+
+	@Span(WarhammerCharacterTopics.DELETE + '.service')
+	async characterDelete(data: CharacterById): Promise<CharacterDAO> {
+		await this.cache.removeCache();
+		return await this.infrastructureService.deleteCharacter(data.id);
+	}
+
+	@Span(WarhammerCharacterTopics.RESTORE + '.service')
+	async characterRestore(data: CharacterById): Promise<CharacterDAO> {
+		await this.cache.removeCache();
+		return await this.infrastructureService.restoreCharacter(data.id);
+	}
+
+	@Span(WarhammerCharacterTopics.ACTIVATE + '.service')
+	async characterActivate(data: CharacterById): Promise<CharacterDAO> {
+		await this.cache.removeCache();
+		return await this.infrastructureService.activateCharacter(data.id);
+	}
+
+	@Span(WarhammerCharacterTopics.DEACTIVATE + '.service')
+	async characterDeactivate(data: CharacterById): Promise<CharacterDAO> {
+		await this.cache.removeCache();
+		return await this.infrastructureService.deactivateCharacter(data.id);
+	}
 }

@@ -20,6 +20,8 @@ export interface CharacterCreate {
 	data: {
 		name: string;
 		role: string;
+		fate: number;
+		wounds: number;
 	};
 }
 

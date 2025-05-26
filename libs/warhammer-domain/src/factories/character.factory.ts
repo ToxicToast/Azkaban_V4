@@ -72,9 +72,9 @@ export class CharacterFactory
 	}
 
 	createDomain(data: CharacterData): CharacterAggregate {
-		const { character_id, name, role } = data;
-		const fateValueObject = new Fate(0, 0);
-		const woundsValueObject = new Wound(0, 0, 0);
+		const { character_id, name, role, fate, wounds } = data;
+		const fateValueObject = new Fate(fate, fate);
+		const woundsValueObject = new Wound(wounds, wounds, 0);
 		const corruptionValueObject = new Corruption(0, 0);
 		const domain = new CharacterDomain(
 			0,

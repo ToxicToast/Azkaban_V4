@@ -85,7 +85,7 @@ export class CharacterDomain
 		this.addDomainEvent(
 			new AddWoundEvent(this.character_id, wound, oldWounds),
 		);
-		if (this.wounds.current > this.wounds.total) {
+		if (this.wounds.current <= 0) {
 			this.wounds.critical = oldCritical + 1;
 			this.addDomainEvent(
 				new CriticalWoundEvent(
