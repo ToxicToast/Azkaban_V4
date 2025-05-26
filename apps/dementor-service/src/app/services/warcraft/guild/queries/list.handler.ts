@@ -6,7 +6,6 @@ import {
 	CacheService,
 	CircuitService,
 	createCircuitBreaker,
-	Optional,
 	WarcraftGuildTopics,
 } from '@azkaban/shared';
 

@@ -95,6 +95,7 @@ export class GuildsService {
 
 	@Span('guildUpdate')
 	async guildUpdate(data: GuildUpdateDTO): Promise<GuildDAO> {
+		Logger.log('GuildUpdate', data);
 		await this.cache.removeCache();
 		return null;
 	}

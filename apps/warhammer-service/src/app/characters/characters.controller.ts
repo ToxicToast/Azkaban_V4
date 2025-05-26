@@ -1,4 +1,4 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { ControllerHelper, WarhammerCharacterTopics } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { MessagePattern, Payload } from '@nestjs/microservices';

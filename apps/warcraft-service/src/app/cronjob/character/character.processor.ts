@@ -27,7 +27,7 @@ export class CharacterProcessor extends WorkerHost {
 		guild: Nullable<string>;
 	}) {
 		try {
-			const { region, realm, name, guild } = data;
+			const { region, realm, name } = data;
 			await this.apiService.setApiClient(region as Origins);
 			return await this.apiService.getCharacter({ realm, name });
 		} catch (error) {
