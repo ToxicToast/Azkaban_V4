@@ -1,6 +1,6 @@
 {
 	"name": "@azkaban",
-	"version": "0.10.0",
+	"version": "0.11.0",
 	"license": "MIT",
 	"scripts": {
 		"nx": "nx",
@@ -42,7 +42,7 @@
 		"@types/compression": "^1.8.0",
 		"@types/cookie-parser": "^1.4.8",
 		"@types/jest": "^29.5.14",
-		"@types/node": "^22.15.21",
+		"@types/node": "^22.15.23",
 		"@types/passport-jwt": "^4.0.1",
 		"@types/passport-local": "^1.0.38",
 		"@types/uuid": "^10.0.0",
