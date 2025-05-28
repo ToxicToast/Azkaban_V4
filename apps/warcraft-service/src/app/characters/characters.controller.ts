@@ -4,6 +4,7 @@ import { ControllerHelper, WarcraftCharacterTopics } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { CharactersService } from './characters.service';
 import {
+	CharacterAssignDTO,
 	CharacterByCharacterIdDTO,
 	CharacterByGuildDTO,
 	CharacterByIdDTO,
@@ -76,5 +77,11 @@ export class CharactersController {
 	@MessagePattern(WarcraftCharacterTopics.DEACTIVATE)
 	async deactivateCharacter(@Payload() payload: CharacterByIdDTO) {
 		return await this.service.characterDeactivate(payload);
+	}
+
+	@Span(WarcraftCharacterTopics.ASSIGN + '.service')
+	@MessagePattern(WarcraftCharacterTopics.ASSIGN)
+	async assignCharacter(@Payload() payload: CharacterAssignDTO) {
+		return await this.service;
 	}
 }

@@ -154,4 +154,22 @@ export class CharacterRepository implements DomainRepository {
 		}
 		return null;
 	}
+
+	async findByUserId(
+		user_id: Nullable<string>,
+		withDeleted?: boolean,
+	): Promise<Array<CharacterDAO>> {
+		const entities = await this.repository.find({
+			withDeleted: withDeleted ?? false,
+			order: {
+				id: 'DESC',
+			},
+			where: { user_id },
+			cache: true,
+		});
+		return entities.map(
+			(entity: CharacterEntity): CharacterDAO =>
+				this.mapper.toDomain(entity),
+		);
+	}
 }

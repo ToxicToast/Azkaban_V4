@@ -20,6 +20,7 @@ import {
 import { CharacterService } from './character.service';
 import { Span } from 'nestjs-otel';
 import {
+	AssignCharacterDTO,
 	CreateCharacterDTO,
 	UpdateCharacterDTO,
 } from '@azkaban/warcraft-infrastructure';
@@ -152,5 +153,20 @@ export class CharacterController {
 			Logger.error(error);
 			throw error;
 		});
+	}
+
+	@Span(WarcraftCharacterTopics.ASSIGN + '.dementor')
+	@UseGuards(JwtAuthGuard)
+	@Put('/assign/:id')
+	async assignCharacter(
+		@Param('id') id: number,
+		@Body() body: AssignCharacterDTO,
+	) {
+		return await this.service
+			.assignCharacter(id, body.user_id)
+			.catch((error) => {
+				Logger.error(error);
+				throw error;
+			});
 	}
 }

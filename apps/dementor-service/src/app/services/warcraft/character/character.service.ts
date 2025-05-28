@@ -8,6 +8,7 @@ import {
 } from '@azkaban/warcraft-infrastructure';
 import {
 	ActivateCommand,
+	AssignCommand,
 	CreateCommand,
 	DeactivateCommand,
 	DeleteCommand,
@@ -85,5 +86,10 @@ export class CharacterService {
 	@Span(WarcraftCharacterTopics.DEACTIVATE + '.dementor')
 	async deactivateCharacter(id: number) {
 		return await this.commandBus.execute(new DeactivateCommand(id));
+	}
+
+	@Span(WarcraftCharacterTopics.ASSIGN + '.dementor')
+	async assignCharacter(id: number, user_id: Nullable<string>) {
+		return await this.commandBus.execute(new AssignCommand(id, user_id));
 	}
 }

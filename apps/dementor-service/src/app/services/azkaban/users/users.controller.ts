@@ -50,7 +50,7 @@ export class UsersController {
 			.then((data) => {
 				Logger.log('Get Users', { data });
 				return data.map((user: UserDAO) => {
-					const presenter = new UsersPresenter(user);
+					const presenter = new UsersPresenter(user, user !== null);
 					return presenter.transform();
 				});
 			});
@@ -69,7 +69,7 @@ export class UsersController {
 			})
 			.then((data) => {
 				if (data !== null) {
-					const presenter = new UsersPresenter(data);
+					const presenter = new UsersPresenter(data, user !== null);
 					return presenter.transform();
 				}
 				return null;
@@ -92,7 +92,7 @@ export class UsersController {
 			})
 			.then((data) => {
 				if (data !== null) {
-					const presenter = new UsersPresenter(data);
+					const presenter = new UsersPresenter(data, user !== null);
 					return presenter.transform();
 				}
 				return null;

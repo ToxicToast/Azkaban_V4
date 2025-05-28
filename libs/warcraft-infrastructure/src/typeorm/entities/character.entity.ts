@@ -19,6 +19,9 @@ export class CharacterEntity {
 	@Column({ unique: true, nullable: false, type: 'uuid' })
 	character_id: string;
 
+	@Column({ unique: false, nullable: true, type: 'uuid', default: null })
+	user_id: string | null;
+
 	@Column({ unique: false, nullable: false, type: 'varchar' })
 	region: string;
 

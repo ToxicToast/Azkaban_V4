@@ -66,3 +66,8 @@ export interface CharacterUpdateDTO {
 		loggedin_at?: Optional<Nullable<Date>>;
 	};
 }
+
+export interface CharacterAssignDTO {
+	id: number;
+	user_id: Nullable<string>;
+}

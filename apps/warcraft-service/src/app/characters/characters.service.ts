@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Span } from 'nestjs-otel';
 import {
+	CharacterAssignDTO,
 	CharacterByCharacterIdDTO,
 	CharacterByClassDTO,
 	CharacterByFactionDTO,
@@ -200,5 +201,14 @@ export class CharactersService {
 	async characterDeactivate(data: CharacterByIdDTO): Promise<CharacterDAO> {
 		await this.cache.removeCache();
 		return await this.infrastructureService.deactivateCharacter(data.id);
+	}
+
+	@Span(WarcraftCharacterTopics.ASSIGN + '.service')
+	async characterAssign(data: CharacterAssignDTO): Promise<CharacterDAO> {
+		await this.cache.removeCache();
+		return await this.infrastructureService.assignCharacter(
+			data.id,
+			data.user_id,
+		);
 	}
 }

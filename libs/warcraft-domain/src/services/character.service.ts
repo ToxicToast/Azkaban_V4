@@ -77,6 +77,21 @@ export class CharacterService {
 		}
 	}
 
+	async getCharactersByUserId(
+		user_id: string,
+		withDeleted?: Optional<boolean>,
+	): Promise<Result<Array<CharacterAnemic>>> {
+		try {
+			const result = await this.repository.findByUserId(
+				user_id,
+				withDeleted,
+			);
+			return Result.ok<Array<CharacterAnemic>>(result);
+		} catch (error) {
+			return Result.fail<Array<CharacterAnemic>>(error, 500);
+		}
+	}
+
 	async getCharactersByGuild(
 		guild: Nullable<string>,
 		withDeleted?: Optional<boolean>,
@@ -315,6 +330,26 @@ export class CharacterService {
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
 				aggregate.deactivateCharacter();
+				const anemic = aggregate.toAnemic();
+				const character = anemic.character;
+				const events = anemic.events;
+				return await this.save(character, events);
+			}
+			return Result.fail<CharacterAnemic>(result.errorValue, 404);
+		} catch (error) {
+			return Result.fail<CharacterAnemic>(error, 500);
+		}
+	}
+
+	async assignCharacter(
+		id: number,
+		user_id: Nullable<string>,
+	): Promise<Result<CharacterAnemic>> {
+		try {
+			const result = await this.getCharacterById(id);
+			if (result.isSuccess) {
+				const aggregate = this.factory.reconstitute(result.value);
+				aggregate.changeUser(user_id);
 				const anemic = aggregate.toAnemic();
 				const character = anemic.character;
 				const events = anemic.events;

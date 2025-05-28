@@ -18,6 +18,7 @@ export class CharacterFactory
 		const {
 			id,
 			character_id,
+			user_id,
 			region,
 			realm,
 			name,
@@ -50,6 +51,7 @@ export class CharacterFactory
 		const characterDomain = new CharacterDomain(
 			id,
 			character_id,
+			user_id,
 			region,
 			realm,
 			name,
@@ -92,6 +94,7 @@ export class CharacterFactory
 		const domain = new CharacterDomain(
 			0,
 			character_id,
+			null,
 			region,
 			realm,
 			name,

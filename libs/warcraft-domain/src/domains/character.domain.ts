@@ -18,6 +18,7 @@ import {
 	ChangeRankEvent,
 	ChangeSpecEvent,
 	CreateCharacterEvent,
+	ChangeUserEvent,
 } from '../events';
 
 export class CharacterDomain
@@ -27,6 +28,7 @@ export class CharacterDomain
 	constructor(
 		private readonly id: number,
 		private readonly character_id: string,
+		private user_id: Nullable<string>,
 		private readonly region: string,
 		private readonly realm: string,
 		private readonly name: string,
@@ -59,6 +61,7 @@ export class CharacterDomain
 		return {
 			id: this.id,
 			character_id: this.character_id,
+			user_id: this.user_id,
 			region: this.region,
 			realm: this.realm,
 			name: this.name,
@@ -287,6 +290,17 @@ export class CharacterDomain
 					loggedin_at,
 					oldLoggedInAt,
 				),
+			);
+		}
+	}
+
+	changeUser(user_id: Nullable<string>): void {
+		if (this.user_id !== user_id) {
+			this.updated_at = new Date();
+			const oldUserId = this.user_id;
+			this.user_id = user_id;
+			this.addDomainEvent(
+				new ChangeUserEvent(this.character_id, user_id, oldUserId),
 			);
 		}
 	}

@@ -15,3 +15,6 @@ export * from './activate.handler';
 
 export * from './deactivate.command';
 export * from './deactivate.handler';
+
+export * from './assign.command';
+export * from './assign.handler';

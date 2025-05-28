@@ -3,6 +3,7 @@ import { CharacterService } from './character.service';
 import { CharacterController } from './character.controller';
 import {
 	ActivateCommandHandler,
+	AssignCommandHandler,
 	CreateCommandHandler,
 	DeactivateCommandHandler,
 	DeleteCommandHandler,
@@ -26,6 +27,7 @@ import {
 		RestoreCommandHandler,
 		ActivateCommandHandler,
 		DeactivateCommandHandler,
+		AssignCommandHandler,
 		ListQueryHandler,
 		IdQueryHandler,
 		CharacterIdHandler,

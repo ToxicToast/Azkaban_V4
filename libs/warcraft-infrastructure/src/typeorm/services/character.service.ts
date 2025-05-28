@@ -326,4 +326,25 @@ export class CharacterService {
 			});
 		}
 	}
+
+	async assignCharacter(
+		id: number,
+		user_id: Nullable<string>,
+	): Promise<CharacterDAO> {
+		const result = await this.domainService.assignCharacter(id, user_id);
+		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: result.errorCode,
+				message: result.errorValue,
+				raw: { id, user_id },
+			});
+		}
+	}
 }
