@@ -82,6 +82,6 @@ export class CharactersController {
 	@Span(WarcraftCharacterTopics.ASSIGN + '.service')
 	@MessagePattern(WarcraftCharacterTopics.ASSIGN)
 	async assignCharacter(@Payload() payload: CharacterAssignDTO) {
-		return await this.service;
+		return await this.service.characterAssign(payload);
 	}
 }
