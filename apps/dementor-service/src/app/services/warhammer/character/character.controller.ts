@@ -97,35 +97,27 @@ export class CharacterController {
 	@UseGuards(JwtAuthGuard)
 	@Delete('/:id')
 	async deleteCharacter(@Param('id') id: number) {
-		Logger.log({
-			id,
-		});
+		return await this.service.deleteCharacter(id);
 	}
 
 	@Span(WarhammerCharacterTopics.RESTORE + '.dementor')
 	@UseGuards(JwtAuthGuard)
 	@Patch('/restore/:id')
 	async restoreCharacter(@Param('id') id: number) {
-		Logger.log({
-			id,
-		});
+		return await this.service.restoreCharacter(id);
 	}
 
 	@Span(WarhammerCharacterTopics.ACTIVATE + '.dementor')
 	@UseGuards(JwtAuthGuard)
 	@Patch('/activate/:id')
 	async activateCharacter(@Param('id') id: number) {
-		Logger.log({
-			id,
-		});
+		return await this.service.activateCharacter(id);
 	}
 
 	@Span(WarhammerCharacterTopics.DEACTIVATE + '.dementor')
 	@UseGuards(JwtAuthGuard)
 	@Patch('/deactivate/:id')
 	async deactivateCharacter(@Param('id') id: number) {
-		Logger.log({
-			id,
-		});
+		return await this.service.deactivateCharacter(id);
 	}
 }

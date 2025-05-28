@@ -92,7 +92,8 @@ export class CharacterService {
 			const result = await this.getCharacterById(data.id);
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
-				const { fate, wounds, corruption } = data;
+				const { fate, wounds, corruption, total_fate, total_wounds } =
+					data;
 				if (fate !== undefined) {
 					aggregate.changeFate(fate.fate, fate.type);
 				}
@@ -104,6 +105,12 @@ export class CharacterService {
 						corruption.corruption,
 						corruption.type,
 					);
+				}
+				if (total_fate !== undefined) {
+					aggregate.changeTotalFate(total_fate);
+				}
+				if (total_wounds !== undefined) {
+					aggregate.changeTotalWounds(total_wounds);
 				}
 				const anemic = aggregate.toAnemic();
 				const character = anemic.character;

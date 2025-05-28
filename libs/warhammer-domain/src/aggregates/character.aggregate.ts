@@ -31,6 +31,14 @@ export class CharacterAggregate {
 		}
 	}
 
+	changeTotalFate(totalFate: number) {
+		this.character.setTotalFate(totalFate);
+	}
+
+	changeTotalWounds(totalWounds: number) {
+		this.character.setTotalWounds(totalWounds);
+	}
+
 	changeCorruption(corruption: number, type: 'corrupt' | 'cleanse') {
 		if (type === 'corrupt') {
 			this.character.addCorruption(corruption);

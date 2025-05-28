@@ -68,6 +68,16 @@ export class CharacterDomain
 		);
 	}
 
+	setTotalWounds(totalWounds: number) {
+		this.updated_at = new Date();
+		this.wounds.total = totalWounds;
+	}
+
+	setTotalFate(totalFate: number) {
+		this.updated_at = new Date();
+		this.fate.total = totalFate;
+	}
+
 	healWound(wound: number) {
 		this.updated_at = new Date();
 		const oldWounds = this.wounds.current;

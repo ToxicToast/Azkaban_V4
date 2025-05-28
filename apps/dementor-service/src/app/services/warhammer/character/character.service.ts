@@ -3,7 +3,14 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
 import { Optional, WarhammerCharacterTopics } from '@azkaban/shared';
 import { CharacterIdQuery, IdQuery, ListQuery } from './queries';
-import { CreateCommand, UpdateCommand } from './commands';
+import {
+	ActivateCommand,
+	CreateCommand,
+	DeactivateCommand,
+	DeleteCommand,
+	RestoreCommand,
+	UpdateCommand,
+} from './commands';
 import {
 	CreateCharacterDTO,
 	UpdateCharacterDTO,
@@ -50,5 +57,25 @@ export class CharacterService {
 	@Span(WarhammerCharacterTopics.UPDATE + '.dementor')
 	async updateCharacter(id: number, data: UpdateCharacterDTO) {
 		return await this.commandBus.execute(new UpdateCommand(id, data));
+	}
+
+	@Span(WarhammerCharacterTopics.DELETE + '.dementor')
+	async deleteCharacter(id: number) {
+		return await this.commandBus.execute(new DeleteCommand(id));
+	}
+
+	@Span(WarhammerCharacterTopics.RESTORE + '.dementor')
+	async restoreCharacter(id: number) {
+		return await this.commandBus.execute(new RestoreCommand(id));
+	}
+
+	@Span(WarhammerCharacterTopics.ACTIVATE + '.dementor')
+	async activateCharacter(id: number) {
+		return await this.commandBus.execute(new ActivateCommand(id));
+	}
+
+	@Span(WarhammerCharacterTopics.DEACTIVATE + '.dementor')
+	async deactivateCharacter(id: number) {
+		return await this.commandBus.execute(new DeactivateCommand(id));
 	}
 }

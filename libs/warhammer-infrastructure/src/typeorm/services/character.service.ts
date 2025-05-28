@@ -102,13 +102,15 @@ export class CharacterService {
 		id: number,
 		data: UpdateCharacterDTO,
 	): Promise<CharacterDAO> {
-		const { fate, wounds, corruption } = data;
+		const { fate, wounds, corruption, total_wounds, total_fate } = data;
 		Logger.log('CharacterUpdate', { id, data });
 		const result = await this.domainService.updateCharacter({
 			id,
 			fate,
 			wounds,
 			corruption,
+			total_wounds,
+			total_fate,
 		});
 		if (result.isSuccess) {
 			const events = result.events;

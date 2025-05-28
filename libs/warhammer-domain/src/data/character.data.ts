@@ -14,10 +14,12 @@ export interface UpdateCharacterData {
 		type: 'fated' | 'use';
 		fate: number;
 	}>;
+	readonly total_fate?: Optional<number>;
 	readonly wounds?: Optional<{
 		type: 'heal' | 'inflict';
 		wounds: number;
 	}>;
+	readonly total_wounds?: Optional<number>;
 	readonly corruption?: Optional<{
 		type: 'corrupt' | 'cleanse';
 		corruption: number;
