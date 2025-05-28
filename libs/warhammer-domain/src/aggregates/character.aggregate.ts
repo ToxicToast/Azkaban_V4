@@ -1,5 +1,6 @@
 import { CharacterDomain } from '../domains';
 import { CharacterAggregateAnemic } from '../anemics';
+import { Nullable } from '@azkaban/shared';
 
 export class CharacterAggregate {
 	constructor(
@@ -13,6 +14,10 @@ export class CharacterAggregate {
 			character: this.character.toAnemic(),
 			events: this.character.toEvents(),
 		};
+	}
+
+	changeUser(user_id: Nullable<string>) {
+		this.character.deactivateCharacter();
 	}
 
 	changeWounds(wounds: number, type: 'heal' | 'inflict') {

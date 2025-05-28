@@ -24,6 +24,7 @@ import { CharacterService } from './character.service';
 import {
 	CreateCharacterDTO,
 	UpdateCharacterDTO,
+	AssignCharacterDTO,
 } from '@azkaban/warhammer-infrastructure';
 
 @Controller(ControllerHelper('warhammer/character'))
@@ -119,5 +120,20 @@ export class CharacterController {
 	@Patch('/deactivate/:id')
 	async deactivateCharacter(@Param('id') id: number) {
 		return await this.service.deactivateCharacter(id);
+	}
+
+	@Span(WarhammerCharacterTopics.ASSIGN + '.dementor')
+	@UseGuards(JwtAuthGuard)
+	@Put('/assign/:id')
+	async assignCharacter(
+		@Param('id') id: number,
+		@Body() body: AssignCharacterDTO,
+	) {
+		return await this.service
+			.assignCharacter(id, body.user_id)
+			.catch((error) => {
+				Logger.error(error);
+				throw error;
+			});
 	}
 }

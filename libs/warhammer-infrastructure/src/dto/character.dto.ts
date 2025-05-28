@@ -1,4 +1,4 @@
-import { Optional } from '@azkaban/shared';
+import { Nullable, Optional } from '@azkaban/shared';
 
 export interface CreateCharacterDTO {
 	name: string;
@@ -22,4 +22,8 @@ export interface UpdateCharacterDTO {
 		type: 'corrupt' | 'cleanse';
 		corruption: number;
 	}>;
+}
+
+export interface AssignCharacterDTO {
+	user_id: Nullable<string>;
 }

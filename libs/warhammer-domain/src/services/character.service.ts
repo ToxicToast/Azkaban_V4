@@ -1,7 +1,7 @@
 import { CharacterAnemic } from '../anemics';
 import { CharacterFactory } from '../factories';
 import { CharacterRepository } from '../repositories';
-import { DomainEvent, Optional, Result } from '@azkaban/shared';
+import { DomainEvent, Nullable, Optional, Result } from '@azkaban/shared';
 import { CharacterData, UpdateCharacterData } from '../data';
 
 export class CharacterService {
@@ -22,8 +22,8 @@ export class CharacterService {
 	}
 
 	async getCharacters(
-		limit?: number,
-		offset?: number,
+		limit?: Optional<number>,
+		offset?: Optional<number>,
 		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<CharacterAnemic>>> {
 		try {
@@ -68,6 +68,21 @@ export class CharacterService {
 			return Result.fail<CharacterAnemic>('Character not found', 404);
 		} catch (error) {
 			return Result.fail<CharacterAnemic>(error, 500);
+		}
+	}
+
+	async getCharactersByUserId(
+		user_id?: Optional<string>,
+		withDeleted?: Optional<boolean>,
+	): Promise<Result<Array<CharacterAnemic>>> {
+		try {
+			const result = await this.repository.findByUserId(
+				user_id,
+				withDeleted,
+			);
+			return Result.ok<Array<CharacterAnemic>>(result);
+		} catch (error) {
+			return Result.fail<Array<CharacterAnemic>>(error, 500);
 		}
 	}
 
@@ -180,6 +195,26 @@ export class CharacterService {
 			if (result.isSuccess) {
 				const aggregate = this.factory.reconstitute(result.value);
 				aggregate.deactivateCharacter();
+				const anemic = aggregate.toAnemic();
+				const character = anemic.character;
+				const events = anemic.events;
+				return await this.save(character, events);
+			}
+			return Result.fail<CharacterAnemic>(result.errorValue, 404);
+		} catch (error) {
+			return Result.fail<CharacterAnemic>(error, 500);
+		}
+	}
+
+	async assignCharacter(
+		id: number,
+		user_id: Nullable<string>,
+	): Promise<Result<CharacterAnemic>> {
+		try {
+			const result = await this.getCharacterById(id);
+			if (result.isSuccess) {
+				const aggregate = this.factory.reconstitute(result.value);
+				aggregate.changeUser(user_id);
 				const anemic = aggregate.toAnemic();
 				const character = anemic.character;
 				const events = anemic.events;

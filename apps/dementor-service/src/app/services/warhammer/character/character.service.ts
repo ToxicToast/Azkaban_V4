@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
-import { Optional, WarhammerCharacterTopics } from '@azkaban/shared';
+import { Nullable, Optional, WarhammerCharacterTopics } from '@azkaban/shared';
 import { CharacterIdQuery, IdQuery, ListQuery } from './queries';
 import {
 	ActivateCommand,
@@ -10,6 +10,7 @@ import {
 	DeleteCommand,
 	RestoreCommand,
 	UpdateCommand,
+	AssignCommand,
 } from './commands';
 import {
 	CreateCharacterDTO,
@@ -77,5 +78,10 @@ export class CharacterService {
 	@Span(WarhammerCharacterTopics.DEACTIVATE + '.dementor')
 	async deactivateCharacter(id: number) {
 		return await this.commandBus.execute(new DeactivateCommand(id));
+	}
+
+	@Span(WarhammerCharacterTopics.ASSIGN + '.dementor')
+	async assignCharacter(id: number, user_id: Nullable<string>) {
+		return await this.commandBus.execute(new AssignCommand(id, user_id));
 	}
 }

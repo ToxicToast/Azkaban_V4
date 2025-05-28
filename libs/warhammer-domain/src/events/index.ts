@@ -6,3 +6,4 @@ export * from './useFate.event';
 export * from './addCorruption.event';
 export * from './cleanseCorruption.event';
 export * from './createCharacter.event';
+export * from './changeUser.event';

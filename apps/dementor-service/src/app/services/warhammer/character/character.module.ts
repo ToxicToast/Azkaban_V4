@@ -12,6 +12,7 @@ import {
 	DeactivateCommandHandler,
 	DeleteCommandHandler,
 	RestoreCommandHandler,
+	AssignCommandHandler,
 } from './commands';
 
 @Module({
@@ -26,6 +27,7 @@ import {
 		RestoreCommandHandler,
 		ActivateCommandHandler,
 		DeactivateCommandHandler,
+		AssignCommandHandler,
 	],
 })
 export class CharacterModule {}

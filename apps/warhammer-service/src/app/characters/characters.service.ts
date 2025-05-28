@@ -11,6 +11,7 @@ import { Span } from 'nestjs-otel';
 import { Nullable, WarhammerCharacterTopics } from '@azkaban/shared';
 import { CharactersCache } from './characters.cache';
 import {
+	CharacterAssign,
 	CharacterByCharacterId,
 	CharacterById,
 	CharacterCreate,
@@ -128,5 +129,14 @@ export class CharactersService {
 	async characterDeactivate(data: CharacterById): Promise<CharacterDAO> {
 		await this.cache.removeCache();
 		return await this.infrastructureService.deactivateCharacter(data.id);
+	}
+
+	@Span(WarhammerCharacterTopics.ASSIGN + '.service')
+	async characterAssign(data: CharacterAssign): Promise<CharacterDAO> {
+		await this.cache.removeCache();
+		return await this.infrastructureService.assignCharacter(
+			data.id,
+			data.user_id,
+		);
 	}
 }

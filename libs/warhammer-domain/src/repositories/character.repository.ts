@@ -6,6 +6,10 @@ interface AdditionalMethods {
 		character_id: string,
 		withDeleted?: Optional<boolean>,
 	): Promise<Nullable<CharacterAnemic>>;
+	findByUserId(
+		user_id: Nullable<string>,
+		withDeleted?: Optional<boolean>,
+	): Promise<Array<CharacterAnemic>>;
 }
 
 export type CharacterRepository = Chainable<

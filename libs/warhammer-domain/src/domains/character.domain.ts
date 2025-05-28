@@ -1,6 +1,5 @@
 import { AggregateRoot, Domain, DomainEvent, Nullable } from '@azkaban/shared';
 import { CharacterAnemic } from '../anemics';
-import { Corruption, Fate, Wound } from '../valueObjects';
 import {
 	AddCorruptionEvent,
 	AddFateEvent,
@@ -10,6 +9,7 @@ import {
 	UseFateEvent,
 	CleanseCorruptionEvent,
 	CreateCharacterEvent,
+	ChangeUserEvent,
 } from '../events';
 
 export class CharacterDomain
@@ -19,6 +19,7 @@ export class CharacterDomain
 	constructor(
 		private readonly id: number,
 		private readonly character_id: string,
+		private user_id: Nullable<string>,
 		private readonly name: string,
 		private readonly role: string,
 		private fate: {
@@ -46,6 +47,7 @@ export class CharacterDomain
 		return {
 			id: this.id,
 			character_id: this.character_id,
+			user_id: this.user_id,
 			name: this.name,
 			role: this.role,
 			fate: this.fate,
@@ -145,6 +147,17 @@ export class CharacterDomain
 				oldCorruption,
 			),
 		);
+	}
+
+	changeUser(user_id: Nullable<string>) {
+		if (this.user_id !== user_id) {
+			this.updated_at = new Date();
+			const oldUserId = this.user_id;
+			this.user_id = user_id;
+			this.addDomainEvent(
+				new ChangeUserEvent(this.character_id, user_id, oldUserId),
+			);
+		}
 	}
 
 	activateCharacter(): void {

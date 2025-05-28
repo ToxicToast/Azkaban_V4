@@ -2,7 +2,7 @@ import { CharacterRepository as DomainRepository } from '@azkaban/warhammer-doma
 import { CharacterMapper } from '../mappers';
 import { Repository } from 'typeorm';
 import { CharacterEntity } from '../entities';
-import { Optional } from '@azkaban/shared';
+import { Nullable, Optional } from '@azkaban/shared';
 import { CharacterDAO } from '../../dao';
 
 export class CharacterRepository implements DomainRepository {
@@ -41,6 +41,20 @@ export class CharacterRepository implements DomainRepository {
 			return this.mapper.toDomain(entity);
 		}
 		return null;
+	}
+
+	async findByUserId(
+		user_id: Nullable<string>,
+		withDeleted?: Optional<boolean>,
+	): Promise<Array<CharacterDAO>> {
+		const entities = await this.repository.find({
+			withDeleted: withDeleted ?? false,
+			where: { user_id },
+		});
+		return entities.map(
+			(entity: CharacterEntity): CharacterDAO =>
+				this.mapper.toDomain(entity),
+		);
 	}
 
 	async save(data: CharacterDAO): Promise<CharacterDAO> {

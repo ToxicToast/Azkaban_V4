@@ -3,6 +3,7 @@ import { Nullable } from '@azkaban/shared';
 export interface CharacterDAO {
 	id: number;
 	character_id: string;
+	user_id: Nullable<string>;
 	name: string;
 	role: string;
 	fate: {

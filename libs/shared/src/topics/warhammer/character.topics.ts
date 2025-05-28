@@ -8,6 +8,7 @@ export enum WarhammerCharacterTopics {
 	RESTORE = 'warhammer.character.restore',
 	ACTIVATE = 'warhammer.character.activate',
 	DEACTIVATE = 'warhammer.character.deactivate',
+	ASSIGN = 'warhammer.character.assign',
 }
 
 export const WarhammerCharacterTopicArray = Object.values(

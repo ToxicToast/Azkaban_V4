@@ -9,8 +9,8 @@ import {
 	CharacterCreate,
 	CharacterList,
 	CharacterUpdate,
+	CharacterAssign,
 } from '../../utils/dtos';
-
 @Controller(ControllerHelper('character'))
 export class CharactersController {
 	constructor(private readonly service: CharactersService) {}
@@ -69,5 +69,11 @@ export class CharactersController {
 	@MessagePattern(WarhammerCharacterTopics.DEACTIVATE)
 	async deactivateCharacter(@Payload() payload: CharacterById) {
 		return await this.service.characterDeactivate(payload);
+	}
+
+	@Span(WarhammerCharacterTopics.ASSIGN + '.service')
+	@MessagePattern(WarhammerCharacterTopics.ASSIGN)
+	async assignCharacter(@Payload() payload: CharacterAssign) {
+		return await this.service.characterAssign(payload);
 	}
 }

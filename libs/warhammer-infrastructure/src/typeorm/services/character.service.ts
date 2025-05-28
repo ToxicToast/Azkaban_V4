@@ -1,7 +1,7 @@
 import { CharacterService as DomainService } from '@azkaban/warhammer-domain';
 import { CharacterRepository } from '../repositories';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Optional, UuidHelper } from '@azkaban/shared';
+import { Nullable, Optional, UuidHelper } from '@azkaban/shared';
 import { CharacterDAO } from '../../dao';
 import { RpcException } from '@nestjs/microservices';
 import { CreateCharacterDTO, UpdateCharacterDTO } from '../../dto';
@@ -196,6 +196,27 @@ export class CharacterService {
 				status: result.errorCode,
 				message: result.errorValue,
 				raw: { id },
+			});
+		}
+	}
+
+	async assignCharacter(
+		id: number,
+		user_id: Nullable<string>,
+	): Promise<CharacterDAO> {
+		const result = await this.domainService.assignCharacter(id, user_id);
+		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: result.errorCode,
+				message: result.errorValue,
+				raw: { id, user_id },
 			});
 		}
 	}

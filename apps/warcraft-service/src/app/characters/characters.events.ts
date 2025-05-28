@@ -126,4 +126,10 @@ export class CharactersEvents {
 		Logger.log('ChangeSpec event received', payload);
 		await this.sendToSSE(payload);
 	}
+
+	@OnEvent('ChangeWarcraftUser')
+	async handleChangeUserEvent(payload: unknown) {
+		Logger.log('ChangeUser event received', payload);
+		await this.sendToSSE(payload);
+	}
 }

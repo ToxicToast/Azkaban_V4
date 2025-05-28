@@ -1,4 +1,4 @@
-import { Optional } from '@azkaban/shared';
+import { Nullable, Optional } from '@azkaban/shared';
 
 export interface CharacterList {
 	limit?: Optional<number>;
@@ -43,4 +43,9 @@ export interface CharacterUpdate {
 			corruption: number;
 		}>;
 	}>;
+}
+
+export interface CharacterAssign {
+	id: number;
+	user_id: Nullable<string>;
 }

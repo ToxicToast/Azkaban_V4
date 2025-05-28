@@ -31,5 +31,11 @@ export class CharactersEvents {
 		await this.sendToApiAlerts(payload);
 	}
 
+	@OnEvent('ChangeWarhammerUser')
+	async handleChangeUserEvent(payload: unknown) {
+		Logger.log('ChangeUser event received', payload);
+		await this.sendToSSE(payload);
+	}
+
 	// TODO: Add other events
 }
