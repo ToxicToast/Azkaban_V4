@@ -80,6 +80,10 @@ export class CharacterAggregate {
 		this.character.changeLoggedIn(loggedin_at);
 	}
 
+	changeUser(user_id: Nullable<string>): void {
+		this.character.changeUser(user_id);
+	}
+
 	activateCharacter(): void {
 		this.character.activateCharacter();
 	}

@@ -13,14 +13,14 @@ export class ApiAlertsService {
 		this.instance = alerts.setApiKey(this.apiKey);
 	}
 
-	sendEvent(
+	async sendEvent(
 		message: string,
 		channel?: Optional<string>,
 		tags?: Optional<Array<string>>,
 		link?: Optional<string>,
-	): void {
+	): Promise<void> {
 		try {
-			this.instance.send({
+			await this.instance.send({
 				message,
 				channel,
 				tags,

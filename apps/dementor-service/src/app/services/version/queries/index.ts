@@ -6,3 +6,6 @@ export * from './dementorVersion.handler';
 
 export * from './warcraftVersion.query';
 export * from './warcraftVersion.handler';
+
+export * from './warhammerVersion.query';
+export * from './warhammerVersion.handler';

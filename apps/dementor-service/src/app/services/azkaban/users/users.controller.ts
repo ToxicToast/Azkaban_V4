@@ -11,7 +11,12 @@ import {
 	Query,
 	UseGuards,
 } from '@nestjs/common';
-import { AzkabanUserTopics, ControllerHelper, Optional } from '@azkaban/shared';
+import {
+	AzkabanUserTopics,
+	ControllerHelper,
+	Nullable,
+	Optional,
+} from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { UsersService } from './users.service';
 import {
@@ -19,22 +24,25 @@ import {
 	UpdateUserDTO,
 	UserDAO,
 } from '@azkaban/azkaban-infrastructure';
-import { JwtAuthGuard } from '../../../guards';
+import { JwtAuthGuard, OptionalJwtAuthGuard } from '../../../guards';
 import { UsersPresenter } from './users.presenter';
+import { User } from '../../../decorators';
 
 @Controller(ControllerHelper('azkaban/users'))
 export class UsersController {
 	constructor(private readonly service: UsersService) {}
 
 	@Span(AzkabanUserTopics.LIST + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/')
 	async getUsers(
+		@User() user: Nullable<string>,
 		@Query('limit') limit?: Optional<number>,
 		@Query('offset') offset?: Optional<number>,
 	) {
-		Logger.log('Get Users', { limit, offset });
+		Logger.log('Get Users', { user, limit, offset });
 		return await this.service
-			.userList(limit, offset)
+			.userList(limit, offset, user !== null)
 			.catch((error) => {
 				Logger.error(error);
 				throw error;
@@ -42,25 +50,26 @@ export class UsersController {
 			.then((data) => {
 				Logger.log('Get Users', { data });
 				return data.map((user: UserDAO) => {
-					const presenter = new UsersPresenter(user);
+					const presenter = new UsersPresenter(user, user !== null);
 					return presenter.transform();
 				});
 			});
 	}
 
 	@Span(AzkabanUserTopics.ID + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/:id')
-	async getUserById(@Param('id') id: number) {
-		Logger.log('Get User By Id', { id });
+	async getUserById(@User() user: Nullable<string>, @Param('id') id: number) {
+		Logger.log('Get User By Id', { id, user });
 		return await this.service
-			.userById(id)
+			.userById(id, user !== null)
 			.catch((error) => {
 				Logger.error(error);
 				throw error;
 			})
 			.then((data) => {
 				if (data !== null) {
-					const presenter = new UsersPresenter(data);
+					const presenter = new UsersPresenter(data, user !== null);
 					return presenter.transform();
 				}
 				return null;
@@ -68,18 +77,22 @@ export class UsersController {
 	}
 
 	@Span(AzkabanUserTopics.USERID + '.dementor')
+	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/uuid/:id')
-	async getUserByUserId(@Param('id') id: string) {
-		Logger.log('Get User By User Id', { id });
+	async getUserByUserId(
+		@User() user: Nullable<string>,
+		@Param('id') id: string,
+	) {
+		Logger.log('Get User By User Id', { id, user });
 		return await this.service
-			.userByUserId(id)
+			.userByUserId(id, user !== null)
 			.catch((error) => {
 				Logger.error(error);
 				throw error;
 			})
 			.then((data) => {
 				if (data !== null) {
-					const presenter = new UsersPresenter(data);
+					const presenter = new UsersPresenter(data, user !== null);
 					return presenter.transform();
 				}
 				return null;

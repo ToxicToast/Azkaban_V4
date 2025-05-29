@@ -28,7 +28,10 @@ export class GuildIdHandler implements IQueryHandler<GuildIdQuery> {
 	}
 
 	private async checkForCache(query: GuildIdQuery) {
-		const cacheKey = 'warcraft:guilds:guildid:' + query.guild_id;
+		let cacheKey = 'warcraft:guilds:guildid:' + query.guild_id;
+		if (query.withDeleted !== undefined) {
+			cacheKey += ':withDeleted:' + String(query.withDeleted);
+		}
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);

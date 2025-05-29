@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AzkabanAuthTopics, ControllerHelper } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { AuthService } from './auth.service';
@@ -10,7 +10,6 @@ export class AuthController {
 	@Span(AzkabanAuthTopics.LOGIN + '.dementor')
 	@Post('/login')
 	async login(@Body() body: { username: string; password: string }) {
-		Logger.log('Login User', { body });
 		return await this.service.login(body);
 	}
 
@@ -19,7 +18,6 @@ export class AuthController {
 	async register(
 		@Body() body: { username: string; password: string; email: string },
 	) {
-		Logger.log('Register New User', { body });
 		return await this.service.register(body);
 	}
 }

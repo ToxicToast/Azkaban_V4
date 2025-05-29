@@ -20,105 +20,134 @@ export class CharacterService {
 	async getCharacterList(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharacters(limit, offset);
+		const result = await this.domainService.getCharacters(
+			limit,
+			offset,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { limit, offset },
+				raw: { limit, offset, withDeleted },
 			});
 		}
 	}
 
-	async getCharacterById(id: number): Promise<CharacterDAO> {
-		const result = await this.domainService.getCharacterById(id);
+	async getCharacterById(
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<CharacterDAO> {
+		const result = await this.domainService.getCharacterById(
+			id,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { id },
+				raw: { id, withDeleted },
 			});
 		}
 	}
 
 	async getCharacterByCharacterId(
 		character_id: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<CharacterDAO> {
-		const result =
-			await this.domainService.getCharacterByCharacterId(character_id);
+		const result = await this.domainService.getCharacterByCharacterId(
+			character_id,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { character_id },
+				raw: { character_id, withDeleted },
 			});
 		}
 	}
 
 	async getCharacterByGuild(
 		guild: Nullable<string>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByGuild(guild);
+		const result = await this.domainService.getCharactersByGuild(
+			guild,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { guild },
+				raw: { guild, withDeleted },
 			});
 		}
 	}
 
 	async getCharactersByClass(
 		character_class: Nullable<string>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<CharacterDAO>> {
-		const result =
-			await this.domainService.getCharactersByClass(character_class);
+		const result = await this.domainService.getCharactersByClass(
+			character_class,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { character_class },
+				raw: { character_class, withDeleted },
 			});
 		}
 	}
 
 	async getCharactersByRace(
 		race: Nullable<string>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByRace(race);
+		const result = await this.domainService.getCharactersByRace(
+			race,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { race },
+				raw: { race, withDeleted },
 			});
 		}
 	}
 
 	async getCharactersByFaction(
 		faction: Nullable<string>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<CharacterDAO>> {
-		const result = await this.domainService.getCharactersByFaction(faction);
+		const result = await this.domainService.getCharactersByFaction(
+			faction,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { faction },
+				raw: { faction, withDeleted },
 			});
 		}
 	}
@@ -127,11 +156,13 @@ export class CharacterService {
 		region: string,
 		realm: string,
 		name: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<CharacterDAO> {
 		const result = await this.domainService.getCharacterByRegionRealmName(
 			region,
 			realm,
 			name,
+			withDeleted,
 		);
 		if (result.isSuccess) {
 			return result.value;
@@ -139,7 +170,7 @@ export class CharacterService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { region, realm, name },
+				raw: { region, realm, name, withDeleted },
 			});
 		}
 	}
@@ -292,6 +323,27 @@ export class CharacterService {
 				status: result.errorCode,
 				message: result.errorValue,
 				raw: { id },
+			});
+		}
+	}
+
+	async assignCharacter(
+		id: number,
+		user_id: Nullable<string>,
+	): Promise<CharacterDAO> {
+		const result = await this.domainService.assignCharacter(id, user_id);
+		if (result.isSuccess) {
+			const events = result.events;
+			Logger.log('Character Events', events);
+			for (const event of events) {
+				this.eventEmitter.emit(event.event_name, event);
+			}
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: result.errorCode,
+				message: result.errorValue,
+				raw: { id, user_id },
 			});
 		}
 	}

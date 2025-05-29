@@ -5,3 +5,4 @@ export * from './warcraft';
 export * from './coworking';
 export * from './discord';
 export * from './blog';
+export * from './warhammer';

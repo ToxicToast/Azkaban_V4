@@ -24,7 +24,7 @@ export class CharactersEvents {
 			.toPromise();
 	}
 
-	@OnEvent('CreateCharacter')
+	@OnEvent('CreateWarcraftCharacter')
 	async handleCreateCharacterEvent(payload: unknown) {
 		Logger.log('CreateCharacter event received', payload);
 		await this.sendToSSE(payload);
@@ -124,6 +124,12 @@ export class CharactersEvents {
 	@OnEvent('ChangeSpec')
 	async handleChangeSpecEvent(payload: unknown) {
 		Logger.log('ChangeSpec event received', payload);
+		await this.sendToSSE(payload);
+	}
+
+	@OnEvent('ChangeWarcraftUser')
+	async handleChangeUserEvent(payload: unknown) {
+		Logger.log('ChangeUser event received', payload);
 		await this.sendToSSE(payload);
 	}
 }

@@ -13,14 +13,16 @@ export class CharacterRepository implements DomainRepository {
 	async findList(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: boolean,
 	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
 			take: limit,
 			skip: offset,
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -28,10 +30,11 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findById(id: number): Promise<CharacterDAO> {
+	async findById(id: number, withDeleted?: boolean): Promise<CharacterDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { id },
+			cache: true,
 		});
 		if (entity) {
 			return this.mapper.toDomain(entity);
@@ -52,10 +55,12 @@ export class CharacterRepository implements DomainRepository {
 		region: string,
 		realm: string,
 		name: string,
+		withDeleted?: boolean,
 	): Promise<CharacterDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { region, realm, name },
+			cache: true,
 		});
 		if (entity) {
 			return this.mapper.toDomain(entity);
@@ -65,13 +70,15 @@ export class CharacterRepository implements DomainRepository {
 
 	async findByFaction(
 		faction: Nullable<string>,
+		withDeleted?: boolean,
 	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
 			where: { faction },
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -79,13 +86,17 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findByRace(race: Nullable<string>): Promise<Array<CharacterDAO>> {
+	async findByRace(
+		race: Nullable<string>,
+		withDeleted?: boolean,
+	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
 			where: { race },
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -95,13 +106,15 @@ export class CharacterRepository implements DomainRepository {
 
 	async findByClass(
 		character_class: Nullable<string>,
+		withDeleted?: boolean,
 	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
 			where: { class: character_class },
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -109,13 +122,17 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findByGuild(guild: Nullable<string>): Promise<Array<CharacterDAO>> {
+	async findByGuild(
+		guild: Nullable<string>,
+		withDeleted?: boolean,
+	): Promise<Array<CharacterDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
 			where: { guild },
+			cache: true,
 		});
 		return entities.map(
 			(entity: CharacterEntity): CharacterDAO =>
@@ -123,14 +140,36 @@ export class CharacterRepository implements DomainRepository {
 		);
 	}
 
-	async findByCharacterId(character_id: string): Promise<CharacterDAO> {
+	async findByCharacterId(
+		character_id: string,
+		withDeleted?: boolean,
+	): Promise<CharacterDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { character_id },
+			cache: true,
 		});
 		if (entity) {
 			return this.mapper.toDomain(entity);
 		}
 		return null;
+	}
+
+	async findByUserId(
+		user_id: Nullable<string>,
+		withDeleted?: boolean,
+	): Promise<Array<CharacterDAO>> {
+		const entities = await this.repository.find({
+			withDeleted: withDeleted ?? false,
+			order: {
+				id: 'DESC',
+			},
+			where: { user_id },
+			cache: true,
+		});
+		return entities.map(
+			(entity: CharacterEntity): CharacterDAO =>
+				this.mapper.toDomain(entity),
+		);
 	}
 }

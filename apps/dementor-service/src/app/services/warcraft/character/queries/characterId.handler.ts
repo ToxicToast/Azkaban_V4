@@ -28,8 +28,10 @@ export class CharacterIdHandler implements IQueryHandler<CharacterIdQuery> {
 	}
 
 	private async checkForCache(query: CharacterIdQuery) {
-		const cacheKey =
-			'warcraft:characters:characterid:' + query.character_id;
+		let cacheKey = 'warcraft:characters:characterid:' + query.character_id;
+		if (query.withDeleted !== undefined) {
+			cacheKey += ':withDeleted:' + String(query.withDeleted);
+		}
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);

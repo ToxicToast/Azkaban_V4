@@ -8,3 +8,4 @@ export * from './password.helper';
 export * from './microservice.helper';
 export * from './logging.helper';
 export * from './controller.helper';
+export * from './rejectReason.helper';

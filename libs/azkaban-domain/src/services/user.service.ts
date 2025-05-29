@@ -24,18 +24,26 @@ export class UserService {
 	async getUsers(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<UserAnemic>>> {
 		try {
-			const result = await this.repsitory.findList(limit, offset);
+			const result = await this.repsitory.findList(
+				limit,
+				offset,
+				withDeleted,
+			);
 			return Result.ok<Array<UserAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<UserAnemic>>(error, 500);
 		}
 	}
 
-	async getUserById(id: number): Promise<Result<Nullable<UserAnemic>>> {
+	async getUserById(
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<Result<Nullable<UserAnemic>>> {
 		try {
-			const result = await this.repsitory.findById(id);
+			const result = await this.repsitory.findById(id, withDeleted);
 			if (result !== null) {
 				return Result.ok<Nullable<UserAnemic>>(result);
 			}
@@ -47,9 +55,13 @@ export class UserService {
 
 	async getUserByUserId(
 		user_id: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Nullable<UserAnemic>>> {
 		try {
-			const result = await this.repsitory.findByUserId(user_id);
+			const result = await this.repsitory.findByUserId(
+				user_id,
+				withDeleted,
+			);
 			if (result !== null) {
 				return Result.ok<Nullable<UserAnemic>>(result);
 			}
@@ -61,9 +73,13 @@ export class UserService {
 
 	async getUserByUsername(
 		username: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Nullable<UserAnemic>>> {
 		try {
-			const result = await this.repsitory.findByUsername(username);
+			const result = await this.repsitory.findByUsername(
+				username,
+				withDeleted,
+			);
 			if (result !== null) {
 				return Result.ok<Nullable<UserAnemic>>(result);
 			}
@@ -73,9 +89,12 @@ export class UserService {
 		}
 	}
 
-	async getUserByEmail(email: string): Promise<Result<Nullable<UserAnemic>>> {
+	async getUserByEmail(
+		email: string,
+		withDeleted?: Optional<boolean>,
+	): Promise<Result<Nullable<UserAnemic>>> {
 		try {
-			const result = await this.repsitory.findByEmail(email);
+			const result = await this.repsitory.findByEmail(email, withDeleted);
 			if (result !== null) {
 				return Result.ok<Nullable<UserAnemic>>(result);
 			}

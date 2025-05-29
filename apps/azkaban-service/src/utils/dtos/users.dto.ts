@@ -3,14 +3,17 @@ import { Nullable, Optional } from '@azkaban/shared';
 export interface UsersListDTO {
 	limit?: Optional<number>;
 	offset?: Optional<number>;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface UserByIdDTO {
 	id: number;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface UserByUserIdDTO {
 	user_id: string;
+	withDeleted?: Optional<boolean>;
 }
 
 export interface UserCreateDTO {

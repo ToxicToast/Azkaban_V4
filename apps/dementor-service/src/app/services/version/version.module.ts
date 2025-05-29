@@ -4,6 +4,7 @@ import {
 	AzkabanVersionHandler,
 	DementorVersionHandler,
 	WarcraftVersionHandler,
+	WarhammerVersionHandler,
 } from './queries';
 import { VersionController } from './version.controller';
 import { VersionCache } from './version.cache';
@@ -15,6 +16,7 @@ import { VersionCache } from './version.cache';
 		DementorVersionHandler,
 		WarcraftVersionHandler,
 		AzkabanVersionHandler,
+		WarhammerVersionHandler,
 		VersionCache,
 	],
 })

@@ -47,7 +47,12 @@ export class UserDomain extends AggregateRoot implements Domain<UserAnemic> {
 	}
 
 	createUser(): void {
-		this.addDomainEvent(new CreateUserEvent(this.user_id, this.toAnemic()));
+		const payload = {
+			...this.toAnemic(),
+			password: undefined,
+			salt: undefined,
+		};
+		this.addDomainEvent(new CreateUserEvent(this.user_id, payload));
 	}
 
 	changeUsername(username: string): void {

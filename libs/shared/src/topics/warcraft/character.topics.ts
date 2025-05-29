@@ -9,6 +9,7 @@ export enum WarcraftCharacterTopics {
 	RESTORE = 'warcraft.character.restore',
 	ACTIVATE = 'warcraft.character.activate',
 	DEACTIVATE = 'warcraft.character.deactivate',
+	ASSIGN = 'warcraft.character.assign',
 }
 
 export const WarcraftCharacterTopicArray = Object.values(

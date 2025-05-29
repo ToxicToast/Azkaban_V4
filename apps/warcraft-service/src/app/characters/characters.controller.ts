@@ -1,9 +1,10 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { ControllerHelper, WarcraftCharacterTopics } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { CharactersService } from './characters.service';
 import {
+	CharacterAssignDTO,
 	CharacterByCharacterIdDTO,
 	CharacterByGuildDTO,
 	CharacterByIdDTO,
@@ -19,13 +20,13 @@ export class CharactersController {
 	@Span(WarcraftCharacterTopics.LIST + '.service')
 	@MessagePattern(WarcraftCharacterTopics.LIST)
 	async getCharacterList(@Payload() payload: CharacterList) {
-		return this.service.characterList(payload);
+		return await this.service.characterList(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.ID + '.service')
 	@MessagePattern(WarcraftCharacterTopics.ID)
 	async getCharacterById(@Payload() payload: CharacterByIdDTO) {
-		return this.service.characterById(payload);
+		return await this.service.characterById(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.CHARACTERID + '.service')
@@ -33,48 +34,54 @@ export class CharactersController {
 	async getCharacterByCharacterId(
 		@Payload() payload: CharacterByCharacterIdDTO,
 	) {
-		return this.service.characterByCharacterId(payload);
+		return await this.service.characterByCharacterId(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.GUILD + '.service')
 	@MessagePattern(WarcraftCharacterTopics.GUILD)
 	async getCharacterByGuild(@Payload() payload: CharacterByGuildDTO) {
-		return this.service.characterByGuild(payload);
+		return await this.service.characterByGuild(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.CREATE + '.service')
 	@MessagePattern(WarcraftCharacterTopics.CREATE)
 	async createCharacter(@Payload() payload: CharacterCreateDTO) {
-		return this.service.characterCreate(payload);
+		return await this.service.characterCreate(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.UPDATE + '.service')
 	@MessagePattern(WarcraftCharacterTopics.UPDATE)
 	async updateCharacter(@Payload() payload: CharacterUpdateDTO) {
-		return this.service.characterUpdate(payload);
+		return await this.service.characterUpdate(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.DELETE + '.service')
 	@MessagePattern(WarcraftCharacterTopics.DELETE)
 	async deleteCharacter(@Payload() payload: CharacterByIdDTO) {
-		return this.service.characterDelete(payload);
+		return await this.service.characterDelete(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.RESTORE + '.service')
 	@MessagePattern(WarcraftCharacterTopics.RESTORE)
 	async restoreCharacter(@Payload() payload: CharacterByIdDTO) {
-		return this.service.characterRestore(payload);
+		return await this.service.characterRestore(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.ACTIVATE + '.service')
 	@MessagePattern(WarcraftCharacterTopics.ACTIVATE)
 	async activateCharacter(@Payload() payload: CharacterByIdDTO) {
-		return this.service.characterActivate(payload);
+		return await this.service.characterActivate(payload);
 	}
 
 	@Span(WarcraftCharacterTopics.DEACTIVATE + '.service')
 	@MessagePattern(WarcraftCharacterTopics.DEACTIVATE)
 	async deactivateCharacter(@Payload() payload: CharacterByIdDTO) {
-		return this.service.characterDeactivate(payload);
+		return await this.service.characterDeactivate(payload);
+	}
+
+	@Span(WarcraftCharacterTopics.ASSIGN + '.service')
+	@MessagePattern(WarcraftCharacterTopics.ASSIGN)
+	async assignCharacter(@Payload() payload: CharacterAssignDTO) {
+		return await this.service.characterAssign(payload);
 	}
 }

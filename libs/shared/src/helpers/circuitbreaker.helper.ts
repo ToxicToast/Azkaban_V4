@@ -16,7 +16,7 @@ export function createCircuitBreaker<DataType>(
 	return cicuitBreaker
 		.execute()
 		.catch((error: { message: string; status: Either<string, number> }) => {
-			Logger.error(error, createCircuitBreaker.name);
+			Logger.error({ error }, createCircuitBreaker.name);
 			const status =
 				typeof error.status === 'string' ? 503 : error.status;
 			throw new HttpException(error.message, status);

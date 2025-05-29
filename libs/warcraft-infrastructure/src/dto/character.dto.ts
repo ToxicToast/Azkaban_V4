@@ -25,3 +25,7 @@ export interface UpdateCharacterDTO {
 	raid?: Optional<Nullable<string>>;
 	loggedin_at?: Optional<Nullable<Date>>;
 }
+
+export interface AssignCharacterDTO {
+	user_id: Nullable<string>;
+}

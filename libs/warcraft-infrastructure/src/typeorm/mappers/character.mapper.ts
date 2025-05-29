@@ -10,6 +10,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 		const {
 			id,
 			character_id,
+			user_id,
 			region,
 			realm,
 			name,
@@ -38,6 +39,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 		const entity = new CharacterEntity();
 		entity.id = id;
 		entity.character_id = character_id;
+		entity.user_id = user_id;
 		entity.region = region;
 		entity.realm = realm;
 		entity.name = name;
@@ -69,6 +71,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 		const {
 			id,
 			character_id,
+			user_id,
 			region,
 			realm,
 			name,
@@ -97,6 +100,7 @@ export class CharacterMapper implements Mapper<CharacterDAO, CharacterEntity> {
 		const aggregate = this.domainFactory.reconstitute({
 			id,
 			character_id,
+			user_id,
 			region,
 			realm,
 			name,

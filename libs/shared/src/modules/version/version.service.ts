@@ -5,6 +5,6 @@ export class VersionService {
 	constructor(@Inject('APP_VERSION') private readonly version: string) {}
 
 	appVersion(): string {
-		return this.version ?? 'n/a';
+		return this.version ?? 'Service is currently unavailable';
 	}
 }

@@ -35,6 +35,14 @@ export class ThrottleModule {
 						},
 					],
 					storage: new ThrottlerStorageRedisService(redisClient),
+					generateKey: (context) => {
+						const request = context.switchToHttp().getRequest();
+						const user = request.user;
+						if (user) {
+							return 'throttler:user:' + user.id;
+						}
+						return 'throttler:ip:' + request.ip;
+					},
 				}),
 			],
 			exports: [BaseModule],

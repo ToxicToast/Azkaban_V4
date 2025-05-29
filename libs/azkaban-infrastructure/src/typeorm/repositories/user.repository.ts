@@ -13,9 +13,10 @@ export class UserRepository implements DomainRepository {
 	async findList(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<UserDAO>> {
 		const entities = await this.repository.find({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			order: {
 				id: 'DESC',
 			},
@@ -27,9 +28,12 @@ export class UserRepository implements DomainRepository {
 		);
 	}
 
-	async findById(id: number): Promise<UserDAO> {
+	async findById(
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<UserDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { id },
 		});
 		if (entity) {
@@ -47,9 +51,12 @@ export class UserRepository implements DomainRepository {
 		return null;
 	}
 
-	async findByUserId(user_id: string): Promise<UserDAO> {
+	async findByUserId(
+		user_id: string,
+		withDeleted?: Optional<boolean>,
+	): Promise<UserDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { user_id },
 		});
 		if (entity) {
@@ -58,9 +65,12 @@ export class UserRepository implements DomainRepository {
 		return null;
 	}
 
-	async findByEmail(email: string): Promise<UserDAO> {
+	async findByEmail(
+		email: string,
+		withDeleted?: Optional<boolean>,
+	): Promise<UserDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { email },
 		});
 		if (entity) {
@@ -69,9 +79,12 @@ export class UserRepository implements DomainRepository {
 		return null;
 	}
 
-	async findByUsername(username: string): Promise<UserDAO> {
+	async findByUsername(
+		username: string,
+		withDeleted?: Optional<boolean>,
+	): Promise<UserDAO> {
 		const entity = await this.repository.findOne({
-			withDeleted: true,
+			withDeleted: withDeleted ?? false,
 			where: { username },
 		});
 		if (entity) {

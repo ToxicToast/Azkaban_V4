@@ -28,7 +28,10 @@ export class UserIdHandler implements IQueryHandler<UserIdQuery> {
 	}
 
 	private async checkForCache(query: UserIdQuery) {
-		const cacheKey = 'azkaban:users:userid:' + query.user_id;
+		let cacheKey = 'azkaban:users:userid:' + query.user_id;
+		if (query.withDeleted !== undefined) {
+			cacheKey += ':withDeleted:' + String(query.withDeleted);
+		}
 		const hasCache = await this.cache.inCache(cacheKey);
 		if (hasCache) {
 			return await this.cache.getKey(cacheKey);

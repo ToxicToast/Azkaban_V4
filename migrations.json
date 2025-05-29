@@ -1,12 +1,11 @@
 {
 	"migrations": [
 		{
-			"cli": "nx",
-			"version": "20.4.0-beta.0",
-			"description": "Add NX_MF_DEV_REMOTES to inputs for task hashing when '@nx/webpack:webpack' or '@nx/rspack:rspack' is used for Module Federation.",
-			"factory": "./src/migrations/update-18-0-0/add-mf-env-var-to-target-defaults",
-			"package": "@nx/react",
-			"name": "add-mf-env-var-to-target-defaults"
+			"version": "21.1.0-beta.2",
+			"description": "Adds **/nx-rules.mdc and **/nx.instructions.md to .gitignore if not present",
+			"implementation": "./src/migrations/update-21-1-0/add-gitignore-entry",
+			"package": "nx",
+			"name": "21-1-0-add-ignore-entries-for-nx-rule-files"
 		}
 	]
 }

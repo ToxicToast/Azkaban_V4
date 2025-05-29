@@ -1,11 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
-import { WarcraftTopics, AzkabanTopics, CacheService } from '@azkaban/shared';
+import {
+	WarcraftTopics,
+	AzkabanTopics,
+	CacheService,
+	WarhammerTopics,
+} from '@azkaban/shared';
 import {
 	AzkabanVersionQuery,
 	DementorVersionQuery,
 	WarcraftVersionQuery,
+	WarhammerVersionQuery,
 } from './queries';
 
 @Injectable()
@@ -14,6 +20,12 @@ export class VersionService {
 		private readonly queryBus: QueryBus,
 		private readonly cache: CacheService,
 	) {}
+
+	@Span(WarhammerTopics.VERSION)
+	async getWarhammerServiceVersion() {
+		Logger.log('Fetch Warhammer Service Version');
+		return await this.queryBus.execute(new WarhammerVersionQuery());
+	}
 
 	@Span(WarcraftTopics.VERSION)
 	async getWarcraftServiceVersion() {
@@ -42,28 +54,33 @@ export class VersionService {
 		//
 		const azkabanVersion = await this.getAzkabanServiceVersion().catch(
 			() => {
-				return 'n/a';
+				return 'Service is currently unavailable';
 			},
 		);
 		const dementorVersion = await this.getDementorServiceVersion().catch(
 			() => {
-				return 'n/a';
+				return 'Service is currently unavailable';
 			},
 		);
 		const warcraftVersion = await this.getWarcraftServiceVersion().catch(
 			() => {
-				return 'n/a';
+				return 'Service is currently unavailable';
+			},
+		);
+		const warhammerVersion = await this.getWarhammerServiceVersion().catch(
+			() => {
+				return 'Service is currently unavailable';
 			},
 		);
 		const versions = {
 			dementor: dementorVersion,
 			azkaban: {
 				alerts: azkabanVersion,
-				groups: 'n/a',
+				groups: 'Service is currently unavailable',
 				users: azkabanVersion,
-				auth: 'n/a',
+				auth: azkabanVersion,
 			},
-			sse: 'n/a',
+			sse: 'Service is currently unavailable',
 			warcraft: {
 				api: warcraftVersion,
 				characters: warcraftVersion,
@@ -71,10 +88,19 @@ export class VersionService {
 				cronjobs: {
 					assets: warcraftVersion,
 					character: warcraftVersion,
-					guild: 'n/a',
+					guild: 'Service is currently unavailable',
 					mythic: warcraftVersion,
-					raid: 'n/a',
+					raid: 'Service is currently unavailable',
 				},
+			},
+			warhammer: {
+				characters: warhammerVersion,
+				origins: 'Service is currently unavailable',
+				fractions: 'Service is currently unavailable',
+				roles: 'Service is currently unavailable',
+				equipmenmt: 'Service is currently unavailable',
+				skills: 'Service is currently unavailable',
+				talents: 'Service is currently unavailable',
 			},
 		};
 		await this.cache.setKey(cacheKey, versions);

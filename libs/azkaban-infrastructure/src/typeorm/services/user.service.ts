@@ -26,8 +26,13 @@ export class UserService {
 	async getUserList(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<UserDAO>> {
-		const result = await this.domainService.getUsers(limit, offset);
+		const result = await this.domainService.getUsers(
+			limit,
+			offset,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
@@ -39,8 +44,11 @@ export class UserService {
 		}
 	}
 
-	async getUserById(id: number): Promise<UserDAO> {
-		const result = await this.domainService.getUserById(id);
+	async getUserById(
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<UserDAO> {
+		const result = await this.domainService.getUserById(id, withDeleted);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
@@ -52,8 +60,14 @@ export class UserService {
 		}
 	}
 
-	async getUserByUserId(user_id: string): Promise<UserDAO> {
-		const result = await this.domainService.getUserByUserId(user_id);
+	async getUserByUserId(
+		user_id: string,
+		withDeleted?: Optional<boolean>,
+	): Promise<UserDAO> {
+		const result = await this.domainService.getUserByUserId(
+			user_id,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {

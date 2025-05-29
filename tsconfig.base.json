@@ -23,6 +23,10 @@
 			"@azkaban/warcraft-domain": ["libs/warcraft-domain/src/index.ts"],
 			"@azkaban/warcraft-infrastructure": [
 				"libs/warcraft-infrastructure/src/index.ts"
+			],
+			"@azkaban/warhammer-domain": ["libs/warhammer-domain/src/index.ts"],
+			"@azkaban/warhammer-infrastructure": [
+				"libs/warhammer-infrastructure/src/index.ts"
 			]
 		}
 	},

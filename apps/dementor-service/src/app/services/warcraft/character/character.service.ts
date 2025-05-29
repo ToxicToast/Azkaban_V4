@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
 import { Nullable, Optional, WarcraftCharacterTopics } from '@azkaban/shared';
@@ -8,6 +8,7 @@ import {
 } from '@azkaban/warcraft-infrastructure';
 import {
 	ActivateCommand,
+	AssignCommand,
 	CreateCommand,
 	DeactivateCommand,
 	DeleteCommand,
@@ -24,23 +25,37 @@ export class CharacterService {
 	) {}
 
 	@Span(WarcraftCharacterTopics.LIST + '.dementor')
-	async characterList(limit?: Optional<number>, offset?: Optional<number>) {
-		return await this.queryBus.execute(new ListQuery(limit, offset));
+	async characterList(
+		limit?: Optional<number>,
+		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
+	) {
+		return await this.queryBus.execute(
+			new ListQuery(limit, offset, withDeleted),
+		);
 	}
 
 	@Span(WarcraftCharacterTopics.ID + '.dementor')
-	async characterById(id: number) {
-		return await this.queryBus.execute(new IdQuery(id));
+	async characterById(id: number, withDeleted?: Optional<boolean>) {
+		return await this.queryBus.execute(new IdQuery(id, withDeleted));
 	}
 
 	@Span(WarcraftCharacterTopics.CHARACTERID + '.dementor')
-	async characterByCharacterId(character_id: string) {
-		return await this.queryBus.execute(new CharacterIdQuery(character_id));
+	async characterByCharacterId(
+		character_id: string,
+		withDeleted?: Optional<boolean>,
+	) {
+		return await this.queryBus.execute(
+			new CharacterIdQuery(character_id, withDeleted),
+		);
 	}
 
 	@Span(WarcraftCharacterTopics.GUILD + '.dementor')
-	async characterByGuild(guild: Nullable<string>) {
-		return await this.queryBus.execute(new GuildQuery(guild));
+	async characterByGuild(
+		guild: Nullable<string>,
+		withDeleted?: Optional<boolean>,
+	) {
+		return await this.queryBus.execute(new GuildQuery(guild, withDeleted));
 	}
 
 	@Span(WarcraftCharacterTopics.CREATE + '.dementor')
@@ -71,5 +86,10 @@ export class CharacterService {
 	@Span(WarcraftCharacterTopics.DEACTIVATE + '.dementor')
 	async deactivateCharacter(id: number) {
 		return await this.commandBus.execute(new DeactivateCommand(id));
+	}
+
+	@Span(WarcraftCharacterTopics.ASSIGN + '.dementor')
+	async assignCharacter(id: number, user_id: Nullable<string>) {
+		return await this.commandBus.execute(new AssignCommand(id, user_id));
 	}
 }

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Span } from 'nestjs-otel';
 import { CacheService, Optional } from '@azkaban/shared';
 
@@ -11,6 +11,7 @@ export class GuildsCache {
 		guildList: unknown,
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
 		let cacheKey = 'warcraft:guilds:list';
 		if (limit !== undefined) {
@@ -19,21 +20,35 @@ export class GuildsCache {
 		if (offset !== undefined) {
 			cacheKey += `:offset:${offset}`;
 		}
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, guildList);
 	}
 
 	@Span('cacheGuildById')
-	async cacheCharacterById(id: number, guild: unknown): Promise<void> {
-		const cacheKey = 'warcraft:guilds:id:' + id;
+	async cacheCharacterById(
+		guild: unknown,
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<void> {
+		let cacheKey = 'warcraft:guilds:id:' + id;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, guild);
 	}
 
 	@Span('cacheGuildByGuildId')
 	async cacheCharacterByGuildId(
-		guild_id: string,
 		guild: unknown,
+		guild_id: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<void> {
-		const cacheKey = 'warcraft:guilds:guildid:' + guild_id;
+		let cacheKey = 'warcraft:guilds:guildid:' + guild_id;
+		if (withDeleted !== undefined) {
+			cacheKey += `:withDeleted:${String(withDeleted)}`;
+		}
 		await this.service.setKey(cacheKey, guild);
 	}
 

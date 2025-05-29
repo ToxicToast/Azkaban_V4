@@ -15,6 +15,13 @@ export class AppController {
 		return this.service.getObservable();
 	}
 
+	@Span(AzkabanSSETopics.WARHAMMER + '.service')
+	@EventPattern(AzkabanSSETopics.WARHAMMER)
+	async onWarhammerEvents(@Payload() payload: unknown): Promise<void> {
+		Logger.log('Fetch Warhammer Events', payload);
+		this.service.onSendNextEvent(AzkabanSSETopics.WARHAMMER, payload);
+	}
+
 	@Span(AzkabanSSETopics.WARCRAFT + '.service')
 	@EventPattern(AzkabanSSETopics.WARCRAFT)
 	async onWarcraftEvents(@Payload() payload: unknown): Promise<void> {

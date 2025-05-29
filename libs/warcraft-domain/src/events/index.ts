@@ -17,3 +17,4 @@ export * from './changeLoggedin.event';
 export * from './changeMemberCount.event';
 export * from './createCharacter.event';
 export * from './createGuild.event';
+export * from './changeUser.event';

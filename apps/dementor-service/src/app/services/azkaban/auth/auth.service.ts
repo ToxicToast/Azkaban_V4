@@ -1,10 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UseGuards } from '@nestjs/common';
 import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
 import { AzkabanAuthTopics } from '@azkaban/shared';
 import { LoginCommand, RegisterCommand } from './commands';
 import { JwtService } from '@nestjs/jwt';
 import { AuthPresenter } from './auth.presenter';
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class AuthService {
@@ -14,13 +15,15 @@ export class AuthService {
 		private readonly jwt: JwtService,
 	) {}
 
+	@UseGuards(AuthGuard('local'))
 	@Span(AzkabanAuthTopics.LOGIN + '.dementor')
 	async login(data: { username: string; password: string }) {
-		Logger.log('Login User', { data });
 		const user = await this.commandBus.execute(new LoginCommand(data));
 		const presenter = new AuthPresenter(user);
+		const userPresenter = presenter.transform();
 		return {
-			access_token: this.jwt.sign(presenter.transform()),
+			access_token: this.jwt.sign(userPresenter),
+			user: userPresenter,
 		};
 	}
 

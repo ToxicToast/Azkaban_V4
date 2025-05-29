@@ -2,6 +2,7 @@ import { Anemic, DomainEvent, Nullable } from '@azkaban/shared';
 
 export interface CharacterAnemic extends Anemic {
 	readonly character_id: string;
+	readonly user_id: Nullable<string>;
 	readonly region: string;
 	readonly realm: string;
 	readonly name: string;

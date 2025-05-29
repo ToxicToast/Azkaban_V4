@@ -42,16 +42,29 @@ export class GuildsService {
 		const guilds = await this.infrastructureService.getGuildList(
 			data.limit,
 			data.offset,
+			data.withDeleted,
 		);
-		await this.cache.cacheGuildsList(guilds, data.limit, data.offset);
+		await this.cache.cacheGuildsList(
+			guilds,
+			data.limit,
+			data.offset,
+			data.withDeleted,
+		);
 		return guilds;
 	}
 
 	@Span('guildById')
 	async guildById(data: GuildByIdDTO): Promise<GuildDAO> {
-		const guild = await this.infrastructureService.getGuildById(data.id);
+		const guild = await this.infrastructureService.getGuildById(
+			data.id,
+			data.withDeleted,
+		);
 		if (guild !== null) {
-			await this.cache.cacheCharacterById(data.id, guild);
+			await this.cache.cacheCharacterById(
+				guild,
+				data.id,
+				data.withDeleted,
+			);
 			return guild;
 		}
 		return null;
@@ -61,9 +74,14 @@ export class GuildsService {
 	async guildByGuildId(data: GuildByGuildIdDTO): Promise<GuildDAO> {
 		const guild = await this.infrastructureService.getGuildByGuildId(
 			data.guild_id,
+			data.withDeleted,
 		);
 		if (guild !== null) {
-			await this.cache.cacheCharacterByGuildId(data.guild_id, guild);
+			await this.cache.cacheCharacterByGuildId(
+				guild,
+				data.guild_id,
+				data.withDeleted,
+			);
 			return guild;
 		}
 		return null;
@@ -72,11 +90,12 @@ export class GuildsService {
 	@Span('guildCreate')
 	async guildCreate(data: GuildCreateDTO): Promise<GuildDAO> {
 		await this.cache.removeCache();
-		return await this.infrastructureService.createGuild(data);
+		return await this.infrastructureService.createGuild(data.data);
 	}
 
 	@Span('guildUpdate')
 	async guildUpdate(data: GuildUpdateDTO): Promise<GuildDAO> {
+		Logger.log('GuildUpdate', data);
 		await this.cache.removeCache();
 		return null;
 	}

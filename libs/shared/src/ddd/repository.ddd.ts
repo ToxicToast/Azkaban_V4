@@ -5,6 +5,10 @@ export interface Repository<Domain> {
 	findList(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Array<Domain>>;
-	findById(id: number): Promise<Nullable<Domain>>;
+	findById(
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<Nullable<Domain>>;
 }

@@ -3,7 +3,7 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { CronjobService } from '../cronjob.service';
 import { Span } from 'nestjs-otel';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class AssetsCron {
@@ -31,7 +31,7 @@ export class AssetsCron {
 	}
 
 	@Span('updateAssetsCron')
-	@Cron(CronExpression.EVERY_DAY_AT_1AM, {
+	@Cron('0 30 0 * * *', {
 		name: 'Update Warcraft Assets',
 	})
 	async updateAssetsCron() {

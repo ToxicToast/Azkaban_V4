@@ -24,18 +24,26 @@ export class GuildService {
 	async getGuilds(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<Array<GuildAnemic>>> {
 		try {
-			const result = await this.repository.findList(limit, offset);
+			const result = await this.repository.findList(
+				limit,
+				offset,
+				withDeleted,
+			);
 			return Result.ok<Array<GuildAnemic>>(result);
 		} catch (error) {
 			return Result.fail<Array<GuildAnemic>>(error, 500);
 		}
 	}
 
-	async getGuildById(id: number): Promise<Result<GuildAnemic>> {
+	async getGuildById(
+		id: number,
+		withDeleted?: Optional<boolean>,
+	): Promise<Result<GuildAnemic>> {
 		try {
-			const result = await this.repository.findById(id);
+			const result = await this.repository.findById(id, withDeleted);
 			if (result !== null) {
 				return Result.ok<GuildAnemic>(result);
 			}
@@ -45,9 +53,15 @@ export class GuildService {
 		}
 	}
 
-	async getGuildByGuildId(guild_id: string): Promise<Result<GuildAnemic>> {
+	async getGuildByGuildId(
+		guild_id: string,
+		withDeleted?: Optional<boolean>,
+	): Promise<Result<GuildAnemic>> {
 		try {
-			const result = await this.repository.findByGuildId(guild_id);
+			const result = await this.repository.findByGuildId(
+				guild_id,
+				withDeleted,
+			);
 			if (result !== null) {
 				return Result.ok<GuildAnemic>(result);
 			}
@@ -61,12 +75,14 @@ export class GuildService {
 		region: string,
 		realm: string,
 		name: string,
+		withDeleted?: Optional<boolean>,
 	): Promise<Result<GuildAnemic>> {
 		try {
 			const result = await this.repository.findByRegionRealmName(
 				region,
 				realm,
 				name,
+				withDeleted,
 			);
 			if (result !== null) {
 				return Result.ok<GuildAnemic>(result);
