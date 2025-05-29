@@ -17,7 +17,7 @@ export class CharacterAggregate {
 	}
 
 	changeUser(user_id: Nullable<string>) {
-		this.character.deactivateCharacter();
+		this.character.changeUser(user_id);
 	}
 
 	changeWounds(wounds: number, type: 'heal' | 'inflict') {
