@@ -9,3 +9,6 @@ export * from './warcraftVersion.handler';
 
 export * from './warhammerVersion.query';
 export * from './warhammerVersion.handler';
+
+export * from './foodfolioVersion.query';
+export * from './foodfolioVersion.handler';

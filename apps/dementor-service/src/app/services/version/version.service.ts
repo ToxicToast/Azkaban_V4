@@ -6,10 +6,12 @@ import {
 	AzkabanTopics,
 	CacheService,
 	WarhammerTopics,
+	FoodfolioTopics,
 } from '@azkaban/shared';
 import {
 	AzkabanVersionQuery,
 	DementorVersionQuery,
+	FoodfolioVersionQuery,
 	WarcraftVersionQuery,
 	WarhammerVersionQuery,
 } from './queries';
@@ -20,6 +22,12 @@ export class VersionService {
 		private readonly queryBus: QueryBus,
 		private readonly cache: CacheService,
 	) {}
+
+	@Span(FoodfolioTopics.VERSION)
+	async getFoodfolioServiceVersion() {
+		Logger.log('Fetch Foodfolio Service Version');
+		return await this.queryBus.execute(new FoodfolioVersionQuery());
+	}
 
 	@Span(WarhammerTopics.VERSION)
 	async getWarhammerServiceVersion() {
@@ -72,6 +80,11 @@ export class VersionService {
 				return 'Service is currently unavailable';
 			},
 		);
+		const foodfolioVersion = await this.getFoodfolioServiceVersion().catch(
+			() => {
+				return 'Service is currently unavailable';
+			},
+		);
 		const versions = {
 			dementor: dementorVersion,
 			azkaban: {
@@ -101,6 +114,18 @@ export class VersionService {
 				equipmenmt: 'Service is currently unavailable',
 				skills: 'Service is currently unavailable',
 				talents: 'Service is currently unavailable',
+			},
+			foodfolio: {
+				category: foodfolioVersion,
+				company: 'Service is currently unavailable',
+				item: 'Service is currently unavailable',
+				item_detail: 'Service is currently unavailable',
+				item_variant: 'Service is currently unavailable',
+				location: 'Service is currently unavailable',
+				shopping_list: 'Service is currently unavailable',
+				size: 'Service is currently unavailable',
+				type: 'Service is currently unavailable',
+				warehouse: 'Service is currently unavailable',
 			},
 		};
 		await this.cache.setKey(cacheKey, versions);

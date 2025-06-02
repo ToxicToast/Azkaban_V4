@@ -1,3 +1,4 @@
+export * from './base.topics';
 export * from './category.topics';
 export * from './company.topics';
 export * from './location.topics';

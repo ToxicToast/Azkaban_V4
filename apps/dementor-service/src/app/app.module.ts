@@ -15,6 +15,8 @@ import {
 	AzkabanAuthTopicArray,
 	WarhammerTopicArray,
 	WarhammerCharacterTopicArray,
+	FoodfolioTopicArray,
+	FoodFolioCategoryTopicArray,
 } from '@azkaban/shared';
 import { AppConfig } from '../config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -71,6 +73,7 @@ import { PassportModule } from '@nestjs/passport';
 				// Coworking Services
 				// Discord Services
 				// Foodfolio Services
+				...FoodFolioCategoryTopicArray,
 				// Twitch Services
 				// Warcraft Services
 				...WarcraftCharacterTopicArray,
@@ -81,6 +84,7 @@ import { PassportModule } from '@nestjs/passport';
 				...WarcraftTopicArray,
 				...AzkabanTopicArray,
 				...WarhammerTopicArray,
+				...FoodfolioTopicArray,
 			],
 		),
 		LoggerModule.forRoot(true, AppConfig.name),
