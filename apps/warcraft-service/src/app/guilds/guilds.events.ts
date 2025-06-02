@@ -24,26 +24,26 @@ export class GuildsEvents {
 			.toPromise();
 	}
 
-	@OnEvent('CreateGuild')
+	@OnEvent('Warcraft.CreateGuild')
 	async handleCreateGuildEvent(payload: unknown) {
 		Logger.log('CreateGuild event received', payload);
 		await this.sendToSSE(payload);
 		await this.sendToApiAlerts(payload);
 	}
 
-	@OnEvent('ChangeFaction')
+	@OnEvent('Warcraft.ChangeFaction')
 	async handleChangeFactionEvent(payload: unknown) {
 		Logger.log('ChangeFaction event received', payload);
 		await this.sendToSSE(payload);
 	}
 
-	@OnEvent('ChangeRaid')
+	@OnEvent('Warcraft.ChangeRaid')
 	async handleChangeRaidEvent(payload: unknown) {
 		Logger.log('ChangeRaid event received', payload);
 		await this.sendToSSE(payload);
 	}
 
-	@OnEvent('ChangeMemberCount')
+	@OnEvent('Warcraft.ChangeMemberCount')
 	async handleChangeMemberCountEvent(payload: unknown) {
 		Logger.log('ChangeMemberCount event received', payload);
 		await this.sendToSSE(payload);

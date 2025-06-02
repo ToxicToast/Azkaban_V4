@@ -6,76 +6,35 @@ import {
 } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import {
-	AlertsResponses,
-	CreateUserAlert,
-	CreateWarcraftCharacterAlert,
-	UpdateWarcraftCharacterGuildAlert,
-} from '../../utils';
+import { AlertsResponses } from '../../utils';
+import { AzkabanAlertsService } from './azkaban.service';
+import { WarcraftAlertsService } from './warcraft.service';
 
 @Controller(ControllerHelper('alerts'))
 export class AlertsController {
-	constructor(private readonly service: ApiAlertsService) {}
+	constructor(
+		private readonly azkabanAlerts: AzkabanAlertsService,
+		private readonly warcraftAlerts: WarcraftAlertsService,
+	) {}
 
 	@Span(AzkabanWebhookTopics.APIALERTS + '.service')
 	@EventPattern(AzkabanWebhookTopics.APIALERTS)
 	async getApiAlerts(@Payload() payload: AlertsResponses) {
 		Logger.log('Get API Alerts', payload);
-		switch (payload.event_name) {
+		const { event_namespace, event_name } = payload;
+		switch (event_namespace) {
 			default:
-				Logger.warn('Unknown event name', payload.event_name);
+				Logger.warn('Unknown event namespace', payload.event_namespace);
 				break;
-			case 'CreateUser':
-				await this.createUserAlert(payload as CreateUserAlert);
+			case 'Azkaban':
+				await this.azkabanAlerts.getApiAlerts(event_name, payload);
 				break;
-			case 'CreateWarcraftCharacter':
-				await this.createWarcraftCharacterAlert(
-					payload as CreateWarcraftCharacterAlert,
-				);
+			case 'Warcraft':
+				await this.warcraftAlerts.getApiAlerts(event_name, payload);
 				break;
-			case 'ChangeGuild':
-				await this.updateWarcraftCharacterGuild(
-					payload as UpdateWarcraftCharacterGuildAlert,
-				);
+			case 'Warhammer':
+				Logger.warn('Unknown event namespace', { payload });
 				break;
 		}
-	}
-
-	private async createUserAlert(payload: CreateUserAlert): Promise<void> {
-		Logger.log('Create new user Alert', payload);
-		await this.service.sendEvent(
-			`New User: ${payload.user.username}`,
-			'api',
-			['Azkaban', 'Api', 'User'],
-		);
-	}
-
-	private async createWarcraftCharacterAlert(
-		payload: CreateWarcraftCharacterAlert,
-	): Promise<void> {
-		Logger.log('Create new Character Alert', payload);
-		await this.service.sendEvent(
-			`New Character: ${payload.character.name}`,
-			'warcraft',
-			['Azkaban', 'Api', 'Warcraft', 'Character'],
-		);
-	}
-
-	private async updateWarcraftCharacterGuild(
-		payload: UpdateWarcraftCharacterGuildAlert,
-	): Promise<void> {
-		Logger.log('Update Character Guild Alert', payload);
-		const type = payload.guild === null ? 'left' : 'changed';
-		const message =
-			type === 'left'
-				? `Character "${payload.character_id}" left guild "${payload.old_guild}"`
-				: `Character "${payload.character_id}" changed guild to ${payload.guild} from "${payload.old_guild}"`;
-
-		await this.service.sendEvent(message, 'warcraft', [
-			'Azkaban',
-			'Api',
-			'Warhammer',
-			'Character',
-		]);
 	}
 }

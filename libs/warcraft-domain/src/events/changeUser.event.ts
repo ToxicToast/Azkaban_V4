@@ -2,7 +2,8 @@ import { DomainEvent, Nullable } from '@azkaban/shared';
 
 export class ChangeUserEvent implements DomainEvent {
 	readonly occured_at = new Date();
-	readonly event_name = 'ChangeWarcraftUser';
+	readonly event_namespace = 'Warcraft';
+	readonly event_name = 'ChangeUser';
 
 	constructor(
 		public readonly aggregate_id: string,

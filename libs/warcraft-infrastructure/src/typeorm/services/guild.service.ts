@@ -106,7 +106,9 @@ export class GuildService {
 			const events = result.events;
 			Logger.log('Guild Events', events);
 			for (const event of events) {
-				this.eventEmitter.emit(event.event_name, event);
+				const eventName =
+					event.event_namespace + '.' + event.event_name;
+				this.eventEmitter.emit(eventName, event);
 			}
 			return result.value;
 		} else {
@@ -130,7 +132,9 @@ export class GuildService {
 			const events = result.events;
 			Logger.log('Guild Events', events);
 			for (const event of events) {
-				this.eventEmitter.emit(event.event_name, event);
+				const eventName =
+					event.event_namespace + '.' + event.event_name;
+				this.eventEmitter.emit(eventName, event);
 			}
 			return result.value;
 		} else {
@@ -148,7 +152,9 @@ export class GuildService {
 			const events = result.events;
 			Logger.log('Guild Events', events);
 			for (const event of events) {
-				this.eventEmitter.emit(event.event_name, event);
+				const eventName =
+					event.event_namespace + '.' + event.event_name;
+				this.eventEmitter.emit(eventName, event);
 			}
 			return result.value;
 		} else {
@@ -166,7 +172,9 @@ export class GuildService {
 			const events = result.events;
 			Logger.log('Guild Events', events);
 			for (const event of events) {
-				this.eventEmitter.emit(event.event_name, event);
+				const eventName =
+					event.event_namespace + '.' + event.event_name;
+				this.eventEmitter.emit(eventName, event);
 			}
 			return result.value;
 		} else {
@@ -184,7 +192,9 @@ export class GuildService {
 			const events = result.events;
 			Logger.log('Guild Events', events);
 			for (const event of events) {
-				this.eventEmitter.emit(event.event_name, event);
+				const eventName =
+					event.event_namespace + '.' + event.event_name;
+				this.eventEmitter.emit(eventName, event);
 			}
 			return result.value;
 		} else {
@@ -202,7 +212,9 @@ export class GuildService {
 			const events = result.events;
 			Logger.log('Guild Events', events);
 			for (const event of events) {
-				this.eventEmitter.emit(event.event_name, event);
+				const eventName =
+					event.event_namespace + '.' + event.event_name;
+				this.eventEmitter.emit(eventName, event);
 			}
 			return result.value;
 		} else {

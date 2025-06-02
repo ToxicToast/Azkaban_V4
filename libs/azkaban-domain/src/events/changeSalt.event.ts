@@ -2,6 +2,7 @@ import { DomainEvent } from '@azkaban/shared';
 
 export class ChangeSaltEvent implements DomainEvent {
 	readonly occured_at = new Date();
+	readonly event_namespace = 'Azkaban';
 	readonly event_name = 'ChangeSalt';
 
 	constructor(

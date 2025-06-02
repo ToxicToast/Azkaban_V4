@@ -24,14 +24,14 @@ export class CharactersEvents {
 			.toPromise();
 	}
 
-	@OnEvent('CreateWarhammerCharacter')
+	@OnEvent('Warhammer.CreateCharacter')
 	async handleCreateCharacterEvent(payload: unknown) {
 		Logger.log('CreateCharacter event received', payload);
 		await this.sendToSSE(payload);
 		await this.sendToApiAlerts(payload);
 	}
 
-	@OnEvent('ChangeWarhammerUser')
+	@OnEvent('Warhammer.ChangeUser')
 	async handleChangeUserEvent(payload: unknown) {
 		Logger.log('ChangeUser event received', payload);
 		await this.sendToSSE(payload);

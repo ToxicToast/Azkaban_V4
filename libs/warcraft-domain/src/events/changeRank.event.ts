@@ -2,6 +2,7 @@ import { DomainEvent, Nullable } from '@azkaban/shared';
 
 export class ChangeRankEvent implements DomainEvent {
 	readonly occured_at = new Date();
+	readonly event_namespace = 'Warcraft';
 	readonly event_name = 'ChangeRank';
 
 	constructor(

@@ -3,6 +3,7 @@ import { GuildAnemic } from '../anemics';
 
 export class CreateGuildEvent implements DomainEvent {
 	readonly occured_at = new Date();
+	readonly event_namespace = 'Warcraft';
 	readonly event_name = 'CreateGuild';
 
 	constructor(

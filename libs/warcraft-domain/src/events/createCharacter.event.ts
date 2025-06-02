@@ -3,7 +3,8 @@ import { CharacterAnemic } from '../anemics';
 
 export class CreateCharacterEvent implements DomainEvent {
 	readonly occured_at = new Date();
-	readonly event_name = 'CreateWarcraftCharacter';
+	readonly event_namespace = 'Warcraft';
+	readonly event_name = 'CreateCharacter';
 
 	constructor(
 		public readonly aggregate_id: string,

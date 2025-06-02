@@ -2,6 +2,7 @@ import { DomainEvent } from '@azkaban/shared';
 
 export class ChangeItemLevelEvent implements DomainEvent {
 	readonly occured_at = new Date();
+	readonly event_namespace = 'Warcraft';
 	readonly event_name = 'ChangeItemLevel';
 
 	constructor(

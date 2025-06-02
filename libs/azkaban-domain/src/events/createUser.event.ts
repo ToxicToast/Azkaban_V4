@@ -3,6 +3,7 @@ import { UserAnemic } from '../anemics';
 
 export class CreateUserEvent implements DomainEvent {
 	readonly occured_at = new Date();
+	readonly event_namespace = 'Azkaban';
 	readonly event_name = 'CreateUser';
 
 	constructor(

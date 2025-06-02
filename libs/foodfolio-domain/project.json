@@ -1,0 +1,14 @@
+{
+	"name": "foodfolio-domain",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/foodfolio-domain/src",
+	"projectType": "library",
+	"tags": ["scope:domain"],
+	"targets": {
+		"test": {
+			"options": {
+				"passWithNoTests": true
+			}
+		}
+	}
+}

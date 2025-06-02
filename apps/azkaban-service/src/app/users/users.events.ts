@@ -24,38 +24,38 @@ export class UsersEvents {
 			.toPromise();
 	}
 
-	@OnEvent('CreateUser')
+	@OnEvent('Azkaban.CreateUser')
 	async handleCreateUserEvent(payload: unknown) {
 		Logger.log('CreateUser event received', payload);
 		await this.sendToSSE(payload);
 		await this.sendToApiAlerts(payload);
 	}
 
-	@OnEvent('ChangeEmail')
+	@OnEvent('Azkaban.ChangeEmail')
 	async handleChangeEmailEvent(payload: unknown) {
 		Logger.log('ChangeEmail event received', payload);
 		await this.sendToSSE(payload);
 	}
 
-	@OnEvent('ChangeLoggedIn')
+	@OnEvent('Azkaban.ChangeLoggedIn')
 	async handleChangeLoggedInEvent(payload: unknown) {
 		Logger.log('ChangeLoggedIn event received', payload);
 		await this.sendToSSE(payload);
 	}
 
-	@OnEvent('ChangePassword')
+	@OnEvent('Azkaban.ChangePassword')
 	async handleChangePasswordEvent(payload: unknown) {
 		Logger.log('ChangePassword event received', payload);
 		await this.sendToSSE(payload);
 	}
 
-	@OnEvent('ChangeSalt')
+	@OnEvent('Azkaban.ChangeSalt')
 	async handleChangeSaltEvent(payload: unknown) {
 		Logger.log('ChangeSalt event received', payload);
 		await this.sendToSSE(payload);
 	}
 
-	@OnEvent('ChangeUsername')
+	@OnEvent('Azkaban.ChangeUsername')
 	async handleChangeUsernameEvent(payload: unknown) {
 		Logger.log('ChangeUsername event received', payload);
 		await this.sendToSSE(payload);
