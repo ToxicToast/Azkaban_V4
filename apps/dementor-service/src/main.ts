@@ -49,7 +49,7 @@ function addFilters(app: INestApplication): void {
 function configureSwagger(app: INestApplication): void {
 	const config = new DocumentBuilder()
 		.setTitle('Dementor')
-		.setVersion('v0.10.0')
+		.setVersion(AppConfig.environment)
 		.addBearerAuth()
 		.addOAuth2()
 		.build();
