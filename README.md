@@ -1,8 +1,4 @@
 <div align="center">
-<img src="https://github.com/ToxicToast/Azkaban_V4/raw/main/assets/text_logo.png" alt="Toaster"/>
-</div>
-
-<div align="center">
 
 [![Node Version](https://img.shields.io/static/v1?label=Node&message=23.4.0&color=purple&style=for-the-badge)](https://nodejs.org)
 [![npm Version](https://img.shields.io/static/v1?label=npm&message=11.0.0&color=purple&style=for-the-badge)](https://nodejs.org)
@@ -17,101 +13,115 @@
 > **Warning:**
 > This project is a Work in Progress and is not yet ready for real world usage
 
-## Introduction
+# 🪄 AZKABAN – The Arcane Microservice Platform
 
-Azkaban is a complete Rewrite of my Microservices at Home.
+Welcome, Initiate.
 
-## Planned Services
+**Azkaban** is a secure and event-driven microservice architecture inspired by the wizarding world. It guards the secrets of authentication, watches over system activity, and delivers critical messages to watchers across the realm.
 
-**FoodFolio**
+## 🧱 Architecture
 
-- Category
-- Company
-- Location
-- Type
-- Size
-- Item
-- Item Variant
-- Item Detail
-- Warehouse
-- Shoppinglist
+Below is an overview of the key services that form the Azkaban platform:
 
-**Twitch**
+---
 
-- Api Service
-- Bot Service
-- Viewer Service
-- Messages Service
-- Streams Service
-- Channel Service
+### 🧊 `Dementor Service`
 
-**Warcraft**
+> _"No one enters without facing the Dementor."_
 
-- Api Service
-- Guild Service
+Acts as the **gateway** to the Azkaban platform. It authenticates and routes incoming requests to their proper service destinations.
 
-**Co-Working**
+- Handles: HTTP routing, token forwarding, basic request validation
+- Think of it as the castle gate, guarded by unsleeping watchers.
 
-- Task Service
+---
 
-**UI**
+### 🏰 `Azkaban Service`
 
-- Admin UI
-- Foodfolio UI
-- CoWorking UI
+> _"Only the marked may stay within the prison walls."_
 
-## In Development
+Manages **authentication and identity** for users, clients, and entities.
 
-- Warcraft Service
-- Blog UI
-- Ascend Guild UI
+- Issues JWTs, refresh tokens
+- Manages login, registration, user permissions
+    > Work in Progress: This service is currently under development.
 
-## Deployed Services
+---
 
-**Gateway**
+### 🔮 `Seer Service`
 
-- [API Gateway](https://api.toxictoast.de/)
-- Azkaban Alerts
-- [Azkaban Users](https://api.toxictoast.de/api/v1/azkaban/users)
-- [Azkaban SSE](https://sse.toxictoast.de/api/v1/sse)
-- Warcraft Api
-- [Warcraft Characters](https://api.toxictoast.de/api/v1/warcraft/character)
-- [Warcraft Guild](https://api.toxictoast.de/api/v1/warcraft/guild)
-- Warcraft Cronjobs
+> _"The Seer watches all, and speaks only when it must."_
 
-**UI**
+Serves as the real-time event oracle of the Azkaban platform. It listens to internal Kafka events and broadcasts them as Server-Sent Events (SSE) to subscribed clients.
 
-- [Blog UI](https://www.toxictoast.de/)
-- [Ascend Guild UI](https://www.ascend-guild.de/)
+- Handles: SSE channels, Kafka subscriptions, live event delivery
 
-## Infrastructure
+- Think of it as a prophetic watcher, whispering truths as they unfold.
 
-- Docker (Containerization)
-- Kubernetes (Orchestration)
-- Traefik (Reverse Proxy)
-- Kafka (Message Broker)
-- Postgres (Database)
-- NestJS (Backend Framework)
-- Redis (Cache)
-- ReactJS (UI)
-- Redux-Toolkit (State Management)
-- API Alerts (Alerting)
-- OpenTelemetry (Tracing)
-- SigNoz (Tracing - Visually)
+---
 
-## Gateway
+### 📣 `Howler Service`
 
-> **Info:**
-> The Gateway is the entry point for all requests to the services. It is responsible for routing requests to the correct service and publishes the correct Topic to the Message Broker.
+> _"Some messages cannot be ignored."_
 
-## Alerting
+A magical notification system inspired by the infamous red Howler letters.
 
-> **Info:**
-> Great Service for Alerting. It is used to monitor the API Post Requests which will notify me on my mobile that something new was created or a specific event occurred. (Event Driven Architecture)
+- Sends system alerts to devices or users
+- Supports push, email, or webhook-based delivery
+    > Work in Progress: This service is currently under development.
 
-- [API Alerts](https://apialerts.com/)
+---
 
-## SSE
+### 🥫 `Foodfolio Service`
 
-> **Info:**
-> To have some sort of Realtime Communication between the Services, the SSE Service is used to publish Events to the UI. Since i don't want to use Websockets (and I don't need some sort of bidirectional communication), I've decided to use Server Sent Events.
+> _"No potion may be brewed without ingredients."_
+
+The Azkaban pantry manages stored items, resources, or inventory.
+
+- Designed for expansion into recipes, expiry checks, and resupply automation
+
+> Work in Progress: This service is currently under development.
+
+---
+
+### 🛡️ `Warcraft Service`
+
+> _"In the echoes of battle and glory, every name must be remembered."_
+
+Provides data and functionality for World of Warcraft guilds and characters. From noble paladins to shady rogues, this service tracks identities, gear, progress, and affiliations within the guild’s ranks.
+
+- Handles: character profiles, guild rosters, equipment snapshots, progression logs
+
+- Think of it as the Tome of Kings, safeguarding the legacy of your adventurers.
+
+> Work in Progress: This service is currently under development.
+
+---
+
+### ⚙️ `Warhammer Service`
+
+> _"In the grim darkness of the far future, only the worthy are recorded."_
+
+Manages character sheets, traits, equipment and psychological states for agents operating in the Imperium's most shadowed sectors. Designed for Warhammer 40.000 roleplaying campaigns in the Imperium Maledictum Rulebook.
+
+- Handles: character creation, attribute tracking, corruption, equipment and notes
+
+- Think of it as the Cogitator Vault, where the identities of sanctioned operatives are archived and updated across missions.
+
+> Work in Progress: This service is currently under development.
+
+---
+
+## 🔐 Security
+
+Azkaban enforces strict role-based access through magic-bound tokens (JWTs) and spirit-signed sessions. All services behind the `Dementor Service` are sealed and cannot be reached without passing its scrutiny.
+
+---
+
+## 🖋️ License
+
+Licensed under the Ministry of Magic Regulation §42.b – _"All magical constructs must adhere to Muggle safety protocols."_
+
+---
+
+🕯️ _"In Azkaban, the silence is loud, and even the whispers are logged."_
