@@ -1,5 +1,10 @@
 import { AggregateRoot, Domain, DomainEvent, Nullable } from '@azkaban/shared';
 import { CategoryAnemic } from '../anemics';
+import {
+	ChangeParentIdEvent,
+	ChangeTitleEvent,
+	CreateCategoryEvent,
+} from '../events';
 
 export class CategoryDomain
 	extends AggregateRoot
@@ -36,14 +41,34 @@ export class CategoryDomain
 	}
 
 	createCategory(): void {
-		// Add Domain Event for creating a category
+		this.addDomainEvent(
+			new CreateCategoryEvent(this.category_id, this.toAnemic()),
+		);
 	}
 
 	changeTitle(title: string): void {
 		if (title !== this.title) {
 			this.updated_at = new Date();
+			const oldTitle = this.title;
 			this.title = title;
-			// Add Domain Event for changing the title
+			this.addDomainEvent(
+				new ChangeTitleEvent(this.category_id, title, oldTitle),
+			);
+		}
+	}
+
+	changeParentId(parent_id: Nullable<string>): void {
+		if (parent_id !== this.parent_id) {
+			this.updated_at = new Date();
+			const oldParentId = this.parent_id;
+			this.parent_id = parent_id;
+			this.addDomainEvent(
+				new ChangeParentIdEvent(
+					this.category_id,
+					parent_id,
+					oldParentId,
+				),
+			);
 		}
 	}
 

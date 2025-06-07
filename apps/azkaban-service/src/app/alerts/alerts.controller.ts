@@ -1,9 +1,5 @@
 import { Controller, Logger } from '@nestjs/common';
-import {
-	ApiAlertsService,
-	AzkabanWebhookTopics,
-	ControllerHelper,
-} from '@azkaban/shared';
+import { AzkabanWebhookTopics, ControllerHelper } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { AlertsResponses } from '../../utils';
