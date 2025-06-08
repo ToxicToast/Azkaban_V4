@@ -25,7 +25,6 @@ export class MythicProcessor extends WorkerHost {
 	}) {
 		try {
 			const { region, realm, name } = data;
-			Logger.log('onGetMythicFromApi', { region, realm, name });
 			await this.apiService.setApiClient(region as Origins);
 			return await this.apiService.getMythicRating({
 				realm,
@@ -40,13 +39,11 @@ export class MythicProcessor extends WorkerHost {
 	@Span('onCharacterUpdate')
 	private async onCharacterUpdate(id: number, data: MythicModel) {
 		try {
-			Logger.log('onCharacterUpdate', { id, data });
 			const rating = data?.current_mythic_rating?.rating ?? '0';
 			const numberRating = Number(rating);
 			const updatePayload = {
 				mythic: Math.ceil(numberRating),
 			};
-			Logger.log('updatePayload', updatePayload);
 			return await this.service.updateCharacter(id, updatePayload);
 		} catch (error) {
 			Logger.error(error);
@@ -62,7 +59,6 @@ export class MythicProcessor extends WorkerHost {
 			string
 		>,
 	) {
-		Logger.log('Processing Mythic', job.name, job.data);
 		return await this.onGetMythicFromApi(job.data);
 	}
 
@@ -75,7 +71,6 @@ export class MythicProcessor extends WorkerHost {
 		>,
 	) {
 		try {
-			Logger.log('Job completed', job.id, job.returnvalue);
 			return await this.onCharacterUpdate(job.data.id, job.returnvalue);
 		} catch (error) {
 			Logger.error(error);

@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { WarcraftVersionQuery } from './warcraftVersion.query';
-import { Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	CacheService,
@@ -39,7 +39,6 @@ export class WarcraftVersionHandler
 	}
 
 	async execute(query: WarcraftVersionQuery) {
-		Logger.log(WarcraftVersionHandler.name, query);
 		return await this.checkForCache(query);
 	}
 }

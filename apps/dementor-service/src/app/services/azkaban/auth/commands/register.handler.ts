@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RegisterCommand } from './register.command';
-import { Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
 	AzkabanAuthTopics,
@@ -28,7 +28,6 @@ export class RegisterCommandHandler
 	}
 
 	async execute(command: RegisterCommand) {
-		Logger.log(RegisterCommandHandler.name, command);
 		return await this.createCircuitBreaker(command);
 	}
 }

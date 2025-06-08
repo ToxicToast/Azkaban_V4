@@ -1,4 +1,4 @@
-import { Injectable, Logger, UseGuards } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
 import { AzkabanAuthTopics } from '@azkaban/shared';
@@ -33,7 +33,6 @@ export class AuthService {
 		password: string;
 		email: string;
 	}) {
-		Logger.log('Register New User', { data });
 		return await this.commandBus.execute(new RegisterCommand(data));
 	}
 }

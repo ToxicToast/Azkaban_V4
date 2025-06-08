@@ -1,4 +1,4 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AzkabanAuthTopics, ControllerHelper } from '@azkaban/shared';
 import { AuthService } from './auth.service';
 import { Span } from 'nestjs-otel';
@@ -13,7 +13,6 @@ export class AuthController {
 	@Span(AzkabanAuthTopics.LOGIN + '.service')
 	@MessagePattern(AzkabanAuthTopics.LOGIN)
 	async login(@Payload() payload: UserLoginDTO) {
-		Logger.log('Login User', payload);
 		return this.service.authLogin(payload.data).then((data: UserDAO) => {
 			return {
 				...data,
@@ -31,7 +30,6 @@ export class AuthController {
 	@Span(AzkabanAuthTopics.REGISTER + '.service')
 	@MessagePattern(AzkabanAuthTopics.REGISTER)
 	async register(@Payload() payload: Omit<UserCreateDTO, 'salt'>) {
-		Logger.log('Register User', { payload });
 		return await this.service.authRegister(payload.data);
 	}
 }

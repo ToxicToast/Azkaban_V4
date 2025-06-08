@@ -48,7 +48,7 @@ Manages **authentication and identity** for users, clients, and entities.
 
 ---
 
-### 🔮 `Seer Service`
+### 🔮 `SSE Service`
 
 > _"The Seer watches all, and speaks only when it must."_
 

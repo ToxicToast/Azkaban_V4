@@ -22,7 +22,6 @@ export class UsersService {
 		offset?: Optional<number>,
 		withDeleted?: Optional<boolean>,
 	) {
-		Logger.log('Fetch User List', { limit, offset, withDeleted });
 		return await this.queryBus.execute(
 			new ListQuery(limit, offset, withDeleted),
 		);
@@ -30,13 +29,11 @@ export class UsersService {
 
 	@Span(AzkabanUserTopics.ID + '.dementor')
 	async userById(id: number, withDeleted?: Optional<boolean>) {
-		Logger.log('Fetch User By Id', { id, withDeleted });
 		return await this.queryBus.execute(new IdQuery(id, withDeleted));
 	}
 
 	@Span(AzkabanUserTopics.USERID + '.dementor')
 	async userByUserId(user_id: string, withDeleted?: Optional<boolean>) {
-		Logger.log('Fetch User By User Id', { user_id, withDeleted });
 		return await this.queryBus.execute(
 			new UserIdQuery(user_id, withDeleted),
 		);
@@ -44,7 +41,6 @@ export class UsersService {
 
 	@Span(AzkabanUserTopics.CREATE + '.dementor')
 	async createUser(data: CreateUserWithoutSaltDTO) {
-		Logger.log('Create New User', { data });
 		return await this.commandBus.execute(new CreateCommand(data));
 	}
 

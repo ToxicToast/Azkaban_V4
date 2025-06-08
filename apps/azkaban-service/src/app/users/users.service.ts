@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Span } from 'nestjs-otel';
 import {
@@ -38,13 +38,11 @@ export class UsersService {
 
 	@Span('userList')
 	async userList(data: UsersListDTO): Promise<Array<UserDAO>> {
-		Logger.log('UserList', data);
 		const users = await this.infrastructureService.getUserList(
 			data.limit,
 			data.offset,
 			data.withDeleted,
 		);
-		Logger.log('users', users);
 		await this.cache.cacheUserList(
 			users,
 			data.limit,
@@ -56,12 +54,10 @@ export class UsersService {
 
 	@Span('userById')
 	async userById(data: UserByIdDTO): Promise<Nullable<UserDAO>> {
-		Logger.log('UserById', data);
 		const user = await this.infrastructureService.getUserById(
 			data.id,
 			data.withDeleted,
 		);
-		Logger.log('user', user);
 		if (user !== null) {
 			await this.cache.cacheUserById(user, data.id, data.withDeleted);
 			return user;
@@ -71,12 +67,10 @@ export class UsersService {
 
 	@Span('userByUserId')
 	async userByUserId(data: UserByUserIdDTO): Promise<Nullable<UserDAO>> {
-		Logger.log('UserByUserId', data);
 		const user = await this.infrastructureService.getUserByUserId(
 			data.user_id,
 			data.withDeleted,
 		);
-		Logger.log('user', user);
 		if (user !== null) {
 			await this.cache.cacheUserByUserId(
 				user,
@@ -90,42 +84,36 @@ export class UsersService {
 
 	@Span('userCreate')
 	async userCreate(data: Omit<UserCreateDTO, 'salt'>): Promise<UserDAO> {
-		Logger.log('UserCreate', { data });
 		await this.cache.removeCache();
 		return await this.infrastructureService.createUser(data.data);
 	}
 
 	@Span('userUpdate')
 	async userUpdate(data: UserUpdateDTO): Promise<UserDAO> {
-		Logger.log('UserUpdate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.updateUser(data.id, data.data);
 	}
 
 	@Span('userDelete')
 	async userDelete(data: UserByIdDTO): Promise<UserDAO> {
-		Logger.log('UserDelete', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.deleteUser(data.id);
 	}
 
 	@Span('userRestore')
 	async userRestore(data: UserByIdDTO): Promise<UserDAO> {
-		Logger.log('UserRestore', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.restoreUser(data.id);
 	}
 
 	@Span('userActivate')
 	async userActivate(data: UserByIdDTO): Promise<UserDAO> {
-		Logger.log('UserActivate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.activateUser(data.id);
 	}
 
 	@Span('userDeactivate')
 	async userDeactivate(data: UserByIdDTO): Promise<UserDAO> {
-		Logger.log('UserDeactivate', data);
 		await this.cache.removeCache();
 		return await this.infrastructureService.deactivateUser(data.id);
 	}

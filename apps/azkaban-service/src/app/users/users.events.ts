@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { Span } from 'nestjs-otel';
 import { AzkabanSSETopics, AzkabanWebhookTopics } from '@azkaban/shared';
@@ -26,38 +26,32 @@ export class UsersEvents {
 
 	@OnEvent('Azkaban.CreateUser')
 	async handleCreateUserEvent(payload: unknown) {
-		Logger.log('CreateUser event received', payload);
 		await this.sendToSSE(payload);
 		await this.sendToApiAlerts(payload);
 	}
 
 	@OnEvent('Azkaban.ChangeEmail')
 	async handleChangeEmailEvent(payload: unknown) {
-		Logger.log('ChangeEmail event received', payload);
 		await this.sendToSSE(payload);
 	}
 
 	@OnEvent('Azkaban.ChangeLoggedIn')
 	async handleChangeLoggedInEvent(payload: unknown) {
-		Logger.log('ChangeLoggedIn event received', payload);
 		await this.sendToSSE(payload);
 	}
 
 	@OnEvent('Azkaban.ChangePassword')
 	async handleChangePasswordEvent(payload: unknown) {
-		Logger.log('ChangePassword event received', payload);
 		await this.sendToSSE(payload);
 	}
 
 	@OnEvent('Azkaban.ChangeSalt')
 	async handleChangeSaltEvent(payload: unknown) {
-		Logger.log('ChangeSalt event received', payload);
 		await this.sendToSSE(payload);
 	}
 
 	@OnEvent('Azkaban.ChangeUsername')
 	async handleChangeUsernameEvent(payload: unknown) {
-		Logger.log('ChangeUsername event received', payload);
 		await this.sendToSSE(payload);
 	}
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { Span } from 'nestjs-otel';
 import { AzkabanSSETopics, AzkabanWebhookTopics } from '@azkaban/shared';
@@ -26,26 +26,22 @@ export class GuildsEvents {
 
 	@OnEvent('Warcraft.CreateGuild')
 	async handleCreateGuildEvent(payload: unknown) {
-		Logger.log('CreateGuild event received', payload);
 		await this.sendToSSE(payload);
 		await this.sendToApiAlerts(payload);
 	}
 
 	@OnEvent('Warcraft.ChangeFaction')
 	async handleChangeFactionEvent(payload: unknown) {
-		Logger.log('ChangeFaction event received', payload);
 		await this.sendToSSE(payload);
 	}
 
 	@OnEvent('Warcraft.ChangeRaid')
 	async handleChangeRaidEvent(payload: unknown) {
-		Logger.log('ChangeRaid event received', payload);
 		await this.sendToSSE(payload);
 	}
 
 	@OnEvent('Warcraft.ChangeMemberCount')
 	async handleChangeMemberCountEvent(payload: unknown) {
-		Logger.log('ChangeMemberCount event received', payload);
 		await this.sendToSSE(payload);
 	}
 }

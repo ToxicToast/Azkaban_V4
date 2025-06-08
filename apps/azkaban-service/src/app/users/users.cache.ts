@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CacheService, Optional } from '@azkaban/shared';
 import { Span } from 'nestjs-otel';
 import { UserResponse, UsersResponse } from '../../utils';
@@ -24,7 +24,6 @@ export class UsersCache {
 		if (withDeleted !== undefined) {
 			cacheKey += `:withDeleted:${String(withDeleted)}`;
 		}
-		Logger.log('Cache User List', { cacheKey, userList });
 		await this.service.setKey(cacheKey, userList);
 	}
 
@@ -38,7 +37,6 @@ export class UsersCache {
 		if (withDeleted !== undefined) {
 			cacheKey += `:withDeleted:${String(withDeleted)}`;
 		}
-		Logger.log('Cache User By Id', { id, user });
 		await this.service.setKey(cacheKey, user);
 	}
 
@@ -52,16 +50,11 @@ export class UsersCache {
 		if (withDeleted !== undefined) {
 			cacheKey += `:withDeleted:${String(withDeleted)}`;
 		}
-		Logger.log('Cache User By User Id', {
-			user_id,
-			user,
-		});
 		await this.service.setKey(cacheKey, user);
 	}
 
 	@Span('removeCache')
 	async removeCache(): Promise<void> {
-		Logger.log('Clear Users Cache', {});
 		await this.service.deleteKey('azkaban:users:*');
 	}
 }

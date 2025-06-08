@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
 	UserDAO,
 	CreateUserWithoutSaltDTO,
@@ -32,13 +32,11 @@ export class AuthService {
 		username: string;
 		password: string;
 	}): Promise<UserDAO> {
-		Logger.log('AuthLogin', data);
 		return await this.infrastructureService.loginUser(data);
 	}
 
 	@Span('authRegister')
 	async authRegister(data: CreateUserWithoutSaltDTO): Promise<UserDAO> {
-		Logger.log('AuthRegister', { data });
 		return await this.infrastructureService.createUser(data);
 	}
 }
