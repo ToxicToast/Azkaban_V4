@@ -1,0 +1,51 @@
+{
+	"name": "foodfolio-service",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/foodfolio-service/src",
+	"projectType": "application",
+	"tags": ["scope:application"],
+	"targets": {
+		"build": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "webpack-cli build",
+				"args": ["node-env=production"]
+			},
+			"configurations": {
+				"development": {
+					"args": ["node-env=development"]
+				}
+			}
+		},
+		"serve": {
+			"continuous": true,
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"dependsOn": ["build"],
+			"options": {
+				"buildTarget": "foodfolio-service:build",
+				"runBuildTargetDependencies": false
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "foodfolio-service:build:development"
+				},
+				"production": {
+					"buildTarget": "foodfolio-service:build:production"
+				}
+			}
+		},
+		"test": {
+			"options": {
+				"passWithNoTests": true
+			}
+		},
+		"docker-build": {
+			"dependsOn": ["build"],
+			"command": "docker build -f apps/foodfolio-service/Dockerfile . -t toxictoast/foodfolio:{args.VERSION}"
+		},
+		"docker-push": {
+			"command": "docker push toxictoast/foodfolio:{args.VERSION}"
+		}
+	}
+}
