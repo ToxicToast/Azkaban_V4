@@ -89,7 +89,7 @@ export class CategoryService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { category_id, withDeleted },
+				raw: { parent_id, withDeleted },
 			});
 		}
 	}
