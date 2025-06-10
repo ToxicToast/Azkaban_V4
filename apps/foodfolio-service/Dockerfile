@@ -1,6 +1,6 @@
 FROM docker.io/node:23-alpine as build
 WORKDIR /app
-COPY dist/apps/warhammer-service .
+COPY dist/apps/foodfolio-service .
 COPY package*.json ./
 RUN npm install --omit=dev
 
