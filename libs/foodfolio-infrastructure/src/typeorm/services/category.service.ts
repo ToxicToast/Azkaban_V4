@@ -1,34 +1,27 @@
-import { UserService as DomainService } from '@azkaban/azkaban-domain';
-import { UserRepository } from '../repositories';
-import {
-	Optional,
-	PasswordCompare,
-	PasswordHash,
-	PasswordSalt,
-	UuidHelper,
-} from '@azkaban/shared';
-import { UserDAO } from '../../dao';
-import { RpcException } from '@nestjs/microservices';
-import { CreateUserWithoutSaltDTO, UpdateUserDTO } from '../../dto';
-import { Logger } from '@nestjs/common';
+import { CategoryService as DomainService } from '@azkaban/foodfolio-domain';
+import { CategoryRepository } from '../repositories';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Nullable, Optional, UuidHelper } from '@azkaban/shared';
+import { CategoryDAO } from '../../dao';
+import { RpcException } from '@nestjs/microservices';
+import { CreateCategoryDTO, UpdateCategoryDTO } from '../../dto';
 
-export class UserService {
+export class CategoryService {
 	private readonly domainService: DomainService;
 
 	constructor(
-		private readonly repository: UserRepository,
+		private readonly repository: CategoryRepository,
 		private readonly eventEmitter: EventEmitter2,
 	) {
 		this.domainService = new DomainService(this.repository);
 	}
 
-	async getUserList(
+	async getCategoryList(
 		limit?: Optional<number>,
 		offset?: Optional<number>,
 		withDeleted?: Optional<boolean>,
-	): Promise<Array<UserDAO>> {
-		const result = await this.domainService.getUsers(
+	): Promise<Array<CategoryDAO>> {
+		const result = await this.domainService.getCategories(
 			limit,
 			offset,
 			withDeleted,
@@ -44,11 +37,14 @@ export class UserService {
 		}
 	}
 
-	async getUserById(
+	async getCategoryById(
 		id: number,
 		withDeleted?: Optional<boolean>,
-	): Promise<UserDAO> {
-		const result = await this.domainService.getUserById(id, withDeleted);
+	): Promise<CategoryDAO> {
+		const result = await this.domainService.getCategoryById(
+			id,
+			withDeleted,
+		);
 		if (result.isSuccess) {
 			return result.value;
 		} else {
@@ -60,12 +56,12 @@ export class UserService {
 		}
 	}
 
-	async getUserByUserId(
-		user_id: string,
+	async getCategoryByCategoryId(
+		category_id: string,
 		withDeleted?: Optional<boolean>,
-	): Promise<UserDAO> {
-		const result = await this.domainService.getUserByUserId(
-			user_id,
+	): Promise<CategoryDAO> {
+		const result = await this.domainService.getCategoryByCategoryId(
+			category_id,
 			withDeleted,
 		);
 		if (result.isSuccess) {
@@ -74,20 +70,35 @@ export class UserService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { user_id, withDeleted },
+				raw: { category_id, withDeleted },
 			});
 		}
 	}
 
-	async createUser(data: CreateUserWithoutSaltDTO): Promise<UserDAO> {
-		const user_id = UuidHelper.create().value;
-		const salt = await PasswordSalt();
-		const password = await PasswordHash(data.password, salt);
-		const result = await this.domainService.createUser({
+	async getCategoryByParentId(
+		parent_id: Nullable<string>,
+		withDeleted?: Optional<boolean>,
+	): Promise<Array<CategoryDAO>> {
+		const result = await this.domainService.getCategoriesByParentId(
+			parent_id,
+			withDeleted,
+		);
+		if (result.isSuccess) {
+			return result.value;
+		} else {
+			throw new RpcException({
+				status: result.errorCode,
+				message: result.errorValue,
+				raw: { category_id, withDeleted },
+			});
+		}
+	}
+
+	async createCategory(data: CreateCategoryDTO): Promise<CategoryDAO> {
+		const category_id = UuidHelper.create().value;
+		const result = await this.domainService.createCategory({
 			...data,
-			user_id,
-			salt,
-			password,
+			category_id,
 		});
 		if (result.isSuccess) {
 			const events = result.events;
@@ -101,20 +112,20 @@ export class UserService {
 			throw new RpcException({
 				status: result.errorCode,
 				message: result.errorValue,
-				raw: { data, user_id },
+				raw: { data, category_id },
 			});
 		}
 	}
 
-	async updateUser(id: number, data: UpdateUserDTO): Promise<UserDAO> {
-		const { username, email, password, salt, loggedin_at } = data;
-		const result = await this.domainService.updateUser({
+	async updateCategory(
+		id: number,
+		data: UpdateCategoryDTO,
+	): Promise<CategoryDAO> {
+		const { title, parent_id } = data;
+		const result = await this.domainService.updateCategory({
 			id,
-			username,
-			email,
-			password,
-			salt,
-			loggedin_at,
+			title,
+			parent_id,
 		});
 		if (result.isSuccess) {
 			const events = result.events;
@@ -133,8 +144,8 @@ export class UserService {
 		}
 	}
 
-	async deleteUser(id: number): Promise<UserDAO> {
-		const result = await this.domainService.deleteUser(id);
+	async deleteCategory(id: number): Promise<CategoryDAO> {
+		const result = await this.domainService.deleteCategory(id);
 		if (result.isSuccess) {
 			const events = result.events;
 			for (const event of events) {
@@ -152,8 +163,8 @@ export class UserService {
 		}
 	}
 
-	async restoreUser(id: number): Promise<UserDAO> {
-		const result = await this.domainService.restoreUser(id);
+	async restoreCategory(id: number): Promise<CategoryDAO> {
+		const result = await this.domainService.restoreCategory(id);
 		if (result.isSuccess) {
 			const events = result.events;
 			for (const event of events) {
@@ -171,8 +182,8 @@ export class UserService {
 		}
 	}
 
-	async activateUser(id: number): Promise<UserDAO> {
-		const result = await this.domainService.activateUser(id);
+	async activateCategory(id: number): Promise<CategoryDAO> {
+		const result = await this.domainService.activateCategory(id);
 		if (result.isSuccess) {
 			const events = result.events;
 			for (const event of events) {
@@ -190,11 +201,10 @@ export class UserService {
 		}
 	}
 
-	async deactivateUser(id: number): Promise<UserDAO> {
-		const result = await this.domainService.deactivateUser(id);
+	async deactivateCategory(id: number): Promise<CategoryDAO> {
+		const result = await this.domainService.deactivateCategory(id);
 		if (result.isSuccess) {
 			const events = result.events;
-			Logger.log('User Events', events);
 			for (const event of events) {
 				const eventName =
 					event.event_namespace + '.' + event.event_name;
@@ -206,53 +216,6 @@ export class UserService {
 				status: result.errorCode,
 				message: result.errorValue,
 				raw: { id },
-			});
-		}
-	}
-
-	async loginUser(data: {
-		username: string;
-		password: string;
-	}): Promise<UserDAO> {
-		const result = await this.domainService.getUserByUsername(
-			data.username,
-		);
-		if (result.isSuccess) {
-			const user = result.value;
-			const isValidPassword = await PasswordCompare(
-				data.password,
-				user.password,
-			);
-			if (
-				isValidPassword &&
-				user.activated_at !== null &&
-				user.deleted_at === null
-			) {
-				const result = await this.domainService.updateUser({
-					id: user.id,
-					loggedin_at: new Date(),
-				});
-				if (result.isSuccess) {
-					const events = result.events;
-					Logger.log('User Events', events);
-					for (const event of events) {
-						const eventName =
-							event.event_namespace + '.' + event.event_name;
-						this.eventEmitter.emit(eventName, event);
-					}
-					return result.value;
-				}
-			}
-			throw new RpcException({
-				status: 401,
-				message: 'Invalid credentials',
-				raw: { ...data },
-			});
-		} else {
-			throw new RpcException({
-				status: result.errorCode,
-				message: result.errorValue,
-				raw: { ...data },
 			});
 		}
 	}

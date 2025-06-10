@@ -1,0 +1,14 @@
+{
+	"name": "foodfolio-infrastructure",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/foodfolio-infrastructure/src",
+	"projectType": "library",
+	"tags": ["scope:infrastructure"],
+	"targets": {
+		"test": {
+			"options": {
+				"passWithNoTests": true
+			}
+		}
+	}
+}

@@ -40,7 +40,6 @@ export class UsersController {
 		@Query('limit') limit?: Optional<number>,
 		@Query('offset') offset?: Optional<number>,
 	) {
-		Logger.log('Get Users', { user, limit, offset });
 		return await this.service
 			.userList(limit, offset, user !== null)
 			.catch((error) => {
@@ -48,7 +47,6 @@ export class UsersController {
 				throw error;
 			})
 			.then((data) => {
-				Logger.log('Get Users', { data });
 				return data.map((user: UserDAO) => {
 					const presenter = new UsersPresenter(user, user !== null);
 					return presenter.transform();
@@ -60,7 +58,6 @@ export class UsersController {
 	@UseGuards(OptionalJwtAuthGuard)
 	@Get('/:id')
 	async getUserById(@User() user: Nullable<string>, @Param('id') id: number) {
-		Logger.log('Get User By Id', { id, user });
 		return await this.service
 			.userById(id, user !== null)
 			.catch((error) => {
@@ -83,7 +80,6 @@ export class UsersController {
 		@User() user: Nullable<string>,
 		@Param('id') id: string,
 	) {
-		Logger.log('Get User By User Id', { id, user });
 		return await this.service
 			.userByUserId(id, user !== null)
 			.catch((error) => {
@@ -103,7 +99,6 @@ export class UsersController {
 	@UseGuards(JwtAuthGuard)
 	@Post('/')
 	async createUser(@Body() body: CreateUserWithoutSaltDTO) {
-		Logger.log('Create New User', { body });
 		return await this.service.createUser(body).catch((error) => {
 			Logger.error(error);
 			throw error;

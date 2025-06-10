@@ -20,6 +20,9 @@
 				"libs/azkaban-infrastructure/src/index.ts"
 			],
 			"@azkaban/foodfolio-domain": ["libs/foodfolio-domain/src/index.ts"],
+			"@azkaban/foodfolio-infrastructure": [
+				"libs/foodfolio-infrastructure/src/index.ts"
+			],
 			"@azkaban/shared": ["libs/shared/src/index.ts"],
 			"@azkaban/warcraft-domain": ["libs/warcraft-domain/src/index.ts"],
 			"@azkaban/warcraft-infrastructure": [

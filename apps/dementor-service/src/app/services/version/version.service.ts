@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Span } from 'nestjs-otel';
 import {
@@ -25,31 +25,26 @@ export class VersionService {
 
 	@Span(FoodfolioTopics.VERSION)
 	async getFoodfolioServiceVersion() {
-		Logger.log('Fetch Foodfolio Service Version');
 		return await this.queryBus.execute(new FoodfolioVersionQuery());
 	}
 
 	@Span(WarhammerTopics.VERSION)
 	async getWarhammerServiceVersion() {
-		Logger.log('Fetch Warhammer Service Version');
 		return await this.queryBus.execute(new WarhammerVersionQuery());
 	}
 
 	@Span(WarcraftTopics.VERSION)
 	async getWarcraftServiceVersion() {
-		Logger.log('Fetch Warcraft Service Version');
 		return await this.queryBus.execute(new WarcraftVersionQuery());
 	}
 
 	@Span(AzkabanTopics.VERSION)
 	async getAzkabanServiceVersion() {
-		Logger.log('Fetch Azkaban Service Version');
 		return await this.queryBus.execute(new AzkabanVersionQuery());
 	}
 
 	@Span('dementor.version')
 	async getDementorServiceVersion() {
-		Logger.log('Fetch Dementor Service Version');
 		return await this.queryBus.execute(new DementorVersionQuery());
 	}
 

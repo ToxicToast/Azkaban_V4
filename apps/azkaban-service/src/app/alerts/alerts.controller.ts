@@ -16,7 +16,6 @@ export class AlertsController {
 	@Span(AzkabanWebhookTopics.APIALERTS + '.service')
 	@EventPattern(AzkabanWebhookTopics.APIALERTS)
 	async getApiAlerts(@Payload() payload: AlertsResponses) {
-		Logger.log('Get API Alerts', payload);
 		const { event_namespace, event_name } = payload;
 		switch (event_namespace) {
 			default:
@@ -29,7 +28,9 @@ export class AlertsController {
 				await this.warcraftAlerts.getApiAlerts(event_name, payload);
 				break;
 			case 'Warhammer':
-				Logger.warn('Unknown event namespace', { payload });
+				Logger.warn('Warhammer Event Handler not Implemented yet', {
+					payload,
+				});
 				break;
 		}
 	}
