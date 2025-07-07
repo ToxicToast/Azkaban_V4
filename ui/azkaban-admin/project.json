@@ -1,0 +1,9 @@
+{
+	"name": "azkaban-admin",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "ui/azkaban-admin/src",
+	"projectType": "application",
+	"tags": ["scope:ui"],
+	"// targets": "to see all targets run: nx show project azkaban-admin --web",
+	"targets": {}
+}

@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import {
-	ApialertsModule,
 	AzkabanSSETopicArray,
 	AzkabanWebhookTopicArray,
 	BullModule,
@@ -16,6 +15,7 @@ import {
 import { AppConfig } from '../config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CategoryEntity } from '@azkaban/foodfolio-infrastructure';
+import { CategoryModule } from './category/category.module';
 
 @Module({
 	imports: [
@@ -62,6 +62,7 @@ import { CategoryEntity } from '@azkaban/foodfolio-infrastructure';
 			[...AzkabanSSETopicArray, ...AzkabanWebhookTopicArray],
 		),
 		ScheduleModule.forRoot(true),
+		CategoryModule,
 	],
 	controllers: [],
 	providers: [],
