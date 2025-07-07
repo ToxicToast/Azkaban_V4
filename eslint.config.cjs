@@ -5,11 +5,7 @@ module.exports = [
 	...nx.configs['flat/typescript'],
 	...nx.configs['flat/javascript'],
 	{
-		ignores: [
-			'**/dist',
-			'**/vite.config.*.timestamp*',
-			'**/vitest.config.*.timestamp*',
-		],
+		ignores: ['**/dist'],
 	},
 	{
 		files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
@@ -44,13 +40,6 @@ module.exports = [
 							onlyDependOnLibsWithTags: [
 								'scope:application',
 								'scope:infrastructure',
-								'scope:shared',
-							],
-						},
-						{
-							sourceTag: 'scope:ui',
-							onlyDependOnLibsWithTags: [
-								'scope:ui',
 								'scope:shared',
 							],
 						},
